@@ -1,0 +1,2129 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[turkish]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=2cm}
+\usepackage{tcolorbox}
+
+\title{\textbf{MAT204 - Grup Teorisine Giriş\\ (Introduction à la Théorie des Groupes)}}
+\author{Ders Notları ve TD Çözümleri}
+\date{Université Galatasaray}
+
+\begin{document}
+\shorthandoff{=}
+\maketitle
+\tableofcontents
+
+\chapter{Chapitre 1: Tam Sayılarda Aritmetik ve Modüler Kavramlar}
+
+\section{Bölünebilme (Divisibilité) ve Doğrusal Kombinasyonlar}
+
+\subsection*{Tanım}
+Eğer $a, b \in \mathbb{Z}$ ve $a \neq 0$ ise; $a$ sayısının $b$'yi bölmesi için ($a \mid b$), öyle bir $k \in \mathbb{Z}$ olmalıdır ki:
+\[ b = a \cdot k \]
+eşitliği sağlansın.
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Doğrusal Kombinasyon Özelliği (Çok Önemli!)]
+Eğer $d \mid a$ ve $d \mid b$ ise, herhangi $x, y \in \mathbb{Z}$ için $d$ sayısı $(ax + by)$ ifadesini de tam böler:
+\[ d \mid (ax + by) \]
+\textbf{Soru Çözüm Taktiği:} Eğer $d \mid (2n+1)$ ve $d \mid (3n+2)$ verildiyse, $n$'yi yok etmek için ilk ifadeyi 3 ile, ikinci ifadeyi 2 ile çarpıp çıkarırız.
+\end{tcolorbox}
+
+\section{Öklid Bölme Teoremi (Division Euclidienne)}
+Herhangi $a \in \mathbb{Z}$ ve $b \in \mathbb{Z}^*$ (sıfırdan farklı) için, öyle \textbf{tek} bir $(q, r)$ tam sayı ikilisi vardır ki:
+\[ a = b \cdot q + r \quad \text{ve} \quad 0 \leq r < |b| \]
+Burada $a$ bölünen, $b$ bölen, $q$ bölüm (quotient) ve $r$ kalandır (reste).
+
+\begin{tcolorbox}[colback=green!5!white,colframe=green!75!black,title=Parite (Tek/Çift Sayılar)]
+Bir sayıyı 2'ye bölmek Öklid bölmesinin en basit halidir.
+\begin{itemize}
+    \item Çift sayılar: $n = 2k$ (Kalan 0)
+    \item Tek sayılar: $n = 2k + 1$ (Kalan 1)
+\end{itemize}
+\end{tcolorbox}
+
+\section{En Büyük Ortak Bölen (PGCD / EBOB)}
+Sıfır olmayan iki tam sayının ($a$ ve $b$) en büyük ortak böleni $\gcd(a, b)$ veya $a \wedge b$ olarak gösterilir.
+
+\subsection*{Öklid Algoritması}
+Büyük sayıların PGCD'sini bulmak için ardışık bölmeler yaparız:
+\begin{align*}
+a &= b \cdot q_1 + r_1 \\
+b &= r_1 \cdot q_2 + r_2 \\
+r_1 &= r_2 \cdot q_3 + r_3
+\end{align*}
+İşlem kalan 0 olana kadar devam eder. \textbf{Sıfırdan önceki son kalan} bize PGCD'yi verir.
+
+\section{Bézout Teoremi ve Aralarında Asallık}
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Bézout Özdeşliği]
+$a, b \in \mathbb{Z}$ için $\gcd(a, b) = d$ ise, öyle $u, v \in \mathbb{Z}$ vardır ki:
+\[ a \cdot u + b \cdot v = d \]
+\end{tcolorbox}
+
+\textbf{Aralarında Asallık:} İki sayının aralarında asal olması, $\gcd(a,b)=1$ demektir. Bézout'ya göre; $a$ ve $b$ aralarında asaldır ancak ve ancak öyle $u, v \in \mathbb{Z}$ vardır ki:
+\[ a \cdot u + b \cdot v = 1 \]
+
+\section{Modüler Aritmetik (Congruences)}
+$n \geq 1$ bir tam sayı olsun. Eğer $a$ ve $b$'nin $n$'ye bölümünden kalanlar aynıysa, "$a$ ve $b$ modülo $n$ denktir" denir:
+\[ a \equiv b \pmod n \iff n \mid (a - b) \]
+
+\subsection*{Modüler Aritmetik Kuralları}
+Eğer $a \equiv b \pmod n$ ve $c \equiv d \pmod n$ ise:
+\begin{itemize}
+    \item Toplama/Çıkarma: $a \pm c \equiv b \pm d \pmod n$
+    \item Çarpma: $a \cdot c \equiv b \cdot d \pmod n$
+    \item Üs Alma: Her $k \in \mathbb{N}$ için $a^k \equiv b^k \pmod n$
+\end{itemize}
+
+\newpage
+\section{TD-1 Çözümleri}
+
+\subsection*{Exercice 1: Divisibilité et combinaisons linéaires}
+
+\textbf{Soru 1.1:} Montrer que si $d$ divise $2n + 1$ et $d$ divise $3n + 2$, alors $d = \pm 1$.
+
+\begin{proof}[Démonstration (İspat)]
+Soit $n \in \mathbb{Z}$ et $d \in \mathbb{Z}$. Supposons que $d \mid (2n+1)$ et $d \mid (3n+2)$.
+
+Par la définition de la divisibilité dans $\mathbb{Z}$, si un entier $d$ divise deux entiers $A$ et $B$, alors pour toute combinaison linéaire à coefficients entiers $x, y \in \mathbb{Z}$, on a $d \mid (xA + yB)$.
+
+Posons $A = 2n + 1$ et $B = 3n + 2$. 
+Cherchons à éliminer la variable $n$. Puisque le PPCM de $2$ et $3$ est $6$, choisissons $x = -3$ et $y = 2$ :
+\begin{align*}
+-3 \cdot A + 2 \cdot B &= -3(2n + 1) + 2(3n + 2) \\
+&= -6n - 3 + 6n + 4 \\
+&= 1
+\end{align*}
+Puisque $d \mid A$ et $d \mid B$, on en déduit que $d \mid (-3A + 2B)$, ce qui implique rigoureusement que :
+\[ d \mid 1 \]
+Dans l'anneau des entiers $\mathbb{Z}$, les seuls diviseurs de $1$ sont ses éléments inversibles, à savoir $1$ et $-1$. 
+Par conséquent, on conclut que :
+\[ d \in \{-1, 1\} \implies d = \pm 1 \]
+\textit{Ce qu'il fallait démontrer (Q.E.D.).}
+\end{proof}
+
+\vspace{0.5cm}
+
+\textbf{Soru 1.2:} Existe-t-il un entier $n \in \mathbb{Z}$ tel que $5 \mid n^2+2$ et $5 \mid n+1$ ? Justifier rigoureusement.
+
+\begin{proof}[Démonstration (İspat)]
+Nous allons procéder par l'absurde (Olmayana Ergi Yöntemi). Supposons qu'il existe un entier $n \in \mathbb{Z}$ satisfaisant simultanément les deux conditions :
+\begin{equation}
+5 \mid (n+1) \quad \text{et} \quad 5 \mid (n^2+2)
+\end{equation}
+
+Puisque $5 \mid (n+1)$, $5$ divise également tout multiple de $(n+1)$. En particulier, multiplions par $(n-1)$ :
+\[ 5 \mid (n+1)(n-1) \implies 5 \mid (n^2 - 1) \]
+
+D'autre part, notre supposition initiale stipule que :
+\[ 5 \mid (n^2 + 2) \]
+
+D'après le lemme des combinaisons linéaires (utilisé dans la question 1.1), si un entier divise deux nombres, il divise également leur différence. Soustrayons la première expression de la seconde afin d'éliminer le terme $n^2$ :
+\begin{align*}
+(n^2 + 2) - (n^2 - 1) &= n^2 + 2 - n^2 + 1 \\
+&= 3
+\end{align*}
+
+Puisque $5$ divise $(n^2+2)$ et $5$ divise $(n^2-1)$, $5$ doit obligatoirement diviser leur différence :
+\[ 5 \mid 3 \]
+
+Nous aboutissons ainsi à une contradiction évidente (une absurdité absolue), car 5 ne divise pas 3 dans $\mathbb{Z}$.
+
+\textbf{Conclusion:} L'hypothèse initiale menant à une contradiction logique, il n'existe aucun entier $n \in \mathbb{Z}$ tel que $5 \mid (n^2+2)$ et $5 \mid (n+1)$. \\
+\textit{Ce qu'il fallait démontrer (Q.E.D.).}
+\end{proof}
+
+\subsection*{Exercice 2: Propriétés de la parité}
+\textbf{Soru 2.1:} En utilisant l'algorithme de division par 2, rappeler pourquoi tout entier $n$ s'écrit sous la forme $2m$ ou $2m + 1$ avec $m \in \mathbb{Z}$.
+
+\begin{proof}[Démonstration]
+Soit $n \in \mathbb{Z}$. D'après le théorème de la division euclidienne, pour tout entier $b > 0$, il existe un unique couple d'entiers $(q, r)$ tel que $n = bq + r$ avec $0 \leq r < b$.
+Posons $b = 2$. Il existe alors un unique quotient $m \in \mathbb{Z}$ et un unique reste $r \in \mathbb{Z}$ tels que :
+\[ n = 2m + r \quad \text{avec} \quad 0 \leq r < 2 \]
+Puisque $r$ est un entier, les seules valeurs possibles pour $r$ sont $0$ et $1$.
+\begin{itemize}
+    \item Si $r = 0$, alors $n = 2m$ (dans ce cas, $n$ est dit pair).
+    \item Si $r = 1$, alors $n = 2m + 1$ (dans ce cas, $n$ est dit impair).
+\end{itemize}
+Par conséquent, tout entier $n$ s'écrit formellement sous l'une de ces deux formes.
+\end{proof}
+
+\textbf{Soru 2.2:} Démontrer que si $n$ est impair, alors $n^2 + 3n + 5$ est toujours un entier impair.
+
+\begin{proof}[Démonstration]
+Soit $n \in \mathbb{Z}$ un entier impair. Par définition, il existe un entier $k \in \mathbb{Z}$ tel que $n = 2k + 1$.
+Substituons cette expression dans le polynôme $n^2 + 3n + 5$ :
+\begin{align*}
+n^2 + 3n + 5 &= (2k + 1)^2 + 3(2k + 1) + 5 \\
+&= (4k^2 + 4k + 1) + (6k + 3) + 5 \\
+&= 4k^2 + 10k + 9
+\end{align*}
+Pour montrer que ce nombre est impair, nous devons l'écrire sous la forme $2m + 1$ avec $m \in \mathbb{Z}$. Remarquons que $9 = 8 + 1$ :
+\begin{align*}
+4k^2 + 10k + 9 &= 4k^2 + 10k + 8 + 1 \\
+&= 2(2k^2 + 5k + 4) + 1
+\end{align*}
+Puisque l'ensemble des entiers est fermé sous l'addition et la multiplication, et que $k \in \mathbb{Z}$, l'expression $m = 2k^2 + 5k + 4$ est un entier.
+Ainsi, $n^2 + 3n + 5 = 2m + 1$, ce qui prouve rigoureusement que le résultat est un entier impair.
+\end{proof}
+
+\textbf{Soru 2.3:} Montrer que le produit de deux entiers consécutifs est toujours pair.
+
+\begin{proof}[Démonstration]
+Soit un entier $n \in \mathbb{Z}$. Le produit de deux entiers consécutifs s'écrit $P = n(n+1)$.
+D'après la question 2.1, l'entier $n$ est soit pair, soit impair. Étudions les deux cas exhaustifs :
+\begin{itemize}
+    \item \textbf{Cas 1 ($n$ est pair):} Il existe $k \in \mathbb{Z}$ tel que $n = 2k$.
+    Alors $P = 2k(2k + 1) = 2 \cdot [k(2k + 1)]$. Puisque $k(2k+1) \in \mathbb{Z}$, le produit $P$ est de la forme $2m$, donc pair.
+    \item \textbf{Cas 2 ($n$ est impair):} Il existe $k \in \mathbb{Z}$ tel que $n = 2k + 1$.
+    Alors $P = (2k + 1)((2k + 1) + 1) = (2k + 1)(2k + 2) = 2 \cdot [(2k + 1)(k + 1)]$.
+    Ici aussi, l'expression entre crochets est un entier, donc $P$ s'écrit sous la forme $2m'$ et est formellement pair.
+\end{itemize}
+Dans tous les cas possibles, $n(n+1)$ est un multiple de 2.
+\end{proof}
+
+\subsection*{Exercice 3: Application de l'algorithme d'Euclide}
+Soient $a = 525$ et $b = 231$.
+
+\textbf{Soru 3.1:} Déterminer le PGCD de $a$ et $b$ par l'algorithme d'Euclide.
+
+\begin{proof}[Démonstration (Calcul par divisions successives)]
+Appliquons l'algorithme d'Euclide :
+\begin{align*}
+525 &= 231 \times 2 + 63 \\
+231 &= 63 \times 3 + 42 \\
+63 &= 42 \times 1 + 21 \\
+42 &= 21 \times 2 + 0
+\end{align*}
+Le PGCD est strictement défini par le dernier reste non nul de cette suite de divisions. Par conséquent, $\gcd(525, 231) = 21$.
+\end{proof}
+
+\textbf{Soru 3.2:} Déterminer un couple $(s, t) \in \mathbb{Z}^2$ tel que $as + bt = \gcd(a, b)$.
+
+\begin{proof}[Démonstration (Remontée de l'algorithme)]
+Utilisons les équations de la division euclidienne précédente en les "remontant" pour exprimer $21$ en fonction de $525$ et $231$ :
+\begin{align*}
+21 &= 63 - 42 \times 1 \\
+21 &= 63 - (231 - 63 \times 3) \times 1 \\
+21 &= 63 \times 4 - 231 \times 1 \\
+21 &= (525 - 231 \times 2) \times 4 - 231 \times 1 \\
+21 &= 525 \times 4 - 231 \times 8 - 231 \times 1 \\
+21 &= 525 \times (4) + 231 \times (-9)
+\end{align*}
+Ainsi, l'identité de Bézout est vérifiée par le couple $(s, t) = (4, -9)$.
+\end{proof}
+
+\subsection*{Exercice 4: PGCD d'expressions algébriques}
+\textbf{Soru 4:} Démontrer que pour tout $n \in \mathbb{Z}$, $\gcd(3n^2 + 7n + 5, n^2 + 2n + 1) = 1$.
+
+\begin{proof}[Démonstration]
+Soit $d = \gcd(3n^2 + 7n + 5, n^2 + 2n + 1)$. D'après les propriétés fondamentales du PGCD, pour tous entiers $u, v$, l'entier $d$ divise toute combinaison linéaire $u(3n^2 + 7n + 5) + v(n^2 + 2n + 1)$.
+Effectuons une combinaison pour réduire le degré polynomial. Prenons $u = 1$ et $v = -3$ :
+\begin{align*}
+(3n^2 + 7n + 5) - 3(n^2 + 2n + 1) &= 3n^2 + 7n + 5 - 3n^2 - 6n - 3 \\
+&= n + 2
+\end{align*}
+Ainsi, le PGCD $d$ doit diviser $n + 2$. D'après la propriété classique $\gcd(A, B) = \gcd(A - qB, B)$, nous avons :
+\[ d = \gcd(n + 2, n^2 + 2n + 1) \]
+Remarquons que $n^2 + 2n + 1 = (n + 1)^2$. Nous pouvons effectuer une division euclidienne polynomiale de $n^2 + 2n + 1$ par $n + 2$ :
+\[ n^2 + 2n + 1 = (n + 2)(n) + 1 \]
+En appliquant de nouveau l'algorithme d'Euclide sur ces termes :
+\[ d = \gcd(n^2 + 2n + 1 - n(n+2), n+2) = \gcd(1, n+2) \]
+Puisque le plus grand diviseur commun de $1$ et de tout entier est obligatoirement $1$, nous concluons rigoureusement que $d = 1$.
+\end{proof}
+
+\subsection*{Exercice 5: Caractérisation de la bézoutabilité}
+\textbf{Soru 5.1:} Condition nécessaire et suffisante.
+\begin{proof}[Réponse]
+D'après le Théorème de Bézout, deux entiers $a, b \in \mathbb{Z}$ (non tous deux nuls) sont premiers entre eux ($\gcd(a, b) = 1$) \textbf{si et seulement si} il existe des entiers $s, t \in \mathbb{Z}$ tels que $as + bt = 1$.
+\end{proof}
+
+\textbf{Soru 5.2:} Montrer que si $14s + 25t = 1$, alors $\gcd(14, 25) = 1$.
+\begin{proof}[Démonstration]
+Il s'agit d'une application triviale de la condition suffisante du théorème de Bézout énoncé ci-dessus, avec $a=14$ et $b=25$. Puisqu'une combinaison linéaire à coefficients entiers égale 1 existe, les nombres 14 et 25 sont de facto premiers entre eux.
+\end{proof}
+
+\textbf{Soru 5.3:} Si $49s + 35t = 7$, peut-on conclure que $\gcd(49, 35) = 7$ ? Généraliser.
+\begin{proof}[Démonstration]
+L'égalité $49s + 35t = 7$ \textbf{ne permet pas de conclure directement} que $\gcd(49, 35) = 7$. 
+En théorie des nombres, la combinaison linéaire $ax + by = d$ implique exclusivement que $\gcd(a, b)$ \textbf{divise} $d$.
+Bien que, dans cet exemple numérique spécifique, nous sachions que $\gcd(49, 35) = 7$, l'équation fournie n'est pas une preuve formellement suffisante de cette affirmation.
+\textbf{Généralisation :} Pour conclure formellement que $d = \gcd(a, b)$ à partir d'une identité $as + bt = d$, il est indispensable de prouver au préalable que $d$ est un \textbf{diviseur commun} de $a$ et de $b$. 
+Si (1) $d \mid a$ et $d \mid b$, ET si (2) il existe $s, t \in \mathbb{Z}$ tels que $as + bt = d$, alors tout diviseur commun divise $d$, ce qui fait de $d$ le Plus Grand Commun Diviseur.
+\end{proof}
+
+\subsection*{Exercice 6: Calculs d'arithmétique modulaire}
+\textbf{Soru 6.1:} Réduire $198 \cdot 199 \cdot 201 \pmod{200}$.
+\begin{proof}[Calcul Algébrique]
+En travaillant dans l'anneau quotient $\mathbb{Z}/200\mathbb{Z}$, nous avons :
+$198 \equiv -2 \pmod{200}$ \\
+$199 \equiv -1 \pmod{200}$ \\
+$201 \equiv 1 \pmod{200}$ \\
+Par compatibilité structurelle de la multiplication avec la congruence :
+$198 \cdot 199 \cdot 201 \equiv (-2) \cdot (-1) \cdot 1 \equiv 2 \pmod{200}$.
+L'élément représentatif canonique est $2$.
+\end{proof}
+
+\textbf{Soru 6.2:} Réduire $12^{10} \pmod{13}$.
+\begin{proof}[Calcul Algébrique]
+Dans $\mathbb{Z}/13\mathbb{Z}$, on remarque que $12 \equiv -1 \pmod{13}$.
+Par la propriété d'élévation à la puissance des congruences :
+$12^{10} \equiv (-1)^{10} \pmod{13} \equiv 1 \pmod{13}$.
+L'élément représentatif est $1$.
+\textit{(Corollaire alternatif : Utilisation directe du Petit Théorème de Fermat $a^{p-1} \equiv 1 \pmod p$).}
+\end{proof}
+
+\textbf{Soru 6.3:} Réduire $7^3 + 15 \cdot 3 - 2 \pmod{5}$.
+\begin{proof}[Calcul Algébrique]
+En arithmétique modulo 5, nous substituons les bases : $7 \equiv 2 \pmod{5}$ et $15 \equiv 0 \pmod{5}$.
+$7^3 + 15 \cdot 3 - 2 \equiv 2^3 + 0 \cdot 3 - 2 \pmod{5}$ \\
+$\equiv 8 - 2 \pmod{5} \equiv 6 \pmod{5}$ \\
+La réduction modulo 5 de 6 nous donne : $6 \equiv 1 \pmod{5}$. 
+Le représentant est $1$.
+\end{proof}
+
+\subsection*{Exercice 7: Résolution d'équations congruentielles}
+\textbf{Soru 7.1:} Résoudre $4x + 7 \equiv 2x + 13 \pmod{7}$.
+\begin{proof}[Résolution]
+Par les axiomes fondamentaux des congruences (addition et soustraction) :
+$4x - 2x \equiv 13 - 7 \pmod{7}$ \\
+$2x \equiv 6 \pmod{7}$ \\
+Par définition, cela signifie qu'il existe un entier $k \in \mathbb{Z}$ tel que :
+\[ 2x - 6 = 7k \implies 2(x - 3) = 7k \]
+Ainsi, 7 divise le produit $2(x - 3)$. Puisque 7 et 2 sont premiers entre eux ($\gcd(2, 7) = 1$), d'après le \textbf{Théorème de Gauss}, 7 doit nécessairement diviser $(x - 3)$.
+Cela implique que $x - 3 \equiv 0 \pmod{7}$, soit :
+\[ x \equiv 3 \pmod{7} \]
+L'ensemble des solutions dans $\mathbb{Z}$ est donc $S = \{7k + 3 \mid k \in \mathbb{Z}\}$.
+\end{proof}
+
+\textbf{Soru 7.2:} Résoudre $x + 5 \equiv 2 \pmod{9}$.
+\begin{proof}[Résolution]
+$x \equiv 2 - 5 \pmod{9}$ \\
+$x \equiv -3 \pmod{9}$ \\
+Afin de formuler le résultat avec le représentant positif canonique :
+$x \equiv -3 + 9 \pmod{9} \implies x \equiv 6 \pmod{9}$. \\
+L'ensemble des solutions est $S = \{9k + 6 \mid k \in \mathbb{Z}\}$.
+\end{proof}
+
+\subsection*{Exercice 8: Compatibilité des congruences}
+\textbf{Soru 8.1:} Démontrer que si $a \equiv b \pmod{n}$ et $c \equiv d \pmod{n}$, alors $ac \equiv bd \pmod{n}$.
+\begin{proof}[Démonstration Fondamentale]
+Par la définition de la congruence, il existe des entiers $k_1, k_2 \in \mathbb{Z}$ tels que :
+$a = b + n k_1$ et $c = d + n k_2$. \\
+Effectuons le produit algébrique $a \cdot c$ :
+\begin{align*}
+ac &= (b + n k_1)(d + n k_2) \\
+&= bd + b n k_2 + d n k_1 + n^2 k_1 k_2 \\
+&= bd + n(b k_2 + d k_1 + n k_1 k_2)
+\end{align*}
+Puisque $(b k_2 + d k_1 + n k_1 k_2) \in \mathbb{Z}$, on conclut que la différence $ac - bd$ est un multiple de $n$.
+Ce qui définit formellement que $ac \equiv bd \pmod{n}$.
+\end{proof}
+
+\textbf{Soru 8.2:} En déduire que pour tout $k \in \mathbb{N}$, si $a \equiv b \pmod{n}$, alors $a^k \equiv b^k \pmod{n}$.
+\begin{proof}[Démonstration par Récurrence]
+\textbf{Base de récurrence :} Pour $k=1$, l'affirmation $a \equiv b \pmod n \implies a^1 \equiv b^1 \pmod n$ est l'hypothèse de départ, donc vérifiée. (Pour $k=0$, $1 \equiv 1 \pmod n$ est trivialement vérifié). \\
+\textbf{Hérédité :} Supposons l'existence d'un entier $m \geq 1$ pour lequel l'hypothèse de récurrence $a^m \equiv b^m \pmod{n}$ est valide.
+Démontrons que la propriété est conservée au rang $m+1$.
+Nous disposons de $a^m \equiv b^m \pmod{n}$ (hypothèse de récurrence) et de $a \equiv b \pmod{n}$ (hypothèse générale).
+En appliquant le théorème de compatibilité de la multiplication prouvé à la question 8.1 :
+$a^m \cdot a \equiv b^m \cdot b \pmod{n} \implies a^{m+1} \equiv b^{m+1} \pmod{n}$. \\
+\textbf{Conclusion :} En vertu de l'axiome de récurrence, la propriété $a^k \equiv b^k \pmod{n}$ est universellement vraie pour tout $k \in \mathbb{N}$.
+\end{proof}
+
+\textbf{Soru 8.3:} Déterminer le reste de la division euclidienne de $4^{100}$ par $3$.
+\begin{proof}[Calcul Algébrique]
+En étudiant la classe de congruence modulo 3 : $4 \equiv 1 \pmod{3}$.
+D'après le théorème démontré à la question 8.2, nous pouvons élever cette congruence à la puissance 100 :
+$4^{100} \equiv 1^{100} \pmod{3} \implies 4^{100} \equiv 1 \pmod{3}$.
+Par l'unicité du reste dans la division euclidienne ($0 \leq 1 < 3$), le reste est explicitement $1$.
+\end{proof}
+
+\subsection*{Exercice 9: Divisibilité et parité des puissances}
+\textbf{Soru 9.1:} Démontrer que pour tout entier $n \geq 0$, $n^3 - n$ est toujours divisible par 3.
+\begin{proof}[Démonstration par congruences]
+Afin de maintenir une cohérence avec les méthodes d'arithmétique modulaire, étudions les classes d'équivalence modulo 3. Tout entier $n$ est congru à $0, 1$ ou $-1 \pmod 3$. 
+Évaluons l'expression $n^3 - n \pmod 3$ pour chaque cas :
+\begin{itemize}
+    \item Si $n \equiv 0 \pmod 3 \implies 0^3 - 0 = 0 \equiv 0 \pmod 3$
+    \item Si $n \equiv 1 \pmod 3 \implies 1^3 - 1 = 0 \equiv 0 \pmod 3$
+    \item Si $n \equiv -1 \pmod 3 \implies (-1)^3 - (-1) = -1 + 1 = 0 \equiv 0 \pmod 3$
+\end{itemize}
+Puisque $n^3 - n \equiv 0 \pmod 3$ dans tous les cas possibles, nous en déduisons rigoureusement que 3 divise $n^3 - n$ pour tout entier $n$.
+\textit{(Remarque : Une méthode alternative classique consiste à factoriser $n^3 - n = (n-1)n(n+1)$, qui est le produit de trois entiers consécutifs, donc obligatoirement multiple de 3).}
+\end{proof}
+
+\textbf{Soru 9.2:} Démontrer que pour tout entier $n \geq 0$, $n^5 - n \equiv 0 \pmod{5}$.
+\begin{proof}[Démonstration par disjonction exhaustive de cas]
+Modulo 5, un entier $n$ appartient à l'une des classes d'équivalence : $0, 1, 2, 3, 4$. 
+Évaluons le polynôme $P(n) = n^5 - n \pmod 5$ sur l'ensemble de ces classes :
+\begin{itemize}
+    \item Si $n \equiv 0 \implies 0^5 - 0 = 0 \equiv 0 \pmod 5$
+    \item Si $n \equiv 1 \implies 1^5 - 1 = 0 \equiv 0 \pmod 5$
+    \item Si $n \equiv 2 \implies 2^5 - 2 = 32 - 2 = 30 \equiv 0 \pmod 5$
+    \item Si $n \equiv 3 \implies 3^5 - 3 = 243 - 3 = 240 \equiv 0 \pmod 5$ 
+    \item Si $n \equiv 4 \implies (-1)^5 - (-1) = -1 + 1 = 0 \equiv 0 \pmod 5$ \textit{(en substituant $4 \equiv -1$)}
+\end{itemize}
+Puisque le résultat est congru à $0 \pmod 5$ pour la totalité des éléments de $\mathbb{Z}/5\mathbb{Z}$, le théorème est formellement validé pour tout entier $n$.
+\end{proof}
+
+\subsection*{Exercice 10: Démonstration sur la notion de divisibilité du PGCD}
+\textbf{Soru 10:} Soient $a, b \in \mathbb{Z}$ non tous deux nuls. Démontrer que si $c \mid a$ et $c \mid b$, alors $c \mid \gcd(a, b)$.
+\begin{proof}[Démonstration]
+Soit $d = \gcd(a, b)$. D'après le Théorème fondamental de Bézout, il existe des entiers $u, v \in \mathbb{Z}$ tels que :
+\[ d = au + bv \]
+Posons l'hypothèse selon laquelle un entier $c$ satisfait $c \mid a$ et $c \mid b$.
+En vertu du lemme des combinaisons linéaires (établi lors de la Démonstration 1.1), tout diviseur commun à deux entiers divise également n'importe quelle combinaison linéaire entière de ces deux entiers.
+En appliquant ce lemme à la combinaison définie par les coefficients de Bézout $u$ et $v$, nous obtenons :
+\[ c \mid (au + bv) \]
+Par transitivité de l'égalité, cette expression équivaut directement à :
+\[ c \mid d \]
+Nous avons ainsi formellement prouvé que tout diviseur commun à $a$ et $b$ divise obligatoirement le PGCD de $a$ et $b$. \\
+\textit{Ce qu'il fallait démontrer (Q.E.D.).}
+\end{proof}
+\chapter{Chapitre 2: Karmaşık Sayılar, Denklik Bağıntıları ve Gruplar}
+\textit{Bu bölüm, Syllabus Modül 2 kapsamındaki "Nombres complexes \& Relations d'équivalence" konularını içermektedir.}
+
+\section{Denklik Bağıntıları (Relations d'équivalence)}
+Bir küme üzerinde tanımlı olan $\sim$ bağıntısının "Denklik Bağıntısı" olabilmesi için aşağıdaki üç özelliği aynı anda sağlaması gerekir:
+
+\begin{tcolorbox}[colback=yellow!10!white,colframe=orange!80!black,title=Özellikler]
+\begin{enumerate}
+    \item \textbf{Yansıma (Réflexivité) :} Her $x$ için $x \sim x$.
+    \item \textbf{Simetri (Symétrie) :} Eğer $x \sim y$ ise, $y \sim x$.
+    \item \textbf{Geçişme (Transitivité) :} Eğer $x \sim y$ et $y \sim z$ ise, $x \sim z$.
+\end{enumerate}
+\end{tcolorbox}
+
+\subsection*{Modüler Aritmetik ve Denklik Sınıfları (Classes d'équivalence et $\mathbb{Z}/n\mathbb{Z}$)}
+Şu an derste gördüğünüz örnekler üzerinden gidersek, modüler aritmetik aslında $\mathbb{Z}$ (tam sayılar) üzerinde tanımlanmış mükemmel bir denklik bağıntısı örneğidir. 
+İki sayının mod $n$'de denk olması ($a \equiv b \pmod n$) şu şekilde bir bağıntı tanımlar:
+\[ a \sim b \iff n \mid (a-b) \]
+
+\textbf{Not:} Derste hocanın gösterdiği tüm "mod" özellikleri, aslında yukarıdaki Yansıma, Simetri ve Geçişme kurallarının doğrulanmasından ibarettir!
+
+\subsection*{Denklik Sınıfları ve Partisyon (Classes d'équivalence et Partitions)}
+Bir denklik bağıntısı, tanımlandığı kümeyi birbirini kesmeyen alt kümelere ayırır. Bu alt kümelerin her birine \textbf{Denklik Sınıfı (Classe d'équivalence)} denir. Tüm denklik sınıflarının birleşimi tüm kümeyi verir ve hiçbir denklik sınıfı birbiriyle kesişmez. Bu duruma kümenin \textbf{Parçalanışı (Partition)} denir.
+
+\section{Karmaşık Sayılar ve Birimin Kökleri (Racines de l'unité)}
+Karmaşık sayılar $\mathbb{C}$, cebirsel olarak $(a, b) \in \mathbb{R}^2$ formunda ifade edilebilir. Grup teorisindeki en önemli gösterimlerinden biri kutupsal form olan $z = r e^{i\theta}$ şeklidir. 
+
+\textbf{Birimin Kökleri (Racines $n$-ième de l'unité) :} $z^n = 1$ denklemini sağlayan karmaşık sayılara denir.
+Bu kökler şu Euler formülüyle bulunur:
+\[ z_k = e^{\frac{2 i \pi k}{n}} = \cos\left(\frac{2\pi k}{n}\right) + i\sin\left(\frac{2\pi k}{n}\right) \quad \text{için} \quad k \in \{0, 1, \dots, n-1\} \]
+\textbf{İlkel Kök (Racine Primitive) :} Eğer $z_k$'nın $n$'den küçük hiçbir kuvveti 1 etmiyorsa (yani tam olarak $n$. kuvvette ilk defa 1 oluyorsa), buna \textit{racine primitive} denir. Sadece ve sadece $\gcd(k, n) = 1$ olduğunda $z_k$ ilkel köktür.
+
+\section{Grup Teorisine Giriş (Définition et propriétés des groupes)}
+
+\section{Grup Aksiyomları (Axiomes de groupe)}
+Bir $G$ kümesinin, üzerinde tanımlı bir $\star$ (yıldız) işlemiyle birlikte \textbf{Grup} olabilmesi için $(G, \star)$ yapısının aşağıdaki 4 aksiyomu mutlaka sağlaması gerekir:
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Grup Aksiyomları]
+\begin{enumerate}
+    \item \textbf{Kapalılık (Fermeture / Loi de composition interne):} $\forall a, b \in G$, $a \star b \in G$.
+    \item \textbf{Birleşme Özelliği (Associativité):} $\forall a, b, c \in G$, $(a \star b) \star c = a \star (b \star c)$.
+    \item \textbf{Birim Eleman (Élément Neutre):} Öyle bir $e \in G$ vardır ki, $\forall a \in G$, $a \star e = e \star a = a$.
+    \item \textbf{Ters Eleman (Symétrique / Inverse):} $\forall a \in G$, öyle bir $a' \in G$ vardır ki $a \star a' = a' \star a = e$.
+\end{enumerate}
+\end{tcolorbox}
+
+\textbf{Abel Grubu (Groupe Abélien):} Eğer grup bu 4 özelliğe ek olarak \textbf{Değişme Özelliği (Commutativité)}'ni yani $\forall a, b \in G$, $a \star b = b \star a$ özelliğini de sağlıyorsa, o gruba \textit{değişmeli grup} veya \textit{Abel grubu} denir.
+
+\subsection*{Sınav ve TD'ler İçin Kritik Grup Kavramları}
+\begin{itemize}
+    \item \textbf{Bir Elemanın Mertebesi (Ordre d'un élément) :} Bir $g \in G$ elemanı için $g^n = e$ (veya toplamada $n \cdot g = 0$) eşitliğini sağlayan \textbf{en küçük pozitif $n$ tam sayısına}, o elemanın mertebesi denir ve $o(g)=n$ ile gösterilir. TD-2 ve TD-3'te bir matrisin veya karmaşık sayının kaçıncı kuvvetinin birim eleman ($e$, $1$ veya $I$) ettiğini hesaplayarak mertebesini buluruz.
+    \item \textbf{Cayley Tablosu (Table de Cayley) :} Sonlu bir grubun tüm elemanlarının aralarındaki işlemi ($\star$) gösteren çarpım (veya toplam) tablosudur. Satır ve sütun kesişimlerine $a \star b$ sonucu yazılır. Her satırda ve her sütunda grubun her elemanı \textit{tam olarak bir kez} bulunmak zorundadır (Sudoku mantığı). TD'lerde tabloyu doldururken bu kuralı kullanırsın.
+    \item \textbf{Tersinir Elemanlar Grubu $U(n)$ veya $(\mathbb{Z}/n\mathbb{Z})^\times$ :} $\mathbb{Z}/n\mathbb{Z}$ (mod $n$) içindeki çarpma işlemine göre tersi olan elemanların oluşturduğu gruptur. Bir $a$ sayısının mod $n$'de tersinin (inverse) olması için tek ve kesin kural, $n$ ile aralarında asal olmasıdır: $\gcd(a, n) = 1$. (Örn: Soru 8 ve 25).
+\end{itemize}
+
+\section{Önemli Grup Örnekleri}
+
+\subsection*{Dihedral Gruplar ($D_n$)}
+Düzgün bir çokgenin (örneğin kare için $n=4$) kendi üzerine olan simetrilerini (döndürme ve yansımalarını) barındıran gruba \textbf{Dihedral Grup} denir ve $D_n$ ile gösterilir. Toplam $2n$ elemanlıdır ($n$ adet döndürme, $n$ adet yansıma).
+\begin{itemize}
+    \item $R$ (Rotation) : $\frac{360^\circ}{n}$ derecelik döndürme işlemi. $R^n = e$ (Birim eleman).
+    \item $F$ (Réflexion) : Bir simetri eksenine göre yansıma işlemi. $F^2 = e$.
+    \item Temel grup bağıntısı : $F \star R \star F = R^{-1}$ (veya eşdeğer olarak $F \star R = R^{-1} \star F$). İşlem değişmeli olmadığı için Dihedral gruplar ($n>2$ için) \textbf{Abel grubu DEĞİLDİR}.
+\end{itemize}
+
+\subsection*{Genel Lineer Grup ($GL(n, \mathbb{R})$)}
+Bütün elemanları reel sayılardan oluşan, $n \times n$ boyutlu ve tersi alınabilen (yani determinanti sıfırdan farklı olan, $\det(A) \neq 0$) matrislerin oluşturduğu gruba denir. Matris çarpımı kendi doğası gereği değişmeli olmadığı için bu grup genellikle \textbf{Abel grubu DEĞİLDİR}. (Örn: TD-2'deki Heisenberg Grubu, $GL(3, \mathbb{R})$'nin bir alt grubudur).
+
+\section{TD-2 Çözümleri (Bölüm 1)}
+
+\subsection*{Exercice 1: Propriétés de groupe sur $\mathbb{R}$}
+\textbf{Soru:} Montrer que l'ensemble $\mathbb{R}$ muni de la loi $x \star y = (x^3 + y^3)^{\frac{1}{3}}$ est un groupe.
+
+\begin{proof}[Démonstration]
+Pour démontrer que $(\mathbb{R}, \star)$ est un groupe, nous devons vérifier les 4 axiomes :
+\begin{enumerate}
+    \item \textbf{Fermeture :} Pour tout $x, y \in \mathbb{R}$, $x^3$ et $y^3$ sont des réels. Leur somme $x^3 + y^3 \in \mathbb{R}$. La racine cubique d'un nombre réel est toujours un nombre réel unique et bien défini sur $\mathbb{R}$. Donc $x \star y \in \mathbb{R}$.
+    \item \textbf{Associativité :} Soient $x, y, z \in \mathbb{R}$.
+    \begin{align*}
+    (x \star y) \star z &= \left((x^3 + y^3)^{\frac{1}{3}}\right) \star z \\
+    &= \left( \left((x^3 + y^3)^{\frac{1}{3}}\right)^3 + z^3 \right)^{\frac{1}{3}} \\
+    &= (x^3 + y^3 + z^3)^{\frac{1}{3}}
+    \end{align*}
+    Par symétrie évidente de l'addition, on trouve exactement le même résultat pour $x \star (y \star z)$. La loi est donc associative.
+    \item \textbf{Élément neutre :} Cherchons $e \in \mathbb{R}$ tel que $\forall x \in \mathbb{R}, x \star e = x$.
+    \[ (x^3 + e^3)^{\frac{1}{3}} = x \implies x^3 + e^3 = x^3 \implies e^3 = 0 \implies e = 0 \]
+    L'élément neutre existe et est $e = 0$.
+    \item \textbf{Symétrique (Inverse) :} Cherchons $x' \in \mathbb{R}$ tel que $x \star x' = 0$.
+    \[ (x^3 + x'^3)^{\frac{1}{3}} = 0 \implies x^3 + x'^3 = 0 \implies x'^3 = -x^3 \implies x' = -x \]
+    Chaque élément $x$ possède un inverse symétrique qui est $-x \in \mathbb{R}$.
+\end{enumerate}
+Puisque les 4 axiomes sont satisfaits, $(\mathbb{R}, \star)$ est un groupe. (De plus, il est trivialement abélien).
+\end{proof}
+
+\subsection*{Exercice 2: Loi de composition sur $\mathbb{R}^2 \setminus \{(0, 0)\}$}
+\textbf{Soru:} Soit $A = \mathbb{R}^2 \setminus \{(0, 0)\}$ muni de la loi $(a, b) \star (a', b') = (aa' - bb', ab' + a'b)$. Montrer que c'est un groupe.
+
+\begin{proof}[Démonstration algébrique (Étape par étape)]
+Pour prouver que $(A, \star)$ est un groupe, nous devons vérifier les 4 axiomes algébriquement :
+
+\begin{enumerate}
+    \item \textbf{Fermeture :} Soient $x = (a,b) \neq (0,0)$ et $y = (a',b') \neq (0,0)$. Le résultat est-il dans $A$ ?
+    Calculons la somme des carrés des coordonnées du résultat pour vérifier qu'elle n'est pas nulle :
+    \[ (aa'-bb')^2 + (ab'+a'b)^2 = (a^2a'^2 - 2aa'bb' + b^2b'^2) + (a^2b'^2 + 2aa'bb' + a'^2b^2) \]
+    Les termes croisés s'annulent :
+    \[ = a^2a'^2 + b^2b'^2 + a^2b'^2 + a'^2b^2 = a^2(a'^2+b'^2) + b^2(a'^2+b'^2) = (a^2+b^2)(a'^2+b'^2) \]
+    Puisque $x \neq (0,0)$, on a $a^2+b^2 > 0$. De même $a'^2+b'^2 > 0$. Le produit de deux réels strictement positifs est strictement positif, donc le résultat $(aa'-bb', ab'+a'b) \neq (0,0)$. L'ensemble est \textbf{fermé}.
+
+    \item \textbf{Associativité :} Calculons $(x \star y) \star z$ et $x \star (y \star z)$ avec $z = (a'', b'')$.
+    \[ (x \star y) \star z = (aa'-bb', ab'+a'b) \star (a'', b'') = \Big( (aa'-bb')a'' - (ab'+a'b)b'', \, (aa'-bb')b'' + (ab'+a'b)a'' \Big) \]
+    \[ = \mathbf{ (aa'a'' - bb'a'' - ab'b'' - a'bb'', \, aa'b'' - bb'b'' + ab'a'' + a'ba'') } \]
+    De l'autre côté :
+    \[ x \star (y \star z) = (a, b) \star (a'a''-b'b'', a'b''+a''b') = \Big( a(a'a''-b'b'') - b(a'b''+a''b'), \, a(a'b''+a''b') + b(a'a''-b'b'') \Big) \]
+    \[ = \mathbf{ (aa'a'' - ab'b'' - ba'b'' - ba''b', \, aa'b'' + aa''b' + ba'a'' - bb'b'') } \]
+    Les deux expressions sont rigoureusement identiques. La loi est \textbf{associative}.
+
+    \item \textbf{Élément neutre :} Cherchons $e = (e_1, e_2)$ tel que $(a, b) \star (e_1, e_2) = (a, b)$.
+    On obtient le système : $a e_1 - b e_2 = a$ et $a e_2 + b e_1 = b$.
+    La solution évidente qui fonctionne pour tout $a,b$ est $e_1 = 1, e_2 = 0$. Donc \textbf{$e = (1, 0) \in A$}.
+
+    \item \textbf{Symétrique (Inverse) :} Cherchons l'inverse $(x, y)$ de $(a, b) \neq (0,0)$ tel que $(a, b) \star (x, y) = (1, 0)$.
+    Le système linéaire est :
+    $ax - by = 1$ et $bx + ay = 0$.
+    Le déterminant du système est $a^2 - (-b)(b) = a^2 + b^2$. Puisque $(a,b) \neq (0,0)$, le déterminant est non nul. La solution unique existe :
+    \[ x = \frac{a}{a^2+b^2}, \quad y = \frac{-b}{a^2+b^2} \]
+    L'inverse \textbf{$(x,y)$ appartient bien à $A$} car $(x,y) \neq (0,0)$.
+\end{enumerate}
+Les 4 axiomes étant prouvés algébriquement, $(A, \star)$ est un groupe. \\
+\textit{(Remarque culturelle : Ce groupe est en fait $\mathbb{C}^*$ déguisé en vecteurs, mais l'exercice exigeait la preuve sur $\mathbb{R}^2$ !)}
+\end{proof}
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Hatırlatma: Matris Çarpımı Nasıl Yapılır?]
+İki matrisi çarparken \textbf{"Satır $\times$ Sütun"} kuralı uygulanır. Sol matrisin satırları ile sağ matrisin sütunlarındaki elemanlar sırasıyla çarpılıp toplanır.
+\begin{center}
+$\begin{pmatrix} a & b \\ c & d \end{pmatrix} \begin{pmatrix} x & y \\ z & w \end{pmatrix} = \begin{pmatrix} (a\cdot x) + (b\cdot z) & (a\cdot y) + (b\cdot w) \\ (c\cdot x) + (d\cdot z) & (c\cdot y) + (d\cdot w) \end{pmatrix}$
+\end{center}
+\textbf{Örnek (Aşağıdaki Soru 3'teki $A^2$ hesabı):} $A = \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}$
+\begin{itemize}
+    \item \textbf{1. Satır, 1. Sütun (Sol Üst):} $(0 \times 0) + (1 \times -1) = 0 - 1 = \mathbf{-1}$
+    \item \textbf{1. Satır, 2. Sütun (Sağ Üst):} $(0 \times 1) + (1 \times 0) = 0 + 0 = \mathbf{0}$
+    \item \textbf{2. Satır, 1. Sütun (Sol Alt):} $(-1 \times 0) + (0 \times -1) = 0 + 0 = \mathbf{0}$
+    \item \textbf{2. Satır, 2. Sütun (Sağ Alt):} $(-1 \times 1) + (0 \times 0) = -1 + 0 = \mathbf{-1}$
+\end{itemize}
+Sonuç: $\begin{pmatrix} -1 & 0 \\ 0 & -1 \end{pmatrix}$ çıkar. Bu matris de eksi parantezine alındığında $-I$ (Eksi Birim Matris) olur.
+\end{tcolorbox}
+
+\subsection*{Exercice 3: Matrices complexes et groupe non-abélien}
+\textbf{Soru:} Montrer que les matrices $A = \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}$ et $B = \begin{pmatrix} 0 & i \\ i & 0 \end{pmatrix}$ engendrent un groupe non-abélien d'ordre 8.
+\textit{(Remarque : L'énoncé original du TD a une coquille classique sur le signe de B. Il s'agit du fameux groupe des Quaternions $Q_8$).}
+
+\begin{proof}[Démonstration]
+Calculons les puissances et produits de $A$ et $B$. L'élément neutre est $I = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$.
+\begin{itemize}
+    \item $A^2 = \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix} \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix} = \begin{pmatrix} -1 & 0 \\ 0 & -1 \end{pmatrix} = -I$.
+    \item $B^2 = \begin{pmatrix} 0 & i \\ i & 0 \end{pmatrix} \begin{pmatrix} 0 & i \\ i & 0 \end{pmatrix} = \begin{pmatrix} i^2 & 0 \\ 0 & i^2 \end{pmatrix} = \begin{pmatrix} -1 & 0 \\ 0 & -1 \end{pmatrix} = -I$.
+\end{itemize}
+Puisque $A^2 = -I$, $A^4 = I$. De même $B^4 = I$. Les matrices $A$ et $B$ sont d'ordre 4.
+Vérifions la commutativité :
+\begin{itemize}
+    \item $AB = \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix} \begin{pmatrix} 0 & i \\ i & 0 \end{pmatrix} = \begin{pmatrix} i & 0 \\ 0 & -i \end{pmatrix}$.
+    \item $BA = \begin{pmatrix} 0 & i \\ i & 0 \end{pmatrix} \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix} = \begin{pmatrix} -i & 0 \\ 0 & i \end{pmatrix} = -AB$.
+\end{itemize}
+Puisque $AB \neq BA$, le groupe engendré n'est \textbf{pas abélien}.
+Le sous-groupe engendré par $A$ et $B$ est $\langle A, B \rangle = \{ I, A, -I, -A, B, AB, -B, -AB \}$. Il contient exactement 8 éléments distincts. Il s'agit du groupe quaternionique $Q_8$.
+\end{proof}
+
+\subsection*{Exercice 4: Lois de composition interne (Clôture)}
+\textbf{Soru:} Lesquelles des opérations binaires suivantes sont closes ?
+\begin{proof}[Résolution]
+\begin{enumerate}
+    \item[(a)] \textbf{Soustraction d'entiers positifs :} \textbf{Non.} Exemple : $2, 5 \in \mathbb{Z}^+$, mais $2 - 5 = -3 \notin \mathbb{Z}^+$. L'ensemble n'est pas fermé sous la soustraction.
+    \item[(b)] \textbf{Division d'entiers non nuls :} \textbf{Non.} Exemple : $2, 3 \in \mathbb{Z}^*$, mais $2 / 3 \notin \mathbb{Z}^*$.
+    \item[(c)] \textbf{Composition de polynômes réels :} \textbf{Oui.} La composée $f(g(x))$ de deux polynômes à coefficients réels reste un polynôme à coefficients réels. (La clôture est respectée).
+    \item[(d)] \textbf{Multiplication de matrices $2 \times 2$ entières :} \textbf{Oui.} Les termes de la matrice résultante sont des sommes de produits d'entiers, ce qui donne toujours des entiers ($\mathbb{Z}$ est un anneau fermé pour l'addition et la multiplication).
+\end{enumerate}
+\end{proof}
+
+\subsection*{Exercices 5 \& 6: Associativité et Commutativité}
+\textbf{Soru:} Étude de l'associativité et de la commutativité pour diverses opérations.
+\begin{proof}[Résolution et Justification]
+\textbf{Opérations associatives (Ex 5) :}
+\begin{itemize}
+    \item \textbf{Multiplication modulo $n$ :} Oui, hérité de l'associativité de $\mathbb{Z}$.
+    \item \textbf{Division sur $\mathbb{Q}^*$ :} Non. $(a/b)/c = a/(bc)$ tandis que $a/(b/c) = ac/b$.
+    \item \textbf{Composition de polynômes :} Oui, la composition de fonctions est toujours associative : $(f \circ g) \circ h = f \circ (g \circ h)$.
+    \item \textbf{Multiplication de matrices :} Oui, l'algèbre linéaire garantit l'associativité.
+\end{itemize}
+\textbf{Opérations commutatives (Ex 6) :}
+\begin{itemize}
+    \item \textbf{Soustraction d'entiers :} Non. $a - b \neq b - a$.
+    \item \textbf{Division de réels non nuls :} Non. $a / b \neq b / a$.
+    \item \textbf{Composition de polynômes :} Non. Soit $f(x) = x^2$ et $g(x) = x+1$. $f(g(x)) = (x+1)^2 = x^2+2x+1$, mais $g(f(x)) = x^2+1$. $f \circ g \neq g \circ f$.
+    \item \textbf{Multiplication matricielle :} Non. En général, $AB \neq BA$ (comme démontré dans l'Exercice 3).
+\end{itemize}
+\end{proof}
+
+\subsection*{Exercice 7: Ensembles fermés (Sous-groupes cachés)}
+\textbf{Soru:} Lesquels des ensembles suivants sont fermés par l'opération donnée ?
+\begin{proof}[Résolution et tests exhaustifs]
+\begin{enumerate}
+    \item[(a)] \textbf{$\{0, 4, 8, 12\}$ addition mod 16 :} \textbf{Oui.} C'est le sous-groupe cyclique engendré par 4, $\langle 4 \rangle \leq \mathbb{Z}_{16}$. Toutes les additions restent dans l'ensemble (ex: $8+12 = 20 \equiv 4 \pmod{16}$).
+    \item[(b)] \textbf{$\{0, 4, 8, 12\}$ addition mod 15 :} \textbf{Non.} $4+12 = 16 \equiv 1 \pmod{15}$. Le nombre $1$ n'appartient pas à l'ensemble.
+    \item[(c)] \textbf{$\{1, 4, 7, 13\}$ multiplication mod 15 :} \textbf{Oui.} On peut vérifier tous les produits. Par exemple $4 \times 7 = 28 \equiv 13 \pmod{15}$, $7 \times 13 = 91 \equiv 1 \pmod{15}$. L'ensemble est parfaitement fermé.
+    \item[(d)] \textbf{$\{1, 4, 5, 7\}$ multiplication mod 9 :} \textbf{Non.} $4 \times 5 = 20 \equiv 2 \pmod{9}$. Le nombre $2$ n'est pas dans l'ensemble.
+\end{enumerate}
+\end{proof}
+
+\section{TD-2 Çözümleri (Bölüm 2)}
+
+\begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=Hatırlatma: Modulo (Mod) Aritmetiğinde İşlemler ve Ters Alma]
+Modüler aritmetikte çalışırken ($(\mathbb{Z}/n\mathbb{Z})$), her şey $n$'e bölünerek kalanlara (mod'a) dönüştürülür.
+\begin{itemize}
+    \item \textbf{Negatif Sayı Hilesi:} $n$ modunda çalışırken, $(n-1)$ sayısı her zaman $-1$'e denktir. (Örn: Mod 14'te $13 \equiv -1$). Bu hile, büyük sayıların karesini almaktan kurtarır!
+    \item \textbf{Toplamada Ters (Inverse additif):} Sayıya ne eklersen sonuç 0 (veya $n$) yapar? (Örn: Mod 20'de 13'ün toplamaya göre tersi 7'dir çünkü $13+7=20\equiv0$).
+    \item \textbf{Çarpmada Ters (Inverse multiplicatif):} Sayıyı neyle çarparsan sonuç 1 yapar? ($a \times x \equiv 1 \pmod n$).
+\end{itemize}
+\end{tcolorbox}
+
+\subsection*{Exercice 8: Trouver l'inverse}
+\textbf{Soru:} Trouver l'inverse de chaque élément selon l'opération donnée.
+\begin{proof}[Résolution]
+\begin{enumerate}
+    \item[(a)] \textbf{13 dans $\mathbb{Z}_{20}$ :} Le groupe $\mathbb{Z}_{20}$ est muni de l'addition modulo 20. L'élément neutre est $0$. L'inverse additif de 13 est $x$ tel que $13 + x \equiv 0 \pmod{20}$. Donc $x = 20 - 13 = \mathbf{7}$.
+    \item[(b)] \textbf{13 dans $U(14)$ :} Le groupe $U(14)$ est muni de la multiplication. L'inverse multiplicatif $x$ vérifie $13 \times x \equiv 1 \pmod{14}$. Remarquons que $13 \equiv -1 \pmod{14}$. Or, $(-1) \times (-1) = 1$. Donc l'inverse est lui-même : $\mathbf{13}$.
+    \item[(c)] \textbf{$n-1$ dans $U(n)$ :} De manière analogue, $n-1 \equiv -1 \pmod n$. Son carré est $(-1)^2 = 1 \equiv 1 \pmod n$. Donc $(n-1)^{-1} = \mathbf{n-1}$.
+    \item[(d)] \textbf{$3-2i$ dans $\mathbb{C}^*$ :} L'inverse d'un nombre complexe $z = a+ib$ est $\frac{a-ib}{a^2+b^2}$. 
+    \[ (3-2i)^{-1} = \frac{3+2i}{3^2 + (-2)^2} = \mathbf{\frac{3}{13} + \frac{2}{13}i} \]
+\end{enumerate}
+\end{proof}
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Hatırlatma: 2x2 Matrisin Determinantı ve Tersi ($A^{-1}$)]
+$2 \times 2$ boyutunda bir $A = \begin{bmatrix} a & b \\ c & d \end{bmatrix}$ matrisinin:
+\begin{itemize}
+    \item \textbf{Determinantı:} $\det(A) = (a \times d) - (b \times c)$ formülüyle (çapraz çarpımların farkı) bulunur.
+    \item \textbf{Tersi ($A^{-1}$):} Determinantı bulduktan sonra şu çok meşhur yer değiştirme kuralı uygulanır: Ana köşegendeki $(a,d)$ kendi arasında yer değiştirir, diğer köşegendeki $(b,c)$ olduğu yerde eksi ile çarpılır ve tüm matris determinanta bölünür:
+    \[ A^{-1} = \frac{1}{\det(A)} \begin{bmatrix} d & -b \\ -c & a \end{bmatrix} \]
+    \textit{Sınav Notu: Eğer determinant 0 çıkarsa formülde 1/0 belirsizliği oluşacağı için matrisin tersi yoktur!}
+\end{itemize}
+\end{tcolorbox}
+
+\subsection*{Exercice 9: Opérations et Matrices mod 13}
+\textbf{Soru:} Effectuer l'opération indiquée.
+\begin{proof}[Résolution]
+\begin{enumerate}
+    \item[(a)] $(7+5i)(-3+2i) = -21 + 14i - 15i + 10i^2 = -21 - i - 10 = \mathbf{-31 - i}$.
+    \item[(b)] Dans $GL(2, \mathbb{Z}_{13})$, $\det \begin{bmatrix} 7 & 4 \\ 1 & 5 \end{bmatrix} = (7 \times 5) - (4 \times 1) = 35 - 4 = 31$. Modulo 13, on a $31 = 2 \times 13 + 5 \equiv \mathbf{5 \pmod{13}}$.
+    \item[(c)] Dans $GL(2, \mathbb{R})$, l'inverse de $A = \begin{bmatrix} 6 & 3 \\ 8 & 2 \end{bmatrix}$. 
+    $\det(A) = 12 - 24 = -12$. 
+    \[ A^{-1} = \frac{1}{-12} \begin{bmatrix} 2 & -3 \\ -8 & 6 \end{bmatrix} = \mathbf{\begin{bmatrix} -1/6 & 1/4 \\ 2/3 & -1/2 \end{bmatrix}} \]
+    \item[(d)] Dans $GL(2, \mathbb{Z}_{13})$, pour la même matrice, on doit travailler modulo 13. Le déterminant est $-12 \equiv 1 \pmod{13}$. L'inverse du déterminant est donc 1.
+    \[ A^{-1} = 1 \cdot \begin{bmatrix} 2 & -3 \\ -8 & 6 \end{bmatrix} \equiv \mathbf{\begin{bmatrix} 2 & 10 \\ 5 & 6 \end{bmatrix} \pmod{13}} \]
+\end{enumerate}
+\end{proof}
+
+\subsection*{Exercice 10: Les entiers impairs sous l'addition}
+\textbf{Soru:} Deux raisons pour lesquelles l'ensemble des impairs n'est pas un groupe.
+\begin{proof}[Démonstration]
+Soit $I = \{2k+1 \mid k \in \mathbb{Z}\}$.
+\begin{enumerate}
+    \item \textbf{Non-clôture :} La somme de deux nombres impairs est toujours un nombre pair. Ex: $3 + 5 = 8 \notin I$.
+    \item \textbf{Pas d'élément neutre :} L'élément neutre de l'addition est $0$. Or, $0$ est pair, donc $0 \notin I$.
+\end{enumerate}
+\end{proof}
+
+\subsection*{Exercice 11: Le groupe caché mod 40}
+\textbf{Soru:} $G = \{5, 15, 25, 35\}$ sous $\times \pmod{40}$. Neutre et lien avec $U(8)$?
+\begin{proof}[Démonstration]
+Cherchons d'abord l'élément neutre $e$. Testons 25 :
+\begin{itemize}
+    \item $25 \times 5 = 125 \equiv 5 \pmod{40}$
+    \item $25 \times 15 = 375 \equiv 15 \pmod{40}$
+    \item $25 \times 25 = 625 \equiv 25 \pmod{40}$
+    \item $25 \times 35 = 875 \equiv 35 \pmod{40}$
+\end{itemize}
+L'élément neutre de ce sous-groupe est remarquablement $\mathbf{e = 25}$.\\
+\textbf{Lien avec $U(8)$ :} $U(8) = \{1, 3, 5, 7\}$. Notons que chaque élément de $G$ s'écrit $5x$ où $x \in U(8)$. L'application $f(x) = 5x \pmod{40}$ est un \textbf{isomorphisme} entre $U(8)$ et ce groupe $G$. En effet, $5x \times 5y = 25xy$. Puisque $25$ est le neutre, $25xy$ se comporte comme $xy \pmod 8$.
+\end{proof}
+
+\subsection*{Exercice 12: Condition pour un groupe abélien}
+\textbf{Soru:} $G$ abélien $\iff \forall a,b \in G, (ab)^{-1} = a^{-1}b^{-1}$.
+\begin{proof}[Démonstration]
+Dans n'importe quel groupe, la règle d'inversion d'un produit stipule que $(ab)^{-1} = b^{-1}a^{-1}$.
+\begin{itemize}
+    \item \textbf{Si G est abélien ($\implies$) :} Alors $b^{-1}a^{-1} = a^{-1}b^{-1}$. Ainsi $(ab)^{-1} = a^{-1}b^{-1}$.
+    \item \textbf{Si $(ab)^{-1} = a^{-1}b^{-1}$ ($\impliedby$) :} En utilisant la règle générale, on a $b^{-1}a^{-1} = a^{-1}b^{-1}$. Prenons l'inverse des deux côtés : $(b^{-1}a^{-1})^{-1} = (a^{-1}b^{-1})^{-1} \implies ab = ba$. Donc $G$ est abélien.
+\end{itemize}
+\end{proof}
+
+\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black,title=Hatırlatma: Tersinir Elemanlar Grubu $U(n)$]
+$U(n)$ (veya bazen $(\mathbb{Z}/n\mathbb{Z})^\times$ olarak yazılır), mod $n$'de \textbf{çarpmaya göre tersi olan} elemanların oluşturduğu gruptur.
+\begin{itemize}
+    \item \textbf{Kural:} Bir sayının $U(n)$ grubuna girebilmesi için $n$ ile \textbf{aralarında asal} olması (EBOB'larının 1 olması) şarttır!
+    \item \textbf{Nasıl Bulunur? (Aşağıdaki Soru 13 için):} $U(12)$'yi bulmak için 12'den küçük ve 12 ile hiçbir ortak böleni (2, 3 gibi) olmayan sayılara bakarız. Sadece $\{1, 5, 7, 11\}$ sayıları bu şartı sağlar. (Örneğin 8 veya 9 alınmaz çünkü 12 ile sadeleşirler).
+\end{itemize}
+\end{tcolorbox}
+
+\subsection*{Exercice 13: Table de Cayley pour $U(12)$}
+\textbf{Soru:} Construire la table pour $U(12)$.
+\begin{proof}[Résolution]
+$U(12) = \{ k \in \mathbb{Z}_{12} \mid \gcd(k, 12) = 1 \} = \{1, 5, 7, 11\}$. 
+C'est un groupe multiplicatif de 4 éléments (Isomorphe au groupe de Klein $V_4$, car chaque élément est son propre inverse).
+\begin{center}
+\begin{tabular}{|c||c|c|c|c|}
+\hline
+$\times$ & \textbf{1} & \textbf{5} & \textbf{7} & \textbf{11} \\
+\hline\hline
+\textbf{1} & 1 & 5 & 7 & 11 \\
+\hline
+\textbf{5} & 5 & 1 & 11 & 7 \\
+\hline
+\textbf{7} & 7 & 11 & 1 & 5 \\
+\hline
+\textbf{11} & 11 & 7 & 5 & 1 \\
+\hline
+\end{tabular}
+\end{center}
+\end{proof}
+
+\section{TD-2 Çözümleri (Bölüm 3)}
+
+\subsection*{Exercice 17: Groupe des rationnels de forme $3^m 6^n$}
+\textbf{Soru:} Montrer que $G = \{3^m 6^n \mid m,n \in \mathbb{Z}\}$ est un groupe multiplicatif.
+\begin{proof}[Démonstration]
+Vérifions les axiomes du groupe (sous-groupe de $\mathbb{Q}^*$) :
+\begin{enumerate}
+    \item \textbf{Fermeture :} $(3^{m_1} 6^{n_1}) \times (3^{m_2} 6^{n_2}) = 3^{m_1+m_2} 6^{n_1+n_2}$. Puisque $m_1+m_2 \in \mathbb{Z}$ et $n_1+n_2 \in \mathbb{Z}$, le produit est bien dans $G$.
+    \item \textbf{Élément neutre :} Pour $m=0, n=0$, on obtient $3^0 6^0 = 1 \in G$. L'élément neutre est donc 1.
+    \item \textbf{Inverse :} L'inverse multiplicatif de $3^m 6^n$ est $\frac{1}{3^m 6^n} = 3^{-m} 6^{-n}$. Puisque $-m \in \mathbb{Z}$ et $-n \in \mathbb{Z}$, l'inverse est toujours dans $G$.
+\end{enumerate}
+C'est un sous-groupe de $\mathbb{Q}^*$, donc un groupe.
+\end{proof}
+
+\subsection*{Exercice 18: Le groupe de Heisenberg}
+\textbf{Soru:} Montrer que l'ensemble des matrices $\begin{pmatrix} 1 & a & b \\ 0 & 1 & c \\ 0 & 0 & 1 \end{pmatrix}$ avec $a,b,c \in \mathbb{R}$ est un groupe.
+\begin{proof}[Démonstration]
+Multiplions deux matrices de cette forme :
+\[ \begin{pmatrix} 1 & a_1 & b_1 \\ 0 & 1 & c_1 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} 1 & a_2 & b_2 \\ 0 & 1 & c_2 \\ 0 & 0 & 1 \end{pmatrix} = \begin{pmatrix} 1 & a_1+a_2 & b_2 + a_1 c_2 + b_1 \\ 0 & 1 & c_1+c_2 \\ 0 & 0 & 1 \end{pmatrix} \]
+Le produit est exactement de la même forme, donc l'ensemble est \textbf{fermé}.
+L'élément neutre s'obtient avec $a=b=c=0$ (la matrice identité $I_3$).
+Pour l'inverse, on résout $a_1+a_2 = 0 \implies a_2 = -a_1$, $c_1+c_2 = 0 \implies c_2 = -c_1$, et pour le terme en haut à droite : $b_2 + a_1 c_2 + b_1 = 0 \implies b_2 = a_1 c_1 - b_1$. L'inverse existe et appartient à l'ensemble. C'est bien un groupe.
+\end{proof}
+
+\subsection*{Exercice 19: Un groupe matriciel singulier}
+\textbf{Soru:} Montrer que $G = \{ \begin{bmatrix} a & a \\ a & a \end{bmatrix} \mid a \in \mathbb{R}^* \}$ est un groupe par multiplication. Expliquer les inverses malgré $\det = 0$.
+\begin{proof}[Démonstration]
+\begin{itemize}
+    \item \textbf{Fermeture :} $\begin{bmatrix} a & a \\ a & a \end{bmatrix} \begin{bmatrix} b & b \\ b & b \end{bmatrix} = \begin{bmatrix} 2ab & 2ab \\ 2ab & 2ab \end{bmatrix}$. Comme $a, b \neq 0 \implies 2ab \neq 0$.
+    \item \textbf{Neutre ($E$) :} Soit $E = \begin{bmatrix} e & e \\ e & e \end{bmatrix}$. On veut $2ae = a \implies e = \frac{1}{2}$. Donc $E = \begin{bmatrix} 1/2 & 1/2 \\ 1/2 & 1/2 \end{bmatrix}$.
+    \item \textbf{Inverse :} On veut $2aa' = \frac{1}{2} \implies a' = \frac{1}{4a}$. Donc $A^{-1} = \begin{bmatrix} \frac{1}{4a} & \frac{1}{4a} \\ \frac{1}{4a} & \frac{1}{4a} \end{bmatrix}$.
+\end{itemize}
+\textit{Explication pour le déterminant nul :} Un groupe n'a pas l'obligation d'avoir la matrice identité classique $I_2$ comme élément neutre. Ici, l'élément neutre est la matrice $E$. Puisque l'opération est restreinte à ce sous-ensemble très spécifique, les matrices sont "inversibles par rapport à $E$", sans avoir besoin d'être inversibles dans $GL(2, \mathbb{R})$.
+\end{proof}
+
+\subsection*{Exercice 20: Matrice mod 13}
+\textbf{Soru:} Dans $GL(2, \mathbb{Z}_{13})$, calculer $\begin{pmatrix} 6 & 3 \\ 8 & 2 \end{pmatrix}^{-1}$.
+\begin{proof}[Résolution]
+Cette question est mathématiquement identique à la \textbf{Question 9(d)}. Veuillez vous référer à la solution précédente où nous avons calculé que l'inverse modulo 13 est $\begin{bmatrix} 2 & 10 \\ 5 & 6 \end{bmatrix}$.
+\end{proof}
+
+\subsection*{Exercice 21 \& 22: Ordres des éléments}
+\textbf{Soru (Ex 21):} Ordre du groupe et de ses éléments. Relation ? \\
+\textbf{Soru (Ex 22):} Démontrer que $o(x) = o(x^{-1})$.
+\begin{proof}[Démonstration]
+\textbf{Pour Ex 21 (Exemple $U(10)$) :} $U(10) = \{1, 3, 7, 9\}$ a pour ordre 4.
+$o(1)=1$. $3^2=9, 3^3=7, 3^4=1 \implies o(3)=4$. De même $o(7)=4$. $9^2=1 \implies o(9)=2$.
+Les ordres des éléments sont $\{1, 2, 4\}$. La relation observée est le \textbf{Théorème de Lagrange} : l'ordre de chaque élément divise toujours l'ordre total du groupe !
+
+\textbf{Pour Ex 22 (L'ordre de l'inverse) :}
+Soit $x \in G$ tel que $o(x) = n$. Cela signifie que $n$ est le plus petit entier positif tel que $x^n = e$.
+Calculons la puissance $n$ de $x^{-1}$ : $(x^{-1})^n = (x^n)^{-1} = e^{-1} = e$.
+Donc $o(x^{-1}) \leq n$.
+Si $o(x^{-1}) = m < n$, alors $(x^{-1})^m = e \implies (x^m)^{-1} = e \implies x^m = e$. Ceci contredit le fait que $n$ est le plus petit entier pour $x$.
+Ainsi, l'ordre ne peut être plus petit. Conclusion : $\mathbf{o(x) = o(x^{-1})}$.
+\end{proof}
+
+\chapter{Chapitre 3: Simetri ve Transformasyonlar (Groupes Diédriques)}
+\textit{Bu bölüm, Syllabus Modül 3 kapsamındaki geometrik simetriler ve transformasyon gruplarını içermektedir.}
+
+\section{Düzgün Çokgenlerin Simetrileri (Symétries d'un polygone régulier)}
+Bir geometrik şeklin simetrisi, o şekli kendi üzerine haritalayan (noktalar arası mesafeyi koruyan - izometri) bir dönüşümdür. 
+
+\subsection*{Döndürmeler (Rotations)}
+Düzgün bir $n$-gen için, ağırlık merkezi etrafında $\frac{360^\circ}{n}$ (veya $\frac{2\pi}{n}$ radyan) açılık döndürme temel rotasyondur ve $R$ ile gösterilir.
+\begin{itemize}
+    \item $R^k$ : Arka arkaya $k$ defa döndürme işlemidir (Bileşke işlem).
+    \item $R^n = e$ (Birim eleman / Hiçbir şey yapmamak / $360^\circ$ döndürmek).
+    \item Döndürmeler kendi aralarında bir devirli alt grup (sous-groupe cyclique) oluşturur.
+\end{itemize}
+
+\subsection*{Yansımalar (Réflexions)}
+Şeklin bir simetri eksenine göre ayna görüntüsünün alınması (katlanması) işlemidir ve $F$ (veya bazen $S$) ile gösterilir. Düzgün $n$-genin tam $n$ adet simetri ekseni (yansıma doğrusu) vardır.
+\begin{itemize}
+    \item Bir yansıma arka arkaya iki kez uygulanırsa şekil orijinal haline döner: $F^2 = e$.
+\end{itemize}
+
+\section{Dihedral Grup $D_n$ Yapısı}
+Bir düzgün $n$-genin tüm döndürme ve yansımalarının kümesi, fonksiyon bileşke işlemi ($\circ$ veya $\star$) altında kapalı bir grup oluşturur. Bu gruba \textbf{Dihedral Grup} denir ve $D_n$ olarak gösterilir.
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Dihedral Grup Özellikleri]
+\begin{enumerate}
+    \item $D_n$ grubunun eleman sayısı (mertebesi / ordre) $2n$'dir. ($n$ adet rotasyon + $n$ adet yansıma).
+    \item $D_n = \{ e, R, R^2, \dots, R^{n-1}, F, FR, FR^2, \dots, FR^{n-1} \}$
+    \item \textbf{Temel Bağıntı (Relation Fondamentale) :} Bir yansıma ile döndürmenin yönü tersine çevrilir:
+    \[ F \star R = R^{-1} \star F \]
+    (Veya alternatif yazımla: $F \star R \star F = R^{-1}$)
+    \item Bu temel bağıntı yüzünden $n \geq 3$ için Dihedral gruplar \textbf{Abel grubu (değişmeli) DEĞİLDİR}.
+\end{enumerate}
+\end{tcolorbox}
+
+\subsection*{Özel Durumlar ve Kritik Örnekler ($D_3$ ve $D_4$)}
+Sınavlarda ve TD'lerde en çok karşına çıkacak iki temel Dihedral grup şunlardır:
+
+\textbf{1. Eşkenar Üçgenin Simetrileri ($D_3$):} 
+Eleman sayısı: $2 \times 3 = 6$.
+\begin{itemize}
+    \item Döndürmeler: $R_{120}$ (Temel $R$), $R_{240}$ ($R^2$), ve $R_{360}=e$ (Birim).
+    \item Yansımalar: Üç köşeden tabana inen 3 farklı simetri eksenine göre yansıma ($F_1, F_2, F_3$).
+    \item \textit{Önemli Not:} $D_3$ grubu, 3 elemanın tüm permütasyonlarını içeren $S_3$ (Groupe symétrique) grubu ile tam olarak \textbf{izomorftur} ($D_3 \cong S_3$).
+\end{itemize}
+
+\textbf{Table de Cayley pour $D_3$ (Triangle Équilatéral) :}
+Döndürme $R$ ($120^\circ$) ve Yansıma $S$ sembolleriyle, elemanlar $\{e, R, R^2, S, RS, R^2S\}$ olarak ifade edilir. Tablo $S \star R = R^2 \star S$ temel kuralıyla doldurulur.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|c||c|c|c|c|c|c|}
+\hline
+$\circ$ & $\mathbf{e}$ & $\mathbf{R}$ & $\mathbf{R^2}$ & $\mathbf{S}$ & $\mathbf{RS}$ & $\mathbf{R^2S}$ \\
+\hline\hline
+$\mathbf{e}$ & $e$ & $R$ & $R^2$ & $S$ & $RS$ & $R^2S$ \\
+\hline
+$\mathbf{R}$ & $R$ & $R^2$ & $e$ & $RS$ & $R^2S$ & $S$ \\
+\hline
+$\mathbf{R^2}$ & $R^2$ & $e$ & $R$ & $R^2S$ & $S$ & $RS$ \\
+\hline
+$\mathbf{S}$ & $S$ & $R^2S$ & $RS$ & $e$ & $R^2$ & $R$ \\
+\hline
+$\mathbf{RS}$ & $RS$ & $S$ & $R^2S$ & $R$ & $e$ & $R^2$ \\
+\hline
+$\mathbf{R^2S}$ & $R^2S$ & $RS$ & $S$ & $R^2$ & $R$ & $e$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{2. Karenin Simetrileri ($D_4$):}
+Eleman sayısı: $2 \times 4 = 8$.
+\begin{itemize}
+    \item Döndürmeler: $R_{90}$ (Temel $R$), $R_{180} = R^2$, $R_{270} = R^3$, ve $R_{360} = R^4 = e$.
+    \item Yansımalar: 2 adet kenar ortay (Yatay $H$, Dikey $V$) ve 2 adet köşegen ($D_1, D_2$) üzerinden yansıma (toplam 4 yansıma).
+    \item \textbf{Soru Çözüm Taktiği (Ters Döndürmeler):} TD-2'de sıkça göreceğin $R^{-k}$ (ters yöne döndürme) ifadeleri her zaman düz yönde pozitif bir döndürmeye eşittir. Modüler aritmetik ($mod\ n$) mantığı çalışır.
+    Örneğin $D_4$'te $R^{-1}$ ($-90^\circ$ yani ters döndürme) aslında $R^3$'e ($+270^\circ$ düz döndürme) denktir. Benzer şekilde $D_5$'te $R^{-2} = R^3$ olur. Tüm işlemleri bu şekilde pozitife çevirmek ispatları çok kolaylaştırır!
+\end{itemize}
+
+\begin{tcolorbox}[colback=purple!5!white,colframe=purple!75!black,title=$D_4$ İçin Altın Kurallar (Sınav Kurtarıcı)]
+Bu koca tabloyu ezberlemeden veya sınavda 10 dakika çizmekle uğraşmadan tüm $D_4$ işlemlerini çözmek için şu 3 kural \textbf{kesinlikle} yeterlidir:
+\begin{enumerate}
+    \item \textbf{Döndürme Kuralı:} $R^4 = e$ (Kareyi 4 kere $90^\circ$ döndürmek başa sarar).
+    \item \textbf{Yansıma Kuralı:} $S^2 = e$ (Aynada 2 kere yansımak başa sarar).
+    \item \textbf{Yer Değiştirme (Komütasyon) Kuralı:} $S \cdot R = R^3 \cdot S$.
+    Genel haliyle: $S \cdot R^k = R^{4-k} \cdot S$. (Yansıma ile döndürme yer değiştirdiğinde, döndürmenin derecesi tersine döner!).
+\end{enumerate}
+\end{tcolorbox}
+
+\textbf{Table de Cayley pour $D_4$ (Carré) :}
+Döndürme $R$ ($90^\circ$) ve Yansıma $S$ sembolleriyle hocanın çizdiği $D_4$ tablosu tam olarak böyledir:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{|c||c|c|c|c|c|c|c|c|}
+\hline
+$\circ$ & $\mathbf{e}$ & $\mathbf{R}$ & $\mathbf{R^2}$ & $\mathbf{R^3}$ & $\mathbf{S}$ & $\mathbf{RS}$ & $\mathbf{R^2S}$ & $\mathbf{R^3S}$ \\
+\hline\hline
+$\mathbf{e}$    & $e$    & $R$    & $R^2$  & $R^3$  & $S$    & $RS$   & $R^2S$ & $R^3S$ \\
+\hline
+$\mathbf{R}$    & $R$    & $R^2$  & $R^3$  & $e$    & $RS$   & $R^2S$ & $R^3S$ & $S$ \\
+\hline
+$\mathbf{R^2}$  & $R^2$  & $R^3$  & $e$    & $R$    & $R^2S$ & $R^3S$ & $S$    & $RS$ \\
+\hline
+$\mathbf{R^3}$  & $R^3$  & $e$    & $R$    & $R^2$  & $R^3S$ & $S$    & $RS$   & $R^2S$ \\
+\hline
+$\mathbf{S}$    & $S$    & $R^3S$ & $R^2S$ & $RS$   & $e$    & $R^3$  & $R^2$  & $R$ \\
+\hline
+$\mathbf{RS}$   & $RS$   & $S$    & $R^3S$ & $R^2S$ & $R$    & $e$    & $R^3$  & $R^2$ \\
+\hline
+$\mathbf{R^2S}$ & $R^2S$ & $RS$   & $S$    & $R^3S$ & $R^2$  & $R$    & $e$    & $R^3$ \\
+\hline
+$\mathbf{R^3S}$ & $R^3S$ & $R^2S$ & $RS$   & $S$    & $R^3$  & $R^2$  & $R$    & $e$ \\
+\hline
+\end{tabular}
+}
+\end{center}
+
+\subsection*{Représentation Géométrique et Permutations de $D_4$}
+
+\begin{tcolorbox}[colback=orange!5!white,colframe=orange!80!black,title=Pourquoi exactement 8 symétries ? (Preuve Géométrique)]
+Hocanın sorduğu "\textit{Pourquoi ces 8 éléments sont-ils nécessaires et suffisants ?}" sorusunun geometrik kanıtı şudur:
+Bir kareyi bozmadan hareket ettirdiğimizde köşelerin gidebileceği yerleri sayarız:
+\begin{itemize}
+    \item \textbf{1. Adım:} Karenin 1. Köşesi, dönüşümden sonra \textbf{4 farklı köşeden} herhangi birine gidebilir (4 seçenek).
+    \item \textbf{2. Adım:} Karenin 2. Köşesi (1'in komşusu), karenin şeklinin bozulmaması için mecburen yine 1'in komşusu olarak kalmak zorundadır. 1'in sadece 2 tane komşusu olduğu için, 2. Köşenin gidebileceği sadece \textbf{2 seçenek} vardır (Ya 1'in sağına ya soluna).
+    \item \textbf{3. Adım:} 1. ve 2. köşeler yerleştiği an, karenin rijit (katı) yapısından dolayı 3. ve 4. köşelerin yeri \textbf{otomatik olarak kilitlenir} (Başka seçenekleri kalmaz).
+\end{itemize}
+\textbf{Sonuç:} $4 \text{ seçenek} \times 2 \text{ seçenek} \times 1 \times 1 = \mathbf{8 \text{ farklı isometri}}$. 
+İşte bu yüzden karenin simetrileri için bu 8 elemanın varlığı geometrik olarak \textbf{zorunludur (nécessaire)}.
+\end{tcolorbox}
+
+Pour mieux visualiser ces transformations géométriquement, numérotons les 4 sommets d'un carré de 1 à 4 (1: Haut-Gauche, 2: Haut-Droit, 3: Bas-Droit, 4: Bas-Gauche). 
+Chaque isométrie du carré correspond à une permutation de ces 4 sommets (ce qui permet d'utiliser la notation cyclique).
+
+\begin{itemize}
+    \item \textbf{Rotations (Döndürmeler) :}
+    \begin{itemize}
+        \item $e$ : L'identité. (Aucun sommet ne bouge).
+        \item $R$ ($90^\circ$ sens horaire) : Le sommet 1 va en 2, 2 en 3, 3 en 4, 4 en 1. Permutation = $\mathbf{(1\;2\;3\;4)}$
+        \item $R^2$ ($180^\circ$) : Permutation = $\mathbf{(1\;3)(2\;4)}$
+        \item $R^3$ ($270^\circ$) : Permutation = $\mathbf{(1\;4\;3\;2)}$
+    \end{itemize}
+    
+    \item \textbf{Réflexions (Yansımalar $S, RS, \dots$) :}
+    \begin{itemize}
+        \item Axe Horizontal ($H$) : Échange le haut et le bas. Permutation = $\mathbf{(1\;4)(2\;3)}$
+        \item Axe Vertical ($V$) : Échange la gauche et la droite. Permutation = $\mathbf{(1\;2)(3\;4)}$
+        \item Diagonale Principale ($D_1$) : Garde les sommets 2 et 4 fixes, échange 1 et 3. Permutation = $\mathbf{(1\;3)}$
+        \item Seconde Diagonale ($D_2$) : Garde les sommets 1 et 3 fixes, échange 2 et 4. Permutation = $\mathbf{(2\;4)}$
+    \end{itemize}
+\end{itemize}
+\textit{Astuce de vérification :} Si on fait la transformation $R$ (rotation) puis $H$ (yansıma yatay), on compose les permutations de droite à gauche : $(1\;4)(2\;3) \circ (1\;2\;3\;4) = (1\;3)$. On retombe exactement sur la diagonale $D_1$ ! C'est ainsi que l'on prouve géométriquement les égalités de la table de Cayley.
+
+\section{TD-2 Çözümleri (Bölüm 4)}
+
+\subsection*{Exercice 14: Produit de deux réflexions distinctes}
+\textbf{Soru:} Soient $F_1, F_2$ deux réflexions (symétries) distinctes dans $D_n$. Montrer que $F_1 F_2 \neq R_0$ (où $R_0 = e$).
+\begin{proof}[Démonstration par l'absurde]
+Supposons par l'absurde que $F_1 F_2 = R_0$. 
+Puisque $R_0 = e$ (l'élément neutre), cela implique que $F_1$ est l'inverse de $F_2$, c'est-à-dire $F_1 = F_2^{-1}$.
+Or, dans un groupe diédral, toute réflexion est son propre inverse (car appliquer une réflexion deux fois redonne la figure initiale : $F_2^2 = e \implies F_2^{-1} = F_2$).
+Par conséquent, $F_1 = F_2$.
+Mais l'énoncé stipule que $F_1$ et $F_2$ sont \textbf{distinctes} ($F_1 \neq F_2$). C'est une contradiction.
+L'hypothèse initiale est donc fausse, ce qui prouve formellement que $\mathbf{F_1 F_2 \neq R_0}$.
+\end{proof}
+
+\subsection*{Exercice 15: Réflexions commutatives dans $D_n$}
+\textbf{Soru:} Soient $F_1 \neq F_2$ deux réflexions dans $D_n$ telles que $F_1 F_2 = F_2 F_1$. Montrer que $F_1 F_2 = R_{180}$.
+\begin{proof}[Démonstration géométrique et algébrique]
+Dans le groupe diédral $D_n$, le produit de deux réflexions est toujours une rotation. Posons $R = F_1 F_2$.
+D'après l'énoncé, elles commutent : $F_1 F_2 = F_2 F_1$. Donc $R = F_2 F_1$.
+Calculons l'inverse de cette rotation $R$ :
+\[ R^{-1} = (F_1 F_2)^{-1} = F_2^{-1} F_1^{-1} \]
+Puisque les réflexions sont leur propre inverse ($F^{-1}=F$), on obtient :
+\[ R^{-1} = F_2 F_1 \]
+Mais on sait que $F_2 F_1 = R$. Donc $R^{-1} = R$, ce qui implique que $R^2 = e$.
+La rotation $R$ est son propre inverse.
+De plus, d'après l'Exercice 14, $F_1 \neq F_2 \implies R \neq e$.
+Dans un polygone régulier, la seule rotation non triviale qui, appliquée deux fois, ramène à la position initiale ($R^2 = e$) est la rotation d'un demi-tour, soit exactement $180^\circ$ (ou $\pi$ radians).
+Donc, $R = F_1 F_2 = \mathbf{R_{180}}$.
+\end{proof}
+
+\subsection*{Exercice 16: Calculs dans le groupe Diédral $D_n$}
+\textbf{Soru:} Écrire chaque produit sous la forme $R^i$ ou $R^i F$. \\
+\textit{Rappel de la relation fondamentale :} $F R^k F = R^{-k}$, ce qui donne $F R^k = R^{-k} F$.
+\begin{proof}[Résolution]
+\begin{enumerate}
+    \item[(a)] \textbf{Dans $D_4$ : $F R^{-2} F R^5$}
+    \begin{itemize}
+        \item Dans $D_4$, $R^4 = e$. Donc $R^5 = R^1 = R$.
+        \item On sait que $F R^{-2} F = R^{-(-2)} = R^2$.
+        \item Le produit devient : $(R^2) (R) = \mathbf{R^3}$.
+    \end{itemize}
+    
+    \item[(b)] \textbf{Dans $D_5$ : $R^{-3} F R^4 F R^{-2}$}
+    \begin{itemize}
+        \item Dans $D_5$, $R^5 = e$. Simplifions le terme central : $F R^4 F = R^{-4} = R^1$.
+        \item Le produit devient : $R^{-3} (R) R^{-2} = R^{-4}$.
+        \item Modulo 5, $R^{-4} = R^{5-4} = \mathbf{R^1 = R}$.
+    \end{itemize}
+    
+    \item[(c)] \textbf{Dans $D_6$ : $F R^5 F R^{-2} F$}
+    \begin{itemize}
+        \item Dans $D_6$, $R^6 = e$. Simplifions $F R^5 F = R^{-5} = R^1$.
+        \item Le produit devient : $(R) R^{-2} F = R^{-1} F$.
+        \item Modulo 6, $R^{-1} = R^5$. Donc le résultat est $\mathbf{R^5 F}$.
+    \end{itemize}
+\end{enumerate}
+\textit{Remarque :} Comme expliqué dans les tactiques de cours, convertir les puissances négatives en positives avec le modulo rend le calcul immédiat !
+\end{proof}
+
+\subsection*{Exercice 23: Le triangle équilatéral et les sous-groupes de $D_3$}
+\textbf{Soru:} Que peut-on dire d'un sous-groupe de $D_3$ contenant $R_{240}$ et une réflexion $F$ ? Que dire d'un sous-groupe contenant deux réflexions distinctes ?
+\begin{proof}[Résolution et analyse algébrique]
+Rappelons que $D_3$, le groupe des isométries du triangle équilatéral, possède 6 éléments : $\{e, R_{120}, R_{240}, F_1, F_2, F_3\}$.
+
+\textbf{1. Sous-groupe $H$ contenant $R_{240}$ et $F$ :}
+\begin{itemize}
+    \item Puisque $H$ est un groupe, il est fermé sous sa propre opération.
+    \item Il contient $R_{240}$. Il doit donc contenir son carré : $(R_{240})^2 = R_{480} = R_{120}$.
+    \item Il contient l'élément neutre $e$. Le sous-groupe contient donc déjà toutes les rotations : $\{e, R_{120}, R_{240}\}$.
+    \item $H$ contient une réflexion $F$. S'il contient toutes les rotations et une réflexion, il contiendra obligatoirement toutes les autres réflexions obtenues par produit (par ex: $F \star R_{120} = F_2$).
+    \item \textbf{Conclusion :} Le sous-groupe $H$ contient les 6 éléments, donc \textbf{$H = D_3$}. Le sous-groupe engendre le groupe tout entier.
+\end{itemize}
+
+\textbf{2. Sous-groupe $K$ contenant deux réflexions distinctes ($F_1$ et $F_2$) :}
+\begin{itemize}
+    \item Le produit de deux réflexions distinctes dans un groupe diédral produit toujours une rotation non triviale. Dans $D_3$, $F_1 \star F_2$ donnera obligatoirement soit $R_{120}$ soit $R_{240}$.
+    \item $K$ contient donc au moins une rotation non triviale (ex: $R_{120}$) et une réflexion (ex: $F_1$).
+    \item D'après la démonstration précédente, dès qu'un sous-groupe possède une rotation non-triviale (qui génère toutes les rotations) et une réflexion, il génère tout $D_3$.
+    \item \textbf{Conclusion :} Tout sous-groupe de $D_3$ contenant deux réflexions est \textbf{le groupe $D_3$ lui-même}.
+\end{itemize}
+\textit{Note pour le cours :} C'est pour cette raison que $D_3$ peut être \textbf{engendré} par seulement deux réflexions !
+\end{proof}
+
+\subsection*{Exercice 24: Sous-groupes d'ordre 4 dans $D_4$}
+\textbf{Soru:} Combien de sous-groupes d'ordre 4 possède $D_4$ ?
+\begin{proof}[Résolution et analyse combinatoire]
+Le groupe $D_4$ (les symétries du carré) possède 8 éléments : 
+$D_4 = \{ e, R, R^2, R^3, H, V, D_1, D_2 \}$ 
+(où $R$ est la rotation de $90^\circ$, $H, V$ sont les réflexions axiales horizontale/verticale, et $D_1, D_2$ les réflexions diagonales).
+
+D'après le théorème de Lagrange, l'ordre d'un sous-groupe doit diviser l'ordre du groupe. $4$ divise $8$, donc des sous-groupes d'ordre 4 peuvent exister.
+Un sous-groupe d'ordre 4 peut avoir deux structures (isomorphismes) possibles :
+\begin{itemize}
+    \item \textbf{Type 1 : Sous-groupe cyclique ($\mathbb{Z}_4$) :} Il est engendré par un élément d'ordre 4. 
+    Les seuls éléments d'ordre 4 dans $D_4$ sont les rotations $R_{90}$ et $R_{270}$ ($R$ et $R^3$). 
+    Ils engendrent exactement le même sous-groupe de rotations : $H_1 = \langle R \rangle = \{e, R, R^2, R^3\}$.
+    Il y a donc \textbf{1} sous-groupe de ce type.
+    
+    \item \textbf{Type 2 : Sous-groupe de Klein ($V_4$) :} Il est composé de l'élément neutre $e$ et de 3 éléments d'ordre 2 qui commutent tous entre eux.
+    Les éléments d'ordre 2 dans $D_4$ (ceux dont le carré est $e$) sont : $R^2, H, V, D_1, D_2$.
+    Cherchons les triplets qui commutent pour former un groupe fermé :
+    - $H$ et $V$ commutent, et leur produit donne la rotation d'un demi-tour $R^2$. Cela forme le sous-groupe $H_2 = \{e, R^2, H, V\}$.
+    - $D_1$ et $D_2$ commutent, et leur produit donne aussi $R^2$. Cela forme le sous-groupe $H_3 = \{e, R^2, D_1, D_2\}$.
+    \textit{(Attention : On ne peut pas mélanger $H$ et $D_1$ car ils ne commutent pas ! Leur produit donnerait $R$, ce qui engendrerait tout $D_4$, pas juste 4 éléments).}
+    Il y a donc \textbf{2} sous-groupes de ce type.
+\end{itemize}
+\textbf{Conclusion finale :} Le groupe $D_4$ possède exactement $\mathbf{1 + 2 = 3}$ sous-groupes d'ordre 4.
+\end{proof}
+\section{Bölüm 5: Alt Grupların Temel Teoremleri (Propriétés des Sous-groupes)}
+
+Hocanın derste bahsettiği "Sous-groupe propre" kavramı sonrası anlattığı iki temel önerme (Proposition) bunlardır:
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Proposition 1 : Les Sous-groupes de $\mathbb{Z}$]
+\textbf{Théorème :} Les seuls sous-groupes de $(\mathbb{Z}, +)$ sont de la forme $n\mathbb{Z}$, où $n \in \mathbb{N}$.
+\begin{itemize}
+    \item $n\mathbb{Z}$ représente l'ensemble des multiples de $n$ : $\{ \dots, -2n, -n, 0, n, 2n, \dots \}$.
+    \item \textbf{Bağlantı (Sous-groupes propres) :} $\mathbb{Z}$ grubunun \textit{has alt grupları} (sous-groupes propres) sadece $n \geq 2$ olan $n\mathbb{Z}$ gruplarıdır. 
+    (Çünkü $n=1$ olursa grup kendisine eşit olur ($1\mathbb{Z} = \mathbb{Z}$), $n=0$ olursa sadece sıfır elemanı kalır ($0\mathbb{Z} = \{0\}$), bu ikisi de "propre" tanımını bozar).
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Proposition 2 : Intersection d'une Famille de Sous-groupes]
+\textbf{Théorème :} L'intersection d'une famille quelconque (finie ou infinie) de sous-groupes d'un groupe $G$ est \textbf{toujours} un sous-groupe de $G$.
+\begin{itemize}
+    \item \textbf{Preuve rapide (İspat) :} Soit $(H_i)_{i \in I}$ une famille de sous-groupes. Leur intersection $H = \bigcap H_i$ contient toujours l'élément neutre $e$ (car $e$ est dans chaque $H_i$). Si $x$ et $y$ appartiennent à l'intersection $H$, alors pour chaque $i$, $x, y \in H_i$. Puisque chaque $H_i$ est fermé sous l'inversion, $x \star y^{-1} \in H_i$. Donc $x \star y^{-1}$ est aussi dans l'intersection $H$. $H$ est bien un sous-groupe !
+    \item \textbf{Ne işe yarar ? :} Bu teorem, matematikteki "Bir $A$ kümesi tarafından \textbf{üretilen} alt grup ($\langle A \rangle$)" kavramının temelidir. O alt grup, $A$'yı barındıran tüm alt grupların \textit{kesişimi} olarak tanımlanır.
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=Proposition 3 : Caractérisation d'un Sous-groupe (Sous-groupe Testi)]
+\textbf{Théorème :} Soit $G$ un groupe. Une partie $H \subseteq G$ est un sous-groupe de $G$ si et seulement si :
+\begin{enumerate}
+    \item $H$ n'est pas vide ($H \neq \emptyset$. En pratique, on vérifie que $e \in H$).
+    \item Pour tous $x, y \in H$, on a $\mathbf{x \star y^{-1} \in H}$. (C'est le fameux \textbf{test en 1 étape} pour prouver qu'un ensemble est un sous-groupe !).
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=purple!5!white,colframe=purple!75!black,title=Lemme 1 : Forme des éléments de $\langle A \rangle$ (Üreteç Kümesinin İçi)]
+\textbf{Lemme :} Si $A$ est une partie non vide d'un groupe $G$, le sous-groupe engendré par $A$, noté $\langle A \rangle$, est l'ensemble de tous les produits possibles d'éléments de $A$ et de leurs inverses.
+\[ \langle A \rangle = \{ a_1^{\epsilon_1} a_2^{\epsilon_2} \dots a_k^{\epsilon_k} \mid k \in \mathbb{N}, a_i \in A, \epsilon_i \in \{1, -1\} \} \]
+\textit{Cas particulier (Çok Çıkar) :} Si $A = \{x\}$ (tek bir eleman), alors $\langle x \rangle = \{ x^n \mid n \in \mathbb{Z} \}$. C'est le \textbf{groupe cyclique} engendré par l'élément $x$.
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=yellow!5!white,colframe=orange!80!black,title=Proposition 4 : Ordre d'un élément et divisibilité]
+\textbf{Théorème :} Soit $x \in G$ un élément d'ordre fini $n$ (c'est-à-dire le plus petit $n > 0$ tel que $x^n = e$).
+\begin{itemize}
+    \item L'ordre de l'élément $x$ est exactement égal au nombre d'éléments de son sous-groupe engendré : $\text{Ordre}(x) = |\langle x \rangle|$.
+    \item \textbf{Lemme de divisibilité :} Si on a $x^k = e$ pour un certain entier $k$, alors l'ordre $n$ \textbf{divise} $k$ ($n \mid k$).
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=teal!5!white,colframe=teal!80!black,title=Théorème de Lagrange (Le Boss Final des Sous-groupes)]
+\textbf{Théorème :} Soit $G$ un groupe \textbf{fini} et $H$ un sous-groupe de $G$. L'ordre de $H$ (son nombre d'éléments) \textbf{divise} l'ordre de $G$. ($|H|$ divise $|G|$).
+\[ |G| = |H| \times [G : H] \]
+(où $[G : H]$ est l'indice de $H$ dans $G$).
+\textbf{Corollaires immédiats (Sınavlık Sonuçlar) :}
+\begin{enumerate}
+    \item L'ordre de n'importe quel élément $x \in G$ divise l'ordre de $G$ ($|x|$ divise $|G|$).
+    \item Par conséquent, pour tout $x \in G$, on a $\mathbf{x^{|G|} = e}$.
+    \item Si $|G| = p$ (un nombre premier comme 3, 5, 7), alors $G$ n'a \textbf{aucun sous-groupe propre} et $G$ est forcément cyclique !
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=cyan!5!white,colframe=cyan!80!black,title=Proposition 5 : Centralisateur et Centre d'un Groupe]
+Hocaların alt grup örnekleri verirken her zaman peş peşe yazdığı "1" et "2" numaralı kavramlar şunlardır:
+
+\textbf{1) Le Centralisateur d'un élément $a$ (Merkezleyen) :} 
+Grup içindeki \textbf{belirli bir $a$ elemanıyla} yer değiştirebilen (komütatif) elemanların kümesidir. $C(a)$ ile gösterilir.
+\[ C(a) = \{ x \in G \mid x \star a = a \star x \} \]
+
+\textbf{2) Le Centre du groupe $G$ (Grubun Merkezi - $Z(G)$) :} 
+Gruptaki \textbf{istisnasız tüm elemanlarla} yer değiştirebilen elemanların kümesidir. (Aslında tüm Centralisateur'lerin kesişimidir).
+\[ Z(G) = \{ z \in G \mid z \star x = x \star z, \quad \forall x \in G \} \]
+\textbf{Proposition :} Le centre est un sous-groupe de $G$, ce qui se note $\mathbf{Z(G) \leq G}$ ou $\mathbf{Z(G) < G}$.
+
+\begin{proof}[Démonstration de $Z(G) \leq G$ (Hocanın Yaptığı İspat)]
+Pour prouver que $Z(G)$ est un sous-groupe, on utilise le \textit{Test en 1 étape} :
+\begin{enumerate}
+    \item \textbf{Non vide :} L'élément neutre $e$ commute avec tout le monde ($e \star x = x \star e = x$). Donc $e \in Z(G)$.
+    \item \textbf{Fermeture sous $a \star b^{-1}$ :} Soient $a, b \in Z(G)$. Montrons que $ab^{-1} \in Z(G)$.
+    Puisque $b \in Z(G)$, on a $bx = xb$ pour tout $x$. Multiplions par $b^{-1}$ à gauche et à droite : $b^{-1}(bx)b^{-1} = b^{-1}(xb)b^{-1} \implies xb^{-1} = b^{-1}x$. Donc $b^{-1}$ commute aussi avec $x$.
+    Calculons maintenant pour le produit $ab^{-1}$ :
+    \[ (ab^{-1})x = a(b^{-1}x) = a(xb^{-1}) = (ax)b^{-1} = (xa)b^{-1} = x(ab^{-1}) \]
+    Puisque $(ab^{-1})x = x(ab^{-1})$, l'élément $ab^{-1}$ appartient bien à $Z(G)$.
+\end{enumerate}
+Conclusion : $Z(G)$ est un sous-groupe de $G$.
+\end{proof}
+
+\textbf{Önemli Örnekler (Sınavlarda Direkt Çıkar) :}
+\begin{enumerate}
+    \item Si $G$ est un groupe abélien (değişmeli), alors $\mathbf{Z(G) = G}$.
+    \item \textbf{Le centre de $D_4$ (Kare) :} Karenin simetrilerinde sadece Birim eleman ($e$) ve $180^\circ$ döndürme ($R^2$) tüm yansımalarla yer değiştirebilir. Yani $\mathbf{Z(D_4) = \{e, R^2\}}$.
+    \item \textbf{Le centre de $D_3$ ou $S_3$ (Üçgen) :} Eşkenar üçgende merkez en küçüktür: $\mathbf{Z(D_3) = \{e\}}$.
+\end{enumerate}
+\end{tcolorbox}
+
+\newpage
+\section{TD-3 Çözümleri : Devirli Gruplar, Mertebeler ve Birimin Kökleri}
+
+\subsection*{Exercice 1 : Les Sous-groupes Cycliques de $\mathbb{Z}_{30}$}
+\textbf{Soru :} Donner la liste des sous-groupes cycliques du groupe $(\mathbb{Z}_{30}, +)$.
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Teorik Altyapı : $\mathbb{Z}_n$'nin Alt Grupları Teoremi]
+$(\mathbb{Z}_n, +)$ sonlu bir devirli gruptur. Bu grubun \textbf{tüm alt grupları da devirlidir} ve $n$'nin her bir pozitif $d$ böleni için \textbf{tam olarak bir tane} $d$ mertebeli alt grup vardır.
+Bu alt grup $\langle \bar{k} \rangle$ şeklinde üretilir, burada $k = \frac{n}{d}$'dir.
+Genel olarak, $\bar{a} \in \mathbb{Z}_n$ için $\langle \bar{a} \rangle$ alt grubunun mertebesi :
+\[ |\langle \bar{a} \rangle| = \frac{n}{\gcd(a, n)} \quad \text{ve} \quad \langle \bar{a} \rangle = \langle \overline{\gcd(a, n)} \rangle \]
+\end{tcolorbox}
+
+\begin{proof}[Çözüm ve Liste]
+$n = 30$'un pozitif bölenlerini listeleyelim :
+\[ \text{Div}(30) = \{1, 2, 3, 5, 6, 10, 15, 30\} \]
+Toplam 8 adet pozitif bölen olduğu için, $\mathbb{Z}_{30}$ grubunun tam olarak \textbf{8 adet alt grubu} vardır :
+
+\begin{enumerate}
+    \item \textbf{Mertebe $d = 1$ ($k = 30/1 = 30 \equiv 0$) :}
+    \[ H_1 = \langle \bar{0} \rangle = \{\bar{0}\} \]
+    (Aşikar alt grup - le sous-groupe trivial).
+    
+    \item \textbf{Mertebe $d = 2$ ($k = 30/2 = 15$) :}
+    \[ H_2 = \langle \overline{15} \rangle = \{\bar{0}, \overline{15}\} \]
+    
+    \item \textbf{Mertebe $d = 3$ ($k = 30/3 = 10$) :}
+    \[ H_3 = \langle \overline{10} \rangle = \{\bar{0}, \overline{10}, \overline{20}\} \]
+    (Diğer üreteç : $\overline{20}$, çünkü $\gcd(20, 30) = 10$).
+    
+    \item \textbf{Mertebe $d = 5$ ($k = 30/5 = 6$) :}
+    \[ H_5 = \langle \bar{6} \rangle = \{\bar{0}, \bar{6}, \overline{12}, \overline{18}, \overline{24}\} \]
+    
+    \item \textbf{Mertebe $d = 6$ ($k = 30/6 = 5$) :}
+    \[ H_6 = \langle \bar{5} \rangle = \{\bar{0}, \bar{5}, \overline{10}, \overline{15}, \overline{20}, \overline{25}\} \]
+    
+    \item \textbf{Mertebe $d = 10$ ($k = 30/10 = 3$) :}
+    \[ H_{10} = \langle \bar{3} \rangle = \{\bar{0}, \bar{3}, \bar{6}, \bar{9}, \overline{12}, \overline{15}, \overline{18}, \overline{21}, \overline{24}, \overline{27}\} \]
+    
+    \item \textbf{Mertebe $d = 15$ ($k = 30/15 = 2$) :}
+    \[ H_{15} = \langle \bar{2} \rangle = \{\bar{0}, \bar{2}, \bar{4}, \bar{6}, \dots, \overline{28}\} \]
+    (Tüm çift sayı sınıfları).
+    
+    \item \textbf{Mertebe $d = 30$ ($k = 30/30 = 1$) :}
+    \[ H_{30} = \langle \bar{1} \rangle = \mathbb{Z}_{30} \]
+    (Grubun kendisi). Bu grubun üreteçleri $\gcd(k, 30) = 1$ olan sınıflardır : $\bar{1}, \bar{7}, \overline{11}, \overline{13}, \overline{17}, \overline{19}, \overline{23}, \overline{29}$ (Toplam $\varphi(30) = 8$ üreteç).
+\end{enumerate}
+\end{proof}
+
+\vspace{0.5cm}
+
+\subsection*{Exercice 2 : Lemme Fondamental de Divisibilité ($g^n = e \iff m \mid n$)}
+\textbf{Soru :} Soit $G$ un groupe. Soit $g \in G$ d'ordre $m$. Montrer que $g^n = e$ si et seulement si $m$ divise $n$.
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Sınav Notu : Her İki Yönlü İspat (Équivalence $\iff$)]
+Bu önerme grup teorisinin kalbidir. Sınavda çift taraflı gerektirme istendiği için hem $(\Longleftarrow)$ hem $(\Longrightarrow)$ yönleri ayrı ayrı kanıtlanmalıdır.
+\end{tcolorbox}
+
+\begin{proof}[Démonstration]
+Soit $g \in G$ d'ordre fini $m = o(g)$. Par définition de l'ordre d'un élément, $m$ est le \textbf{plus petit entier strictement positif} tel que $g^m = e$.
+
+\begin{itemize}
+    \item \textbf{Sens réciproque $(\Longleftarrow)$ :} Supposons que $m \mid n$.
+    Par définition de la divisibilité, il existe un entier $k \in \mathbb{Z}$ tel que $n = k \cdot m$.
+    Calculons alors $g^n$ :
+    \[ g^n = g^{k \cdot m} = (g^m)^k = e^k = e \]
+    Ce sens est donc démontré.
+
+    \item \textbf{Sens direct $(\Longrightarrow)$ :} Supposons que $g^n = e$.
+    Effectuons la \textbf{division euclidienne} de l'entier $n$ par l'ordre $m$ :
+    Il existe un unique couple $(q, r) \in \mathbb{Z}^2$ tel que :
+    \[ n = q \cdot m + r \quad \text{avec} \quad 0 \leq r < m \]
+    Exprimons $g^n$ à l'aide de cette division :
+    \[ e = g^n = g^{q \cdot m + r} = g^{q \cdot m} \cdot g^r = (g^m)^q \cdot g^r = e^q \cdot g^r = g^r \]
+    On obtient donc :
+    \[ g^r = e \]
+    Or, rappelons que $0 \leq r < m$.
+    Si l'on avait $r > 0$, alors $r$ serait un entier strictement positif, strictement inférieur à $m$, vérifiant $g^r = e$. 
+    Cela contredirait formellement l'hypothèse selon laquelle $m$ est le \textbf{plus petit} entier strictement positif vérifiant cette propriété (la minimalité de $m$).
+    
+    Par conséquent, il est impossible d'avoir $r > 0$. On en déduit nécessairement que :
+    \[ r = 0 \]
+    Ce qui implique immédiatement que :
+    \[ n = q \cdot m \implies m \mid n \]
+\end{itemize}
+\textbf{Conclusion :} On a bien $g^n = e \iff m \mid n$.
+\end{proof}
+
+\vspace{0.5cm}
+
+\subsection*{Exercice 3 : Ordre d'un Élément dans un Groupe Cyclique Fini}
+\textbf{Soru :} Montrer que, dans un groupe cyclique fini, l'ordre d'un élément divise l'ordre du groupe.
+
+\begin{proof}[Démonstration]
+Soit $G = \langle a \rangle$ un groupe cyclique fini d'ordre $N = |G|$.
+Puisque $a$ est un générateur de $G$, l'ordre du générateur est égal à l'ordre du groupe :
+\[ o(a) = |G| = N \implies a^N = e \]
+
+Soit maintenant un élément quelconque $x \in G$.
+Puisque $G$ est cyclique engendré par $a$, il existe un entier $k \in \{0, 1, \dots, N-1\}$ tel que :
+\[ x = a^k \]
+Élevons l'élément $x$ à la puissance $N$ (l'ordre du groupe) :
+\[ x^N = (a^k)^N = a^{k \cdot N} = (a^N)^k = e^k = e \]
+Nous constatons donc que $x^N = e$.
+
+Soit $m = o(x)$ l'ordre de l'élément $x$.
+D'après le résultat fondamental prouvé à l'\textbf{Exercice 2}, pour tout élément $x$, l'égalité $x^N = e$ implique nécessairement que son ordre divise la puissance :
+\[ o(x) \mid N \implies o(x) \text{ divise } |G| \]
+\textbf{Conclusion :} L'ordre de tout élément d'un groupe cyclique fini divise l'ordre du groupe. \textit{(Remarque : C'est le théorème de Lagrange appliqué au cas cyclique, prouvé directement sans passer par les classes d'équivalence !)}.
+\end{proof}
+
+\vspace{0.5cm}
+
+\subsection*{Exercice 4 : Racines 12-ièmes de l'Unité et Racines Primitives}
+\textbf{Soru :} Donner toutes les racines 12-ième d'unité de $z^{12} = 1$. Quelles sont les racines primitives ?
+
+\begin{tcolorbox}[colback=purple!5!white,colframe=purple!75!black,title=Rappel : Racines de l'Unité $\mathbb{U}_n$ et Racines Primitives]
+L'équation $z^n = 1$ possède exactement $n$ racines complexes distinctes, formant le groupe cyclique $\mathbb{U}_n$ :
+\[ \xi_k = e^{\frac{2ik\pi}{n}} = \cos\left(\frac{2k\pi}{n}\right) + i \sin\left(\frac{2k\pi}{n}\right), \quad k \in \{0, 1, \dots, n-1\} \]
+Une racine $\xi_k$ est dite \textbf{primitive d'ordre $n$} si son ordre dans le groupe $(\mathbb{C}^*, \cdot)$ est exactement $n$, c'est-à-dire si elle engendre tout $\mathbb{U}_n$ ($\langle \xi_k \rangle = \mathbb{U}_n$).
+\textbf{Critère fondamental :} $\xi_k$ est primitive si et seulement si $\mathbf{\gcd(k, n) = 1}$.
+Le nombre de racines primitives est donné par la fonction indicatrice d'Euler $\mathbf{\varphi(n)}$.
+\end{tcolorbox}
+
+\begin{proof}[Résolution Complète]
+Pour $n = 12$, les solutions de $z^{12} = 1$ s'écrivent :
+\[ \xi_k = e^{\frac{2ik\pi}{12}} = e^{\frac{ik\pi}{6}}, \quad k \in \{0, 1, 2, \dots, 11\} \]
+Listons les 12 racines sous forme trigonométrique et algébrique :
+\begin{align*}
+k=0 : \quad & \xi_0 = e^0 = 1 \\
+k=1 : \quad & \xi_1 = e^{i\pi/6} = \frac{\sqrt{3}}{2} + \frac{1}{2}i \\
+k=2 : \quad & \xi_2 = e^{i\pi/3} = \frac{1}{2} + \frac{\sqrt{3}}{2}i \\
+k=3 : \quad & \xi_3 = e^{i\pi/2} = i \\
+k=4 : \quad & \xi_4 = e^{2i\pi/3} = -\frac{1}{2} + \frac{\sqrt{3}}{2}i \\
+k=5 : \quad & \xi_5 = e^{5i\pi/6} = -\frac{\sqrt{3}}{2} + \frac{1}{2}i \\
+k=6 : \quad & \xi_6 = e^{i\pi} = -1 \\
+k=7 : \quad & \xi_7 = e^{7i\pi/6} = -\frac{\sqrt{3}}{2} - \frac{1}{2}i \\
+k=8 : \quad & \xi_8 = e^{4i\pi/3} = -\frac{1}{2} - \frac{\sqrt{3}}{2}i \\
+k=9 : \quad & \xi_9 = e^{3i\pi/2} = -i \\
+k=10 : \quad & \xi_{10} = e^{5i\pi/3} = \frac{1}{2} - \frac{\sqrt{3}}{2}i \\
+k=11 : \quad & \xi_{11} = e^{11i\pi/6} = \frac{\sqrt{3}}{2} - \frac{1}{2}i
+\end{align*}
+
+\textbf{Détermination des racines primitives :}  
+Une racine $\xi_k$ est primitive si et seulement si $\gcd(k, 12) = 1$.  
+Cherchons les entiers entre 0 et 11 premiers avec 12 :
+\[ \{ k \in \{0, \dots, 11\} \mid \gcd(k, 12) = 1 \} = \{1, 5, 7, 11\} \]
+Le nombre de racines primitives est $\varphi(12) = 12 \times \left(1 - \frac{1}{2}\right) \times \left(1 - \frac{1}{3}\right) = 12 \times \frac{1}{2} \times \frac{2}{3} = 4$.
+
+Les \textbf{4 racines primitives 12-ièmes de l'unité} sont donc :
+\[ \mathbf{\xi_1 = e^{i\frac{\pi}{6}} = \frac{\sqrt{3}}{2} + \frac{1}{2}i}, \quad 
+\mathbf{\xi_5 = e^{i\frac{5\pi}{6}} = -\frac{\sqrt{3}}{2} + \frac{1}{2}i}, \quad 
+\mathbf{\xi_7 = e^{i\frac{7\pi}{6}} = -\frac{\sqrt{3}}{2} - \frac{1}{2}i}, \quad 
+\mathbf{\xi_{11} = e^{i\frac{11\pi}{6}} = \frac{\sqrt{3}}{2} - \frac{1}{2}i} \]
+\end{proof}
+
+\vspace{0.5cm}
+
+\subsection*{Exercice 5 : Équation $z^3 - 2 = 0$}
+\textbf{Soru :} Résoudre dans $\mathbb{C}$ l'équation $z^3 - 2 = 0$.
+
+\begin{proof}[Résolution]
+L'équation s'écrit $z^3 = 2$.
+Écrivons le nombre réel positif 2 sous sa forme exponentielle (polaire) :
+\[ 2 = 2 \cdot e^{i 0} \]
+Posons $z = r e^{i\theta}$ avec $r > 0$ et $\theta \in [0, 2\pi[$. L'équation devient :
+\[ (r e^{i\theta})^3 = r^3 e^{i 3\theta} = 2 e^{i 0} \]
+Par identification du module et de l'argument modulo $2\pi$ :
+\begin{align*}
+r^3 = 2 &\implies r = \sqrt[3]{2} \\
+3\theta \equiv 0 \pmod{2\pi} &\implies \theta_k = \frac{2k\pi}{3}, \quad k \in \{0, 1, 2\}
+\end{align*}
+L'équation admet donc exactement trois solutions complexes distinctes :
+\begin{enumerate}
+    \item Pour $k = 0$ :
+    \[ z_0 = \sqrt[3]{2} e^0 = \mathbf{\sqrt[3]{2}} \quad \text{(la solution réelle)} \]
+    \item Pour $k = 1$ :
+    \[ z_1 = \sqrt[3]{2} e^{\frac{2i\pi}{3}} = \sqrt[3]{2} \left(-\frac{1}{2} + i \frac{\sqrt{3}}{2}\right) = \mathbf{-\frac{\sqrt[3]{2}}{2} + i \frac{\sqrt[3]{2}\sqrt{3}}{2}} \]
+    \item Pour $k = 2$ :
+    \[ z_2 = \sqrt[3]{2} e^{\frac{4i\pi}{3}} = \sqrt[3]{2} \left(-\frac{1}{2} - i \frac{\sqrt{3}}{2}\right) = \mathbf{-\frac{\sqrt[3]{2}}{2} - i \frac{\sqrt[3]{2}\sqrt{3}}{2}} \]
+\end{enumerate}
+\textit{Lien avec les racines de l'unité :} Si l'on note $j = e^{\frac{2i\pi}{3}}$ la racine cubique primitive de l'unité, les trois solutions s'écrivent simplement :
+\[ S = \left\{ \sqrt[3]{2}, \quad \sqrt[3]{2}\,j, \quad \sqrt[3]{2}\,j^2 \right\} \]
+\end{proof}
+
+\vspace{0.5cm}
+
+\subsection*{Exercice 6 : Tout Sous-groupe d'un Groupe Cyclique est Cyclique}
+\textbf{Soru :} Montrer que tout sous-groupe d'un groupe cyclique est cyclique.
+
+\begin{tcolorbox}[colback=yellow!5!white,colframe=orange!80!black,title=Sınav İpucu : Sınavlarda En Çok Çıkan Teori İspatı !]
+Bu soru Fransız sınavlarında "Question de Cours" olarak sorulan en meşhur teoremdir. İspatın püf noktası: $\mathbb{N}^*$ içindeki üslerin en küçüğünü ($m$) seçmek ve **Öklid bölmesi** ile kalan $r$'nin sıfır olmak zorunda olduğunu göstermektir.
+\end{tcolorbox}
+
+\begin{proof}[Démonstration Rigoureuse]
+Soit $G = \langle a \rangle = \{ a^k \mid k \in \mathbb{Z} \}$ un groupe cyclique (fini ou infini) engendré par un élément $a$.
+Soit $H$ un sous-groupe de $G$ ($H \leq G$).
+
+\begin{itemize}
+    \item \textbf{Cas 1 : $H$ est le sous-groupe trivial.}  
+    Si $H = \{e\}$, alors $H = \langle e \rangle = \langle a^0 \rangle$, qui est évidemment cyclique.
+    
+    \item \textbf{Cas 2 : $H \neq \{e\}$.}  
+    Puisque $H$ contient un élément autre que le neutre et que $H \subseteq G$, il existe un entier $k \neq 0$ tel que $a^k \in H$.  
+    De plus, puisque $H$ est un sous-groupe, il est stable par inversion, donc $(a^k)^{-1} = a^{-k} \in H$.  
+    Puisque l'un des entiers $k$ ou $-k$ est strictement positif, $H$ contient nécessairement des puissances strictement positives de $a$.
+    
+    Définissons l'ensemble :
+    \[ S = \{ k \in \mathbb{N}^* \mid a^k \in H \} \]
+    Cet ensemble $S$ est une partie \textbf{non vide} de l'ensemble des entiers naturels $\mathbb{N}^*$.  
+    D'après la propriété du bon ordre (le principe du plus petit élément dans $\mathbb{N}$), $S$ admet un plus petit élément.  
+    Posons :
+    \[ m = \min(S) \]
+    Par définition, $m$ est le plus petit entier strictement positif tel que $a^m \in H$.
+    
+    \textbf{Montrons que $H = \langle a^m \rangle$ :}
+    \begin{enumerate}
+        \item \textbf{Inclusion $\langle a^m \rangle \subseteq H$ :}  
+        Puisque $a^m \in H$ et que $H$ est un sous-groupe (donc stable par multiplication et inversion), toute puissance $(a^m)^q = a^{mq}$ appartient à $H$ pour tout $q \in \mathbb{Z}$. Donc $\langle a^m \rangle \subseteq H$.
+        
+        \item \textbf{Inclusion réciproque $H \subseteq \langle a^m \rangle$ :}  
+        Soit $h \in H$ un élément quelconque. Puisque $h \in G = \langle a \rangle$, il existe un entier $n \in \mathbb{Z}$ tel que $h = a^n$.  
+        Effectuons la \textbf{division euclidienne} de l'exposant $n$ par l'entier minimal $m$ :
+        \[ n = q \cdot m + r \quad \text{avec} \quad 0 \leq r < m \quad (q \in \mathbb{Z}) \]
+        Exprimons $a^r$ :
+        \[ a^r = a^{n - qm} = a^n \cdot (a^m)^{-q} = h \cdot (a^m)^{-q} \]
+        Or $h \in H$, et puisque $a^m \in H$, on a aussi $(a^m)^{-q} \in H$.  
+        Par stabilité du sous-groupe $H$ sous la loi de groupe, le produit de deux éléments de $H$ reste dans $H$ :
+        \[ a^r \in H \]
+        Rappelons maintenant que $0 \leq r < m$.  
+        Si l'on avait $r > 0$, alors $r$ serait un entier strictement positif, appartenant à $S$ (car $a^r \in H$), et strictement inférieur au minimum $m = \min(S)$.  
+        Ceci constitue une contradiction flagrante avec la définition même de $m$.  
+        Par conséquent, on a nécessairement :
+        \[ r = 0 \]
+        D'où $n = q \cdot m$, ce qui donne :
+        \[ h = a^n = a^{qm} = (a^m)^q \in \langle a^m \rangle \]
+        Ceci prouve que tout élément de $H$ est une puissance de $a^m$, d'où $H \subseteq \langle a^m \rangle$.
+    \end{enumerate}
+    Puisque les deux inclusions sont vérifiées, on conclut que :
+    \[ H = \langle a^m \rangle \]
+\end{itemize}
+\textbf{Conclusion finale :} Le sous-groupe $H$ est engendré par un unique élément ($a^m$), il est donc \textbf{cyclique}.
+\end{proof}
+
+\vspace{0.5cm}
+
+\subsection*{Exercice 7 : Produit de Deux Sous-groupes ($HK \leq G \iff HK = KH$)}
+\textbf{Soru :} Si $G$ est un groupe et $H, K \leq G$, montrer que $HK \leq G$ si et seulement si $HK = KH$.  
+\textit{(Rappel : $HK = \{ hk \mid h \in H, k \in K \}$ et $KH = \{ kh \mid k \in K, h \in H \}$).}
+
+\begin{proof}[Démonstration]
+\textbf{Sens direct $(\Longrightarrow)$ :} Supposons que $HK$ soit un sous-groupe de $G$ ($HK \leq G$). Montrons que $HK = KH$.
+
+\begin{itemize}
+    \item \textbf{Montrons d'abord que $KH \subseteq HK$ :}  
+    Soit $x \in KH$. Alors $x = kh$ avec $k \in K$ et $h \in H$.  
+    Calculons son inverse dans $G$ :
+    \[ x^{-1} = (kh)^{-1} = h^{-1}k^{-1} \]
+    Puisque $H$ et $K$ sont des sous-groupes, $h^{-1} \in H$ et $k^{-1} \in K$.  
+    Par conséquent, $x^{-1} \in HK$.  
+    Or, par hypothèse, $HK$ est un sous-groupe, donc il est stable par inversion. Ainsi :
+    \[ x = (x^{-1})^{-1} \in HK \]
+    Nous avons donc démontré que tout élément de $KH$ appartient à $HK$, soit $\mathbf{KH \subseteq HK}$.
+
+    \item \textbf{Montrons ensuite que $HK \subseteq KH$ :}  
+    Soit $y \in HK$. Puisque $HK$ est un sous-groupe, l'inverse $y^{-1}$ appartient également à $HK$.  
+    On peut donc écrire $y^{-1} = h_1 k_1$ pour certains $h_1 \in H, k_1 \in K$.  
+    Prenons à nouveau l'inverse :
+    \[ y = (y^{-1})^{-1} = (h_1 k_1)^{-1} = k_1^{-1} h_1^{-1} \]
+    Comme $K$ et $H$ sont des sous-groupes, $k_1^{-1} \in K$ et $h_1^{-1} \in H$.  
+    On en déduit que $y \in KH$.  
+    Ceci prouve que $\mathbf{HK \subseteq KH}$.
+\end{itemize}
+Puisque les deux inclusions sont démontrées, on a bien :
+\[ HK = KH \]
+
+\vspace{0.3cm}
+\textbf{Sens réciproque $(\Longleftarrow)$ :} Supposons maintenant que $HK = KH$.  
+Appliquons le \textbf{test de sous-groupe} pour démontrer que $HK \leq G$ :
+
+\begin{enumerate}
+    \item \textbf{$HK$ n'est pas vide ($HK \neq \emptyset$) :}  
+    Puisque $H$ et $K$ sont des sous-groupes de $G$, ils contiennent tous deux l'élément neutre $e$.  
+    Donc $e = e \cdot e \in HK$. Ainsi $HK \neq \emptyset$.
+
+    \item \textbf{Stabilité sous la loi de groupe (Fermeture) :}  
+    Soient $x, y \in HK$. Par définition, on peut écrire :
+    \[ x = h_1 k_1 \quad \text{et} \quad y = h_2 k_2 \quad (h_1, h_2 \in H, \; k_1, k_2 \in K) \]
+    Calculons leur produit :
+    \[ x \cdot y = (h_1 k_1)(h_2 k_2) = h_1 (k_1 h_2) k_2 \]
+    Considérons le terme central $(k_1 h_2)$. Puisque $k_1 \in K$ et $h_2 \in H$, on a $k_1 h_2 \in KH$.  
+    Or, par hypothèse, $KH = HK$. Par conséquent, il existe des éléments $h_3 \in H$ et $k_3 \in K$ tels que :
+    \[ k_1 h_2 = h_3 k_3 \]
+    Remplaçons cette expression dans le produit :
+    \[ x \cdot y = h_1 (h_3 k_3) k_2 = (h_1 h_3)(k_3 k_2) \]
+    Puisque $H \leq G$ et $K \leq G$, on a $(h_1 h_3) \in H$ et $(k_3 k_2) \in K$.  
+    On conclut donc que :
+    \[ x \cdot y \in HK \]
+    Le sous-ensemble $HK$ est donc fermé par le produit.
+
+    \item \textbf{Stabilité par inversion :}  
+    Soit $x \in HK$, avec $x = hk$ ($h \in H, k \in K$). Son inverse est :
+    \[ x^{-1} = (hk)^{-1} = k^{-1} h^{-1} \]
+    Puisque $k^{-1} \in K$ et $h^{-1} \in H$, on a $x^{-1} \in KH$.  
+    Comme par hypothèse $KH = HK$, on obtient immédiatement :
+    \[ x^{-1} \in HK \]
+\end{enumerate}
+Puisque $HK$ est non vide, stable par produit et stable par inversion, $HK$ est bien un sous-groupe de $G$ :
+\[ HK \leq G \]
+\textbf{Conclusion finale :} $HK \leq G \iff HK = KH$.
+\end{proof}
+
+\newpage
+\section{TD-4 Çözümleri : Groupes Cycliques et Arithmétique}
+
+\subsection*{Exercice 1 : Les Générateurs de $\mathbb{Z}_{12}$}
+\textbf{Soru :} Déterminer tous les générateurs de $(\mathbb{Z}_{12}, +)$.
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Kural : $\mathbb{Z}_n$'nin Üreteçleri ve Euler $\varphi(n)$ Fonksiyonu]
+$(\mathbb{Z}_n, +)$ grubunda bir $\bar{k}$ elemanının üreteç olması için gerek ve yeter şart :
+\[ \langle \bar{k} \rangle = \mathbb{Z}_n \iff \mathbf{\gcd(k, n) = 1} \]
+Bir devirli gruptaki toplam üreteç sayısı her zaman \textbf{Euler $\mathbf{\varphi(n)}$ fonksiyonuna} eşittir :
+\[ \varphi(n) = n \prod_{p \mid n} \left(1 - \frac{1}{p}\right) \]
+\end{tcolorbox}
+
+\begin{proof}[Résolution Complète]
+Pour le groupe $\mathbb{Z}_{12}$, nous avons $n = 12$.  
+Décomposons 12 en facteurs premiers : $12 = 2^2 \times 3$.  
+Calculons le nombre théorique de générateurs à l'aide de la fonction d'Euler :
+\[ \varphi(12) = 12 \times \left(1 - \frac{1}{2}\right) \times \left(1 - \frac{1}{3}\right) = 12 \times \frac{1}{2} \times \frac{2}{3} = \mathbf{4} \]
+Il y a donc exactement 4 générateurs distincts.
+
+Déterminons les entiers $k \in \{0, 1, 2, \dots, 11\}$ premiers avec 12 :
+\begin{itemize}
+    \item $\gcd(0, 12) = 12 \neq 1$
+    \item $\mathbf{\gcd(1, 12) = 1}$ $\implies$ $\bar{1}$ est générateur.
+    \item $\gcd(2, 12) = 2 \neq 1$
+    \item $\gcd(3, 12) = 3 \neq 1$
+    \item $\gcd(4, 12) = 4 \neq 1$
+    \item $\mathbf{\gcd(5, 12) = 1}$ $\implies$ $\bar{5}$ est générateur.
+    \item $\gcd(6, 12) = 6 \neq 1$
+    \item $\mathbf{\gcd(7, 12) = 1}$ $\implies$ $\bar{7}$ est générateur.
+    \item $\gcd(8, 12) = 4 \neq 1$
+    \item $\gcd(9, 12) = 3 \neq 1$
+    \item $\gcd(10, 12) = 2 \neq 1$
+    \item $\mathbf{\gcd(11, 12) = 1}$ $\implies$ $\overline{11}$ est générateur.
+\end{itemize}
+\textbf{Conclusion :} L'ensemble des générateurs de $\mathbb{Z}_{12}$ est :
+\[ \mathbf{\operatorname{Gen}(\mathbb{Z}_{12}) = \{\bar{1}, \bar{5}, \bar{7}, \overline{11}\}} \]
+\end{proof}
+
+\vspace{0.5cm}
+
+\subsection*{Exercice 2 : Tous les Sous-groupes de $\mathbb{Z}_{18}$}
+\textbf{Soru :} Donner tous les sous-groupes de $(\mathbb{Z}_{18}, +)$.
+
+\begin{tcolorbox}[colback=teal!5!white,colframe=teal!80!black,title=Teorem : Devirli Grupların Alt Grup Yapısı (Treillis des sous-groupes)]
+$\mathbb{Z}_{18}$ sonlu devirli bir gruptur ($|\mathbb{Z}_{18}| = 18$).  
+$18$'in her pozitif $d$ böleni için $\mathbb{Z}_{18}$'in \textbf{tam olarak bir tane} $d$ mertebeli alt grubu vardır.  
+Bu alt grup $k = \frac{18}{d}$ olmak üzere $\mathbf{\langle \bar{k} \rangle}$ tarafından üretilir.
+\end{tcolorbox}
+
+\begin{proof}[Résolution et Liste des Sous-groupes]
+L'ensemble des diviseurs positifs de 18 est :
+\[ \text{Div}(18) = \{1, 2, 3, 6, 9, 18\} \]
+Il y a 6 diviseurs, donc $\mathbb{Z}_{18}$ possède exactement \textbf{6 sous-groupes} :
+
+\begin{enumerate}
+    \item \textbf{Ordre $d = 1$ ($k = 18/1 = 18 \equiv 0$) :}
+    \[ H_1 = \langle \bar{0} \rangle = \{\bar{0}\} \]
+    (Le sous-groupe trivial).
+    
+    \item \textbf{Ordre $d = 2$ ($k = 18/2 = 9$) :}
+    \[ H_2 = \langle \bar{9} \rangle = \{\bar{0}, \bar{9}\} \]
+    
+    \item \textbf{Ordre $d = 3$ ($k = 18/3 = 6$) :}
+    \[ H_3 = \langle \bar{6} \rangle = \{\bar{0}, \bar{6}, \overline{12}\} \]
+    (L'autre générateur de $H_3$ est $\overline{12}$, car $\gcd(12, 18) = 6$).
+    
+    \item \textbf{Ordre $d = 6$ ($k = 18/6 = 3$) :}
+    \[ H_6 = \langle \bar{3} \rangle = \{\bar{0}, \bar{3}, \bar{6}, \bar{9}, \overline{12}, \overline{15}\} \]
+    (Les générateurs de $H_6$ sont les multiples de 3 premiers avec 6 : $\bar{3}, \overline{15}$).
+    
+    \item \textbf{Ordre $d = 9$ ($k = 18/9 = 2$) :}
+    \[ H_9 = \langle \bar{2} \rangle = \{\bar{0}, \bar{2}, \bar{4}, \bar{6}, \bar{8}, \overline{10}, \overline{12}, \overline{14}, \overline{16}\} \]
+    (Contient toutes les classes paires. Ses générateurs sont $\bar{2}, \bar{4}, \bar{8}, \overline{10}, \overline{14}, \overline{16}$).
+    
+    \item \textbf{Ordre $d = 18$ ($k = 18/18 = 1$) :}
+    \[ H_{18} = \langle \bar{1} \rangle = \mathbb{Z}_{18} \]
+    (Le groupe tout entier. Ses générateurs sont les éléments vérifiant $\gcd(k, 18) = 1$, il y en a $\varphi(18) = 18 \times \frac{1}{2} \times \frac{2}{3} = 6$ : $\bar{1}, \bar{5}, \bar{7}, \overline{11}, \overline{13}, \overline{17}$).
+\end{enumerate}
+\end{proof}
+
+\vspace{0.5cm}
+
+\subsection*{Exercice 3 : Ordre de $\bar{5}$ dans $\mathbb{Z}_{30}$}
+\textbf{Soru :} Quel est l'ordre de $\bar{5}$ dans $(\mathbb{Z}_{30}, +)$ ?
+
+\begin{tcolorbox}[colback=purple!5!white,colframe=purple!75!black,title=Altın Formül : $\mathbb{Z}_n$'de Eleman Mertebesi]
+Toplamsal grupta $(\mathbb{Z}_n, +)$ bir $\bar{a}$ elemanının mertebesi daima şu formülle hesaplanır :
+\[ \mathbf{o(\bar{a}) = \frac{n}{\gcd(a, n)}} \]
+\end{tcolorbox}
+
+\begin{proof}[Calcul]
+Ici, $n = 30$ et l'élément considéré est $a = 5$.
+Calculons le PGCD (EBOB) de 5 et 30 :
+\[ \gcd(5, 30) = 5 \]
+En appliquant la formule de l'ordre :
+\[ o(\bar{5}) = \frac{30}{\gcd(5, 30)} = \frac{30}{5} = \mathbf{6} \]
+
+\textbf{Vérification par les multiples successifs :}
+\begin{align*}
+1 \cdot \bar{5} &= \bar{5} \neq \bar{0} \\
+2 \cdot \bar{5} &= \overline{10} \neq \bar{0} \\
+3 \cdot \bar{5} &= \overline{15} \neq \bar{0} \\
+4 \cdot \bar{5} &= \overline{20} \neq \bar{0} \\
+5 \cdot \bar{5} &= \overline{25} \neq \bar{0} \\
+6 \cdot \bar{5} &= \overline{30} \equiv \bar{0} \pmod{30}
+\end{align*}
+Le plus petit entier strictement positif $k$ vérifiant $k \cdot \bar{5} = \bar{0}$ est bien $k = 6$.
+L'ordre de $\bar{5}$ dans $\mathbb{Z}_{30}$ est donc égal à $\mathbf{6}$.
+\end{proof}
+
+\vspace{0.5cm}
+
+\subsection*{Exercice 4 : Nombre de Générateurs dans un Groupe Cyclique d'Ordre 20}
+\textbf{Soru :} Combien y a-t-il de générateurs dans un groupe cyclique d'ordre 20 ?
+
+\begin{proof}[Résolution]
+Soit $G = \langle a \rangle$ un groupe cyclique d'ordre $n = 20$.  
+Un élément de la forme $a^k$ ($0 \leq k < 20$) engendre tout le groupe $G$ si et seulement si l'exposant $k$ est premier avec l'ordre du groupe :
+\[ \langle a^k \rangle = G \iff \gcd(k, 20) = 1 \]
+Par conséquent, le nombre de générateurs est exactement égal à la valeur de la fonction indicatrice d'Euler $\mathbf{\varphi(20)}$.
+
+Calculons $\varphi(20)$ :
+La décomposition de 20 en facteurs premiers est :
+\[ 20 = 2^2 \times 5^1 \]
+En appliquant la formule d'Euler :
+\[ \varphi(20) = 20 \times \left(1 - \frac{1}{2}\right) \times \left(1 - \frac{1}{5}\right) = 20 \times \frac{1}{2} \times \frac{4}{5} = \mathbf{8} \]
+\textbf{Conclusion :} Un groupe cyclique d'ordre 20 possède exactement $\mathbf{8}$ générateurs.  
+\textit{(Ce sont les éléments $a^k$ où $k \in \{1, 3, 7, 9, 11, 13, 17, 19\}$)}.
+\end{proof}
+
+\vspace{0.5cm}
+
+\subsection*{Exercice 5 : Éléments d'Ordre 4 dans $\mathbb{Z}_{12}$}
+\textbf{Soru :} Déterminer tous les éléments d'ordre 4 dans $(\mathbb{Z}_{12}, +)$.
+
+\begin{tcolorbox}[colback=yellow!5!white,colframe=orange!80!black,title=Sınav Taktiği : İstenen Mertebedeki Elemanları Bulma]
+$\mathbb{Z}_n$'de mertebesi $d$ olan elemanları bulmak için formülü tersine işletiriz :
+\[ o(\bar{x}) = d \iff \frac{n}{\gcd(x, n)} = d \iff \mathbf{\gcd(x, n) = \frac{n}{d}} \]
+Dolayısıyla $x$ sayısı kesinlikle $\frac{n}{d}$'nin bir katı olmak zorundadır !
+\end{tcolorbox}
+
+\begin{proof}[Résolution]
+Nous cherchons tous les $\bar{x} \in \mathbb{Z}_{12}$ ($x \in \{0, 1, 2, \dots, 11\}$) vérifiant :
+\[ o(\bar{x}) = 4 \]
+D'après la formule de l'ordre :
+\[ \frac{12}{\gcd(x, 12)} = 4 \iff \gcd(x, 12) = \frac{12}{4} = 3 \]
+Nous cherchons donc les entiers $x \in \{0, \dots, 11\}$ dont le PGCD avec 12 est exactement 3.
+Puisque 3 divise $x$, $x$ ne peut être choisi que parmi les multiples de 3 dans $\{0, 1, \dots, 11\}$ :
+\[ x \in \{0, 3, 6, 9\} \]
+Testons chacun de ces 4 candidats :
+\begin{enumerate}
+    \item Pour $x = 0$ : $\gcd(0, 12) = 12 \neq 3$ (ordre 1).
+    \item Pour $x = 3$ : $\mathbf{\gcd(3, 12) = 3}$. Convient ! Son ordre est $12/3 = 4$.
+    \item Pour $x = 6$ : $\gcd(6, 12) = 6 \neq 3$ (son ordre est $12/6 = 2$).
+    \item Pour $x = 9$ : $\mathbf{\gcd(9, 12) = 3}$. Convient ! Son ordre est $12/3 = 4$.
+\end{enumerate}
+\textbf{Conclusion :} Les seuls éléments d'ordre 4 dans $\mathbb{Z}_{12}$ sont :
+\[ \mathbf{\bar{3} \quad \text{et} \quad \bar{9}} \]
+\textit{(Remarque de contrôle : Dans un groupe cyclique, le nombre d'éléments d'ordre $d$ divisant l'ordre du groupe est toujours $\varphi(d)$. Pour $d = 4$, $\varphi(4) = 4(1 - 1/2) = 2$. On a bien trouvé exactement 2 éléments !)}.
+\end{proof}
+
+\vspace{0.5cm}
+
+\subsection*{Exercice 6 : Tout Groupe Cyclique d'Ordre Premier est Simple}
+\textbf{Soru :} Montrer que tout groupe cyclique d'ordre premier est simple.
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Tanım : Basit Grup (Groupe Simple)]
+Un groupe $G$ est dit \textbf{simple} s'il possède au moins deux éléments ($|G| \geq 2$) et si ses \textbf{seuls sous-groupes normaux} sont les sous-groupes triviaux : $\{e\}$ et $G$ lui-même.
+\end{tcolorbox}
+
+\begin{proof}[Démonstration Rigoureuse]
+Soit $G$ un groupe cyclique d'ordre $p$, où $p$ est un \textbf{nombre premier} ($|G| = p$).  
+Puisque $p$ est premier, on a $p \geq 2$, donc $G$ possède au moins deux éléments.
+
+\begin{enumerate}
+    \item \textbf{Étude des sous-groupes de $G$ par le Théorème de Lagrange :}  
+    Soit $H$ un sous-groupe quelconque de $G$ ($H \leq G$).  
+    D'après le théorème de Lagrange, l'ordre du sous-groupe $H$ doit obligatoirement diviser l'ordre du groupe $G$ :
+    \[ |H| \text{ divise } |G| \implies |H| \text{ divise } p \]
+    Or, par définition même d'un nombre premier, les seuls diviseurs positifs de $p$ dans $\mathbb{N}$ sont $1$ et $p$.  
+    Par conséquent, il n'existe que deux valeurs possibles pour l'ordre de $H$ :
+    \begin{itemize}
+        \item Si $|H| = 1$, alors $H$ est nécessairement réduit à l'élément neutre :
+        \[ H = \{e\} \]
+        \item Si $|H| = p$, puisque $H \subseteq G$ et que $|H| = |G| = p$ (avec $G$ fini), on a nécessairement :
+        \[ H = G \]
+    \end{itemize}
+    Ceci démontre que $G$ ne possède \textbf{aucun sous-groupe propre non trivial}. Ses seuls sous-groupes sont $\{e\}$ et $G$.
+
+    \item \textbf{Normalité des sous-groupes :}  
+    Puisque $G$ est cyclique, il est en particulier \textbf{abélien} (commutatif).  
+    Dans tout groupe abélien, \textbf{chaque sous-groupe est automatiquement normal} (car pour tout $g \in G$ et $h \in H$, $ghg^{-1} = gg^{-1}h = h \in H$).  
+    Ainsi, les seuls sous-groupes normaux de $G$ sont $\{e\}$ et $G$ lui-même.
+\end{enumerate}
+\textbf{Conclusion finale :} Le groupe $G$ ne possède aucun sous-groupe normal propre non trivial. Par conséquent, $G$ est un \textbf{groupe simple}.
+\end{proof}
+
+\newpage
+\section{TD-5 Çözümleri : Groupe Symétrique $\mathcal{S}_n$ et Permutations}
+
+\subsection*{Exercice 1 : Calcul de Produits de Permutations}
+\textbf{Soru :} Posons dans $\mathcal{S}_4$ :
+\[
+\mathrm{id} = \begin{pmatrix} 1 & 2 & 3 & 4 \\ 1 & 2 & 3 & 4 \end{pmatrix}, \quad 
+\sigma_1 = \begin{pmatrix} 1 & 2 & 3 & 4 \\ 2 & 3 & 4 & 1 \end{pmatrix}, \quad 
+\tau = \begin{pmatrix} 1 & 2 & 3 & 4 \\ 3 & 4 & 1 & 2 \end{pmatrix}, \quad 
+\sigma_2 = \begin{pmatrix} 1 & 2 & 3 & 4 \\ 4 & 1 & 2 & 3 \end{pmatrix}
+\]
+Calculer $\sigma_1 \circ \sigma_2$, $\sigma_1 \circ \sigma_1$, $\sigma_1 \circ \tau$ et $\sigma_2 \circ \tau$.
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Rappel : Bileşke Sırası (Convention Française)]
+Fransız ekolünde $(\sigma \circ \tau)(x) = \sigma(\tau(x))$ kuralı geçerlidir. Yani bir elemanın nereye gittiğini bulmak için \textbf{sağdaki permütasyondan başlanıp soldakine doğru} gidilir !
+\end{tcolorbox}
+
+\begin{proof}[Calculs Détaillés]
+Écrivons d'abord ces permutations sous la forme de cycles :
+\[ \sigma_1 = (1\,2\,3\,4), \quad \tau = (1\,3)(2\,4), \quad \sigma_2 = (1\,4\,3\,2) \]
+Remarquons immédiatement que $\sigma_2 = \sigma_1^{-1}$ et que $\tau = \sigma_1^2$.
+
+\begin{enumerate}
+    \item \textbf{Calcul de $\sigma_1 \circ \sigma_2$ :}
+    \begin{align*}
+    1 &\xrightarrow{\sigma_2} 4 \xrightarrow{\sigma_1} 1 \\
+    2 &\xrightarrow{\sigma_2} 1 \xrightarrow{\sigma_1} 2 \\
+    3 &\xrightarrow{\sigma_2} 2 \xrightarrow{\sigma_1} 3 \\
+    4 &\xrightarrow{\sigma_2} 3 \xrightarrow{\sigma_1} 4
+    \end{align*}
+    Donc $\mathbf{\sigma_1 \circ \sigma_2 = \mathrm{id}}$.
+
+    \item \textbf{Calcul de $\sigma_1 \circ \sigma_1 = \sigma_1^2$ :}
+    \begin{align*}
+    1 &\xrightarrow{\sigma_1} 2 \xrightarrow{\sigma_1} 3 \\
+    2 &\xrightarrow{\sigma_1} 3 \xrightarrow{\sigma_1} 4 \\
+    3 &\xrightarrow{\sigma_1} 4 \xrightarrow{\sigma_1} 1 \\
+    4 &\xrightarrow{\sigma_1} 1 \xrightarrow{\sigma_1} 2
+    \end{align*}
+    Donc $\mathbf{\sigma_1 \circ \sigma_1 = \begin{pmatrix} 1 & 2 & 3 & 4 \\ 3 & 4 & 1 & 2 \end{pmatrix} = \tau = (1\,3)(2\,4)}$.
+
+    \item \textbf{Calcul de $\sigma_1 \circ \tau$ :}
+    \begin{align*}
+    1 &\xrightarrow{\tau} 3 \xrightarrow{\sigma_1} 4 \\
+    2 &\xrightarrow{\tau} 4 \xrightarrow{\sigma_1} 1 \\
+    3 &\xrightarrow{\tau} 1 \xrightarrow{\sigma_1} 2 \\
+    4 &\xrightarrow{\tau} 2 \xrightarrow{\sigma_1} 3
+    \end{align*}
+    Donc $\mathbf{\sigma_1 \circ \tau = \begin{pmatrix} 1 & 2 & 3 & 4 \\ 4 & 1 & 2 & 3 \end{pmatrix} = \sigma_2 = (1\,4\,3\,2)}$.
+
+    \item \textbf{Calcul de $\sigma_2 \circ \tau$ :}
+    \begin{align*}
+    1 &\xrightarrow{\tau} 3 \xrightarrow{\sigma_2} 2 \\
+    2 &\xrightarrow{\tau} 4 \xrightarrow{\sigma_2} 3 \\
+    3 &\xrightarrow{\tau} 1 \xrightarrow{\sigma_2} 4 \\
+    4 &\xrightarrow{\tau} 2 \xrightarrow{\sigma_2} 1
+    \end{align*}
+    Donc $\mathbf{\sigma_2 \circ \tau = \begin{pmatrix} 1 & 2 & 3 & 4 \\ 2 & 3 & 4 & 1 \end{pmatrix} = \sigma_1 = (1\,2\,3\,4)}$.
+\end{enumerate}
+\textit{Remarque : Le sous-ensemble $\{\mathrm{id}, \sigma_1, \tau, \sigma_2\}$ forme le sous-groupe cyclique $\langle \sigma_1 \rangle \cong \mathbb{Z}_4$ d'ordre 4 dans $\mathcal{S}_4$ !}
+\end{proof}
+
+\vspace{0.5cm}
+
+\subsection*{Exercice 2 : $\mathcal{S}_n$ Engendré par un 2-cycle et un $n$-cycle}
+\textbf{Soru :} Montrer que le groupe symétrique $\mathcal{S}_n$ peut être engendré par deux éléments : une transposition $(1\,2)$ et un grand cycle $(1\,2\,\dots\,n)$.
+
+\begin{tcolorbox}[colback=purple!5!white,colframe=purple!75!black,title=Önemli Bağıntı : Döngülerin Eşlenikliği (Conjugaison de Cycles)]
+Bir döngüyü başka bir permütasyonla eşlediğimizde ($\sigma c \sigma^{-1}$), sadece elemanların isimleri $\sigma$ altındaki görüntüleriyle yer değiştirir :
+\[ \sigma (a_1 \, a_2 \, \dots \, a_k) \sigma^{-1} = (\sigma(a_1) \, \sigma(a_2) \, \dots \, \sigma(a_k)) \]
+Bu formül sınavda permütasyon ispatlarının can damarıdır !
+\end{tcolorbox}
+
+\begin{proof}[Démonstration]
+Posons $\tau = (1\,2)$ et $\sigma = (1\,2\,3\,\dots\,n)$. Soit $H = \langle \tau, \sigma \rangle$ le sous-groupe de $\mathcal{S}_n$ engendré par ces deux éléments.
+Montrons que $H = \mathcal{S}_n$ en trois étapes :
+
+\begin{enumerate}
+    \item \textbf{Étape 1 : $H$ contient toutes les transpositions adjacentes $(k \; k+1)$ :}  
+    En conjuguant successivement la transposition $(1\,2)$ par le grand cycle $\sigma$, on fait avancer les indices d'un cran :
+    \begin{align*}
+    \sigma (1\,2) \sigma^{-1} &= (\sigma(1) \, \sigma(2)) = (2\,3) \in H \\
+    \sigma^2 (1\,2) \sigma^{-2} &= \sigma (2\,3) \sigma^{-1} = (3\,4) \in H \\
+    \vdots \\
+    \sigma^{k-1} (1\,2) \sigma^{-(k-1)} &= (k \; k+1) \in H \quad \text{pour tout } 1 \leq k \leq n-1.
+    \end{align*}
+    Le sous-groupe $H$ contient donc toutes les transpositions adjacentes $\{(1\,2), (2\,3), \dots, (n-1 \; n)\}$.
+
+    \item \textbf{Étape 2 : Les transpositions adjacentes engendrent toutes les transpositions $(i\,j)$ :}  
+    Soient $1 \leq i < j \leq n$. On peut exprimer $(i\,j)$ par récurrence sur la distance $j - i$ :
+    \[ (i \; i+2) = (i+1 \; i+2)(i \; i+1)(i+1 \; i+2) \]
+    Et de manière générale :
+    \[ (i \; j) = (j-1 \; j) (i \; j-1) (j-1 \; j) \]
+    Par conséquent, toute transposition quelconque $(i\,j)$ peut être fabriquée comme un produit de transpositions adjacentes. Donc $(i\,j) \in H$ pour tous $1 \leq i < j \leq n$.
+
+    \item \textbf{Étape 3 : Conclusion :}  
+    Puisque toute permutation de $\mathcal{S}_n$ est un produit de transpositions (Exercice 4), et que toutes les transpositions appartiennent à $H$, on en déduit que :
+    \[ H = \mathcal{S}_n \]
+\end{enumerate}
+\textbf{Conclusion finale :} $\mathcal{S}_n = \langle (1\,2), (1\,2\,\dots\,n) \rangle$.
+\end{proof}
+
+\vspace{0.5cm}
+
+\subsection*{Exercice 3 : Décomposition en Cycles Disjoints}
+\textbf{Soru :} Montrer que toute permutation $\sigma \in \mathcal{S}_n$ peut s'écrire comme une composition de cycles disjoints.
+
+\begin{proof}[Démonstration]
+Soit $E = \{1, 2, \dots, n\}$ et soit $\sigma \in \mathcal{S}_n$.  
+Définissons une relation $\sim$ sur l'ensemble $E$ par :
+\[ x \sim y \iff \exists k \in \mathbb{Z} \text{ tel que } y = \sigma^k(x) \]
+Il est facile de vérifier que $\sim$ est une \textbf{relation d'équivalence} :
+\begin{itemize}
+    \item Réflexive : $x = \sigma^0(x)$ car $\sigma^0 = \mathrm{id}$.
+    \item Symétrique : $y = \sigma^k(x) \implies x = \sigma^{-k}(y)$.
+    \item Transitive : $y = \sigma^k(x)$ et $z = \sigma^m(y) \implies z = \sigma^{k+m}(x)$.
+\end{itemize}
+Les classes d'équivalence de cette relation forment une partition de l'ensemble fini $E$. On les appelle les \textbf{orbites} de $\sigma$.
+
+Pour chaque orbite contenant au moins deux éléments, notons-la :
+\[ O = \{x, \sigma(x), \sigma^2(x), \dots, \sigma^{d-1}(x)\} \]
+où $d$ est le plus petit entier strictement positif tel que $\sigma^d(x) = x$.  
+À cette orbite correspond le cycle $c = (x \; \sigma(x) \; \dots \; \sigma^{d-1}(x))$.
+
+Puisque les orbites forment une partition de $E$, les supports des cycles associés aux différentes orbites sont \textbf{deux à deux disjoints}.  
+Deux cycles à supports disjoints commutent. Pour tout élément $x \in E$, l'application de ces cycles donne exactement l'image $\sigma(x)$.  
+Par conséquent, $\sigma$ s'écrit de manière unique (à l'ordre des facteurs près) comme le produit de ces cycles disjoints :
+\[ \sigma = c_1 \circ c_2 \circ \dots \circ c_r \]
+\end{proof}
+
+\vspace{0.5cm}
+
+\subsection*{Exercice 4 : Génération de $\mathcal{S}_n$ par les Transpositions}
+\textbf{Soru :} Une transposition est un cycle de longueur 2. Montrer que $\mathcal{S}_n$ est engendré par les transpositions.
+
+\begin{proof}[Démonstration]
+D'après l'Exercice 3, toute permutation $\sigma \in \mathcal{S}_n$ se décompose en un produit de cycles disjoints. Il suffit donc de montrer que \textbf{tout cycle} peut s'écrire comme un produit de transpositions.
+
+Soit $c = (a_1 \; a_2 \; \dots \; a_k)$ un cycle de longueur $k \geq 2$.  
+On peut décomposer directement ce cycle en produit de $k - 1$ transpositions par la formule explicite :
+\[ (a_1 \; a_2 \; a_3 \; \dots \; a_k) = (a_1 \; a_k)(a_1 \; a_{k-1}) \dots (a_1 \; a_3)(a_1 \; a_2) \]
+
+\textbf{Vérification rigoureuse de l'égalité :}
+\begin{itemize}
+    \item L'élément $a_1$ est envoyé par $(a_1 \; a_2)$ sur $a_2$, puis n'est plus modifié par les transpositions suivantes. Donc $a_1 \mapsto a_2$.
+    \item Pour tout $i \in \{2, \dots, k-1\}$, $a_i$ n'est pas touché jusqu'à $(a_1 \; a_i)$ qui l'envoie sur $a_1$, puis la transposition immédiatement à gauche $(a_1 \; a_{i+1})$ envoie $a_1$ sur $a_{i+1}$. Donc $a_i \mapsto a_{i+1}$.
+    \item L'élément $a_k$ n'est touché que par la dernière transposition $(a_1 \; a_k)$ qui l'envoie sur $a_1$. Donc $a_k \mapsto a_1$.
+\end{itemize}
+La formule est donc parfaitement exacte.  
+Chaque cycle étant un produit de transpositions, toute permutation est un produit de transpositions.  
+Le groupe $\mathcal{S}_n$ est donc engendré par l'ensemble de ses transpositions.
+\end{proof}
+
+\vspace{0.5cm}
+
+\subsection*{Exercice 5 : Étude Approfondie de $\mathcal{S}_4$ ($|\mathcal{S}_4| = 24$)}
+\textbf{Soru :} Considérons le groupe symétrique $\mathcal{S}_4$.
+
+\begin{tcolorbox}[colback=teal!5!white,colframe=teal!80!black,title=$\mathcal{S}_4$'ün 24 Elemanının Tip Dağılımı ve Mertebeleri]
+$\mathcal{S}_4$ içinde $4! = 24$ eleman bulunur. Bu 24 eleman döngü yapılarına göre 5 sınıfa ayrılır :
+\begin{itemize}
+    \item $\mathrm{id}$ : 1 eleman (Mertebe 1)
+    \item 2-döngüler (Transpozisyonlar) : $\binom{4}{2} = 6$ eleman (Mertebe 2)
+    \item 3-döngüler : $2 \times \binom{4}{3} = 8$ eleman (Mertebe 3)
+    \item 4-döngüler : $3! = 6$ eleman (Mertebe 4)
+    \item Çift transpozisyonlar $(a\,b)(c\,d)$ : 3 eleman (Mertebe 2)
+    \item \textbf{Toplam :} $1 + 6 + 8 + 6 + 3 = 24$ eleman.
+\end{itemize}
+\end{tcolorbox}
+
+\begin{proof}[Réponses Détaillées aux Questions (a) à (h)]
+\begin{enumerate}
+    \item[(a)] \textbf{Les 2-cycles (transpositions) dans $\mathcal{S}_4$ :}  
+    Pour former une transposition $(a \; b)$, on choisit 2 éléments parmi 4 : $\binom{4}{2} = \frac{4 \times 3}{2} = \mathbf{6}$.  
+    La liste complète est :
+    \[ \mathbf{(1\,2), \quad (1\,3), \quad (1\,4), \quad (2\,3), \quad (2\,4), \quad (3\,4)} \]
+
+    \item[(b)] \textbf{Les 3-cycles dans $\mathcal{S}_4$ :}  
+    On choisit 3 éléments parmi 4 ($\binom{4}{3} = 4$ choix). Pour chaque triplet $\{a, b, c\}$, il existe $(3-1)! = 2$ cycles distincts : $(a\,b\,c)$ et $(a\,c\,b)$.  
+    Il y a donc au total $4 \times 2 = \mathbf{8}$ cycles de longueur 3 :
+    \[ \mathbf{(1\,2\,3), \; (1\,3\,2), \quad (1\,2\,4), \; (1\,4\,2), \quad (1\,3\,4), \; (1\,4\,3), \quad (2\,3\,4), \; (2\,4\,3)} \]
+
+    \item[(c)] \textbf{Les 4-cycles dans $\mathcal{S}_4$ :}  
+    Pour former un 4-cycle avec les 4 éléments, le nombre de façons d'ordonner un cycle est $(4-1)! = 3! = \mathbf{6}$.  
+    La liste complète est :
+    \[ \mathbf{(1\,2\,3\,4), \quad (1\,2\,4\,3), \quad (1\,3\,2\,4), \quad (1\,3\,4\,2), \quad (1\,4\,2\,3), \quad (1\,4\,3\,2)} \]
+
+    \item[(d)] \textbf{Les 5-cycles dans $\mathcal{S}_4$ :}  
+    Un 5-cycle nécessite 5 éléments distincts. Puisque $\mathcal{S}_4$ n'opère que sur 4 éléments, il y a \textbf{0 cycle de longueur 5} dans $\mathcal{S}_4$ (c'est impossible).
+
+    \item[(e)] \textbf{Éléments de $\mathcal{S}_4$ qui ne sont pas des cycles :}  
+    Les permutations qui ne sont pas des cycles simples sont :
+    \begin{itemize}
+        \item L'élément neutre $\mathrm{id}$ (cycle de longueur 1 / pas de déplacement).
+        \item Les produits de deux transpositions à supports disjoints (les doubles transpositions) :
+        \[ (1\,2)(3\,4), \quad (1\,3)(2\,4), \quad (1\,4)(2\,3) \]
+    \end{itemize}
+    Il y a donc \textbf{3 permutations} non triviales qui ne sont pas des cycles (ou 4 en comptant $\mathrm{id}$).
+
+    \item[(f)] \textbf{Ordre de chaque élément de $\mathcal{S}_4$ :}  
+    L'ordre d'une permutation décomposée en cycles disjoints est le \textbf{PPCM des longueurs de ses cycles} :
+    \begin{itemize}
+        \item $\mathrm{id}$ : ordre $\mathbf{1}$.
+        \item Les transpositions $(a\,b)$ : ordre $\mathbf{2}$ (car $\operatorname{PPCM}(2) = 2$).
+        \item Les doubles transpositions $(a\,b)(c\,d)$ : ordre $\mathbf{2}$ (car $\operatorname{PPCM}(2, 2) = 2$).
+        \item Les 3-cycles $(a\,b\,c)$ : ordre $\mathbf{3}$ (car $\operatorname{PPCM}(3) = 3$).
+        \item Les 4-cycles $(a\,b\,c\,d)$ : ordre $\mathbf{4}$ (car $\operatorname{PPCM}(4) = 4$).
+    \end{itemize}
+    \textit{Pourquoi les ordres sont identiques pour les permutations de même type de cycle ?}  
+    Deux permutations de même type de cycle sont \textbf{conjuguées} dans $\mathcal{S}_n$ (il existe $\rho \in \mathcal{S}_n$ tel que $\sigma' = \rho \sigma \rho^{-1}$). Or l'opération de conjugaison est un automorphisme intérieur, elle conserve rigoureusement l'ordre des éléments : $o(\rho \sigma \rho^{-1}) = o(\sigma)$.
+
+    \item[(g)] \textbf{Les sous-groupes cycliques d'ordres 2, 3 et 4 dans $\mathcal{S}_4$ :}
+    \begin{itemize}
+        \item \textbf{Sous-groupes d'ordre 2 :} Tout élément d'ordre 2 engendre un sous-groupe cyclique $\{ \mathrm{id}, \sigma \}$. Il y a $6 + 3 = 9$ éléments d'ordre 2, donc exactement \textbf{9 sous-groupes d'ordre 2} :  
+        6 engendrés par les transpositions ($\langle (1\,2) \rangle, \dots, \langle (3\,4) \rangle$) et 3 engendrés par les doubles transpositions ($\langle (1\,2)(3\,4) \rangle, \langle (1\,3)(2\,4) \rangle, \langle (1\,4)(2\,3) \rangle$).
+        \item \textbf{Sous-groupes d'ordre 3 :} Chaque sous-groupe d'ordre 3 contient 2 éléments d'ordre 3 (un élément et son carré/inverse). Avec 8 éléments d'ordre 3, il y a $8/2 = \mathbf{4}$ sous-groupes d'ordre 3 :  
+        $\langle (1\,2\,3) \rangle, \quad \langle (1\,2\,4) \rangle, \quad \langle (1\,3\,4) \rangle, \quad \langle (2\,3\,4) \rangle$.
+        \item \textbf{Sous-groupes d'ordre 4 :} Chaque sous-groupe cyclique d'ordre 4 contient $\varphi(4) = 2$ éléments d'ordre 4. Avec 6 éléments d'ordre 4, il y a $6/2 = \mathbf{3}$ sous-groupes cycliques d'ordre 4 :  
+        $\langle (1\,2\,3\,4) \rangle, \quad \langle (1\,2\,4\,3) \rangle, \quad \langle (1\,3\,2\,4) \rangle$.
+    \end{itemize}
+
+    \item[(h)] \textbf{Sous-groupe engendré par $(1\,2\,3)$ et $(2\,3)$ :}  
+    Ces deux permutations laissent le chiffre 4 invariant ($\sigma(4) = 4$). Elles agissent exclusivement sur l'ensemble $\{1, 2, 3\}$.  
+    Le sous-groupe engendré est donc isomorphe au groupe symétrique $\mathcal{S}_3$, et son ordre est $3! = 6$.  
+    Ses 6 éléments sont :
+    \[ \mathbf{\langle (1\,2\,3), (2\,3) \rangle = \{ \mathrm{id}, \; (1\,2\,3), \; (1\,3\,2), \; (2\,3), \; (1\,2), \; (1\,3) \}} \]
+\end{enumerate}
+\end{proof}
+
+\vspace{0.5cm}
+
+\subsection*{Exercice 6 : Comparaison $\mathcal{S}_3 \cong \mathcal{D}_3$ et Tétraèdre Régulier}
+\textbf{Soru :} Comparez $\mathcal{S}_3$ et $\mathcal{D}_3$. Ensuite comparer $\mathcal{S}_4$ et le groupe de symétrie du tétraèdre régulier.
+
+\begin{proof}[Comparaisons Géométriques et Algébriques]
+\begin{enumerate}
+    \item \textbf{Comparaison entre $\mathcal{S}_3$ et $\mathcal{D}_3$ :}  
+    Le groupe diédral $\mathcal{D}_3$ est le groupe des isométries du plan préservant un triangle équilatéral.  
+    Il contient 6 éléments : 3 rotations ($R_0, R_{120^\circ}, R_{240^\circ}$) et 3 réflexions axiales ($S_1, S_2, S_3$).  
+    Toute isométrie du triangle équilatéral permute de façon bijective ses 3 sommets numérotés $\{1, 2, 3\}$.  
+    L'application associant à chaque isométrie la permutation induite sur les sommets :
+    \[ \Phi : \mathcal{D}_3 \longrightarrow \mathcal{S}_3 \]
+    est un morphisme de groupes injectif (la seule isométrie fixant les 3 sommets non alignés est l'identité).  
+    Puisque $|\mathcal{D}_3| = 6$ et $|\mathcal{S}_3| = 3! = 6$, une injection entre deux groupes finis de même ordre est une bijection.  
+    \textbf{Conclusion :} $\mathcal{D}_3$ est isomorphe à $\mathcal{S}_3$ :
+    \[ \mathbf{\mathcal{D}_3 \cong \mathcal{S}_3} \]
+    \textit{(Remarque : $\mathcal{S}_3$ est le SEUL groupe symétrique qui soit diédrique. Pour $n \geq 4$, $|\mathcal{S}_n| = n! > 2n = |\mathcal{D}_n|$)}.
+
+    \item \textbf{Comparaison entre $\mathcal{S}_4$ et les symétries du tétraèdre régulier :}  
+    Un tétraèdre régulier dans l'espace $\mathbb{R}^3$ possède 4 sommets $\{1, 2, 3, 4\}$, 4 faces et 6 arêtes.  
+    Toute isométrie de l'espace préservant le tétraèdre envoie sommet sur sommet, ce qui définit un morphisme vers $\mathcal{S}_4$.  
+    \begin{itemize}
+        \item Le groupe de \textbf{toutes les isométries} (directes et indirectes / avec réflexions) du tétraèdre régulier est de cardinal $4! = 24$, et il est rigoureusement \textbf{isomorphe à $\mathcal{S}_4$}.
+        \item Le sous-groupe des \textbf{rotations de l'espace (isométries directes)} préservant le tétraèdre est d'ordre $24 / 2 = 12$. Il correspond exactement aux permutations paires de 4 sommets, c'est-à-dire au \textbf{groupe alterné $\mathcal{A}_4$} :
+        \[ \mathbf{\operatorname{Isom}^+(\text{Tétraèdre}) \cong \mathcal{A}_4} \]
+        Ces 12 rotations se décomposent géométriquement en :
+        \begin{itemize}
+            \item L'identité (1 élément).
+            \item 8 rotations d'angles $\pm 120^\circ$ dont les axes passent par un sommet et le centre de la face opposée (correspondant aux 8 cycles de longueur 3).
+            \item 3 demi-tours (rotations d'angle $180^\circ$) dont les axes relient les milieux de deux arêtes opposées (correspondant aux 3 doubles transpositions $(1\,2)(3\,4)$, $(1\,3)(2\,4)$, $(1\,4)(2\,3)$).
+        \end{itemize}
+    \end{itemize}
+\end{enumerate}
+\end{proof}
+
+\newpage
+\section{Bölüm 6: Grup Morfizmleri (Morphismes de Groupes)}
+
+Hocanın derste "Parité et Signature" konusunun hemen arkasından giriş yaptığı bu konu, iki farklı grup yapısını birbiriyle konuşturan köprüdür.
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Grup Morfizması Tanımı (Morphisme de Groupes)]
+Soient $(G, \star)$ et $(G', \cdot)$ deux groupes.  
+Une application $f : G \longrightarrow G'$ est appelée un \textbf{morphisme de groupes} (ou homomorphisme) si elle respecte les lois de composition :
+\[ \mathbf{\forall x, y \in G, \quad f(x \star y) = f(x) \cdot f(y)} \]
+\textit{Türkçe Mantığı :} İşlemi koruyan fonksiyondur. İster elemanları önce $G$'de işleme sokup sonra görüntüsünü al, ister önce görüntülerini alıp $G'$'de işleme sok, sonuç asla değişmez!
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=teal!5!white,colframe=teal!80!black,title=Proposition (Hocanın Tahtaya Yazdığı Teorem) : Propriétés Fondamentales]
+Soit $\phi : G \longrightarrow H$ un morphisme de groupes. Alors :
+\begin{enumerate}
+    \item $\mathbf{\phi(e_G) = e_H}$ \quad (Le neutre va sur le neutre)
+    \item $\mathbf{\phi(x^{-1}) = [\phi(x)]^{-1}} \quad \text{pour tout } x \in G$ \quad (L'inverse va sur l'inverse)
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{proof}[Démonstration (Hocanın Tahtaya Yazdığı İspat)]
+\begin{enumerate}
+    \item Puisque $e_G \cdot e_G = e_G$, par la propriété de morphisme de $\phi$, on a :
+    \[ \phi(e_G \cdot e_G) = \phi(e_G) \]
+    \[ \phi(e_G) \cdot \phi(e_G) = \phi(e_G) \]
+    Multiplions les deux membres de l'égalité par le symétrique $[\phi(e_G)]^{-1}$ dans $H$ :
+    \[ (\phi(e_G) \cdot \phi(e_G)) \cdot [\phi(e_G)]^{-1} = \phi(e_G) \cdot [\phi(e_G)]^{-1} \]
+    Par associativité dans $H$ :
+    \[ \phi(e_G) \cdot (\phi(e_G) \cdot [\phi(e_G)]^{-1}) = e_H \implies \phi(e_G) \cdot e_H = e_H \implies \mathbf{\phi(e_G) = e_H} \]
+
+    \item Pour tout $x \in G$, on sait que $x \cdot x^{-1} = e_G$. Appliquons $\phi$ :
+    \[ \phi(x \cdot x^{-1}) = \phi(e_G) \implies \phi(x) \cdot \phi(x^{-1}) = e_H \]
+    De même, $\phi(x^{-1}) \cdot \phi(x) = \phi(x^{-1} \cdot x) = \phi(e_G) = e_H$.  
+    Par unicité de l'élément inverse dans le groupe $H$, cela prouve que :
+    \[ \mathbf{\phi(x^{-1}) = [\phi(x)]^{-1}} \]
+\end{enumerate}
+\end{proof}
+
+\vspace{0.4cm}
+
+\subsection*{Çekirdek (Noyau - $\ker f$) ve Görüntü ($\operatorname{im} f$)}
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Çekirdek Tanımı ve Özellikleri (Le Noyau - $\ker f$)]
+$f : G \to G'$ morfizması altında \textbf{hedef grubun birim elemanına ($e_{G'}$) giden} tüm $G$ elemanlarının kümesine $f$'in \textbf{çekirdeği (noyau)} denir :
+\[ \mathbf{\ker(f) = \{ x \in G \mid f(x) = e_{G'} \} \subseteq G} \]
+\textbf{Teorem :} $\ker(f)$, $G$'nin bir \textbf{alt grubudur} ($\ker(f) \leq G$).  
+Hatta $\ker(f)$ sıradan bir alt grup değil, bir \textbf{normal alt gruptur} ($\forall g \in G, k \in \ker f \implies gkg^{-1} \in \ker f$).
+\end{tcolorbox}
+
+\begin{proof}[Démonstration : $\ker(f) \leq G$ (Sınavlık İspat)]
+Appliquons le test de sous-groupe en 1 étape :
+\begin{enumerate}
+    \item \textbf{Non vide :} D'après la propriété 1, $f(e_G) = e_{G'}$. Donc $e_G \in \ker(f) \neq \emptyset$.
+    \item \textbf{Stabilité sous $x \star y^{-1}$ :} Soient $x, y \in \ker(f)$. Alors $f(x) = e_{G'}$ et $f(y) = e_{G'}$.  
+    Calculons $f(x \star y^{-1})$ en utilisant les propriétés de morphisme :
+    \[ f(x \star y^{-1}) = f(x) \cdot f(y^{-1}) = f(x) \cdot (f(y))^{-1} = e_{G'} \cdot (e_{G'})^{-1} = e_{G'} \]
+    Puisque son image est le neutre, on a bien $x \star y^{-1} \in \ker(f)$.
+\end{enumerate}
+Conclusion : $\ker(f)$ est un sous-groupe de $G$.
+\end{proof}
+
+\vspace{0.4cm}
+
+\begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=Görüntü Kümesi (L'Image - $\operatorname{im} f$)]
+$G$'deki elemanların $f$ altındaki tüm görüntülerinin kümesidir :
+\[ \mathbf{\operatorname{im}(f) = f(G) = \{ f(x) \mid x \in G \} \subseteq G'} \]
+\textbf{Teorem :} $\operatorname{im}(f)$, hedef grup $G'$'nün bir \textbf{alt grubudur} ($\operatorname{im}(f) \leq G'$).
+\end{tcolorbox}
+
+\vspace{0.4cm}
+
+\begin{tcolorbox}[colback=purple!5!white,colframe=purple!75!black,title=En Kritik Sınav Teoremi : Birebirlik Testi (Injectivité)]
+\textbf{Théorème :} Un morphisme de groupes $f : G \to G'$ est \textbf{injectif} si et seulement si son noyau est réduit à l'élément neutre :
+\[ \mathbf{f \text{ est injectif } \iff \ker(f) = \{e_G\}} \]
+\end{tcolorbox}
+
+\begin{proof}[Démonstration de l'Injectivité]
+\begin{itemize}
+    \item $(\Longrightarrow)$ Supposons que $f$ soit injectif.  
+    Soit $x \in \ker(f)$. Alors $f(x) = e_{G'}$. Or on sait que $f(e_G) = e_{G'}$.  
+    On a donc $f(x) = f(e_G)$. Puisque $f$ est injectif, cela implique $x = e_G$.  
+    Donc $\ker(f) = \{e_G\}$.
+    
+    \item $(\Longleftarrow)$ Supposons que $\ker(f) = \{e_G\}$.  
+    Soient $x, y \in G$ tels que $f(x) = f(y)$.  
+    Multiplions par $(f(y))^{-1}$ à droite :  
+    \[ f(x) \cdot (f(y))^{-1} = e_{G'} \]
+    Puisque $f$ est un morphisme, $(f(y))^{-1} = f(y^{-1})$, donc :
+    \[ f(x \star y^{-1}) = e_{G'} \]
+    Cela signifie que l'élément $(x \star y^{-1})$ appartient au noyau $\ker(f)$.  
+    Or par hypothèse $\ker(f) = \{e_G\}$, donc nécessairement :
+    \[ x \star y^{-1} = e_G \implies x = y \]
+    Ceci prouve que $f$ est injectif.
+\end{itemize}
+\end{proof}
+
+\vspace{0.4cm}
+
+\subsection*{Morfizma Çeşitleri ve İsimlendirmeler}
+\begin{itemize}
+    \item \textbf{Endomorphisme :} Tanım ve hedef kümesi aynı olan morfizma ($f : G \to G$).
+    \item \textbf{Isomorphisme :} \textbf{Biyektif} (hem birebir hem örten) olan morfizma. Eğer $G$ ile $G'$ arasında bir izomorfizma varsa, iki gruba \textbf{izomorfik} denir ve $\mathbf{G \cong G'}$ yazılır. (Bu iki grup cebirsel olarak ikiz kardeştir, sadece elemanlarının isimleri farklıdır!).
+    \item \textbf{Automorphisme :} Bir grubun kendisine giden biyektif morfizması ($f : G \to G$ izomorfizma).
+\end{itemize}
+
+\vspace{0.4cm}
+
+\subsection*{Hocanın Derste Bahsettiği Örnekler (Tahtadaki 3. Örnek Dahil)}
+\begin{enumerate}
+    \item \textbf{La Signature (Hocanın ilk anlattığı !) :}  
+    $\varepsilon : (\mathcal{S}_n, \circ) \longrightarrow (\{+1, -1\}, \times)$.  
+    $\varepsilon(\sigma \circ \tau) = \varepsilon(\sigma) \times \varepsilon(\tau)$ olduğu için $\varepsilon$ bir grup morfizmasıdır.  
+    Bu morfizmanın çekirdeği tam olarak çift permütasyonlardır : $\mathbf{\ker(\varepsilon) = \mathcal{A}_n}$.
+    
+    \item \textbf{Le Déterminant :}  
+    $\det : (GL_n(\mathbb{R}), \times) \longrightarrow (\mathbb{R}^*, \times)$.  
+    $\det(AB) = \det(A)\det(B)$ olduğu için determinasyon bir morfizmadır. Çekirdeği : $\mathbf{\ker(\det) = SL_n(\mathbb{R})}$.
+    
+    \item \textbf{Tahtadaki 3 Numaralı Örnek : L'application Trace ($\operatorname{tr}$) :}  
+    Soit $M(2, \mathbb{R})$ le groupe abélien des matrices $2 \times 2$ par l'addition matricielle.  
+    On définit l'application :
+    \[ \operatorname{tr} : M(2, \mathbb{R}) \longrightarrow (\mathbb{R}, +) \quad \text{par} \quad \operatorname{tr}\begin{pmatrix} a & b \\ c & d \end{pmatrix} = a + d \]
+    Pour toutes matrices $A = \begin{pmatrix} a & b \\ c & d \end{pmatrix}$ et $A' = \begin{pmatrix} a' & b' \\ c' & d' \end{pmatrix}$, on a :
+    \[ A + A' = \begin{pmatrix} a+a' & b+b' \\ c+c' & d+d' \end{pmatrix} \]
+    Calculons la trace de la somme :
+    \[ \operatorname{tr}(A + A') = (a + a') + (d + d') \]
+    D'autre part :
+    \[ \operatorname{tr}(A) + \operatorname{tr}(A') = (a + d) + (a' + d') = (a + a') + (d + d') \]
+    On remarque que :
+    \[ \mathbf{\operatorname{tr}(A + A') = \operatorname{tr}(A) + \operatorname{tr}(A')} \]
+    \textbf{Conclusion :} L'application $\operatorname{tr}$ est bien un \textbf{morphisme de groupes} !  
+    \textit{Çekirdeği (Noyau) :} $\ker(\operatorname{tr}) = \{ A \in M(2, \mathbb{R}) \mid \operatorname{tr}(A) = 0 \}$, c'est le sous-groupe des matrices de trace nulle.
+    
+    \item \textbf{L'Exponentielle :}  
+    $\exp : (\mathbb{R}, +) \longrightarrow (\mathbb{R}_+^*, \times)$ avec $\exp(x + y) = \exp(x) \times \exp(y)$.
+\end{enumerate}
+
+\vspace{0.5cm}
+
+\subsection*{Sınav ve Derste Çözülen Klasik Morfizma Soru Tipleri}
+
+Hocanın derste arka arkaya çözdüğü ve sınavda puan getirecek standart soru tipleri şunlardır:
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Soru Tipi 1 (Banko Teorem) : Eleman Mertebesi Morfizmada Bölünür !]
+\textbf{Théorème :} Soit $f : G \longrightarrow G'$ un morphisme de groupes.  
+Si $x \in G$ est d'ordre fini $n$ ($o(x) = n$), alors l'ordre de son image $f(x)$ dans $G'$ \textbf{divise} l'ordre de $x$ :
+\[ \mathbf{o(f(x)) \text{ divise } o(x)} \]
+\end{tcolorbox}
+
+\begin{proof}[Démonstration]
+Puisque $o(x) = n$, on a $x^n = e_G$.  
+Calculons la puissance $n$-ième de l'élément image $f(x)$ dans $G'$ :
+\[ (f(x))^n = f(x^n) = f(e_G) = e_{G'} \]
+D'après le lemme fondamental de divisibilité (TD-3 Exercice 2), si la puissance $n$-ième d'un élément donne le neutre, son ordre divise nécessairement cette puissance :
+\[ o(f(x)) \text{ divise } n = o(x) \]
+\textbf{Sınavdaki Muazzam Sonucu (Çok Çıkar !) :}  
+Eğer iki grubun eleman sayıları aralarında asalsa ($\gcd(|G|, |G'|) = 1$), bu iki grup arasında \textbf{aşikar morfizmadan ($f(x) = e_{G'}$) başka HİÇBİR morfizma tanımlanamaz !}  
+\textit{Örnek :} $\mathbb{Z}_7$'den $\mathbb{Z}_8$'e tanımlı tüm elemanlar mecburen sıfıra gitmek zorundadır.
+\end{proof}
+
+\vspace{0.4cm}
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Soru Tipi 2 : $\mathbb{Z}$'den $\mathbb{Z}$'ye Tüm Morfizmler]
+\textbf{Soru :} Déterminer tous les morphismes de groupes de $(\mathbb{Z}, +)$ dans $(\mathbb{Z}, +)$. Lesquels sont des isomorphismes ?
+\end{tcolorbox}
+
+\begin{proof}[Çözüm]
+Soit $f : \mathbb{Z} \to \mathbb{Z}$ un morphisme de groupes.  
+Puisque $\mathbb{Z}$ est cyclique engendré par 1, $f$ est \textbf{entièrement déterminé} par l'image de 1.  
+Posons $a = f(1) \in \mathbb{Z}$.  
+Pour tout $n \in \mathbb{Z}$ :
+\[ f(n) = f(n \cdot 1) = n \cdot f(1) = n \cdot a \]
+Réciproquement, pour n'importe quel entier $a \in \mathbb{Z}$, l'application $f_a(n) = a \cdot n$ est bien un morphisme car :
+\[ f_a(n + m) = a(n + m) = an + am = f_a(n) + f_a(m) \]
+\textbf{Conclusion :} L'ensemble des morphismes de $\mathbb{Z}$ dans $\mathbb{Z}$ est :
+\[ \operatorname{Hom}(\mathbb{Z}, \mathbb{Z}) = \{ f_a : n \mapsto an \mid a \in \mathbb{Z} \} \]
+\textbf{İzomorfizma Şartı :}  
+$f_a$ est injectif $\iff a \neq 0$.  
+$f_a$ est surjectif $\iff a = 1$ ou $a = -1$ (car l'image est $a\mathbb{Z}$, pour couvrir tout $\mathbb{Z}$ il faut $a\mathbb{Z} = \mathbb{Z}$).  
+Les seuls isomorphismes de $\mathbb{Z}$ dans lui-même sont donc :
+\[ \mathbf{\operatorname{Aut}(\mathbb{Z}) = \{ \mathrm{id}, -\mathrm{id} \} \cong \mathbb{Z}_2} \]
+\end{proof}
+
+\vspace{0.4cm}
+
+\begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=Soru Tipi 3 : $\mathbb{Z}_n$'den $\mathbb{Z}_m$'ye Tüm Morfizmler]
+\textbf{Soru :} Déterminer tous les morphismes de groupes de $(\mathbb{Z}_n, +)$ dans $(\mathbb{Z}_m, +)$.
+\end{tcolorbox}
+
+\begin{proof}[Çözüm ve Formül]
+Soit $f : \mathbb{Z}_n \to \mathbb{Z}_m$ un morphisme.  
+Soit $\bar{a} = f(\bar{1}) \in \mathbb{Z}_m$.  
+Dans $\mathbb{Z}_n$, on a $n \cdot \bar{1} = \bar{0}$. En appliquant le morphisme :
+\[ f(n \cdot \bar{1}) = n \cdot f(\bar{1}) = n \cdot \bar{a} = f(\bar{0}) = \bar{0} \quad \text{dans } \mathbb{Z}_m \]
+Cela impose la condition arithmétique fondamentale :
+\[ n \cdot a \equiv 0 \pmod m \iff m \mid na \iff \frac{m}{\gcd(n, m)} \mid a \]
+\textbf{Altın Sonuç :} $\mathbb{Z}_n$'den $\mathbb{Z}_m$'ye tam olarak $\mathbf{\gcd(n, m)}$ \textbf{tane morfizma} vardır !
+
+\textbf{Somut Sınav Örnekleri :}
+\begin{enumerate}
+    \item \textbf{Tahtadaki Örnek : $f : \mathbb{Z}_3 \longrightarrow \mathbb{Z}_6$ avec $f(1) = 4$ :}  
+    Il faut vérifier que pour tous $x, y \in \mathbb{Z}_3$, on a $f(x + y) = f(x) + f(y)$ et $f(0) = 0$.  
+    Calculons les images successives :
+    \begin{align*}
+    f(0) &= 0 \\
+    f(1) &= 4 \\
+    f(2) &= f(1 + 1) = f(1) + f(1) = 4 + 4 = 8 \equiv 2 \pmod 6
+    \end{align*}
+    Vérifions la compatibilité pour le cas $1 + 2 = 0$ :
+    \begin{align*}
+    f(1 + 2) &= f(0) = 0 \\
+    f(1) + f(2) &= 4 + 2 = 6 \equiv 0 \pmod 6 \quad \checkmark
+    \end{align*}
+    Ainsi $f$ est bien un \textbf{morphisme de groupes} !  
+    \textit{Sınav Analizi :}  
+    $\bullet$ $\ker(f) = \{ x \in \mathbb{Z}_3 \mid f(x) = 0 \} = \{0\}$. Çekirdek sadece sıfırdan oluştuğu için $f$ \textbf{birebirdir (injectif)} !  
+    $\bullet$ $\operatorname{im}(f) = \{0, 2, 4\} \leq \mathbb{Z}_6$, $\mathbb{Z}_6$'nın 3 mertebeli tek alt grubudur ($\langle 2 \rangle$).  
+    
+    \item De $\mathbb{Z}_6$ dans $\mathbb{Z}_{10}$ : $\gcd(6, 10) = 2$ morphismes distincts :
+    $f(\bar{1}) = \bar{0}$ (le morphisme nul) et $f(\bar{1}) = \bar{5}$ (car $6 \times 5 = 30 \equiv 0 \pmod{10}$).
+    \item De $\mathbb{Z}_4$ dans $\mathbb{Z}_7$ : $\gcd(4, 7) = 1$. Il n'y a qu'un seul morphisme : le morphisme trivial $\bar{0}$.
+\end{enumerate}
+\end{proof}
+
+\vspace{0.4cm}
+
+\begin{tcolorbox}[colback=yellow!5!white,colframe=orange!80!black,title=Soru Tipi 4 : Çekirdek ($\ker$) ve Birebirlik İncelemesi]
+\textbf{Soru :} Soit $\phi : \mathbb{C}^* \longrightarrow \mathbb{R}^*$ définie par $\phi(z) = |z|$. Montrer que $\phi$ est un morphisme. Déterminer son noyau et son image. Est-il injectif ?
+\end{tcolorbox}
+
+\begin{proof}[Çözüm]
+\begin{enumerate}
+    \item \textbf{Morphisme :} Pour tous $z, z' \in \mathbb{C}^*$ :
+    \[ \phi(z \cdot z') = |z \cdot z'| = |z| \cdot |z'| = \phi(z) \cdot \phi(z') \]
+    C'est bien un morphisme du groupe multiplicatif $(\mathbb{C}^*, \cdot)$ dans $(\mathbb{R}^*, \cdot)$.
+    
+    \item \textbf{Noyau ($\ker \phi$) :} L'élément neutre du groupe cible $(\mathbb{R}^*, \cdot)$ est $1$.
+    \[ \ker(\phi) = \{ z \in \mathbb{C}^* \mid \phi(z) = 1 \} = \{ z \in \mathbb{C}^* \mid |z| = 1 \} = \mathbf{\mathbb{U}} \]
+    Le noyau est le \textbf{cercle unité} (l'ensemble des nombres complexes de module 1).
+    
+    \item \textbf{Injectivité :} Puisque $\ker(\phi) = \mathbb{U} \neq \{1\}$ (par exemple $-1, i, -i \in \ker \phi$), le morphisme $\phi$ \textbf{n'est pas injectif}.
+    
+    \item \textbf{Image ($\operatorname{im} \phi$) :} Pour tout $z \in \mathbb{C}^*$, son module $|z|$ est un réel strictement positif. Tout réel $r > 0$ s'écrit $r = |r|$. Donc $\mathbf{\operatorname{im}(\phi) = \mathbb{R}_+^*}$.
+\end{enumerate}
+\end{proof}
+
+\end{document}

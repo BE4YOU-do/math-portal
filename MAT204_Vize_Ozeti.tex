@@ -1,0 +1,427 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[turkish]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=2cm}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage{multirow}
+\usepackage{enumitem}
+
+\title{\textbf{MAT204 — Grup Teorisine Giriş\\ \Large Vize (Partiel) Tam Hazırlık Fasikülü}}
+\author{\textbf{Université Galatasaray — Département de Mathématiques}}
+\date{Pazartesi Vizesi İçin Konu Anlatımı, Formüller ve Çözümlü Banko Sorular}
+
+\begin{document}
+\shorthandoff{=}
+\maketitle
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=\textbf{Bu Fasikül Nasıl Kullanılmalı?}]
+Bu çalışma fasikülü, derse girmemiş veya konuları sıfırdan çalışan birinin mantığı kavrayabilmesi için hazırlanmıştır. 
+Her konunun başında \textbf{Türkçe sade mantık ve sınav taktikleri}, hemen altında ise \textbf{sınavda kağıda yazman gereken Fransızca resmi çözümler ve ispatlar} yer alır. 
+Sıkıştırma yapılmamış, ferah ve rahat okunacak şekilde düzenlenmiştir.
+\end{tcolorbox}
+
+\vspace{0.5cm}
+
+% ========================================================
+\section{Aritmetik, EBOB ve Modüler Ters Bulma (TD-1)}
+% ========================================================
+
+\subsubsection*{Konunun Sade Mantığı}
+Saat aritmetiğinde 12'den sonra 1 gelir; $\mathbb{Z}_{20}$'de de sayılar 20'ye bölündüklerindeki kalanlarıyla yaşar. 
+Bir sayının $\mathbb{Z}_n$ içinde çarpma işlemine göre tersi ($\bar{a}^{-1}$), $a \cdot x \equiv 1 \pmod n$ denklemini sağlayan $x$ sayısıdır.
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Altın Kural : Ters Elemanın Varlık Şartı]
+Bir $\bar{a} \in \mathbb{Z}_n$ elemanının tersinin var olması için \textbf{tek ve zorunlu şart} :
+\[ \mathbf{\gcd(a, n) = 1 \quad (\text{Aralarında Asal Olmalarıdır})} \]
+Eğer $\gcd(a, n) > 1$ ise tersi kesinlikle yoktur! Tersi bulmak için Öklid Algoritması tersten işletilir (Bézout katsayısı).
+\end{tcolorbox}
+
+\subsection*{Sınav Sorusu : $\mathbb{Z}_{20}$'de $\bar{13}$'ün Tersini Hesaplama}
+\textbf{Soru :} Dans le groupe $(\mathbb{Z}_{20}, +)$, déterminer si la classe $\bar{13}$ est inversible pour la multiplication modulaire. Si oui, calculer son inverse $\bar{13}^{-1}$.
+
+\begin{proof}[Sınavda Kağıda Yazılacak Fransızca Çözüm]
+\textbf{Étape 1 : Algorithme d'Euclide (Vérification de l'inversibilité)}  
+On effectue les divisions euclidiennes successives :
+\begin{align*}
+20 &= 13 \times 1 + 7 \\
+13 &= 7 \times 1 + 6 \\
+7 &= 6 \times 1 + 1 \\
+6 &= 1 \times 6 + 0
+\end{align*}
+Le dernier reste non nul est 1, donc $\gcd(13, 20) = 1$.  
+Puisque 13 et 20 sont premiers entre eux, l'élément $\bar{13}$ est bien inversible dans $\mathbb{Z}_{20}$.
+
+\vspace{0.2cm}
+\textbf{Étape 2 : Remontée de Bézout (Calcul des coefficients)}  
+Exprimons 1 en remontant l'algorithme :
+\begin{align*}
+1 &= 7 - 6 \times 1 \\
+1 &= 7 - (13 - 7 \times 1) = 7 \times 2 - 13 \times 1 \\
+1 &= (20 - 13 \times 1) \times 2 - 13 \times 1 = 20 \times 2 - 13 \times 3
+\end{align*}
+On obtient l'identité de Bézout :
+\[ 13 \times (-3) + 20 \times 2 = 1 \]
+
+\vspace{0.2cm}
+\textbf{Étape 3 : Passage modulo 20}  
+En réduisant l'égalité modulo 20, le terme $20 \times 2$ devient nul :
+\[ 13 \times (-3) \equiv 1 \pmod{20} \]
+L'inverse est donc $-3$. Pour obtenir un représentant positif dans $\{0, 1, \dots, 19\}$ :
+\[ -3 \equiv -3 + 20 \equiv 17 \pmod{20} \]
+\textbf{Conclusion :} L'inverse de $\bar{13}$ dans $\mathbb{Z}_{20}$ est :
+\[ \mathbf{\bar{13}^{-1} = \overline{17}} \]
+\textit{(Vérification rapide : $13 \times 17 = 221 = 20 \times 11 + 1 \equiv 1 \pmod{20}$).}
+\end{proof}
+
+\vspace{0.5cm}
+
+% ========================================================
+\section{Denklik Bağıntıları ve Denklik Sınıfları (Module 2)}
+% ========================================================
+
+\subsubsection*{Konunun Sade Mantığı}
+Denklik bağıntısı, bir kümedeki elemanları belirli bir özelliğe göre gruplara (sepetlere) ayırma yöntemidir. Örneğin mod 3'e göre denklik, tüm tam sayıları kalanlarına göre $\{0, 1, 2\}$ sepetlerine ayırır.
+
+\begin{tcolorbox}[colback=teal!5!white,colframe=teal!80!black,title=Denklik Bağıntısı Tanımı (Relation d'équivalence)]
+Bir $E$ kümesi üzerindeki $\mathcal{R}$ bağıntısının bir \textbf{denklik bağıntısı} olması için 3 şart aranır :
+\begin{enumerate}
+    \item \textbf{Réflexivité (Yansıma) :} Her eleman kendisiyle bağıntılıdır :
+    \[ \forall x \in E, \quad x \mathcal{R} x \]
+    \item \textbf{Symétrie (Simetri) :} Eğer $x$, $y$ ile bağıntılıysa, $y$ de $x$ ile bağıntılıdır :
+    \[ \forall x, y \in E, \quad x \mathcal{R} y \implies y \mathcal{R} x \]
+    \item \textbf{Transitivité (Geçişme) :} Eğer $x$, $y$ ile ve $y$, $z$ ile bağıntılıysa, $x$ de $z$ ile bağıntılıdır :
+    \[ \forall x, y, z \in E, \quad (x \mathcal{R} y \text{ et } y \mathcal{R} z) \implies x \mathcal{R} z \]
+\end{enumerate}
+\textbf{Classe d'équivalence (Denklik Sınıfı) :} Bir $x$ elemanının sınıfı, ona denk olan tüm elemanların kümesidir : $[x] = \{ y \in E \mid y \mathcal{R} x \}$.  
+\textbf{Teorem (Partition) :} Denklik sınıfları $E$ kümesinin bir partisyonunu oluşturur; yani farklı sınıflar tamamen ayrıktır ve birleşimleri tüm kümeyi verir.
+\end{tcolorbox}
+
+\vspace{0.5cm}
+
+% ========================================================
+\section{Grup Aksiyomları, Abelyenlik ve Modüler Matrisler (TD-2)}
+% ========================================================
+
+\subsubsection*{Konunun Sade Mantığı}
+Bir kümenin grup olması için 4 kuralı sırasıyla göstermen gerekir: 
+1) İki elemanı işleme sokunca kümeden dışarı çıkamazsın (Kapalılık).  
+2) Parantezleri istediğin gibi kaydırabilirsin (Birleşme).  
+3) Etkisiz eleman vardır.  
+4) Her elemanın bir tersi vardır.
+
+\begin{tcolorbox}[colback=yellow!5!white,colframe=orange!80!black,title=Grup Aksiyomları (Axiomes de Groupe)]
+Bir $(G, \star)$ ikilisinin grup olduğunu göstermek için kağıda sırasıyla şunlar yazılır :
+\begin{enumerate}
+    \item \textbf{Loi interne (Clôture) :} $\forall x, y \in G, \; x \star y \in G$.
+    \item \textbf{Associativité :} $\forall x, y, z \in G, \; (x \star y) \star z = x \star (y \star z)$.
+    \item \textbf{Élément neutre :} $\exists e \in G, \; \forall x \in G, \; x \star e = e \star x = x$.
+    \item \textbf{Élément symétrique (Inverse) :} $\forall x \in G, \; \exists x^{-1} \in G, \; x \star x^{-1} = x^{-1} \star x = e$.
+\end{enumerate}
+Eğer işlem değişmeliyse ($xy = yx$), gruba \textbf{Abélien (Değişmeli grup)} denir.
+\end{tcolorbox}
+
+\subsection*{Sınav Klasiği : Abelyen Grup Kriteri}
+\textbf{Proposition :} Un groupe $G$ est abélien si et seulement si pour tous $a, b \in G$, on a $(ab)^{-1} = a^{-1}b^{-1}$.
+
+\begin{proof}[İspat]
+\begin{itemize}
+    \item $(\Longrightarrow)$ Supposons que $G$ soit abélien.  
+    Par la propriété générale des inverses dans un groupe, on a $(ab)^{-1} = b^{-1}a^{-1}$.  
+    Puisque $G$ est abélien, les éléments commutent : $b^{-1}a^{-1} = a^{-1}b^{-1}$.  
+    On a donc bien $(ab)^{-1} = a^{-1}b^{-1}$.
+    
+    \item $(\Longleftarrow)$ Réciproquement, supposons que $(ab)^{-1} = a^{-1}b^{-1}$ pour tous $a, b \in G$.  
+    Prenons l'inverse des deux membres de l'égalité :
+    \[ ((ab)^{-1})^{-1} = (a^{-1}b^{-1})^{-1} \]
+    Le membre de gauche donne directement $ab$.  
+    Le membre de droite s'inverse en inversant l'ordre des facteurs :
+    \[ (a^{-1}b^{-1})^{-1} = (b^{-1})^{-1}(a^{-1})^{-1} = ba \]
+    On en déduit que $ab = ba$ pour tous $a, b \in G$.  
+    Le groupe $G$ est donc abélien.
+\end{itemize}
+\end{proof}
+
+\subsection*{Modüler Matris Tersi : $GL_2(\mathbb{Z}_p)$ Formülü}
+$A = \begin{pmatrix} a & b \\ c & d \end{pmatrix}$ matrisinin tersi :
+\[ \mathbf{A^{-1} \equiv (\det A)^{-1} \begin{pmatrix} d & -b \\ -c & a \end{pmatrix} \pmod p} \]
+\textit{Örnek :} $GL_2(\mathbb{Z}_{13})$'te $A = \begin{pmatrix} 6 & 3 \\ 8 & 2 \end{pmatrix}$ verilsin.  
+$\det(A) = 6 \times 2 - 3 \times 8 = 12 - 24 = -12 \equiv 1 \pmod{13}$.  
+Determinantın tersi $\det(A)^{-1} \equiv 1^{-1} \equiv 1$.  
+\[ A^{-1} \equiv 1 \cdot \begin{pmatrix} 2 & -3 \\ -8 & 6 \end{pmatrix} \equiv \mathbf{\begin{pmatrix} 2 & 10 \\ 5 & 6 \end{pmatrix} \pmod{13}} \]
+
+\vspace{0.5cm}
+
+% ========================================================
+\section{Alt Grup Testi ve Dihedral Grup $D_4$ (Kare Simetrileri)}
+% ========================================================
+
+\begin{tcolorbox}[colback=teal!5!white,colframe=teal!80!black,title=Alt Grup Testi (Test en 1 étape)]
+Bir $H \subseteq G$ alt kümesinin alt grup ($H \leq G$) olduğunu göstermek için tek tek 4 aksiyomu kontrol etmek gerekmez! Sadece şu 2 adımı yazmak tam puan almak için yeterlidir :
+\begin{enumerate}
+    \item \textbf{Non vide :} Birim elemanın $H$'de olduğunu göster : $e \in H \implies H \neq \emptyset$.
+    \item \textbf{Stabilité sous $xy^{-1}$ :} $\forall x, y \in H$ için $\mathbf{x y^{-1} \in H}$ olduğunu göster.
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=yellow!5!white,colframe=orange!80!black,title=Dihedral Grup $D_4$ (Karenin Simetrileri - $|D_4| = 8$)]
+$D_4$ grubu bir karenin 8 simetrisidir :
+\begin{itemize}
+    \item 4 Dönme : $\{R_0 = e, \; R_{90^\circ} = R, \; R_{180^\circ} = R^2, \; R_{270^\circ} = R^3\}$.
+    \item 4 Yansıma : $\{F, RF, R^2F, R^3F\}$.
+    \item \textbf{Can Alıcı Çarpım Bağıntısı :} Yansıma ile dönmenin yerini değiştirdiğinde dönmenin açısı ters döner :
+    \[ \mathbf{FR = R^{-1}F = R^3F} \quad \text{ve genel olarak} \quad \mathbf{FR^k = R^{-k}F} \]
+    \item Her yansımanın mertebesi 2'dir : $F^2 = e$.
+    \item \textbf{Karenin Merkezi $Z(D_4)$ :} Karenin simetrilerinde herkesle yer değiştiren tek dönme $180^\circ$'dir : $\mathbf{Z(D_4) = \{e, R^2\}}$.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{0.5cm}
+
+% ========================================================
+\section{Devirli Gruplar ($\mathbb{Z}_n$) ve Formüller (TD-3 \& TD-4)}
+% ========================================================
+
+\subsubsection*{Konunun Sade Mantığı}
+Devirli grup, tek bir elemanın kuvvetleri (veya toplamada katları) ile tüm grubu üretebildiğin gruptur. Örneğin $\mathbb{Z}_n$ grubunda her şey 1 elemanının toplanmasıyla üretilir.
+
+\begin{tcolorbox}[colback=purple!5!white,colframe=purple!75!black,title=Devirli Grupların 4 Altın Formülü]
+\begin{enumerate}
+    \item \textbf{Eleman Mertebesi Formülü :} $(\mathbb{Z}_n, +)$ grubunda bir $\bar{a}$ elemanının mertebesi :
+    \[ \mathbf{o(\bar{a}) = \frac{n}{\gcd(a, n)}} \]
+    \textit{Örnek :} $\mathbb{Z}_{30}$'da $\bar{5}$'in mertebesi : $o(\bar{5}) = \frac{30}{\gcd(5, 30)} = \frac{30}{5} = \mathbf{6}$.
+    
+    \item \textbf{Üreteç Kriteri :} $\bar{k} \in \mathbb{Z}_n$ elemanı tüm grubu üretir $\iff \mathbf{\gcd(k, n) = 1}$.  
+    Toplam üreteç sayısı her zaman $\mathbf{\varphi(n)}$ (Euler totient) kadardır.  
+    \textit{Örnek :} $\mathbb{Z}_{12}$'nin üreteçleri 12 ile aralarında asal olanlardır : $\{\bar{1}, \bar{5}, \bar{7}, \overline{11}\}$ (Toplam $\varphi(12) = 4$ tane).
+    
+    \item \textbf{Tüm Alt Grupların Listesi :} $n$'nin her pozitif $d$ böleni için $\mathbb{Z}_n$'nin \textbf{tam bir tane} $d$ mertebeli alt grubu vardır :
+    \[ H = \langle \overline{n/d} \rangle \]
+    \textit{Örnek :} $\mathbb{Z}_{18}$'in bölenleri $\{1, 2, 3, 6, 9, 18\}$'dir. Tam 6 alt grubu vardır :  
+    $\langle \bar{0} \rangle$, $\langle \bar{9} \rangle$, $\langle \bar{6} \rangle$, $\langle \bar{3} \rangle$, $\langle \bar{2} \rangle$, $\langle \bar{1} \rangle = \mathbb{Z}_{18}$.
+    
+    \item \textbf{Belirli Mertebedeki Eleman Sayısı :} Bir devirli grupta mertebesi $d$ olan elemanların sayısı her zaman $\mathbf{\varphi(d)}$ tanedir.
+\end{enumerate}
+\end{tcolorbox}
+
+\vspace{0.5cm}
+
+% ========================================================
+\section{Birimin Kökleri ($z^n = 1$) ve İlkel Kökler (TD-3)}
+% ========================================================
+
+\subsubsection*{Konunun Sade Mantığı}
+Karmaşık düzlemde $z^n = 1$ denklemini çözen $n$ tane sayı birim çember üzerinde eşit aralıklarla dizilir. Bu köklerden bazıları tek başına kuvvetleri alınarak diğer tüm kökleri üretebilir; işte bunlara **ilkel kök (racine primitive)** denir.
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Birimin Kökleri ve İlkel Kök Şartı]
+$z^n = 1$ denkleminin $n$ tane çözümü vardır :
+\[ \xi_k = e^{\frac{2ik\pi}{n}} = \cos\left(\frac{2k\pi}{n}\right) + i \sin\left(\frac{2k\pi}{n}\right), \quad k \in \{0, 1, \dots, n-1\} \]
+\textbf{İlkel Kök Kriteri :} Bir $\xi_k$ kökünün ilkel kök olması için gerek ve yeter şart :
+\[ \mathbf{\gcd(k, n) = 1} \]
+İlkel köklerin toplam sayısı $\mathbf{\varphi(n)}$ kadardır.
+\end{tcolorbox}
+
+\subsection*{Sınav Sorusu : $z^{12} = 1$ Kökleri ve İlkel Kökler}
+Kökler $\xi_k = e^{\frac{2ik\pi}{12}} = e^{\frac{ik\pi}{6}}$ ($k = 0, 1, \dots, 11$).  
+$\gcd(k, 12) = 1$ olan sayılar : $\{1, 5, 7, 11\}$.  
+Toplam $\varphi(12) = 4$ tane ilkel kök vardır :
+\[ \mathbf{\xi_1 = e^{i\pi/6} = \frac{\sqrt{3}}{2} + \frac{1}{2}i}, \quad 
+\mathbf{\xi_5 = e^{5i\pi/6} = -\frac{\sqrt{3}}{2} + \frac{1}{2}i}, \quad 
+\mathbf{\xi_7 = e^{7i\pi/6} = -\frac{\sqrt{3}}{2} - \frac{1}{2}i}, \quad 
+\mathbf{\xi_{11} = e^{11i\pi/6} = \frac{\sqrt{3}}{2} - \frac{1}{2}i} \]
+
+\vspace{0.5cm}
+
+% ========================================================
+\section{Sınavda Kesinlikle Çıkacak 4 Büyük Teori İspatı ⭐}
+% ========================================================
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=\textbf{İSPAT 1 : Bölünebilme Leması ($g^n = e \iff m \mid n$)}]
+\textbf{Théorème :} Soit $g \in G$ un élément d'ordre $m$. Alors $g^n = e$ si et seulement si $m \mid n$.
+\end{tcolorbox}
+\begin{proof}[İspat]
+\begin{itemize}
+    \item $(\Longleftarrow)$ Si $m \mid n$, alors il existe $k \in \mathbb{Z}$ tel que $n = km$.  
+    Alors $g^n = g^{km} = (g^m)^k = e^k = e$.
+    \item $(\Longrightarrow)$ Supposons $g^n = e$. Effectuons la division euclidienne de $n$ par $m$ :
+    \[ n = qm + r \quad \text{avec} \quad 0 \leq r < m \]
+    Calculons $g^n$ :
+    \[ e = g^n = g^{qm+r} = (g^m)^q \cdot g^r = e^q \cdot g^r = g^r \implies g^r = e \]
+    Or, $m$ est par définition le \textbf{plus petit entier strictement positif} tel que $g^m = e$.  
+    Puisque $0 \leq r < m$, si l'on avait $r > 0$, cela contredirait la minimalité de $m$.  
+    Par conséquent, $r = 0$, d'où $n = qm$, ce qui prouve que $\mathbf{m \mid n}$.
+\end{itemize}
+\end{proof}
+
+\vspace{0.4cm}
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=\textbf{İSPAT 2 : Devirli Grubun Her Alt Grubu Devirlidir}]
+\textbf{Théorème :} Tout sous-groupe d'un groupe cyclique est cyclique.
+\end{tcolorbox}
+\begin{proof}[İspat]
+Soit $G = \langle a \rangle$ un groupe cyclique et soit $H \leq G$.  
+Si $H = \{e\}$, alors $H = \langle e \rangle$ est cyclique.  
+Supposons $H \neq \{e\}$. L'ensemble des puissances strictement positives appartenant à $H$ :
+\[ S = \{ k \in \mathbb{N}^* \mid a^k \in H \} \]
+est une partie non vide de $\mathbb{N}^*$. D'après la propriété du bon ordre, $S$ admet un plus petit élément, notons-le $\mathbf{m = \min(S)}$. Montrons que $H = \langle a^m \rangle$ :
+\begin{enumerate}
+    \item L'inclusion $\langle a^m \rangle \subseteq H$ est évidente car $a^m \in H$ et $H$ est un sous-groupe.
+    \item Soit $h \in H$. Puisque $h \in G$, $h = a^n$ pour un certain $n \in \mathbb{Z}$.  
+    Effectuons la division euclidienne de $n$ par $m$ :
+    \[ n = qm + r \quad \text{avec} \quad 0 \leq r < m \]
+    Exprimons $a^r$ :
+    \[ a^r = a^{n - qm} = a^n \cdot (a^m)^{-q} = h \cdot (a^m)^{-q} \]
+    Comme $h \in H$ et $a^m \in H$, on a $a^r \in H$.  
+    Si $r > 0$, alors $r \in S$ avec $r < m$, ce qui contredit formellement la minimalité de $m$.  
+    Donc $r = 0$. Ainsi $n = qm$ et $h = a^{qm} = (a^m)^q \in \langle a^m \rangle$.  
+    D'où $H \subseteq \langle a^m \rangle$.
+\end{enumerate}
+\textbf{Conclusion :} $H = \langle a^m \rangle$, le sous-groupe $H$ est donc cyclique.
+\end{proof}
+
+\vspace{0.4cm}
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=\textbf{İSPAT 3 : İki Alt Grubun Çarpımı ($HK \leq G \iff HK = KH$)}]
+\textbf{Théorème :} Soient $H, K \leq G$. Alors $HK \leq G \iff HK = KH$.
+\end{tcolorbox}
+\begin{proof}[İspat]
+\begin{itemize}
+    \item $(\Longrightarrow)$ Supposons que $HK$ soit un sous-groupe de $G$.  
+    Soit $kh \in KH$. Son inverse est $(kh)^{-1} = h^{-1}k^{-1} \in HK$.  
+    Puisque $HK$ est un sous-groupe, il est stable par inversion, donc $kh = ((kh)^{-1})^{-1} \in HK$. D'où $KH \subseteq HK$.  
+    De même, si $y \in HK$, son inverse $y^{-1} \in HK \implies y^{-1} = hk \implies y = k^{-1}h^{-1} \in KH$. D'où $HK \subseteq KH$.  
+    On en déduit que $HK = KH$.
+    
+    \item $(\Longleftarrow)$ Supposons que $HK = KH$. Appliquons le critère de sous-groupe :  
+    1) $e = e \cdot e \in HK$ donc $HK \neq \emptyset$.  
+    2) Soient $x = h_1 k_1, y = h_2 k_2 \in HK$.  
+    Alors $xy = h_1 (k_1 h_2) k_2$. Puisque $k_1 h_2 \in KH = HK$, il existe $h_3 \in H, k_3 \in K$ tels que $k_1 h_2 = h_3 k_3$.  
+    Alors $xy = (h_1 h_3)(k_3 k_2) \in HK$ (fermeture sous le produit).  
+    3) Soit $x = hk \in HK$. Alors $x^{-1} = k^{-1}h^{-1} \in KH = HK$ (stabilité par inversion).  
+    Donc $HK$ est bien un sous-groupe de $G$ ($HK \leq G$).
+\end{itemize}
+\end{proof}
+
+\vspace{0.4cm}
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=\textbf{İSPAT 4 : Asal Mertebeli Devirli Grup Basittir}]
+\textbf{Théorème :} Tout groupe cyclique d'ordre premier $p$ est simple.
+\end{tcolorbox}
+\begin{proof}[İspat]
+Soit $G$ un groupe cyclique d'ordre $p$, où $p$ est un nombre premier ($|G| = p \geq 2$).  
+Soit $H$ un sous-groupe de $G$ ($H \leq G$).  
+D'après le théorème de Lagrange, l'ordre de $H$ divise l'ordre de $G$ :
+\[ |H| \text{ divise } p \]
+Puisque $p$ est un nombre premier, ses seuls diviseurs positifs sont $1$ et $p$.  
+Il n'y a donc que deux possibilités pour l'ordre de $H$ :
+\begin{itemize}
+    \item Si $|H| = 1$, alors $H = \{e\}$.
+    \item Si $|H| = p$, alors $H = G$.
+\end{itemize}
+Le groupe $G$ ne possède donc aucun sous-groupe propre non trivial.  
+De plus, $G$ étant cyclique, il est abélien, donc tous ses sous-groupes sont automatiquement normaux.  
+Ses seuls sous-groupes normaux sont donc $\{e\}$ et $G$.  
+Par définition, $G$ est donc un \textbf{groupe simple}.
+\end{proof}
+
+\vspace{0.5cm}
+
+% ========================================================
+\section{Permütasyonlar, Parité, Signature ve $\mathcal{S}_4$ (TD-5)}
+% ========================================================
+
+\begin{tcolorbox}[colback=teal!5!white,colframe=teal!80!black,title=Hocanın Tahtada Anlattığı : Parité et Signature ($\varepsilon$)]
+Her permütasyon transpozisyonların çarpımıdır : $\sigma = \tau_1 \circ \dots \circ \tau_k$.  
+Transpozisyon sayısı olan $k$'nın tekliği/çiftliği (\textbf{parité}) değişmez bir sabittir !
+\begin{itemize}
+    \item \textbf{Signature (İmza) Tanımı :} 
+    \[ \varepsilon(\sigma) = (-1)^k \in \{+1, -1\} \]
+    \item \textbf{Permutation Paire (Çift) :} $\varepsilon(\sigma) = +1$ (Çift sayıda transpozisyon).
+    \item \textbf{Permutation Impaire (Tek) :} $\varepsilon(\sigma) = -1$ (Tek sayıda transpozisyon). Herhangi bir transpozisyon için daima $\mathbf{\varepsilon((i\,j)) = -1}$'dir.
+    \item \textbf{Çarpım Kuralı (Morfizma) :} $\mathbf{\varepsilon(\sigma \circ \tau) = \varepsilon(\sigma) \times \varepsilon(\tau)}$.
+    \item \textbf{Bir Döngünün İmzası (Sınav Tuzağı !) :} Uzunluğu $k$ olan bir döngünün imzası :
+    \[ \mathbf{\varepsilon(c) = (-1)^{k-1}} \]
+    $\bullet$ 3-döngüler : $\varepsilon((1\,2\,3)) = (-1)^{3-1} = (-1)^2 = \mathbf{+1}$ \textbf{(ÇİFTTİR !)} \\
+    $\bullet$ 4-döngüler : $\varepsilon((1\,2\,3\,4)) = (-1)^{4-1} = (-1)^3 = \mathbf{-1}$ \textbf{(TEKTİR !)}
+    \item \textbf{Groupe Alterné ($\mathcal{A}_n$) :} Çift permütasyonların kümesidir ($\mathcal{A}_n = \ker \varepsilon$).  
+    $\mathcal{S}_n$'nin yarısı çift, yarısı tektir : $\mathbf{|\mathcal{A}_n| = \frac{n!}{2}}$. $\mathcal{S}_4$ için $|\mathcal{A}_4| = \frac{24}{2} = 12$'dir.
+\end{itemize}
+\end{tcolorbox}
+
+\subsection*{$\mathcal{S}_4$ Grubunun Tam Anatomisi ($4! = 24$ Eleman)}
+\begin{center}
+\begin{tabular}{|l|c|c|l|}
+\hline
+\textbf{Döngü Tipi (Type de cycle)} & \textbf{Eleman Sayısı} & \textbf{Mertebe} & \textbf{Alt Gruplar} \\ \hline
+Birim Eleman ($\mathrm{id}$) & 1 & 1 & $\{\mathrm{id}\}$ \\ \hline
+Transpozisyonlar $(a\,b)$ & $\binom{4}{2} = \mathbf{6}$ & 2 & 6 tane $\mathbb{Z}_2$ \\ \hline
+Çift Transpozisyonlar $(a\,b)(c\,d)$ & $\mathbf{3}$ & 2 & 3 tane $\mathbb{Z}_2$ (Toplam 9 tane $\mathbb{Z}_2$) \\ \hline
+3-Döngüler $(a\,b\,c)$ & $2 \times \binom{4}{3} = \mathbf{8}$ & 3 & $8/2 = \mathbf{4}$ tane $\mathbb{Z}_3$ \\ \hline
+4-Döngüler $(a\,b\,c\,d)$ & $3! = \mathbf{6}$ & 4 & $6/2 = \mathbf{3}$ tane $\mathbb{Z}_4$ \\ \hline
+\end{tabular}
+\end{center}
+
+\subsection*{$\mathcal{D}_3 \cong \mathcal{S}_3$ İzomorfizması}
+\textbf{Soru :} Pourquoi $\mathcal{D}_3$ est isomorphe à $\mathcal{S}_3$ ?  
+\begin{proof}[Cevap]
+$\mathcal{D}_3$ eşkenar üçgenin 3 köşesini permüte eder. Bu eşleme $\Phi : \mathcal{D}_3 \to \mathcal{S}_3$ homomorfizmasını tanımlar. 3 köşeyi sabit bırakan tek simetri birim eleman olduğu için $\Phi$ injektiftir. $|\mathcal{D}_3| = |\mathcal{S}_3| = 6$ olduğundan sonlu aynı elemanlı kümeler arasındaki injeksiyon bijektiftir. Dolayısıyla $\mathbf{\mathcal{D}_3 \cong \mathcal{S}_3}$.
+\end{proof}
+
+\vspace{0.5cm}
+
+% ========================================================
+\section{Yan Kümeler (Cosets), Lagrange Teoremi ve $Z(G)$}
+% ========================================================
+
+\begin{tcolorbox}[colback=teal!5!white,colframe=teal!80!black,title=Yan Kümeler (Cosets) ve Théorème de Lagrange]
+$H \leq G$ ve $g \in G$ olsun.  
+$\bullet$ \textbf{Classe à gauche :} $gH = \{ gh \mid h \in H \}$.  
+$\bullet$ \textbf{Classe à droite :} $Hg = \{ hg \mid h \in H \}$.  
+Bütün yan kümeler $H$ ile aynı eleman sayısına sahiptir ($|gH| = |H|$) ve $G$'nin bir partisyonunu oluştururlar.  
+\textbf{Théorème de Lagrange :} Sonlu bir $G$ grubunda herhangi bir $H$ alt grubunun eleman sayısı, $G$'nin eleman sayısını \textbf{tam böler} :
+\[ \mathbf{|G| = |H| \times [G : H]} \]
+(burada $[G:H]$ farklı yan kümelerin sayısı yani indekstir).  
+\textbf{Corollaires (Sınavlık Sonuçlar) :}
+\begin{enumerate}
+    \item Her elemanın mertebesi grup mertebesini böler : $\mathbf{o(x) \mid |G|}$.
+    \item Her $x \in G$ için : $\mathbf{x^{|G|} = e}$.
+    \item Asal mertebeli bir grubun aşikar olmayan hiçbir alt grubu yoktur, zorunlu olarak devirlidir.
+\end{enumerate}
+\end{tcolorbox}
+
+\subsection*{Grubun Merkezi $Z(G) \leq G$ İspatı}
+\textbf{Définition :} $Z(G) = \{ z \in G \mid zx = xz, \; \forall x \in G \}$.
+\begin{proof}[İspat (Test en 1 étape)]
+\begin{enumerate}
+    \item $ex = xe = x \implies e \in Z(G) \neq \emptyset$.
+    \item Soient $a, b \in Z(G)$. Alors $bx = xb \implies b^{-1}x = xb^{-1}$.  
+    Calculons $(ab^{-1})x = a(b^{-1}x) = a(xb^{-1}) = (ax)b^{-1} = (xa)b^{-1} = x(ab^{-1})$.  
+    Donc $ab^{-1}$ commute avec tout $x$, d'où $ab^{-1} \in Z(G)$.  
+    Conclusion : $\mathbf{Z(G) \leq G}$.
+\end{enumerate}
+\end{proof}
+
+\vspace{0.5cm}
+
+% ========================================================
+\section{Grup Morfizmleri (Morphismes de Groupes)}
+% ========================================================
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Grup Morfizması Tanımı ve Temel Özellikler]
+$\phi : G \longrightarrow H$ fonksiyonu $\forall x, y \in G$ için $\mathbf{\phi(x \star y) = \phi(x) \cdot \phi(y)}$ sağlıyorsa \textbf{grup morfizmasıdır}.  
+$\bullet$ \textbf{1) Birim birime gider :} $\mathbf{\phi(e_G) = e_H}$.  
+$\bullet$ \textbf{2) Ters terse gider :} $\mathbf{\phi(x^{-1}) = [\phi(x)]^{-1}}$.  
+$\bullet$ \textbf{Tahtadaki Matris İzi Örneği :} $\operatorname{tr} : M(2, \mathbb{R}) \to \mathbb{R}$ için $\operatorname{tr}(A+B) = \operatorname{tr}(A) + \operatorname{tr}(B)$ olduğundan bir morfizmadır !
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=purple!5!white,colframe=purple!75!black,title=Çekirdek ($\ker$), Görüntü ($\operatorname{im}$) ve Birebirlik]
+\begin{itemize}
+    \item \textbf{Noyau (Çekirdek) :} $\mathbf{\ker(\phi) = \{ x \in G \mid \phi(x) = e_H \} \leq G}$ (Normal alt gruptur).  
+    \item \textbf{Birebirlik Testi (Banko Teorem) :} $\mathbf{\phi \text{ injectif} \iff \ker(\phi) = \{e_G\}}$.  
+    \item \textbf{Isomorphisme :} Biyektif (birebir + örten) morfizmadır. $G \cong H$ (İki grup ikiz kardeştir).
+\end{itemize}
+\end{tcolorbox}
+
+\end{document}
