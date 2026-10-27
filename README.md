@@ -1,6 +1,6 @@
-# 🎓 Galatasaray Üniversitesi — Akademik Çalışma Portalı
+# 📐 MathPortal — Lisans Matematik & Fen Çalışma Portalı
 
-Galatasaray Üniversitesi Matematik ve Mühendislik öğrencileri için hazırlanmış interaktif vize ve sınav hazırlık platformu.
+Üniversite matematik ve mühendislik öğrencileri için hazırlanmış açık kaynak interaktif ders, vize ve sınav hazırlık platformu.
 
 ### 📚 İçerik ve Müfredatlar
 - **🔵 MAT204 — Grup Teorisi :** 6 Modül, 68 TD Sorusu, Tam Ders Kitabı Teorisi, Banko İspatlar, Sınav Fransızcası ve Deneme Simülatörü.
