@@ -1799,6 +1799,11 @@
             margin-top: 1px;
         }
 
+    
+        .katex, .katex * {
+            text-transform: none !important;
+            letter-spacing: normal !important;
+        }
     </style>
 </head>
 <body>
@@ -3496,7 +3501,7 @@
                 questionsHTML += `
                     <div class="mock-question-card">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                            <span style="font-size: 0.84rem; font-weight: 700; color: var(--accent-blue); text-transform: uppercase;">
+                            <span style="font-size: 0.84rem; font-weight: 700; color: var(--accent-blue); ">
                                 Soru ${qItem.num} • ${qItem.topic}
                             </span>
                             <span style="font-weight: 700; color: var(--accent-emerald); font-size: 0.95rem;">
