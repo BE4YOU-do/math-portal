@@ -849,56 +849,116 @@ function triggerManualSync() {
         }
 
 
-                // ================= UNRESOLVED POOL (Çözülmemiş Sorular Havuzu) =================
-        function openUnresolvedPool() {
+                        // ================= UNRESOLVED POOL (Çözülmemiş Sorular Havuzu) =================
+        function openUnresolvedPool(filterCourseKey = null) {
             currentViewMode = 'special';
             currentSpecialView = 'unresolved';
             setActiveNav('nav-unresolved');
+            saveAppState();
 
             const main = document.getElementById('main-content');
-            const solved = getSolvedExercises();
-            let poolHTML = '';
-            let unresolvedCount = 0;
+            const courseKeys = Object.keys(COURSES_DB);
+            
+            // Calculate unresolved counts per course
+            const countsPerCourse = {};
+            let totalUnresolvedAcrossAll = 0;
+            courseKeys.forEach(cKey => {
+                const c = COURSES_DB[cKey];
+                let solved = [];
+                try {
+                    const raw = localStorage.getItem(cKey + '_solved_ex') || (cKey === 'mat204_grup' ? localStorage.getItem('mat204_solved_ex') : null);
+                    solved = raw ? JSON.parse(raw) : [];
+                } catch(e) {}
+                let cCount = 0;
+                Object.keys(c.modules).forEach(mKey => {
+                    c.modules[mKey].exercises.forEach(ex => {
+                        if (!solved.includes(ex.id)) cCount++;
+                    });
+                });
+                countsPerCourse[cKey] = cCount;
+                totalUnresolvedAcrossAll += cCount;
+            });
 
-            Object.keys(modulesDB).forEach(modKey => {
-                const mod = modulesDB[modKey];
-                mod.exercises.forEach((ex, idx) => {
-                    if (!solved.includes(ex.id)) {
-                        unresolvedCount++;
-                        const cleanPreview = ex.enonce ? ex.enonce.replace(/<[^>]+>/g, '').slice(0, 140) + '...' : '';
-                        poolHTML += `
-                            <div class="pool-item" onclick="jumpToExercise('${modKey}', ${idx})">
-                                <div>
-                                    <span style="font-size: 0.76rem; font-weight: 700; color: var(--accent-blue); text-transform: uppercase;">${mod.title.split(':')[0]}</span>
-                                    <h4 style="color: var(--text-main); margin-top: 2px;">${ex.name}</h4>
-                                    <p style="font-size: 0.86rem; color: var(--text-secondary); margin-top: 4px;">${cleanPreview}</p>
+            const activeFilter = filterCourseKey === 'all' ? 'all' : (filterCourseKey || activeCourseKey);
+            const coursesToScan = activeFilter === 'all' ? courseKeys : [activeFilter];
+
+            let poolHTML = '';
+            let displayedCount = 0;
+
+            coursesToScan.forEach(cKey => {
+                const c = COURSES_DB[cKey];
+                if (!c) return;
+                let solved = [];
+                try {
+                    const raw = localStorage.getItem(cKey + '_solved_ex') || (cKey === 'mat204_grup' ? localStorage.getItem('mat204_solved_ex') : null);
+                    solved = raw ? JSON.parse(raw) : [];
+                } catch(e) {}
+
+                Object.keys(c.modules).forEach(modKey => {
+                    const mod = c.modules[modKey];
+                    mod.exercises.forEach((ex, idx) => {
+                        if (!solved.includes(ex.id)) {
+                            displayedCount++;
+                            const cleanPreview = ex.enonce ? ex.enonce.replace(/<[^>]+>/g, '').slice(0, 140) + '...' : '';
+                            poolHTML += `
+                                <div class="pool-item" onclick="switchCourseAndJump('${cKey}', '${modKey}', ${idx})">
+                                    <div>
+                                        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                            <span style="font-size: 0.72rem; font-weight: 700; color: ${c.color}; border: 1px solid ${c.color}; padding: 1px 6px; border-radius: 4px;">${c.code}</span>
+                                            <span style="font-size: 0.76rem; font-weight: 700; color: var(--accent-blue); text-transform: uppercase;">${mod.title.split(':')[0]}</span>
+                                            <span style="font-size: 0.75rem; color: var(--text-muted);">${ex.tag || ''}</span>
+                                        </div>
+                                        <h4 style="color: var(--text-main); margin-top: 6px;">${ex.name}</h4>
+                                        <p style="font-size: 0.86rem; color: var(--text-secondary); margin-top: 4px;">${cleanPreview}</p>
+                                    </div>
+                                    <button class="btn-stepper primary" style="padding: 6px 14px; font-size: 0.82rem; white-space: nowrap;">Şimdi Çöz ➔</button>
                                 </div>
-                                <button class="btn-stepper primary" style="padding: 6px 14px; font-size: 0.82rem; white-space: nowrap;">Şimdi Çöz ➔</button>
-                            </div>
-                        `;
-                    }
+                            `;
+                        }
+                    });
                 });
             });
 
-            if (unresolvedCount === 0) {
+            // Tabs HTML
+            let tabsHTML = `
+                <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 12px; margin-bottom: 16px; border-bottom: 1px solid var(--border-color);">
+                    <button class="btn-stepper ${activeFilter === 'all' ? 'primary' : 'secondary'}" style="padding: 6px 14px; font-size: 0.82rem;" onclick="openUnresolvedPool('all')">
+                        Tüm Dersler (${totalUnresolvedAcrossAll})
+                    </button>
+            `;
+            courseKeys.forEach(cKey => {
+                const c = COURSES_DB[cKey];
+                const isCurrent = (activeFilter === cKey);
+                tabsHTML += `
+                    <button class="btn-stepper ${isCurrent ? 'primary' : 'secondary'}" style="padding: 6px 14px; font-size: 0.82rem;" onclick="openUnresolvedPool('${cKey}')">
+                        ${c.icon} ${c.code} (${countsPerCourse[cKey] || 0})
+                    </button>
+                `;
+            });
+            tabsHTML += '</div>';
+
+            if (displayedCount === 0) {
                 poolHTML = `
-                    <div style="text-align: center; padding: 60px 20px;">
+                    <div style="text-align: center; padding: 50px 20px;">
                         <span style="font-size: 3rem;">🎉</span>
                         <h2 style="color: var(--accent-emerald); margin-top: 10px;">Tebrikler Hamza!</h2>
-                        <p style="color: var(--text-secondary); margin-top: 6px;">Tüm modüllerdeki TD sorularını başarıyla çözüp kaydettin! Vizeye %100 hazırsın!</p>
+                        <p style="color: var(--text-secondary); margin-top: 6px;">Bu dersteki tüm TD sorularını başarıyla çözüp kaydettin! Sınava %100 hazırsın!</p>
                     </div>
                 `;
             }
 
+            const headerTitle = activeFilter === 'all' ? 'Tüm Dersler Çözülmemiş Sorular Havuzu' : `${COURSES_DB[activeFilter]?.code} Çözülmemiş Sorular Havuzu`;
+
             main.innerHTML = `
                 <div class="content-header">
                     <div>
-                        <div class="breadcrumbs">${COURSES_DB[activeCourseKey].code} > Sınav Araçları > Çözülmemiş Sorular</div>
-                        <h1 class="content-title">⚡ ${COURSES_DB[activeCourseKey].code} Çözülmemiş Sorular Havuzu (${unresolvedCount} Soru Kaldı)</h1>
+                        <div class="breadcrumbs">${COURSES_DB[activeCourseKey]?.code || 'Portal'} > Sınav Araçları > Çözülmemiş Sorular</div>
+                        <h1 class="content-title">⚡ ${headerTitle} (${displayedCount} Soru Kaldı)</h1>
                     </div>
                 </div>
 
                 <div class="academic-card">
+                    ${tabsHTML}
                     <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 20px;">
                         Burada henüz "Çözüldü" olarak işaretlemediğin tüm TD soruları listelenir. Herhangi birine tıklayarak doğrudan o soruya gidebilir ve resmi sınav çözümünü inceleyip işaretleyebilirsin.
                     </p>
@@ -907,10 +967,8 @@ function triggerManualSync() {
             `;
 
             renderMath();
-            saveAppState();
         }
 
-        
         function switchCourseAndJump(cKey, modKey, exIdx) {
             if (activeCourseKey !== cKey) {
                 switchActiveCourse(cKey);
@@ -1057,6 +1115,203 @@ function triggerManualSync() {
             renderFlashcard();
         }
 
+        
+        // ================= MULTI-COURSE PROOFS & THEOREMS =================
+        function getProofsForCourse(cKey) {
+            if (cKey === 'mat201_seriler') {
+                return [
+                    {
+                        title: "Théorème 1 : Critère de Leibniz pour les séries alternées & Majoration du Reste",
+                        stmt: "Soit $(a_n)$ une suite positive décroissante tendant vers 0. Alors la série alternée $\\sum (-1)^n a_n$ converge, et pour tout $n$, $|R_n| \\leq a_{n+1}$.",
+                        proof: `Considérons les deux sous-suites de sommes partielles de parités différentes :
+$$\\begin{aligned}
+S_{2n+2} - S_{2n} &= a_{2n+2} - a_{2n+1} \\leq 0 \\implies (S_{2n}) \\text{ est décroissante} \\\\
+S_{2n+1} - S_{2n-1} &= -a_{2n+1} + a_{2n} \\geq 0 \\implies (S_{2n+1}) \\text{ est croissante} \\\\
+S_{2n+1} - S_{2n} &= -a_{2n+1} \\longrightarrow 0 \\quad (\\text{quand } n \\to \\infty)
+\\end{aligned}$$
+Les suites $(S_{2n})$ et $(S_{2n+1})$ sont adjacentes, donc elles convergent vers une limite commune $S$. La série converge.  
+De plus, $S$ est toujours encadrée par deux sommes partielles consécutives : $S_{2n+1} \\leq S \\leq S_{2n}$.  
+D'où l'inégalité fondamentale sur le reste : $\\mathbf{|R_n| = |S - S_n| \\leq a_{n+1}}$. $\\blacksquare$`
+                    },
+                    {
+                        title: "Théorème 2 : Théorème de Continuité de la Somme (Convergence Uniforme)",
+                        stmt: "Soit $(f_n)$ une suite de fonctions continues sur un intervalle $I$. Si $\\sum f_n$ converge uniformément sur $I$ vers $S$, alors $S$ est continue sur $I$.",
+                        proof: `Soit $x_0 \\in I$ et soit $\\epsilon > 0$.  
+Notons $S_n = \\sum_{k=0}^n f_k$ la $n$-ième somme partielle (qui est continue car somme finie de fonctions continues).  
+Par convergence uniforme sur $I$, il existe $N \\in \\mathbb{N}$ tel que :
+$$ \\forall n \\geq N, \\quad \\sup_{x \\in I} |S(x) - S_n(x)| \\leq \\frac{\\epsilon}{3} $$
+Fixons ce $N$. Puisque $S_N$ est continue en $x_0$, il existe $\\delta > 0$ tel que :
+$$ |x - x_0| < \\delta \\implies |S_N(x) - S_N(x_0)| \\leq \\frac{\\epsilon}{3} $$
+Par l'inégalité triangulaire (technique en $\\epsilon/3$) :
+$$\\begin{aligned}
+|S(x) - S(x_0)| &= |(S(x) - S_N(x)) + (S_N(x) - S_N(x_0)) + (S_N(x_0) - S(x_0))| \\\\
+&\\leq |S(x) - S_N(x)| + |S_N(x) - S_N(x_0)| + |S_N(x_0) - S(x_0)| \\\\
+&\\leq \\frac{\\epsilon}{3} + \\frac{\\epsilon}{3} + \\frac{\\epsilon}{3} = \\epsilon
+\\end{aligned}$$
+Donc $S$ est continue en tout point $x_0 \\in I$. $\\blacksquare$`
+                    },
+                    {
+                        title: "Théorème 3 : Règle de D'Alembert (Critère du Rapport)",
+                        stmt: "Soit $\\sum u_n$ une série à termes strictement positifs telle que $\\lim \\frac{u_{n+1}}{u_n} = L$. Si $L < 1$, la série converge. Si $L > 1$, la série diverge.",
+                        proof: `Supposons $L < 1$. Choisissons un réel $q$ tel que $L < q < 1$ (par exemple $q = \\frac{L+1}{2}$).  
+Puisque $\\frac{u_{n+1}}{u_n} \\to L < q$, il existe un rang $N$ à partir duquel :
+$$ \\forall n \\geq N, \\quad \\frac{u_{n+1}}{u_n} \\leq q $$
+Par récurrence immédiate pour $n \\geq N$ :
+$$ u_n \\leq u_N \\cdot q^{n-N} = \\left(\\frac{u_N}{q^N}\\right) q^n $$
+La série géométrique $\\sum q^n$ converge car $0 < q < 1$.  
+Par le critère de comparaison à termes positifs, $\\sum u_n$ converge également. $\\blacksquare$`
+                    }
+                ];
+            } else if (cKey === 'fiz101_fizik') {
+                return [
+                    {
+                        title: "Théorème 1 : Formule de Poisson pour les Repères Tournants",
+                        stmt: "Pour tout vecteur $\\vec{A}$ et un repère $R'$ en rotation à la vitesse angulaire $\\vec{\\Omega}_{R'/R}$ par rapport à $R$ : $\\left[\\frac{d\\vec{A}}{dt}\\right]_R = \\left[\\frac{d\\vec{A}}{dt}\\right]_{R'} + \\vec{\\Omega}_{R'/R} \\wedge \\vec{A}$.",
+                        proof: `Soit $(\\vec{e}_1', \\vec{e}_2', \\vec{e}_3')$ une base orthonormée liée à $R'$.  
+Décomposons $\\vec{A}$ sur cette base : $\\vec{A} = A_1' \\vec{e}_1' + A_2' \\vec{e}_2' + A_3' \\vec{e}_3'$.  
+La dérivée par rapport à $R$ donne :
+$$ \\left[\\frac{d\\vec{A}}{dt}\\right]_R = \\sum_{i=1}^3 \\frac{dA_i'}{dt} \\vec{e}_i' + \\sum_{i=1}^3 A_i' \\left[\\frac{d\\vec{e}_i'}{dt}\\right]_R $$
+Le premier terme est par définition la dérivée relative dans $R'$ : $\\left[\\frac{d\\vec{A}}{dt}\\right]_{R'}$.  
+Pour les vecteurs de base unitaires en rotation, on démontre que $\\left[\\frac{d\\vec{e}_i'}{dt}\\right]_R = \\vec{\\Omega} \\wedge \\vec{e}_i'$.  
+En factorisant le produit vectoriel par distributivité :
+$$ \\sum_{i=1}^3 A_i' (\\vec{\\Omega} \\wedge \\vec{e}_i') = \\vec{\\Omega} \\wedge \\left( \\sum_{i=1}^3 A_i' \\vec{e}_i' \\right) = \\vec{\\Omega} \\wedge \\vec{A} $$
+On obtient bien la formule de Poisson : $\\mathbf{\\left[\\frac{d\\vec{A}}{dt}\\right]_R = \\left[\\frac{d\\vec{A}}{dt}\\right]_{R'} + \\vec{\\Omega} \\wedge \\vec{A}}$. $\\blacksquare$`
+                    },
+                    {
+                        title: "Théorème 2 : Dérivation de la Base de Frenet & Accélérations",
+                        stmt: "Dans le repère de Frenet $(\\vec{T}, \\vec{N})$, la vitesse est $\\vec{v} = v\\vec{T}$ et l'accélération vaut $\\vec{a} = \\frac{dv}{dt}\\vec{T} + \\frac{v^2}{\\rho}\\vec{N}$.",
+                        proof: `Soit $s(t)$ l'abscisse curviligne du point matériel $P$ sur sa trajectoire.  
+Le vecteur vitesse est par définition : $\\vec{v} = \\frac{d\\vec{OP}}{dt} = \\frac{d\\vec{OP}}{ds} \\frac{ds}{dt} = v \\vec{T}$, où $\\vec{T}$ est le vecteur unitaire tangent.  
+Dérivons la vitesse par rapport au temps :
+$$ \\vec{a} = \\frac{d\\vec{v}}{dt} = \\frac{d(v\\vec{T})}{dt} = \\frac{dv}{dt}\\vec{T} + v \\frac{d\\vec{T}}{dt} $$
+Exprimons $\\frac{d\\vec{T}}{dt}$ en utilisant l'angle tangentiel $\\theta$ :
+$$ \\frac{d\\vec{T}}{dt} = \\frac{d\\vec{T}}{d\\theta} \\frac{d\\theta}{ds} \\frac{ds}{dt} = \\vec{N} \\cdot \\frac{1}{\\rho} \\cdot v = \\frac{v}{\\rho}\\vec{N} $$
+En réinjectant dans l'expression de l'accélération :
+$$ \\mathbf{\\vec{a} = \\underbrace{\\frac{dv}{dt}\\vec{T}}_{\\vec{a}_T \\text{ (tangentielle)}} + \\underbrace{\\frac{v^2}{\\rho}\\vec{N}}_{\\vec{a}_N \\text{ (normale / centripète)}}} \\quad \\blacksquare $$`
+                    }
+                ];
+            } else if (cKey === 'mat206_olasilik') {
+                return [
+                    {
+                        title: "Théorème 1 : Formule de Poincaré (Principe d'Inclusion-Exclusion)",
+                        stmt: "Pour tous événements $A, B \\in \\mathcal{F}$ : $P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$.",
+                        proof: `Décomposons $A \\cup B$ en union d'événements disjoints :
+$$ A \\cup B = A \\cup (B \\setminus (A \\cap B)) $$
+Puisque $A$ et $B \\setminus (A \\cap B)$ sont disjoints, par le 3ème axiome de Kolmogorov :
+$$ P(A \\cup B) = P(A) + P(B \\setminus (A \\cap B)) $$
+De même, $B$ est l'union disjointe de $(B \\setminus (A \\cap B))$ et $(A \\cap B)$ :
+$$ P(B) = P(B \\setminus (A \\cap B)) + P(A \\cap B) \\implies P(B \\setminus (A \\cap B)) = P(B) - P(A \\cap B) $$
+En substituant cette égalité, on trouve :
+$$ \\mathbf{P(A \\cup B) = P(A) + P(B) - P(A \\cap B)} \\quad \\blacksquare $$`
+                    },
+                    {
+                        title: "Théorème 2 : Théorème de Bayes & Probabilités Totales",
+                        stmt: "Si $(B_i)_{i=1}^n$ forme un système complet d'événements et $P(A) > 0$, alors $P(B_k \\mid A) = \\frac{P(A \\mid B_k)P(B_k)}{\\sum_{i=1}^n P(A \\mid B_i)P(B_i)}$.",
+                        proof: `Par définition de la probabilité conditionnelle :
+$$ P(B_k \\mid A) = \\frac{P(B_k \\cap A)}{P(A)} = \\frac{P(A \\mid B_k)P(B_k)}{P(A)} $$
+Puisque $(B_i)$ forme une partition de $\\Omega$, l'événement $A$ se décompose en union disjointe :
+$$ A = A \\cap \\Omega = A \\cap \\left(\\bigcup_{i=1}^n B_i\\right) = \\bigcup_{i=1}^n (A \\cap B_i) $$
+Par additivité (formule des probabilités totales) :
+$$ P(A) = \\sum_{i=1}^n P(A \\cap B_i) = \\sum_{i=1}^n P(A \\mid B_i)P(B_i) $$
+En reportant dans le numérateur, on obtient le Théorème de Bayes. $\\blacksquare$`
+                    }
+                ];
+            }
+
+            // Default: mat204_grup
+            return [
+                {
+                    title: "Théorème 1 : $g^n = e \\iff m \\mid n$ (où $m = o(g)$)",
+                    stmt: "Soit $g \\in G$ d'ordre $m = o(g)$. Alors $g^n = e$ si et seulement si $m$ divise $n$.",
+                    proof: `<strong>(⇐)</strong> Si $m \\mid n$, alors $n = m \\cdot k$. D'où $g^n = (g^m)^k = e^k = e$.<br><br>
+<strong>(⇒)</strong> Supposons $g^n = e$. Effectuons la division euclidienne de $n$ par $m$ :
+<div class="math-callout">$$n = m \\cdot q + r \\quad \\text{avec} \\quad 0 \\leq r < m$$</div>
+Alors $e = g^n = g^{mq+r} = (g^m)^q g^r = e^q g^r = g^r$.<br>
+Si $r > 0$, cela contredit la minimalité de $m = o(g)$ (qui est le plus petit entier strictement positif annulant la puissance de $g$).  
+Donc nécessairement $\\mathbf{r = 0} \\implies \\mathbf{m \\mid n}$. $\\blacksquare$`
+                },
+                {
+                    title: "Théorème 2 : Tout sous-groupe d'un groupe cyclique est cyclique",
+                    stmt: "Soit $G = \\langle a \\rangle$ un groupe cyclique et $H \\leq G$ un sous-groupe. Alors $H$ est lui-même cyclique.",
+                    proof: `Si $H = \\{e\\}$, $H = \\langle e \\rangle$ est trivialement cyclique.<br>
+Supposons $H \\neq \\{e\\}$. L'ensemble $S = \\{ k \\in \\mathbb{N}^* \\mid a^k \\in H \\}$ est non vide.  
+Par le principe du bon ordre, posons $\\mathbf{m = \\min(S)}$.  
+Montrons que $\\mathbf{H = \\langle a^m \\rangle}$ :<br>
+L'inclusion $\\langle a^m \\rangle \\subseteq H$ est évidente car $a^m \\in H$ et $H$ est stable par puissance.<br>
+Réciproquement, soit $h \\in H$. Comme $h \\in G$, il existe $k \\in \\mathbb{Z}$ tel que $h = a^k$.  
+Effectuons la division euclidienne de $k$ par $m$ :
+$$ k = m \\cdot q + r \\quad \\text{avec} \\quad 0 \\leq r < m $$
+On a alors : $a^r = a^{k - mq} = a^k \\cdot (a^m)^{-q} = h \\cdot (a^m)^{-q} \\in H$.  
+Si $r > 0$, $r \\in S$ et $r < m$, ce qui contredit la définition de $m$ comme le minimum de $S$.  
+Donc $\\mathbf{r = 0}$, ce qui prouve que $k = mq$ et $h = (a^m)^q \\in \\langle a^m \\rangle$.  
+<div class="exam-conclusion"><strong>Conclusion :</strong> $H = \\langle a^m \\rangle$ est donc cyclique et engendré par la plus petite puissance positive présente dans $H$. $\\blacksquare$</div>`
+                },
+                {
+                    title: "Théorème 3 : Théorème de Lagrange (L'ordre divise l'ordre du groupe)",
+                    stmt: "Soit $G$ un groupe fini et $H \\leq G$ un sous-groupe. Alors l'ordre de $H$ divise l'ordre de $G$ : $|G| = |H| \\cdot [G:H]$.",
+                    proof: `Définissons sur $G$ la relation binaire : $x \\sim y \\iff x^{-1}y \\in H$.  
+C'est une relation d'équivalence :
+1) Réflexive : $x^{-1}x = e \\in H$.  
+2) Symétrique : $x^{-1}y \\in H \\implies (x^{-1}y)^{-1} = y^{-1}x \\in H$.  
+3) Transitive : $x^{-1}y \\in H$ et $y^{-1}z \\in H \\implies (x^{-1}y)(y^{-1}z) = x^{-1}z \\in H$.  
+La classe d'équivalence de $x$ est la classe à gauche $\\bar{x} = xH = \\{ xh \\mid h \\in H \\}$.  
+L'application $h \\mapsto xh$ est une bijection de $H$ sur $xH$, donc chaque classe possède exactement $|H|$ éléments.  
+Puisque les classes d'équivalence forment une partition de l'ensemble fini $G$, la réunion disjointe des $k$ classes donne :
+$$ |G| = \\sum_{i=1}^k |x_i H| = k \\cdot |H| = [G:H] \\cdot |H| $$
+D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
+                }
+            ];
+        }
+
+        function getFrenchPhrasesForCourse(cKey) {
+            if (cKey === 'mat201_seriler') {
+                return [
+                    { fr: "Montrons que la suite des sommes partielles $(S_n)$ est majorée et croissante...", tr: "Kısmi toplamlar dizisinin üstten sınırlı ve artan olduğunu gösterelim (monoton yakınsaklık için)" },
+                    { fr: "Par le critère de comparaison des séries à termes positifs...", tr: "Pozitif terimli seriler için karşılaştırma testi gereğince" },
+                    { fr: "Effectuons un développement limité (DL) de $u_n$ au voisinage de $+\\infty$...", tr: "un genel teriminin +sonsuz komşuluğunda Taylor (DL) açılımını yapalım" },
+                    { fr: "La série converge absolument, donc elle converge.", tr: "Seri mutlak yakınsaktır, dolayısıyla yakınsar" },
+                    { fr: "La convergence est uniforme sur tout segment compact $[a, b] \\subset ]-1, 1[$...", tr: "Yakınsaklık her tıkız aralık üzerinde düzgündür" },
+                    { fr: "Puisque chaque $f_n$ est continue et la convergence est uniforme, la somme $S$ est continue.", tr: "Her fn fonksiyonu sürekli ve yakınsaklık düzgün olduğundan toplam fonksiyonu süreklidir" },
+                    { fr: "Le terme général ne tend pas vers 0, donc la série diverge grossièrement.", tr: "Genel terim sıfıra gitmediğinden seri aşikar biçimde ıraksar" }
+                ];
+            } else if (cKey === 'fiz101_fizik') {
+                return [
+                    { fr: "Le référentiel terrestre $R$ est supposé galiléen dans le cadre de cette étude.", tr: "Bu inceleme kapsamında Dünya'ya bağlı R referans sistemi eylemsiz kabul edilmiştir" },
+                    { fr: "Projetons la relation fondamentale de la dynamique ($\\sum \\vec{F} = m\\vec{a}$) sur les axes...", tr: "Newton'un 2. yasasını (RFD) seçilen tabanın eksenleri üzerine iz düşürelim" },
+                    { fr: "En appliquant la formule de dérivation dans un repère mobile (formule de Poisson)...", tr: "Hareketli referans sisteminde vektörel türev formülünü (Poisson bağıntısını) uygulayarak" },
+                    { fr: "Par intégration successive par rapport au temps $t$ avec les conditions initiales...", tr: "Başlangıç koşulları kullanılarak t zamanına göre ardışık integral alındığında" },
+                    { fr: "Le travail des forces conservatives dérive d'une énergie potentielle : $W = -\\Delta E_p$.", tr: "Korunumlu kuvvetlerin yaptığı iş potansiyel enerjiden türer" },
+                    { fr: "Dans la base de Frenet, l'accélération possède une composante tangentielle et une normale.", tr: "Frenet tabanında ivme teğetsel ve normal (merkezcil) bileşenlere ayrılır" }
+                ];
+            } else if (cKey === 'mat206_olasilik') {
+                return [
+                    { fr: "Soit $(\\Omega, \\mathcal{F}, P)$ un espace probabilisé associé à l'expérience aléatoire.", tr: "Rastgele deneye bağlı olasılık uzayı olsun" },
+                    { fr: "Les événements $(A_i)_{i=1}^n$ forment un système complet d'événements (partition de $\\Omega$)...", tr: "Olaylar örneklem uzayının tam bir ayrışımını (bölüntüsünü) oluşturur" },
+                    { fr: "D'après la formule des probabilités totales : $P(B) = \\sum P(A_i) P(B \\mid A_i)$...", tr: "Toplam olasılık formülüne göre" },
+                    { fr: "D'après le théorème de Bayes, la probabilité a posteriori s'écrit...", tr: "Bayes teoremine göre sonsal (a posteriori) olasılık formülü şöyledir" },
+                    { fr: "Puisque $P(A \\cap B) = P(A) \\cdot P(B)$, les événements $A$ et $B$ sont mutuellement indépendants.", tr: "Kesişim olasılığı çarpımlarına eşit olduğundan A ve B bağımsızdır" },
+                    { fr: "On passe par l'événement contraire $\\bar{A}$ : $P(A) = 1 - P(\\bar{A})$.", tr: "Tümleyen olaydan gidersek: P(A) = 1 - P(tümleyen)" }
+                ];
+            }
+
+            // Default: mat204_grup
+            return [
+                { fr: "Soient $a, b \\in G$ deux éléments arbitraires...", tr: "İspata başlarken: G'den rastgele alınan iki eleman olsun" },
+                { fr: "Procédons par double implication ($\\implies$ et $\\impliedby$)...", tr: "Çift yönlü gerektirmeyle ilerleyelim" },
+                { fr: "Effectuons la division euclidienne de $n$ par $m$...", tr: "n'in m'ye kalanlı bölmesini yapalım" },
+                { fr: "Puisque les supports sont disjoints, ces cycles commutent.", tr: "Destekleri ayrık olduğundan bu döngüler değişmelidir" },
+                { fr: "Ce qui contredit la minimalité de $m$. Absurde.", tr: "m'in minimalitesiyle çelişir. Çelişki!" },
+                { fr: "Par conséquent / On en conclut que...", tr: "Dolayısıyla / Sonuç olarak..." }
+            ];
+        }
+
+        function getCalculatorTitle(cKey) {
+            if (cKey === 'mat201_seriler') return 'Canlı Seri & Yakınsaklık Motoru';
+            if (cKey === 'fiz101_fizik') return 'Canlı 3D Vektör Çarpım Motoru';
+            if (cKey === 'mat206_olasilik') return 'Canlı Bayes & Olasılık Motoru';
+            return 'Canlı Bézout / Ters Motoru';
+        }
+
         // ================= SPECIAL VIEWS =================
         function loadSpecialView(viewKey) {
             currentViewMode = 'special';
@@ -1064,151 +1319,340 @@ function triggerManualSync() {
             setActiveNav('nav-' + viewKey);
 
             const main = document.getElementById('main-content');
+            const c = COURSES_DB[activeCourseKey];
 
             if (viewKey === 'ispatlar') {
+                const proofs = getProofsForCourse(activeCourseKey);
+                let proofsHTML = '';
+                proofs.forEach((p, idx) => {
+                    proofsHTML += `
+                        <div class="academic-card">
+                            <div class="question-statement">${p.title}</div>
+                            <div style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 14px;"><strong>Teorem Önermesi:</strong> ${p.stmt}</div>
+                            <div class="exam-sheet">
+                                <div class="exam-sheet-header"><span class="exam-sheet-title">📄 Resmi İspat ve Not Baremi</span></div>
+                                <div class="exam-sheet-body" style="font-family: 'Newsreader', serif; font-size: 1.14rem; line-height: 1.8;">
+                                    ${p.proof}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
                 main.innerHTML = `
                     <div class="content-header">
                         <div>
-                            <div class="breadcrumbs">MAT204 > Sınav Araçları > Banko İspatlar</div>
-                            <h1 class="content-title">📜 Vizenin 2 Büyük Teoremi</h1>
+                            <div class="breadcrumbs">${c.code} > Sınav Araçları > Banko İspatlar</div>
+                            <h1 class="content-title">📜 ${c.code} Vizesinin Banko Teorem İspatları</h1>
                         </div>
                     </div>
-
-                    <div class="academic-card">
-                        <div class="question-statement">Théorème 1 : $g^n = e \\iff m \\mid n$ (où $m = o(g)$)</div>
-                        <div class="exam-sheet">
-                            <div class="exam-sheet-header"><span class="exam-sheet-title">📄 Resmi İspat</span></div>
-                            <div class="exam-sheet-body">
-                                <strong>(⇐)</strong> Si $m \\mid n$, alors $n = m \\cdot k$. D'où $g^n = (g^m)^k = e^k = e$.<br><br>
-                                <strong>(⇒)</strong> Supposons $g^n = e$. Effectuons la division euclidienne de $n$ par $m$ :
-                                <div class="math-callout">$$n = m \\cdot q + r \\quad \\text{avec} \\quad 0 \\leq r < m$$</div>
-                                Alors $e = g^n = g^{mq+r} = (g^m)^q g^r = e^q g^r = g^r$.<br>
-                                Si $r > 0$, cela contredit la minimalité de $m = o(g)$. Donc $\\mathbf{r = 0} \\implies \\mathbf{m \\mid n}$. $\\blacksquare$
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="academic-card">
-                        <div class="question-statement">Théorème 2 : Tout sous-groupe d'un groupe cyclique est cyclique</div>
-                        <div class="exam-sheet">
-                            <div class="exam-sheet-header"><span class="exam-sheet-title">📄 Resmi İspat</span></div>
-                            <div class="exam-sheet-body">
-                                Soit $G = \\langle a \\rangle$ et $H \\leq G$. Si $H = \\{e\\}$, trivial.<br>
-                                Sinon, soit $S = \\{ k \\in \\mathbb{N}^* \\mid a^k \\in H \\} \\neq \\emptyset$. Posons $\\mathbf{m = \\min(S)}$.<br>
-                                Soit $h = a^k \\in H$. Division euclidienne : $k = mq + r$ avec $0 \\leq r < m$.<br>
-                                $a^r = a^{k-mq} = h \\cdot (a^m)^{-q} \\in H$. Par minimalité de $m$, $\\mathbf{r = 0} \\implies h = (a^m)^q \\in \\langle a^m \\rangle$.<br>
-                                <div class="exam-conclusion"><strong>Conclusion :</strong> $H = \\langle a^m \\rangle$ est cyclique. $\\blacksquare$</div>
-                            </div>
-                        </div>
-                    </div>
+                    ${proofsHTML}
                 `;
             } else if (viewKey === 'fransizca') {
+                const phrases = getFrenchPhrasesForCourse(activeCourseKey);
+                let phrasesHTML = '';
+                phrases.forEach(item => {
+                    phrasesHTML += `
+                        <div class="math-callout" style="padding: 14px 18px; margin-bottom: 10px;">
+                            <div style="font-size: 1.05rem; color: var(--accent-blue); font-weight: 600; margin-bottom: 4px;">• "${item.fr}"</div>
+                            <div style="font-size: 0.88rem; color: var(--text-secondary);"><span style="color: var(--accent-emerald); font-weight: 700;">Türkçe Mantığı:</span> ${item.tr}</div>
+                        </div>
+                    `;
+                });
+
                 main.innerHTML = `
                     <div class="content-header">
                         <div>
-                            <div class="breadcrumbs">MAT204 > Sınav Araçları > Fransızca</div>
-                            <h1 class="content-title">🇫🇷 Sınav Fransızcası Kalıpları</h1>
+                            <div class="breadcrumbs">${c.code} > Sınav Araçları > Fransızca</div>
+                            <h1 class="content-title">🇫🇷 ${c.code} Sınav Fransızcası ve İspat Cümleleri</h1>
                         </div>
                     </div>
                     <div class="academic-card">
-                        <div style="display: grid; gap: 14px;">
-                            <div class="math-callout">• <strong>"Soient $a, b \\in G$ deux éléments arbitraires..."</strong> (İspata başlarken: G'den rastgele alınan iki eleman olsun)</div>
-                            <div class="math-callout">• <strong>"Procédons par double implication ($\\implies$ et $\\impliedby$)..."</strong> (Çift yönlü gerektirmeyle ilerleyelim)</div>
-                            <div class="math-callout">• <strong>"Effectuons la division euclidienne de $n$ par $m$..."</strong> (n'in m'ye kalanlı bölmesini yapalım)</div>
-                            <div class="math-callout">• <strong>"Puisque les supports sont disjoints, ces cycles commutent."</strong> (Destekleri ayrık olduğundan bu döngüler değişmelidir)</div>
-                            <div class="math-callout">• <strong>"Ce qui contredit la minimalité de $m$. Absurde."</strong> (m'in en küçük olmasıyla çelişir. Çelişki!)</div>
-                            <div class="math-callout">• <strong>"Par conséquent / On en conclut que..."</strong> (Dolayısıyla / Sonuç olarak...)</div>
-                        </div>
+                        <p style="margin-bottom: 16px; color: var(--text-secondary);">Galatasaray Üniversitesi sınavlarında Fransızca matematiksel argüman kurarken hocanın tam puan vermesini sağlayan altın kalıplar:</p>
+                        ${phrasesHTML}
                     </div>
                 `;
             } else if (viewKey === 'hesaplayici') {
-                main.innerHTML = `
-                    <div class="content-header">
-                        <div>
-                            <div class="breadcrumbs">MAT204 > Sınav Araçları > Hesaplayıcı</div>
-                            <h1 class="content-title">🧮 Canlı Bézout / Ters Motoru</h1>
-                        </div>
-                    </div>
-                    <div class="academic-card">
-                        <div class="calc-box">
-                            <div class="calc-input-wrapper">
-                                <label>Sayı (a):</label>
-                                <input type="number" id="calc-a" value="7">
+                if (activeCourseKey === 'mat201_seriler') {
+                    main.innerHTML = `
+                        <div class="content-header">
+                            <div>
+                                <div class="breadcrumbs">${c.code} > Sınav Araçları > Seri Hesaplayıcı</div>
+                                <h1 class="content-title">🧮 Canlı Seri Kısmi Toplam ($S_N$) & D'Alembert Motoru</h1>
                             </div>
-                            <div class="calc-input-wrapper">
-                                <label>Mod (n):</label>
-                                <input type="number" id="calc-n" value="26">
-                            </div>
-                            <button class="btn-stepper primary" style="margin-top: 18px;" onclick="runCalculator()">Resmi Çözümü Üret</button>
                         </div>
-                        <div id="calc-result-area" class="exam-sheet" style="padding: 20px; display: none;"></div>
-                    </div>
-                `;
-                setTimeout(runCalculator, 100);
+                        <div class="academic-card">
+                            <div class="calc-box">
+                                <div class="calc-input-wrapper">
+                                    <label>Örnek Seri Seç veya Formül İncele:</label>
+                                    <select id="calc-series-type" style="padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border-subtle); background: var(--bg-paper); color: var(--text-main); font-size: 0.95rem;">
+                                        <option value="riemann2">∑ 1/n² (Riemann α=2, Yakınsar)</option>
+                                        <option value="geom_half">∑ (1/2)ⁿ (Geometrik q=0.5, Yakınsar)</option>
+                                        <option value="harmonic">∑ 1/n (Harmonik Seri, Iraksar)</option>
+                                        <option value="telescopic">∑ 1 / (n(n+1)) (Teleskopik Seri, S=1)</option>
+                                        <option value="exp">∑ 1/n! (e sayısı, Süper Yakınsar)</option>
+                                        <option value="alt_harmonic">∑ (-1)ⁿ⁺¹ / n (Alterne Harmonik, ln 2)</option>
+                                    </select>
+                                </div>
+                                <div class="calc-input-wrapper">
+                                    <label>Terim Sayısı (N):</label>
+                                    <input type="number" id="calc-n-terms" value="10" min="1" max="100">
+                                </div>
+                                <button class="btn-stepper primary" style="margin-top: 18px;" onclick="runSeriesCalculator()">Canlı Analizi ve Kısmi Toplamı Hesapla</button>
+                            </div>
+                            <div id="calc-result-area" class="exam-sheet" style="padding: 20px; display: none;"></div>
+                        </div>
+                    `;
+                    setTimeout(runSeriesCalculator, 100);
+                } else if (activeCourseKey === 'fiz101_fizik') {
+                    main.innerHTML = `
+                        <div class="content-header">
+                            <div>
+                                <div class="breadcrumbs">${c.code} > Sınav Araçları > Vektör Motoru</div>
+                                <h1 class="content-title">🧮 Canlı 3D Vektör Çarpım & Açı Analiz Motoru</h1>
+                            </div>
+                        </div>
+                        <div class="academic-card">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                                <div class="calc-box">
+                                    <strong>Vektör a (x, y, z):</strong>
+                                    <div style="display: flex; gap: 8px; margin-top: 8px;">
+                                        <input type="number" id="vec-ax" value="1" placeholder="x" style="width: 100%;">
+                                        <input type="number" id="vec-ay" value="2" placeholder="y" style="width: 100%;">
+                                        <input type="number" id="vec-az" value="2" placeholder="z" style="width: 100%;">
+                                    </div>
+                                </div>
+                                <div class="calc-box">
+                                    <strong>Vektör b (x, y, z):</strong>
+                                    <div style="display: flex; gap: 8px; margin-top: 8px;">
+                                        <input type="number" id="vec-bx" value="2" placeholder="x" style="width: 100%;">
+                                        <input type="number" id="vec-by" value="0" placeholder="y" style="width: 100%;">
+                                        <input type="number" id="vec-bz" value="1" placeholder="z" style="width: 100%;">
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn-stepper primary" onclick="runVectorCalculator()">Vektörel & Skaler Çarpımı ve Açıyı Hesapla</button>
+                            <div id="calc-result-area" class="exam-sheet" style="padding: 20px; display: none; margin-top: 16px;"></div>
+                        </div>
+                    `;
+                    setTimeout(runVectorCalculator, 100);
+                } else if (activeCourseKey === 'mat206_olasilik') {
+                    main.innerHTML = `
+                        <div class="content-header">
+                            <div>
+                                <div class="breadcrumbs">${c.code} > Sınav Araçları > Bayes Hesaplayıcı</div>
+                                <h1 class="content-title">🧮 Canlı Bayes Teoremi & Tıbbi Dépistage Motoru</h1>
+                            </div>
+                        </div>
+                        <div class="academic-card">
+                            <div class="calc-box" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
+                                <div class="calc-input-wrapper">
+                                    <label>Hastalık Prevalansı P(M):</label>
+                                    <input type="number" id="bayes-prior" value="0.001" step="0.001" min="0.0001" max="1">
+                                    <span style="font-size: 0.75rem; color: var(--text-muted);">Örn: 1000'de 1 = 0.001</span>
+                                </div>
+                                <div class="calc-input-wrapper">
+                                    <label>Duyarlılık / Sensibilité P(T|M):</label>
+                                    <input type="number" id="bayes-sens" value="0.99" step="0.01" min="0" max="1">
+                                    <span style="font-size: 0.75rem; color: var(--text-muted);">Örn: %99 = 0.99</span>
+                                </div>
+                                <div class="calc-input-wrapper">
+                                    <label>Yalancı Pozitiflik P(T|M̄):</label>
+                                    <input type="number" id="bayes-fp" value="0.02" step="0.01" min="0" max="1">
+                                    <span style="font-size: 0.75rem; color: var(--text-muted);">Örn: %2 = 0.02</span>
+                                </div>
+                            </div>
+                            <button class="btn-stepper primary" style="margin-top: 18px;" onclick="runBayesCalculator()">Bayes Posterior Olasılığını Hesapla</button>
+                            <div id="calc-result-area" class="exam-sheet" style="padding: 20px; display: none; margin-top: 16px;"></div>
+                        </div>
+                    `;
+                    setTimeout(runBayesCalculator, 100);
+                } else {
+                    // Default: mat204_grup
+                    main.innerHTML = `
+                        <div class="content-header">
+                            <div>
+                                <div class="breadcrumbs">${c.code} > Sınav Araçları > Hesaplayıcı</div>
+                                <h1 class="content-title">🧮 Canlı Bézout / Ters Motoru</h1>
+                            </div>
+                        </div>
+                        <div class="academic-card">
+                            <div class="calc-box">
+                                <div class="calc-input-wrapper">
+                                    <label>Sayı (a):</label>
+                                    <input type="number" id="calc-a" value="7">
+                                </div>
+                                <div class="calc-input-wrapper">
+                                    <label>Mod (n):</label>
+                                    <input type="number" id="calc-n" value="26">
+                                </div>
+                                <button class="btn-stepper primary" style="margin-top: 18px;" onclick="runCalculator()">Resmi Çözümü Üret</button>
+                            </div>
+                            <div id="calc-result-area" class="exam-sheet" style="padding: 20px; display: none;"></div>
+                        </div>
+                    `;
+                    setTimeout(runCalculator, 100);
+                }
             }
 
             renderMath();
             saveAppState();
         }
 
-        function runCalculator() {
-            const a = parseInt(document.getElementById('calc-a').value);
-            const n = parseInt(document.getElementById('calc-n').value);
+        function runSeriesCalculator() {
+            const type = document.getElementById('calc-series-type').value;
+            const N = Math.min(100, Math.max(1, parseInt(document.getElementById('calc-n-terms').value) || 10));
             const out = document.getElementById('calc-result-area');
             if (!out) return;
             out.style.display = 'block';
 
-            if (isNaN(a) || isNaN(n) || a <= 0 || n <= 0) {
-                out.innerHTML = '<span style="color: var(--accent-amber);">Lütfen geçerli pozitif sayılar giriniz.</span>';
-                return;
+            let terms = [];
+            let sum = 0;
+            let formulaName = '';
+            let exactSum = '';
+
+            for (let n = 1; n <= N; n++) {
+                let un = 0;
+                if (type === 'riemann2') {
+                    un = 1 / (n * n);
+                    formulaName = 'u_n = \\frac{1}{n^2}';
+                    exactSum = '\\frac{\\pi^2}{6} \\approx 1.644934';
+                } else if (type === 'geom_half') {
+                    un = Math.pow(0.5, n);
+                    formulaName = 'u_n = \\left(\\frac{1}{2}\\right)^n';
+                    exactSum = '1.0 (\\sum_{n=1}^{+\\infty} 2^{-n} = 1)';
+                } else if (type === 'harmonic') {
+                    un = 1 / n;
+                    formulaName = 'u_n = \\frac{1}{n}';
+                    exactSum = '+\\infty \\text{ (Iraksak Seri)}';
+                } else if (type === 'telescopic') {
+                    un = 1 / (n * (n + 1));
+                    formulaName = 'u_n = \\frac{1}{n(n+1)}';
+                    exactSum = '1 - \\frac{1}{N+1} \\longrightarrow 1.0';
+                } else if (type === 'exp') {
+                    let fact = 1;
+                    for (let k = 1; k <= n; k++) fact *= k;
+                    un = 1 / fact;
+                    formulaName = 'u_n = \\frac{1}{n!}';
+                    exactSum = 'e - 1 \\approx 1.718281';
+                } else if (type === 'alt_harmonic') {
+                    un = (n % 2 === 1 ? 1 : -1) / n;
+                    formulaName = 'u_n = \\frac{(-1)^{n+1}}{n}';
+                    exactSum = '\\ln 2 \\approx 0.693147';
+                }
+                sum += un;
+                terms.push({ n, un, sum });
             }
 
-            let r0 = n, r1 = a;
-            let s0 = 1, s1 = 0;
-            let t0 = 0, t1 = 1;
+            let tableRows = '';
+            terms.slice(0, 10).forEach(t => {
+                tableRows += `<tr><td style="padding: 6px 12px; border-bottom: 1px solid var(--border-subtle);">${t.n}</td><td style="padding: 6px 12px; border-bottom: 1px solid var(--border-subtle);">${t.un.toFixed(6)}</td><td style="padding: 6px 12px; border-bottom: 1px solid var(--border-subtle); font-weight: 700; color: var(--accent-blue);">${t.sum.toFixed(6)}</td></tr>`;
+            });
 
-            let html = '<span class="step-heading">Divisions Euclidiennes successives :</span><div class="math-callout">$$\\begin{aligned}';
-            while (r1 !== 0) {
-                let q = Math.floor(r0 / r1);
-                let r2 = r0 % r1;
-                html += `${r0} &= ${r1} \\times ${q} + ${r2} \\\\ `;
-                r0 = r1; r1 = r2;
-                let s2 = s0 - q * s1;
-                let t2 = t0 - q * t1;
-                s0 = s1; s1 = s2;
-                t0 = t1; t1 = t2;
-            }
-            html += '\\end{aligned}$$</div>';
-
-            if (r0 !== 1) {
-                html += `<p style="color: var(--accent-amber);"><strong>Conclusion :</strong> $\\operatorname{pgcd}(${n}, ${a}) = ${r0} \\neq 1$. L'élément $\\bar{${a}}$ n'est <strong>pas inversible</strong> dans $\\mathbb{Z}_{${n}}$.</p>`;
-            } else {
-                let inv = (t0 % n + n) % n;
-                html += `
-                    Puisque $\\operatorname{pgcd}(${n}, ${a}) = 1$, $\\bar{${a}}$ est inversible.<br>
-                    <span class="step-heading">Identité de Bézout :</span>
-                    <div class="math-callout">$$${n} \\times (${s0}) + ${a} \\times (${t0}) = 1$$</div>
-                    Modulo ${n} indirgendiğinde:
-                    <div class="math-callout">$$${a} \\times (${t0}) \\equiv 1 \\pmod{${n}}$$</div>
-                    <div class="exam-conclusion">
-                        <strong>Conclusion :</strong> L'inverse de $\\bar{${a}}$ dans $\\mathbb{Z}_{${n}}^*$ est $\\mathbf{\\bar{${a}}^{-1} = \\bar{${inv}}}$.
-                    </div>
-                `;
-            }
-
-            out.innerHTML = html;
+            out.innerHTML = `
+                <h3 style="color: var(--accent-blue); margin-bottom: 8px;">Kısmi Toplam ($S_{${N}}$) Analizi:</h3>
+                <div class="math-callout">$$ ${formulaName} \\quad \\implies \\quad S_{${N}} = \\sum_{n=1}^{${N}} u_n \\approx \\mathbf{${sum.toFixed(7)}} $$</div>
+                <div style="font-size: 0.95rem; margin-top: 8px;"><strong>Teorik Limit Toplam:</strong> $${exactSum}$</div>
+                <div style="margin-top: 14px; overflow-x: auto;">
+                    <table style="width: 100%; text-align: left; border-collapse: collapse; font-size: 0.88rem;">
+                        <thead>
+                            <tr style="background: rgba(125, 125, 125, 0.08);">
+                                <th style="padding: 8px 12px;">$n$</th>
+                                <th style="padding: 8px 12px;">Genel Terim $u_n$</th>
+                                <th style="padding: 8px 12px;">Kısmi Toplam $S_n$</th>
+                            </tr>
+                        </thead>
+                        <tbody>${tableRows}</tbody>
+                    </table>
+                </div>
+            `;
             if (typeof renderMathInElement !== 'undefined') {
-                renderMathInElement(out, {
-                    delimiters: [
-                        {left: '$$', right: '$$', display: true},
-                        {left: '$', right: '$', display: false}
-                    ],
-                    throwOnError: false
-                });
+                renderMathInElement(out, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], throwOnError: false });
             }
         }
 
-        // ================= THEME MANAGEMENT =================
+        function runVectorCalculator() {
+            const ax = parseFloat(document.getElementById('vec-ax').value) || 0;
+            const ay = parseFloat(document.getElementById('vec-ay').value) || 0;
+            const az = parseFloat(document.getElementById('vec-az').value) || 0;
+            const bx = parseFloat(document.getElementById('vec-bx').value) || 0;
+            const by = parseFloat(document.getElementById('vec-by').value) || 0;
+            const bz = parseFloat(document.getElementById('vec-bz').value) || 0;
+            const out = document.getElementById('calc-result-area');
+            if (!out) return;
+            out.style.display = 'block';
+
+            const normA = Math.sqrt(ax * ax + ay * ay + az * az);
+            const normB = Math.sqrt(bx * bx + by * by + bz * bz);
+            const dot = ax * bx + ay * by + az * bz;
+            const crossX = ay * bz - az * by;
+            const crossY = az * bx - ax * bz;
+            const crossZ = ax * by - ay * bx;
+            const normCross = Math.sqrt(crossX * crossX + crossY * crossY + crossZ * crossZ);
+
+            let cosTheta = 0;
+            let degTheta = 0;
+            let radTheta = 0;
+            if (normA > 0 && normB > 0) {
+                cosTheta = Math.max(-1, Math.min(1, dot / (normA * normB)));
+                radTheta = Math.acos(cosTheta);
+                degTheta = (radTheta * 180) / Math.PI;
+            }
+
+            out.innerHTML = `
+                <h3 style="color: var(--accent-blue); margin-bottom: 12px;">3D Vektörel Hesap Sonuçları:</h3>
+                <div class="math-callout">
+                    $$\\begin{aligned}
+                    ||\\vec{a}|| &= \\sqrt{${ax}^2 + ${ay}^2 + ${az}^2} = \\mathbf{${normA.toFixed(4)}} \\\\
+                    ||\\vec{b}|| &= \\sqrt{${bx}^2 + ${by}^2 + ${bz}^2} = \\mathbf{${normB.toFixed(4)}} \\\\
+                    \\vec{a} \\cdot \\vec{b} &= (${ax})(${bx}) + (${ay})(${by}) + (${az})(${bz}) = \\mathbf{${dot.toFixed(4)}} \\\\
+                    \\vec{a} \\wedge \\vec{b} &= \\begin{vmatrix} \\vec{i} & \\vec{j} & \\vec{k} \\\\ ${ax} & ${ay} & ${az} \\\\ ${bx} & ${by} & ${bz} \\end{vmatrix} = \\mathbf{(${crossX.toFixed(2)})\\vec{i} + (${crossY.toFixed(2)})\\vec{j} + (${crossZ.toFixed(2)})\\vec{k}} \\\\
+                    ||\\vec{a} \\wedge \\vec{b}|| &= \\mathbf{${normCross.toFixed(4)}} \\\\
+                    \\cos(\\theta) &= \\frac{\\vec{a} \\cdot \\vec{b}}{||\\vec{a}|| \\cdot ||\\vec{b}||} = ${cosTheta.toFixed(4)} \\implies \\mathbf{\\theta \\approx ${degTheta.toFixed(2)}^\\circ \\quad (${radTheta.toFixed(3)} \\text{ rad})}
+                    \\end{aligned}$$
+                </div>
+                <div class="exam-conclusion">
+                    <strong>Vektör İlişkisi:</strong> ${dot === 0 ? '📐 Vektörler birbirine **DİKTİR** (Orthogonaux).' : (normCross === 0 ? '📏 Vektörler **PARALELDİR / ÇAKIŞIKTIR** (Colinéaires).' : 'Vektörler uzayda bir düzlem tanımlar.')}
+                </div>
+            `;
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(out, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], throwOnError: false });
+            }
+        }
+
+        function runBayesCalculator() {
+            const pM = parseFloat(document.getElementById('bayes-prior').value) || 0.001;
+            const pT_M = parseFloat(document.getElementById('bayes-sens').value) || 0.99;
+            const pT_notM = parseFloat(document.getElementById('bayes-fp').value) || 0.02;
+            const out = document.getElementById('calc-result-area');
+            if (!out) return;
+            out.style.display = 'block';
+
+            const pNotM = 1 - pM;
+            const pT = (pT_M * pM) + (pT_notM * pNotM);
+            const pM_T = (pT_M * pM) / pT;
+            const pM_T_percent = (pM_T * 100).toFixed(2);
+
+            out.innerHTML = `
+                <h3 style="color: var(--accent-blue); margin-bottom: 12px;">Bayes Teoremi ve Tanı Güvenilirlik Analizi:</h3>
+                <div class="math-callout">
+                    $$\\begin{aligned}
+                    P(T) &= P(T \\mid M)P(M) + P(T \\mid \\bar{M})P(\\bar{M}) \\\\
+                    &= (${pT_M})(${pM}) + (${pT_notM})(${pNotM.toFixed(4)}) \\\\
+                    &= ${(pT_M * pM).toFixed(6)} + ${(pT_notM * pNotM).toFixed(6)} = \\mathbf{${pT.toFixed(6)}} \\[8pt]
+                    P(M \\mid T) &= \\frac{P(T \\mid M)P(M)}{P(T)} = \\frac{${(pT_M * pM).toFixed(6)}}{${pT.toFixed(6)}} = \\mathbf{${pM_T.toFixed(4)} \\quad (${pM_T_percent}\\%)}
+                    \\end{aligned}$$
+                </div>
+                <div class="mock-rubric-box" style="margin-top: 14px;">
+                    <strong>💡 Sezgisel Sınav Yorumu:</strong> Test pozitifliği %${(pT_M*100).toFixed(1)} hassas olsa dahi, hastalığın nadir olması ($P(M) = ${pM}$) sebebiyle test sonucu <strong>POZİTİF ÇIKAN birinin GERÇEKTEN HASTA OLMA OLASILIĞI SADECE %${pM_T_percent}</strong>'dir! Geriye kalan %${(100 - pM_T_percent).toFixed(2)} yalancı pozitiftir.
+                </div>
+            `;
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(out, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], throwOnError: false });
+            }
+        }
+
+// ================= THEME MANAGEMENT =================
         function applyTheme(theme) {
             const html = document.documentElement;
             html.setAttribute('data-theme', theme);
@@ -1257,7 +1701,7 @@ function triggerManualSync() {
         }
 
         
-        // ================= STARRED QUESTIONS (FAVORITES) =================
+                // ================= STARRED QUESTIONS (FAVORITES) =================
         function getStarredExercises() {
             try {
                 const key = activeCourseKey + '_starred_ex';
@@ -1290,64 +1734,115 @@ function triggerManualSync() {
             syncToggleStarToCloud(activeCourseKey, exId, isStarred);
         }
 
-        function openStarredPool() {
+        function openStarredPool(filterCourseKey = null) {
             currentViewMode = 'special';
             currentSpecialView = 'starred';
             setActiveNav('nav-starred');
             saveAppState();
             const main = document.getElementById('main-content');
-            const starred = getStarredExercises();
-            let poolHTML = '';
-            let count = 0;
+            
+            // Compute starred counts across all courses
+            const allStarredCounts = {};
+            let totalStarredAcrossAll = 0;
+            const courseKeys = Object.keys(COURSES_DB);
+            courseKeys.forEach(cKey => {
+                try {
+                    const raw = localStorage.getItem(cKey + '_starred_ex') || (cKey === 'mat204_grup' ? localStorage.getItem('mat204_starred_ex') : null);
+                    const list = raw ? JSON.parse(raw) : [];
+                    allStarredCounts[cKey] = list.length;
+                    totalStarredAcrossAll += list.length;
+                } catch(e) {
+                    allStarredCounts[cKey] = 0;
+                }
+            });
 
-            Object.keys(modulesDB).forEach(modKey => {
-                const mod = modulesDB[modKey];
-                mod.exercises.forEach((ex, idx) => {
-                    if (starred.includes(ex.id)) {
-                        count++;
-                        const cleanPreview = ex.enonce ? ex.enonce.replace(/<[^>]+>/g, '').slice(0, 140) + '...' : '';
-                        poolHTML += `
-                            <div class="pool-item" onclick="jumpToExercise('${modKey}', ${idx})">
-                                <div>
-                                    <div style="display: flex; align-items: center; gap: 8px;">
-                                        <span style="font-size: 0.76rem; font-weight: 700; color: var(--accent-amber); text-transform: uppercase;">⭐ ${mod.title.split(':')[0]}</span>
-                                        <span style="font-size: 0.75rem; color: var(--text-muted);">${ex.tag || ''}</span>
+            const activeFilter = filterCourseKey === 'all' ? 'all' : (filterCourseKey || activeCourseKey);
+
+            let poolHTML = '';
+            let displayedCount = 0;
+
+            const coursesToScan = activeFilter === 'all' ? courseKeys : [activeFilter];
+
+            coursesToScan.forEach(cKey => {
+                const c = COURSES_DB[cKey];
+                if (!c) return;
+                let starredForThis = [];
+                try {
+                    const raw = localStorage.getItem(cKey + '_starred_ex') || (cKey === 'mat204_grup' ? localStorage.getItem('mat204_starred_ex') : null);
+                    starredForThis = raw ? JSON.parse(raw) : [];
+                } catch(e) {}
+
+                Object.keys(c.modules).forEach(modKey => {
+                    const mod = c.modules[modKey];
+                    mod.exercises.forEach((ex, idx) => {
+                        if (starredForThis.includes(ex.id)) {
+                            displayedCount++;
+                            const cleanPreview = ex.enonce ? ex.enonce.replace(/<[^>]+>/g, '').slice(0, 140) + '...' : '';
+                            poolHTML += `
+                                <div class="pool-item" onclick="switchCourseAndJump('${cKey}', '${modKey}', ${idx})">
+                                    <div>
+                                        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                            <span style="font-size: 0.72rem; font-weight: 700; color: ${c.color}; border: 1px solid ${c.color}; padding: 1px 6px; border-radius: 4px;">${c.code}</span>
+                                            <span style="font-size: 0.76rem; font-weight: 700; color: var(--accent-amber); text-transform: uppercase;">⭐ ${mod.title.split(':')[0]}</span>
+                                            <span style="font-size: 0.75rem; color: var(--text-muted);">${ex.tag || ''}</span>
+                                        </div>
+                                        <h4 style="color: var(--text-main); margin-top: 6px;">${ex.name}</h4>
+                                        <p style="font-size: 0.86rem; color: var(--text-secondary); margin-top: 4px;">${cleanPreview}</p>
                                     </div>
-                                    <h4 style="color: var(--text-main); margin-top: 4px;">${ex.name}</h4>
-                                    <p style="font-size: 0.86rem; color: var(--text-secondary); margin-top: 4px;">${cleanPreview}</p>
+                                    <div style="display: flex; gap: 8px; align-items: center;">
+                                        <button class="btn-stepper primary" style="padding: 6px 14px; font-size: 0.82rem; white-space: nowrap;">Çöz &amp; İncele ➔</button>
+                                    </div>
                                 </div>
-                                <div style="display: flex; gap: 8px; align-items: center;">
-                                    <button class="btn-stepper primary" style="padding: 6px 14px; font-size: 0.82rem; white-space: nowrap;">Çöz &amp; İncele ➔</button>
-                                </div>
-                            </div>
-                        `;
-                    }
+                            `;
+                        }
+                    });
                 });
             });
 
-            if (count === 0) {
+            // Generate tabs
+            let tabsHTML = `
+                <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 12px; margin-bottom: 16px; border-bottom: 1px solid var(--border-color);">
+                    <button class="btn-stepper ${activeFilter === 'all' ? 'primary' : 'secondary'}" style="padding: 6px 14px; font-size: 0.82rem;" onclick="openStarredPool('all')">
+                        Tüm Dersler (${totalStarredAcrossAll})
+                    </button>
+            `;
+            courseKeys.forEach(cKey => {
+                const c = COURSES_DB[cKey];
+                const isCurrent = (activeFilter === cKey);
+                tabsHTML += `
+                    <button class="btn-stepper ${isCurrent ? 'primary' : 'secondary'}" style="padding: 6px 14px; font-size: 0.82rem;" onclick="openStarredPool('${cKey}')">
+                        ${c.icon} ${c.code} (${allStarredCounts[cKey] || 0})
+                    </button>
+                `;
+            });
+            tabsHTML += '</div>';
+
+            if (displayedCount === 0) {
                 poolHTML = `
-                    <div style="text-align: center; padding: 60px 20px;">
+                    <div style="text-align: center; padding: 50px 20px;">
                         <span style="font-size: 3rem;">⭐</span>
-                        <h2 style="color: var(--accent-amber); margin-top: 10px;">Henüz Yıldızlı Sorun Yok</h2>
+                        <h3 style="color: var(--accent-amber); margin-top: 10px;">Bu Filtrede Henüz Yıldızlı Sorun Yok</h3>
                         <p style="color: var(--text-secondary); margin-top: 6px; max-width: 500px; margin-left: auto; margin-right: auto;">
-                            TD sorularını çözerken zorlandığın veya vizeden önceki Pazar gecesi tekrar bakmak istediğin soruların üzerindeki <strong>"☆ Yıldıza Ekle"</strong> butonuna basarak buraya kaydedebilirsin!
+                            TD sorularını çözerken zorlandığın veya vize öncesi tekrar etmek istediğin soruların üzerindeki <strong>"☆ Yıldıza Ekle"</strong> butonuna basarak kaydedebilirsin. Bulut senkronizasyonu sayesinde telefonunda işaretlediğin an burada da listelenecektir!
                         </p>
                     </div>
                 `;
             }
 
+            const headerTitle = activeFilter === 'all' ? 'Tüm Derslerde Yıldızlı &amp; Kritik Sorular' : `${COURSES_DB[activeFilter]?.code} Yıldızlı &amp; Zorlandığım Sorular`;
+
             main.innerHTML = `
                 <div class="content-header">
                     <div>
-                        <div class="breadcrumbs">MAT204 > Sınav Araçları > Yıldızlı Sorular</div>
-                        <h1 class="content-title">⭐ Yıldızlı &amp; Zorlandığım Sorular (${count} Soru)</h1>
+                        <div class="breadcrumbs">${COURSES_DB[activeCourseKey]?.code || 'Portal'} > Sınav Araçları > Yıldızlı Sorular</div>
+                        <h1 class="content-title">⭐ ${headerTitle} (${displayedCount} Soru)</h1>
                     </div>
                 </div>
 
                 <div class="academic-card">
-                    <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 20px;">
-                        Burada senin özel olarak işaretlediğin zor sorular yer alır. Sınava girmeden önce sadece bu listeyi baştan sona çözerek en kritik açıklarını kapatabilirsin.
+                    ${tabsHTML}
+                    <p style="color: var(--text-secondary); font-size: 0.92rem; margin-bottom: 16px;">
+                        Burada mobil ve web üzerinden işaretlediğin tüm zorlayıcı sınav soruları listelenir. Sınava girmeden önce bu soruları baştan çözerek eksiklerini tamamen sıfırlayabilirsin.
                     </p>
                     ${poolHTML}
                 </div>
@@ -2083,7 +2578,7 @@ function triggerManualSync() {
                 <div class="nav-item" id="nav-hesaplayici" onclick="loadSpecialView('hesaplayici')">
                     <div class="nav-item-left">
                         <span>🧮</span>
-                        <span>Canlı Bézout / Ters Motoru</span>
+                        <span>${getCalculatorTitle(activeCourseKey)}</span>
                     </div>
                     <span class="nav-count-badge" style="background: rgba(16, 185, 129, 0.18); color: var(--accent-emerald);">Araç</span>
                 </div>
