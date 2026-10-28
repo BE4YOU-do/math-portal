@@ -648,7 +648,7 @@ function triggerManualSync() {
                                     </button>
                                 ` : `
                                     <button class="btn-stepper primary" onclick="switchTrack('exercises')">
-                                        Bu Modülün TD Sorularını Çözmeye Başla (${mod.exercises.length} Soru) ➔
+                                        Bu Modülün TD Sorularına Geç (${mod.exercises.length} Soru) ➔
                                     </button>
                                 `}
                             </div>
@@ -677,11 +677,11 @@ function triggerManualSync() {
                             <div>
                                 ${!isTheoryCompleted ? `
                                     <button class="btn-stepper success" onclick="setTheoryCompleted('${mod.id}', true)">
-                                        ✓ Bu Modülün Konu Anlatımını Bitirdim (+Progress)
+                                        ✓ Konu Anlatımını Tamamladım (İlerlemeye Ekle)
                                     </button>
                                 ` : `
                                     <button class="btn-stepper completed-state">
-                                        ✓ Konu Anlatımı Tamamlandı Olarak Kayıtlı
+                                        ✓ Konu Anlatımı Tamamlandı
                                     </button>
                                     <button class="btn-stepper" onclick="setTheoryCompleted('${mod.id}', false)" style="font-size: 0.8rem; color: var(--text-muted); margin-left: 8px;">
                                         İşareti Kaldır
@@ -689,7 +689,7 @@ function triggerManualSync() {
                                 `}
                             </div>
                             <button class="btn-stepper primary" onclick="switchTrack('exercises')">
-                                Bu Modülün TD Sorularını Çözmeye Başla (${mod.exercises.length} Soru) ➔
+                                Bu Modülün TD Sorularına Geç (${mod.exercises.length} Soru) ➔
                             </button>
                         </div>
                     </div>
@@ -745,10 +745,10 @@ function triggerManualSync() {
                     stepperActionsHTML = `
                         <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
                             <button class="btn-stepper primary pulse-btn" onclick="nextStep()">
-                                👉 ${currentStepIdx}. Adımı Yazdım, Sıradaki Adıma Geç (${currentStepIdx + 1}/${steps.length}) ➔
+                                👉 ${currentStepIdx}. Adımı İnceledim, Sıradaki Adımı Göster (${currentStepIdx + 1}/${steps.length}) ➔
                             </button>
                             <button class="btn-stepper" onclick="toggleAllSteps()" style="font-size: 0.85rem;">
-                                👁️ Tüm Çözümü Tek Seferde Gör
+                                👁️ Tüm Çözümü Tek Seferde Göster
                             </button>
                             <button class="btn-stepper hint-btn" onclick="toggleHint()">
                                 💡 Sınav İpucunu Göster
@@ -760,17 +760,17 @@ function triggerManualSync() {
                         <div class="step-complete-celebration">
                             <span class="celebrate-icon">🎉</span>
                             <div>
-                                <strong>Tüm Adımlar Açıldı!</strong> Kağıdına resmi sınav formatında not aldıysan bu soruyu "Çözüldü" olarak işaretleyebilirsin.
+                                <strong>Tüm Çözüm Adımları Tamamlandı.</strong> İspatı incelediyseniz bu soruyu "Çözüldü" olarak işaretleyebilirsiniz.
                             </div>
                         </div>
                         <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
                             ${!isSolved ? `
                                 <button class="btn-stepper success" onclick="setExerciseSolved('${ex.id}', true)">
-                                    ✓ Bu Soruyu Çözdüm &amp; Anladım Olarak İşaretle (+Progress)
+                                    ✓ Soruyu Çözüldü Olarak İşaretle (İlerlemeye Ekle)
                                 </button>
                             ` : `
                                 <button class="btn-stepper completed-state">
-                                    ✓ Bu Soru Çözüldü &amp; Kaydedildi
+                                    ✓ Çözüldü Olarak Kayıtlı
                                 </button>
                                 <button class="btn-stepper" onclick="setExerciseSolved('${ex.id}', false)" style="font-size: 0.8rem; color: var(--text-muted);">
                                     İşareti Kaldır
@@ -782,7 +782,7 @@ function triggerManualSync() {
                                 </button>
                             ` : ''}
                             <button class="btn-stepper" onclick="resetSteps()" style="font-size: 0.82rem; color: var(--text-muted);">
-                                🔄 Başa Dön (1. Adımdan Başla)
+                                🔄 1. Adıma Dön
                             </button>
                             <button class="btn-stepper hint-btn" onclick="toggleHint()">
                                 💡 Sınav İpucu
@@ -826,7 +826,7 @@ function triggerManualSync() {
                         </div>
 
                         <div id="question-hint-box" class="hint-callout-box" style="display: ${isHintVisible ? 'block' : 'none'};">
-                            <strong>💡 Sınav Püf Noktası (Taktik):</strong> ${ex.hint}
+                            <strong>💡 Sınav Taktik İpucu:</strong> ${ex.hint}
                         </div>
 
                         <div class="exam-sheet">
@@ -944,18 +944,18 @@ function triggerManualSync() {
                 poolHTML = `
                     <div style="text-align: center; padding: 50px 20px;">
                         <span style="font-size: 3rem;">🎉</span>
-                        <h2 style="color: var(--accent-emerald); margin-top: 10px;">Tebrikler Hamza!</h2>
-                        <p style="color: var(--text-secondary); margin-top: 6px;">Bu dersteki tüm TD sorularını başarıyla çözüp kaydettin! Sınava %100 hazırsın!</p>
+                        <h2 style="color: var(--accent-emerald); margin-top: 10px;">Tebrikler!</h2>
+                        <p style="color: var(--text-secondary); margin-top: 6px;">Bu dersteki tüm soruları başarıyla tamamladınız. Sınava tam olarak hazırsınız!</p>
                     </div>
                 `;
             }
 
-            const headerTitle = activeFilter === 'all' ? 'Tüm Dersler Çözülmemiş Sorular Havuzu' : `${COURSES_DB[activeFilter]?.code} Çözülmemiş Sorular Havuzu`;
+            const headerTitle = activeFilter === 'all' ? 'Tüm Derslerde Çözülecek Sorular' : `${COURSES_DB[activeFilter]?.code} Çözülecek Sorular Listesi`;
 
             main.innerHTML = `
                 <div class="content-header">
                     <div>
-                        <div class="breadcrumbs">${COURSES_DB[activeCourseKey]?.code || 'Portal'} > Sınav Araçları > Çözülmemiş Sorular</div>
+                        <div class="breadcrumbs">${COURSES_DB[activeCourseKey]?.code || 'Portal'} > Sınav Araçları > Çözülecek Sorular</div>
                         <h1 class="content-title">⚡ ${headerTitle} (${displayedCount} Soru Kaldı)</h1>
                     </div>
                 </div>
@@ -963,7 +963,7 @@ function triggerManualSync() {
                 <div class="academic-card">
                     ${tabsHTML}
                     <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 20px;">
-                        Burada henüz "Çözüldü" olarak işaretlemediğin tüm TD soruları listelenir. Herhangi birine tıklayarak doğrudan o soruya gidebilir ve resmi sınav çözümünü inceleyip işaretleyebilirsin.
+                        Burada henüz çözüldü olarak işaretlemediğiniz sorular listelenir. Soruların üzerine tıklayarak resmi Fransızca çözümlerini adım adım inceleyebilirsiniz.
                     </p>
                     ${poolHTML}
                 </div>
@@ -1186,7 +1186,7 @@ function printMockExam(withSolutions = false) {
                 <div class="content-header">
                     <div>
                         <div class="breadcrumbs">${c.code} > İnteraktif Sınav Araçları > Sınav Kartları</div>
-                        <h1 class="content-title">🃏 ${c.code} Sınav Kartı Çekmece &amp; Hafıza Antrenmanı</h1>
+                        <h1 class="content-title">🃏 ${c.code} Kavram &amp; Formül Kartları</h1>
                     </div>
                 </div>
 
@@ -1228,7 +1228,7 @@ function printMockExam(withSolutions = false) {
                                     ⬅ Önceki
                                 </button>
                                 <button class="btn-stepper primary" id="btn-flip" onclick="flipCard()">
-                                    Cevabı Çevir / Formülü Gör (Space)
+                                    Cevabı Göster (Space)
                                 </button>
                                 <button class="btn-stepper" onclick="nextCard()" title="Sıradaki Kart (Sağ Ok)">
                                     Sonraki ➔
@@ -1237,10 +1237,10 @@ function printMockExam(withSolutions = false) {
 
                             <div id="flashcard-mastery-actions" style="display: none; justify-content: center; gap: 12px; margin-top: 14px; border-top: 1px dashed var(--border-subtle); padding-top: 14px;">
                                 <button class="btn-stepper flashcard-btn-review" onclick="markCardMastery(false)" title="Klavye: 1">
-                                    ❌ Tekrar Etmem Lazım [1]
+                                    ❌ Tekrar Edilecek [1]
                                 </button>
                                 <button class="btn-stepper flashcard-btn-known" onclick="markCardMastery(true)" title="Klavye: 2">
-                                    ✅ Bunu Kesin Biliyorum! [2]
+                                    ✅ Biliyorum / Öğrenildi [2]
                                 </button>
                             </div>
                         </div>
@@ -1262,7 +1262,7 @@ function printMockExam(withSolutions = false) {
             if (!ans || !btn) return;
             if (ans.style.display === 'block') {
                 ans.style.display = 'none';
-                btn.textContent = 'Cevabı Çevir / Formülü Gör (Space)';
+                btn.textContent = 'Cevabı Göster (Space)';
                 if (masteryBox) masteryBox.style.display = 'none';
             } else {
                 ans.style.display = 'block';
@@ -1477,10 +1477,10 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
         }
 
         function getCalculatorTitle(cKey) {
-            if (cKey === 'mat201_seriler') return 'Canlı Seri & Yakınsaklık Motoru';
-            if (cKey === 'fiz101_fizik') return 'Canlı 3D Vektör Çarpım Motoru';
-            if (cKey === 'mat206_olasilik') return 'Canlı Bayes & Olasılık Motoru';
-            return 'Canlı Bézout / Ters Motoru';
+            if (cKey === 'mat201_seriler') return 'Seri Yakınsaklık & Kısmi Toplam';
+            if (cKey === 'fiz101_fizik') return '3B Vektörel Analiz & Çarpım';
+            if (cKey === 'mat206_olasilik') return 'Bayes Teoremi & Tanı Simülatörü';
+            return 'Bézout & Modüler Ters Hesaplayıcı';
         }
 
         // ================= SPECIAL VIEWS =================
@@ -1513,8 +1513,8 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 main.innerHTML = `
                     <div class="content-header">
                         <div>
-                            <div class="breadcrumbs">${c.code} > Sınav Araçları > Banko İspatlar</div>
-                            <h1 class="content-title">📜 ${c.code} Vizesinin Banko Teorem İspatları</h1>
+                            <div class="breadcrumbs">${c.code} > Sınav Araçları > Kritik İspatlar</div>
+                            <h1 class="content-title">📜 ${c.code} Sınavında Çıkabilecek Kritik Teorem İspatları</h1>
                         </div>
                     </div>
                     ${proofsHTML}
@@ -1535,11 +1535,11 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                     <div class="content-header">
                         <div>
                             <div class="breadcrumbs">${c.code} > Sınav Araçları > Fransızca</div>
-                            <h1 class="content-title">🇫🇷 ${c.code} Sınav Fransızcası ve İspat Cümleleri</h1>
+                            <h1 class="content-title">🇫🇷 ${c.code} Fransızca Matematiksel İfade ve İspat Kılavuzu</h1>
                         </div>
                     </div>
                     <div class="academic-card">
-                        <p style="margin-bottom: 16px; color: var(--text-secondary);">Galatasaray Üniversitesi sınavlarında Fransızca matematiksel argüman kurarken hocanın tam puan vermesini sağlayan altın kalıplar:</p>
+                        <p style="margin-bottom: 16px; color: var(--text-secondary);">Galatasaray Üniversitesi matematik ve fen sınavlarında puan kaybını önleyen resmi Fransızca argüman ve ispat bağlaçları:</p>
                         ${phrasesHTML}
                     </div>
                 `;
@@ -1549,7 +1549,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                         <div class="content-header">
                             <div>
                                 <div class="breadcrumbs">${c.code} > Sınav Araçları > Seri Hesaplayıcı</div>
-                                <h1 class="content-title">🧮 Canlı Seri Kısmi Toplam ($S_N$) & D'Alembert Motoru</h1>
+                                <h1 class="content-title">🧮 Seri Kısmi Toplam ($S_N$) ve Yakınsaklık Hesaplayıcı</h1>
                             </div>
                         </div>
                         <div class="academic-card">
@@ -1580,7 +1580,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                         <div class="content-header">
                             <div>
                                 <div class="breadcrumbs">${c.code} > Sınav Araçları > Vektör Motoru</div>
-                                <h1 class="content-title">🧮 Canlı 3D Vektör Çarpım & Açı Analiz Motoru</h1>
+                                <h1 class="content-title">🧮 3B Vektörel Analiz ve Açı Hesaplayıcı</h1>
                             </div>
                         </div>
                         <div class="academic-card">
@@ -1612,7 +1612,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                         <div class="content-header">
                             <div>
                                 <div class="breadcrumbs">${c.code} > Sınav Araçları > Bayes Hesaplayıcı</div>
-                                <h1 class="content-title">🧮 Canlı Bayes Teoremi & Tıbbi Dépistage Motoru</h1>
+                                <h1 class="content-title">🧮 Bayes Teoremi ve Tanı / Tarama Testi Simülatörü</h1>
                             </div>
                         </div>
                         <div class="academic-card">
@@ -1644,7 +1644,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                         <div class="content-header">
                             <div>
                                 <div class="breadcrumbs">${c.code} > Sınav Araçları > Hesaplayıcı</div>
-                                <h1 class="content-title">🧮 Canlı Bézout / Ters Motoru</h1>
+                                <h1 class="content-title">🧮 Bézout Özdeşliği ve Modüler Ters Hesaplayıcı</h1>
                             </div>
                         </div>
                         <div class="academic-card">
@@ -1805,7 +1805,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             const pM_T_percent = (pM_T * 100).toFixed(2);
 
             out.innerHTML = `
-                <h3 style="color: var(--accent-blue); margin-bottom: 12px;">Bayes Teoremi ve Tanı Güvenilirlik Analizi:</h3>
+                <h3 style="color: var(--accent-blue); margin-bottom: 12px;">Bayes Teoremi ve Tanı Testi Güvenilirlik Analizi:</h3>
                 <div class="math-callout">
                     $$\\begin{aligned}
                     P(T) &= P(T \\mid M)P(M) + P(T \\mid \\bar{M})P(\\bar{M}) \\\\
@@ -1992,15 +1992,15 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 poolHTML = `
                     <div style="text-align: center; padding: 50px 20px;">
                         <span style="font-size: 3rem;">⭐</span>
-                        <h3 style="color: var(--accent-amber); margin-top: 10px;">Bu Filtrede Henüz Yıldızlı Sorun Yok</h3>
+                        <h3 style="color: var(--accent-amber); margin-top: 10px;">Bu Filtrede Henüz Yıldızlı Soru Eklenmedi</h3>
                         <p style="color: var(--text-secondary); margin-top: 6px; max-width: 500px; margin-left: auto; margin-right: auto;">
-                            TD sorularını çözerken zorlandığın veya vize öncesi tekrar etmek istediğin soruların üzerindeki <strong>"☆ Yıldıza Ekle"</strong> butonuna basarak kaydedebilirsin. Bulut senkronizasyonu sayesinde telefonunda işaretlediğin an burada da listelenecektir!
+                            Çalışırken tekrar etmek istediğiniz veya önemli bulduğunuz soruların üzerindeki <strong>"☆ Yıldıza Ekle"</strong> butonuna basarak bu listeye kaydedebilirsiniz. Bulut senkronizasyonu sayesinde telefonunuzda işaretlediğiniz sorular masaüstünde de anında eşitlenecektir.
                         </p>
                     </div>
                 `;
             }
 
-            const headerTitle = activeFilter === 'all' ? 'Tüm Derslerde Yıldızlı &amp; Kritik Sorular' : `${COURSES_DB[activeFilter]?.code} Yıldızlı &amp; Zorlandığım Sorular`;
+            const headerTitle = activeFilter === 'all' ? 'Tüm Derslerdeki Yıldızlı Sorular' : `${COURSES_DB[activeFilter]?.code} Yıldızlı ve Önemli Sorular`;
 
             main.innerHTML = `
                 <div class="content-header">
@@ -2013,7 +2013,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 <div class="academic-card">
                     ${tabsHTML}
                     <p style="color: var(--text-secondary); font-size: 0.92rem; margin-bottom: 16px;">
-                        Burada mobil ve web üzerinden işaretlediğin tüm zorlayıcı sınav soruları listelenir. Sınava girmeden önce bu soruları baştan çözerek eksiklerini tamamen sıfırlayabilirsin.
+                        Burada mobil ve web üzerinden işaretlediğiniz tüm kritik sınav soruları listelenir. Sınavdan önce bu soruları gözden geçirerek eksiklerinizi kapatabilirsiniz.
                     </p>
                     ${poolHTML}
                 </div>
@@ -2308,14 +2308,14 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             main.innerHTML = `
                 <div class="content-header">
                     <div>
-                        <div class="breadcrumbs">${c.code} > Sınav Taktikleri > Puan Kırma Noktaları</div>
-                        <h1 class="content-title">⚠️ Hoca Nereden Puan Kırar? (${c.code} Vize Tuzakları)</h1>
+                        <div class="breadcrumbs">${c.code} > Sınav Kılavuzu > Sık Yapılan Hatalar</div>
+                        <h1 class="content-title">⚠️ Sık Yapılan Hatalar &amp; Puan Kaybı Tuzakları (${c.code})</h1>
                     </div>
                 </div>
 
                 <div class="academic-card">
                     <p style="font-size: 1rem; color: var(--text-secondary); margin-bottom: 24px; line-height: 1.7;">
-                        Fransızca matematik sınavlarında öğrenciler genelde sorunun mantığını bilse bile <strong>Fransız matematik notasyon kurallarından (rédaction)</strong> ve klasik tuzaklardan puan kaybeder. İşte <strong>${c.code} (${c.title})</strong> sınav kağıdında 20-30 puan kurtaracak kritik altın kurallar:
+                        Galatasaray Üniversitesi matematik ve fen sınavlarında puan kaybını önlemek için <strong>resmi Fransız çözüm ve yazım kurallarına (rédaction)</strong> uymak esastır. Aşağıda, <strong>${c.code} (${c.title})</strong> sınav kağıdında en sık yapılan hatalar ve kaçınılması gereken kritik noktalar derlenmiştir:
                     </p>
 
                     ${trapsHTML}
@@ -2414,14 +2414,14 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
 
                         <details style="margin-top: 14px; cursor: pointer;">
                             <summary style="font-weight: 600; color: var(--accent-indigo); outline: none;">
-                                📄 Resmi Sınav Kağıdı Çözümünü ve Not Baremini Aç ▾
+                                📄 Resmi Çözümü ve Puan Baremini Göster ▾
                             </summary>
                             <div style="margin-top: 14px; padding: 18px 22px; background: var(--bg-paper); border: 1px solid var(--border-subtle); border-radius: 10px;">
                                 <div style="font-family: 'Newsreader', serif; font-size: 1.14rem; line-height: 1.8;">
                                     ${qItem.ex.solution}
                                 </div>
                                 <div class="mock-rubric-box">
-                                    <strong style="color: var(--accent-emerald);">🎯 Hoca Not Baremi (Barème):</strong> ${qItem.rubric}
+                                    <strong style="color: var(--accent-emerald);">🎯 Puanlama Baremi (Barème):</strong> ${qItem.rubric}
                                 </div>
                             </div>
                         </details>
@@ -2432,8 +2432,8 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             main.innerHTML = `
                 <div class="content-header">
                     <div>
-                        <div class="breadcrumbs">${COURSES_DB[activeCourseKey].code} > Sınav Simülatörü > 1. Blok Vize</div>
-                        <h1 class="content-title">🎯 ${COURSES_DB[activeCourseKey].code} Gerçek Vize Deneme Simülatörü (100 Puan)</h1>
+                        <div class="breadcrumbs">${COURSES_DB[activeCourseKey].code} > Sınav Simülasyonu > 1. Blok Vize</div>
+                        <h1 class="content-title">🎯 ${COURSES_DB[activeCourseKey].code} Vize Deneme Sınavı Simülasyonu (100 Puan)</h1>
                     </div>
                 </div>
 
@@ -2465,14 +2465,14 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                     <h2>Galatasaray Üniversitesi • Fen-Edebiyat Fakültesi</h2>
                     <div class="sub">${COURSES_DB[activeCourseKey].code} — ${COURSES_DB[activeCourseKey].title} Vize Deneme Sınavı (Süre: 90 Dakika • 100 Puan)</div>
                     <div class="print-meta-grid">
-                        <div><strong>Öğrenci:</strong> Hamza</div>
+                        <div><strong>Adı Soyadı:</strong> __________________</div>
                         <div><strong>Numara:</strong> __________________</div>
-                        <div><strong>Tarih:</strong> 29 / 10 / 2026</div>
+                        <div><strong>Tarih:</strong> ___ / ___ / 2026</div>
                     </div>
                 </div>
 
                 <div style="background: rgba(37, 99, 235, 0.05); border: 1px solid rgba(37, 99, 235, 0.2); border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; font-size: 0.95rem; color: var(--text-main);">
-                    <strong>💡 Sınav Talimatı:</strong> Masanın üzerine boş bir A4 kağıdı ve kalem al. Sayacı başlatıp 5 soruyu da Fransızca resmi sınav formatında (<em>Soit... Par conséquent...</em>) kendi elinle çöz. Süre bittiğinde "Resmi Çözümü ve Not Baremini Aç" diyerek kendi kağıdını 100 üzerinden puanla!
+                    <strong>💡 Sınav Yönergesi:</strong> Boş bir kağıt ve kalem alarak 90 dakikalık süreyi başlatınız. Soruları resmi Fransızca sınav formatında (<em>Soit... Par conséquent...</em>) adım adım çözünüz. Süre tamamlandığında resmi çözümü ve puanlama baremini açarak kağıdınızı 100 üzerinden değerlendiriniz.
                 </div>
 
                 ${questionsHTML}
@@ -2499,7 +2499,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                     } else {
                         clearInterval(mockTimerInterval);
                         isMockTimerRunning = false;
-                        alert('⏰ 90 Dakikalık Sınav Süresi Doldu! Şimdi kağıdını not baremine göre değerlendirebilirsin.');
+                        alert('⏰ 90 Dakikalık Sınav Süresi Doldu! Şimdi kağıdınızı puanlama baremine göre değerlendirebilirsiniz.');
                     }
                 }, 1000);
             }
@@ -2710,7 +2710,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 <div class="nav-item" id="nav-starred" onclick="openStarredPool()">
                     <div class="nav-item-left">
                         <span>⭐</span>
-                        <span>Yıldızlı / Zorlandığım Sorular</span>
+                        <span>Yıldızlı &amp; Önemli Sorularım</span>
                     </div>
                     <span class="nav-count-badge" id="badge-starred-count" style="background: rgba(245, 158, 11, 0.2); color: var(--accent-amber);">0 ⭐</span>
                 </div>
@@ -2718,7 +2718,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 <div class="nav-item" id="nav-mock-exam" onclick="loadMockExamView()">
                     <div class="nav-item-left">
                         <span>🎯</span>
-                        <span>${c.code} Gerçek Vize Simülatörü</span>
+                        <span>${c.code} Vize Deneme Sınavı</span>
                     </div>
                     <span class="nav-count-badge" style="background: rgba(37, 99, 235, 0.2); color: var(--accent-blue);">90 Dk</span>
                 </div>
@@ -2726,15 +2726,15 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 <div class="nav-item" id="nav-pitfalls" onclick="loadPitfallsView()">
                     <div class="nav-item-left">
                         <span>⚠️</span>
-                        <span>Hoca Nereden Puan Kırar? (Tuzaklar)</span>
+                        <span>Sık Yapılan Hatalar &amp; Sınav Uyarıları</span>
                     </div>
-                    <span class="nav-count-badge" style="background: rgba(239, 68, 68, 0.2); color: #ef4444;">Kritik</span>
+                    <span class="nav-count-badge" style="background: rgba(239, 68, 68, 0.2); color: #ef4444;">Dikkat</span>
                 </div>
 
                 <div class="nav-item" id="nav-unresolved" onclick="openUnresolvedPool()">
                     <div class="nav-item-left">
                         <span>⚡</span>
-                        <span>Çözülmemiş Sorular Havuzu</span>
+                        <span>Kalan &amp; Çözülecek Sorular</span>
                     </div>
                     <span class="nav-count-badge" id="badge-unresolved-count" style="background: rgba(251, 191, 36, 0.2); color: var(--accent-amber);">Pratik</span>
                 </div>
@@ -2742,15 +2742,15 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 <div class="nav-item" id="nav-flashcards" onclick="openFlashcardArena()">
                     <div class="nav-item-left">
                         <span>🃏</span>
-                        <span>Kart Çekmece Sınav Oyunu</span>
+                        <span>Kavram &amp; Formül Kartları</span>
                     </div>
-                    <span class="nav-count-badge" style="background: rgba(244, 63, 94, 0.2); color: var(--accent-rose);">Oyun</span>
+                    <span class="nav-count-badge" style="background: rgba(244, 63, 94, 0.2); color: var(--accent-rose);">Pratik</span>
                 </div>
 
                 <div class="nav-item" id="nav-ispatlar" onclick="loadSpecialView('ispatlar')">
                     <div class="nav-item-left">
                         <span>📜</span>
-                        <span>Banko Teorem İspatları</span>
+                        <span>Kritik Teorem İspatları</span>
                     </div>
                     <span class="nav-count-badge" style="background: rgba(139, 92, 246, 0.18); color: var(--accent-purple);">İspat</span>
                 </div>
@@ -2758,9 +2758,9 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 <div class="nav-item" id="nav-fransizca" onclick="loadSpecialView('fransizca')">
                     <div class="nav-item-left">
                         <span>🇫🇷</span>
-                        <span>Sınav Fransızcası Kalıpları</span>
+                        <span>Fransızca Matematiksel İfadeler</span>
                     </div>
-                    <span class="nav-count-badge" style="background: rgba(59, 130, 246, 0.18); color: var(--accent-blue);">Sözlük</span>
+                    <span class="nav-count-badge" style="background: rgba(59, 130, 246, 0.18); color: var(--accent-blue);">Kılavuz</span>
                 </div>
 
                 <div class="nav-item" id="nav-hesaplayici" onclick="loadSpecialView('hesaplayici')">
