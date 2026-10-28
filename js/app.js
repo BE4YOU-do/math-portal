@@ -140,7 +140,7 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
 
         // ================= STATE MANAGEMENT =================
         let currentModuleKey = 'modul1';
-        let currentTrack = 'exercises'; // 'theory' or 'exercises'
+        let currentTrack = 'theory'; // 'theory' (Konu Anlatımı & Teori Kitabı) or 'exercises'
         let currentExerciseIdx = 0;
         let currentStepIdx = 1;
         let showAllStepsMode = false;
@@ -159,7 +159,7 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
 
         function loadModule(modKey) {
             currentModuleKey = modKey;
-            currentTrack = 'exercises';
+            if (!currentTrack) currentTrack = 'theory';
             currentExerciseIdx = 0;
             currentStepIdx = 1;
             showAllStepsMode = false;
@@ -863,22 +863,40 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
             }
         }
 
-        // ================= THEME TOGGLE =================
-        function toggleTheme() {
+        // ================= THEME MANAGEMENT =================
+        function applyTheme(theme) {
             const html = document.documentElement;
-            const current = html.getAttribute('data-theme');
-            const newTheme = current === 'dark' ? 'warm' : 'dark';
-            html.setAttribute('data-theme', newTheme);
+            html.setAttribute('data-theme', theme);
 
             const icon = document.getElementById('theme-icon');
             const text = document.getElementById('theme-text');
-            if (newTheme === 'warm') {
-                icon.textContent = '☀️';
-                text.textContent = 'Koyu Mod';
-            } else {
-                icon.textContent = '🌙';
-                text.textContent = 'Göz Dinlendirme Modu';
+            if (icon && text) {
+                if (theme === 'dark') {
+                    icon.textContent = '☀️';
+                    text.textContent = 'Aydınlık Mod';
+                } else {
+                    icon.textContent = '🌙';
+                    text.textContent = 'Koyu Mod';
+                }
             }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme') || 'light';
+            const newTheme = (current === 'dark') ? 'light' : 'dark';
+            applyTheme(newTheme);
+            try {
+                localStorage.setItem('portal_theme', newTheme);
+            } catch(e) {}
+        }
+
+        function initTheme() {
+            let savedTheme = 'light';
+            try {
+                savedTheme = localStorage.getItem('portal_theme') || 'light';
+            } catch(e) {}
+            applyTheme(savedTheme);
         }
 
         function renderMath() {
@@ -1532,7 +1550,7 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
             // Reset current module to first module of new course
             const firstModKey = Object.keys(modulesDB)[0];
             currentModuleKey = firstModKey;
-            currentTrack = 'exercises';
+            currentTrack = 'theory';
             currentExerciseIdx = 0;
             currentStepIdx = 1;
             showAllStepsMode = false;
@@ -1682,6 +1700,7 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
 
 
         window.onload = function() {
+            initTheme();
             updateCourseHeaderUI();
             renderSidebarNav();
             updateProgressUI();

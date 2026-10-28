@@ -1,54 +1,56 @@
-:root[data-theme="dark"] {
-            --bg-canvas: #090d16;
-            --bg-sidebar: #0f1422;
-            --bg-card: #141c2e;
-            --bg-paper: #0c1220;
-            --border-subtle: #1e293b;
-            --border-active: #3b82f6;
-            --text-main: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-            --accent-blue: #38bdf8;
-            --accent-indigo: #818cf8;
-            --accent-teal: #2dd4bf;
-            --accent-amber: #fbbf24;
-            --accent-emerald: #34d399;
-            --accent-rose: #f43f5e;
-            --math-callout-bg: rgba(15, 23, 42, 0.7);
-            --modal-overlay: rgba(0, 0, 0, 0.78);
-            --term-link-color: #60a5fa;
-            --term-link-bg: rgba(96, 165, 250, 0.12);
-            --progress-bar-bg: #1e293b;
-            --progress-fill: linear-gradient(90deg, #3b82f6, #34d399);
-            --theory-def-bg: rgba(56, 189, 248, 0.08);
-            --theory-thm-bg: rgba(167, 139, 250, 0.08);
-        }
+:root,
+:root[data-theme="light"],
+:root[data-theme="warm"] {
+    --bg-canvas: #f8f6f0;
+    --bg-sidebar: #f0ece1;
+    --bg-card: #ffffff;
+    --bg-paper: #faf8f5;
+    --border-subtle: #e2dcd0;
+    --border-active: #2563eb;
+    --text-main: #1e293b;
+    --text-secondary: #475569;
+    --text-muted: #857e72;
+    --accent-blue: #0284c7;
+    --accent-indigo: #4f46e5;
+    --accent-teal: #0d9488;
+    --accent-amber: #d97706;
+    --accent-emerald: #059669;
+    --accent-rose: #e11d48;
+    --math-callout-bg: #f3efe6;
+    --modal-overlay: rgba(30, 41, 59, 0.5);
+    --term-link-color: #1d4ed8;
+    --term-link-bg: rgba(37, 99, 235, 0.1);
+    --progress-bar-bg: #e2dcd0;
+    --progress-fill: linear-gradient(90deg, #2563eb, #059669);
+    --theory-def-bg: #eff6ff;
+    --theory-thm-bg: #faf5ff;
+}
 
-        :root[data-theme="warm"] {
-            --bg-canvas: #f8f6f0;
-            --bg-sidebar: #f0ece1;
-            --bg-card: #ffffff;
-            --bg-paper: #faf8f5;
-            --border-subtle: #e2dcd0;
-            --border-active: #2563eb;
-            --text-main: #1e293b;
-            --text-secondary: #475569;
-            --text-muted: #857e72;
-            --accent-blue: #0284c7;
-            --accent-indigo: #4f46e5;
-            --accent-teal: #0d9488;
-            --accent-amber: #d97706;
-            --accent-emerald: #059669;
-            --accent-rose: #e11d48;
-            --math-callout-bg: #f3efe6;
-            --modal-overlay: rgba(30, 41, 59, 0.5);
-            --term-link-color: #1d4ed8;
-            --term-link-bg: rgba(37, 99, 235, 0.1);
-            --progress-bar-bg: #e2dcd0;
-            --progress-fill: linear-gradient(90deg, #2563eb, #059669);
-            --theory-def-bg: #eff6ff;
-            --theory-thm-bg: #faf5ff;
-        }
+:root[data-theme="dark"] {
+    --bg-canvas: #090d16;
+    --bg-sidebar: #0f1422;
+    --bg-card: #141c2e;
+    --bg-paper: #0c1220;
+    --border-subtle: #1e293b;
+    --border-active: #3b82f6;
+    --text-main: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-blue: #38bdf8;
+    --accent-indigo: #818cf8;
+    --accent-teal: #2dd4bf;
+    --accent-amber: #fbbf24;
+    --accent-emerald: #34d399;
+    --accent-rose: #f43f5e;
+    --math-callout-bg: rgba(15, 23, 42, 0.7);
+    --modal-overlay: rgba(0, 0, 0, 0.78);
+    --term-link-color: #60a5fa;
+    --term-link-bg: rgba(96, 165, 250, 0.12);
+    --progress-bar-bg: #1e293b;
+    --progress-fill: linear-gradient(90deg, #3b82f6, #34d399);
+    --theory-def-bg: rgba(56, 189, 248, 0.08);
+    --theory-thm-bg: rgba(167, 139, 250, 0.08);
+}
 
         * {
             box-sizing: border-box;
@@ -202,6 +204,7 @@
             font-weight: 600;
         }
 
+        [data-theme="light"] .nav-item.active,
         [data-theme="warm"] .nav-item.active {
             color: #fff;
             background: #1d4ed8;
@@ -316,6 +319,7 @@
             box-shadow: 0 2px 10px rgba(37, 99, 235, 0.35);
         }
 
+        [data-theme="light"] .track-tab-btn.active,
         [data-theme="warm"] .track-tab-btn.active {
             background: #1d4ed8;
             color: #ffffff;
@@ -358,6 +362,7 @@
             font-weight: 600;
         }
 
+        [data-theme="light"] .pill-btn.active,
         [data-theme="warm"] .pill-btn.active {
             background: #e0edff;
             border-color: #2563eb;
@@ -947,6 +952,7 @@
             border-color: rgba(255, 255, 255, 0.15);
         }
 
+        [data-theme="light"] .luxury-track-btn.active,
         [data-theme="warm"] .luxury-track-btn.active {
             background: linear-gradient(135deg, #1d4ed8, #1e40af);
         }
@@ -1019,6 +1025,13 @@
             border-color: var(--accent-blue);
             color: var(--accent-blue);
             font-weight: 700;
+        }
+
+        [data-theme="light"] .theory-page-btn.active,
+        [data-theme="warm"] .theory-page-btn.active {
+            background: #e0edff;
+            border-color: #2563eb;
+            color: #1d4ed8;
         }
 
         /* EMBEDDED EXERCISE IN THEORY */

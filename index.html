@@ -1,9 +1,17 @@
 <!DOCTYPE html>
-<html lang="tr" data-theme="dark">
+<html lang="tr" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MathPortal • Üniversite Matematik & Fen Portalı</title>
+    <script>
+        (function() {
+            try {
+                var saved = localStorage.getItem('portal_theme') || 'light';
+                document.documentElement.setAttribute('data-theme', saved);
+            } catch(e) {}
+        })();
+    </script>
     <!-- KaTeX for crisp LaTeX math rendering -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -195,7 +203,7 @@
 
         <div class="sidebar-footer">
             <button class="theme-toggle-btn" onclick="toggleTheme()">
-                <span id="theme-icon">🌙</span> <span id="theme-text">Göz Dinlendirme Modu</span>
+                <span id="theme-icon">🌙</span> <span id="theme-text">Koyu Mod</span>
             </button>
         </div>
     </aside>
