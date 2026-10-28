@@ -1,7 +1,7 @@
 {
-  "name": "GSÜ MathPortal • Vize & Sınav Koçu",
+  "name": "GSÜ MathPortal • Matematik & Fen Portalı",
   "short_name": "MathPortal",
-  "description": "Galatasaray Üniversitesi Lisans Matematik & Fen Vize Çalışma Portalı",
+  "description": "Galatasaray Üniversitesi Lisans Matematik & Fen Akademik Portalı",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

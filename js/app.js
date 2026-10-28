@@ -745,13 +745,13 @@ function triggerManualSync() {
                     stepperActionsHTML = `
                         <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
                             <button class="btn-stepper primary pulse-btn" onclick="nextStep()">
-                                👉 ${currentStepIdx}. Adımı İnceledim, Sıradaki Adımı Göster (${currentStepIdx + 1}/${steps.length}) ➔
+                                👉 Sıradaki Çözüm Adımı (${currentStepIdx + 1}/${steps.length}) ➔
                             </button>
                             <button class="btn-stepper" onclick="toggleAllSteps()" style="font-size: 0.85rem;">
-                                👁️ Tüm Çözümü Tek Seferde Göster
+                                👁️ Tüm Çözümü Göster
                             </button>
                             <button class="btn-stepper hint-btn" onclick="toggleHint()">
-                                💡 Sınav İpucunu Göster
+                                💡 Sınav İpucu & Yöntem
                             </button>
                         </div>
                     `;
@@ -760,7 +760,7 @@ function triggerManualSync() {
                         <div class="step-complete-celebration">
                             <span class="celebrate-icon">🎉</span>
                             <div>
-                                <strong>Tüm Çözüm Adımları Tamamlandı.</strong> İspatı incelediyseniz bu soruyu "Çözüldü" olarak işaretleyebilirsiniz.
+                                <strong>Tüm Çözüm Adımları Tamamlandı.</strong> İspatı incelediyseniz bu soruyu "Çözüldü" olarak kaydedebilirsiniz.
                             </div>
                         </div>
                         <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
@@ -770,7 +770,7 @@ function triggerManualSync() {
                                 </button>
                             ` : `
                                 <button class="btn-stepper completed-state">
-                                    ✓ Çözüldü Olarak Kayıtlı
+                                    ✓ Çözüldü Olarak Kaydedildi
                                 </button>
                                 <button class="btn-stepper" onclick="setExerciseSolved('${ex.id}', false)" style="font-size: 0.8rem; color: var(--text-muted);">
                                     İşareti Kaldır
@@ -1185,7 +1185,7 @@ function printMockExam(withSolutions = false) {
             main.innerHTML = `
                 <div class="content-header">
                     <div>
-                        <div class="breadcrumbs">${c.code} > İnteraktif Sınav Araçları > Sınav Kartları</div>
+                        <div class="breadcrumbs">${c.code} > Sınav ve Çalışma Araçları > Kavram & Formül Kartları</div>
                         <h1 class="content-title">🃏 ${c.code} Kavram &amp; Formül Kartları</h1>
                     </div>
                 </div>
@@ -1569,7 +1569,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                                     <label>Terim Sayısı (N):</label>
                                     <input type="number" id="calc-n-terms" value="10" min="1" max="100">
                                 </div>
-                                <button class="btn-stepper primary" style="margin-top: 18px;" onclick="runSeriesCalculator()">Canlı Analizi ve Kısmi Toplamı Hesapla</button>
+                                <button class="btn-stepper primary" style="margin-top: 18px;" onclick="runSeriesCalculator()">Kısmi Toplamı ve Yakınsaklığı Hesapla</button>
                             </div>
                             <div id="calc-result-area" class="exam-sheet" style="padding: 20px; display: none;"></div>
                         </div>
@@ -1579,7 +1579,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                     main.innerHTML = `
                         <div class="content-header">
                             <div>
-                                <div class="breadcrumbs">${c.code} > Sınav Araçları > Vektör Motoru</div>
+                                <div class="breadcrumbs">${c.code} > Sınav ve Çalışma Araçları > 3B Vektörel Analiz</div>
                                 <h1 class="content-title">🧮 3B Vektörel Analiz ve Açı Hesaplayıcı</h1>
                             </div>
                         </div>
@@ -1602,7 +1602,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                                     </div>
                                 </div>
                             </div>
-                            <button class="btn-stepper primary" onclick="runVectorCalculator()">Vektörel & Skaler Çarpımı ve Açıyı Hesapla</button>
+                            <button class="btn-stepper primary" onclick="runVectorCalculator()">Skaler & Vektörel Çarpımı Hesapla</button>
                             <div id="calc-result-area" class="exam-sheet" style="padding: 20px; display: none; margin-top: 16px;"></div>
                         </div>
                     `;
@@ -1611,8 +1611,8 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                     main.innerHTML = `
                         <div class="content-header">
                             <div>
-                                <div class="breadcrumbs">${c.code} > Sınav Araçları > Bayes Hesaplayıcı</div>
-                                <h1 class="content-title">🧮 Bayes Teoremi ve Tanı / Tarama Testi Simülatörü</h1>
+                                <div class="breadcrumbs">${c.code} > Sınav ve Çalışma Araçları > Bayes Hesaplayıcı</div>
+                                <h1 class="content-title">🧮 Bayes Teoremi ve Tanı / Tarama Testi Hesaplayıcı</h1>
                             </div>
                         </div>
                         <div class="academic-card">
@@ -1633,7 +1633,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                                     <span style="font-size: 0.75rem; color: var(--text-muted);">Örn: %2 = 0.02</span>
                                 </div>
                             </div>
-                            <button class="btn-stepper primary" style="margin-top: 18px;" onclick="runBayesCalculator()">Bayes Posterior Olasılığını Hesapla</button>
+                            <button class="btn-stepper primary" style="margin-top: 18px;" onclick="runBayesCalculator()">Sonsal (Posterior) Olasılığı Hesapla</button>
                             <div id="calc-result-area" class="exam-sheet" style="padding: 20px; display: none; margin-top: 16px;"></div>
                         </div>
                     `;
@@ -2122,7 +2122,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             }
         });
 
-        // ================= COMMON PITFALLS (HOCA NEREDEN PUAN KIRAR?) =================
+        // ================= COMMON PITFALLS & EXAM WARNINGS =================
         function loadPitfallsView() {
             currentViewMode = 'special';
             currentSpecialView = 'pitfalls';
@@ -2137,14 +2137,14 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                     {
                         title: "1. Alterne Serilerde Eşdeğerlik ($u_n \sim v_n$) Tuzağı",
                         wrongText: "❌ Hatalı Yaklaşım (-10 Puan):",
-                        wrongDesc: "İşareti değişen veya alterne serilerde $\\frac{(-1)^n}{\\sqrt{n} + (-1)^n} \\sim \\frac{(-1)^n}{\\sqrt{n}}$ yazıp 'Leibniz ile yakınsar' demek.",
+                        wrongDesc: "İşareti değişen veya alterne serilerde $\\frac{(-1)^n}{\\sqrt{n} + (-1)^n} \\sim \\frac{(-1)^n}{\\sqrt{n}}$ belirterek 'Leibniz ile yakınsar' demek.",
                         rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
-                        rightDesc: "Asimptotik eşdeğerlik ($u_n \\sim v_n$) kuralı **YALNIZCA sabit işaretli (pozitif)** serilerde geçerlidir! Alterne serilerde Taylor açılımı yaparak $u_n = \\frac{(-1)^n}{\\sqrt{n}} - \\frac{1}{n} + o(1/n)$ şeklinde iki serinin toplamı olarak incelemek zorundasın."
+                        rightDesc: "Asimptotik eşdeğerlik ($u_n \\sim v_n$) kuralı **YALNIZCA sabit işaretli (pozitif)** serilerde geçerlidir! Alterne serilerde Taylor açılımı yaparak $u_n = \\frac{(-1)^n}{\\sqrt{n}} - \\frac{1}{n} + o(1/n)$ şeklinde iki serinin toplamı olarak incelenmelidir."
                     },
                     {
                         title: "2. Genel Terim Sıfıra Gidince 'Seri Yakınsaktır' Demek",
                         wrongText: "❌ Hatalı Yaklaşım (-10 Puan):",
-                        wrongDesc: "$\\lim_{n \\to \\infty} u_n = 0$ bulunca 'O halde seri yakınsaktır' yazıp soruyu bitirmek.",
+                        wrongDesc: "$\\lim_{n \\to \\infty} u_n = 0$ bulunca 'O halde seri yakınsaktır' belirterek çözümü sonlandırmak.",
                         rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
                         rightDesc: "$\\lim u_n = 0$ yakınsaklık için yalnızca bir **GEREK ŞARTTIR**, yeter şart değildir! Karşıt örnek: $\\sum \\frac{1}{n}$ serisinde $1/n \\to 0$ fakat seri sonsuza ıraksar."
                     },
@@ -2167,7 +2167,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                         wrongText: "❌ Hatalı Yaklaşım (-8 Puan):",
                         wrongDesc: "$\\|f_n - f\\|_\\infty$ yerine $x$'e sabit bir sayı (örneğin $x=1/2$) koyup limitin sıfıra gittiğini göstererek 'düzgün yakınsaktır' demek.",
                         rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
-                        rightDesc: "Düzgün yakınsaklık tüm tanım kümesindeki **en kötü noktaya (supremum)** bakar. Türev alarak $f_n'(x) = 0$ tepe noktasını ($x_n$) bulmalı ve $|f_n(x_n) - f(x_n)|$ değerinin sıfıra gidip gitmediği incelenmelidir."
+                        rightDesc: "Düzgün yakınsaklık tüm tanım kümesindeki **en büyük sapmaya (supremum normu)** bakar. Türev yardımıyla tepe noktası ($x_n$) belirlenmeli ve $\sup |f_n(x) - f(x)|$ limitinin sıfıra yakınsayıp yakınsamadığı irdelenmelidir."
                     },
                     {
                         title: "6. Riemann Serisinde $\\alpha = 1$ Durumu",
@@ -2182,16 +2182,16 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                     {
                         title: "1. Frenet Tabanında Normal (Merkezcil) İvmeyi Atlamak",
                         wrongText: "❌ Hatalı Yaklaşım (-10 Puan):",
-                        wrongDesc: "İvmeyi sadece hız büyüklüğünün türevi sanıp $\\vec{a} = \\frac{dv}{dt} \\vec{T}$ yazmak.",
+                        wrongDesc: "İvmeyi sadece hız büyüklüğünün skaler türevi kabul edip $\\vec{a} = \\frac{dv}{dt} \\vec{T}$ yazmak.",
                         rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
-                        rightDesc: "Eğri bir yörüngede hızın büyüklüğü sabit olsa bile doğrultusu değişir! İvmenin normal bileşeni mutlaka eklenmelidir: $\\vec{a} = \\frac{dv}{dt} \\vec{T} + \\frac{v^2}{\\rho} \\vec{N}$."
+                        rightDesc: "Eğrisel yörüngelerde hız büyüklüğü sabit olsa dahi yönü değişir. Bu nedenle merkezcil ivme bileşeni kesinlikle eklenmelidir: $\\vec{a} = \\frac{dv}{dt} \\vec{T} + \\frac{v^2}{\\rho} \\vec{N}$."
                     },
                     {
                         title: "2. Kutupsal Taban Vektörlerinin Türevini Sıfır Almak",
                         wrongText: "❌ Hatalı Yaklaşım (-8 Puan):",
-                        wrongDesc: "$\\vec{r} = r \\vec{u}_r$ türevini alırken $\\vec{v} = \\dot{r} \\vec{u}_r$ yazmak.",
+                        wrongDesc: "$\\vec{r} = r \\vec{u}_r$ türevini alırken taban türevini ihmal edip $\\vec{v} = \\dot{r} \\vec{u}_r$ yazmak.",
                         rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
-                        rightDesc: "Kutupsal taban vektörleri dönen vektörlerdir! $\\frac{d\\vec{u}_r}{dt} = \\dot{\\theta}\\vec{u}_\\theta$ olduğundan hız $\\vec{v} = \\dot{r}\\vec{u}_r + r\\dot{\\theta}\\vec{u}_\\theta$ şeklindedir."
+                        rightDesc: "Kutupsal taban vektörleri zamana bağlı olarak yön değiştirir: $\\frac{d\\vec{u}_r}{dt} = \\dot{\\theta}\\vec{u}_\\theta$. Dolayısıyla hız vektörü $\\vec{v} = \\dot{r}\\vec{u}_r + r\\dot{\\theta}\\vec{u}_\\theta$ şeklinde ifade edilir."
                     },
                     {
                         title: "3. Dönen Referans Sisteminde Poisson Bağıntısını Unutmak",
@@ -2247,7 +2247,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                         wrongText: "❌ Hatalı Yaklaşım (-6 Puan):",
                         wrongDesc: "Doğrudan $\\forall x, y \\in H, xy^{-1} \\in H$ yazmak ama kümenin boş küme olmadığını ($H \\neq \\emptyset$) göstermemek.",
                         rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
-                        rightDesc: "İspata daima 'Puisque $e \\in H$, $H \\neq \\emptyset$' cümlesiyle başla. Hoca $H \\neq \\emptyset$ kontrolünü görmezse alt grup kriteri puanının yarısını kırar!"
+                        rightDesc: "İspata daima 'Puisque $e \\in H$, $H \\neq \\emptyset$' tespitiyle başlanmalıdır. $H$\'nin boş küme olmadığı teyit edilmeden alt grup kriteri geçerli olmaz."
                     },
                     {
                         title: "3. Lagrange Teoreminin Tersinin Her Zaman Doğru Olduğunu Sanmak",
@@ -2261,7 +2261,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                         wrongText: "❌ Hatalı Yaklaşım (-4 Puan):",
                         wrongDesc: "Geriye doğru sararken $r = A - qB$ yerine $A + qB$ yazıp katsayı işaretlerini karıştırmak.",
                         rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
-                        rightDesc: "Her satırda parantezleri titizlikle koru: $au + bv = 1$ eşitliğinde katsayıların negatif olabileceğini unutma."
+                        rightDesc: "Her satırda parantezleri titizlikle takip ediniz: $au + bv = 1$ eşitliğinde katsayıların negatif olabileceği göz önünde bulundurulmalıdır."
                     },
                     {
                         title: "5. Devirli Gruplarda Mertebe ile Bölünebilme Yönü",
@@ -2273,9 +2273,9 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                     {
                         title: "6. Diedral Grupta Yansıma ve Dönme Çarpımı ($D_n$)",
                         wrongText: "❌ Hatalı Yaklaşım (-5 Puan):",
-                        wrongDesc: "$s \\cdot r^2 = r^2 \\cdot s$ sanmak.",
+                        wrongDesc: "$s \\cdot r^2 = r^2 \\cdot s$ olduğunu varsaymak.",
                         rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
-                        rightDesc: "Yansıma $s$, saat yönündeki dönmeyi tersine çevirir: **$s \\cdot r^k = r^{-k} \\cdot s = r^{n-k} \\cdot s$**. $s$'yi sağa kaydırırken $r$'nin üssünün işaretini değiştirmeyi asla unutma!"
+                        rightDesc: "Yansıma elemanı saat yönündeki dönmeyi tersine çevirir: **$s \\cdot r^k = r^{-k} \\cdot s = r^{n-k} \\cdot s$**. $s$ elemanı sağa aktarılırken $r$ dönme elemanının kuvvetinin işaretinin eksiye döneceği dikkate alınmalıdır."
                     }
                 ];
             }
@@ -2309,7 +2309,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 <div class="content-header">
                     <div>
                         <div class="breadcrumbs">${c.code} > Sınav Kılavuzu > Sık Yapılan Hatalar</div>
-                        <h1 class="content-title">⚠️ Sık Yapılan Hatalar &amp; Puan Kaybı Tuzakları (${c.code})</h1>
+                        <h1 class="content-title">⚠️ Sık Yapılan Hatalar &amp; Sınav Uyarıları (${c.code})</h1>
                     </div>
                 </div>
 
@@ -2432,8 +2432,8 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             main.innerHTML = `
                 <div class="content-header">
                     <div>
-                        <div class="breadcrumbs">${COURSES_DB[activeCourseKey].code} > Sınav Simülasyonu > 1. Blok Vize</div>
-                        <h1 class="content-title">🎯 ${COURSES_DB[activeCourseKey].code} Vize Deneme Sınavı Simülasyonu (100 Puan)</h1>
+                        <div class="breadcrumbs">${COURSES_DB[activeCourseKey].code} > Sınav ve Çalışma Araçları > Vize Deneme Sınavı</div>
+                        <h1 class="content-title">🎯 ${COURSES_DB[activeCourseKey].code} Vize Deneme Sınavı (100 Puan)</h1>
                     </div>
                 </div>
 
@@ -2705,7 +2705,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
 
             // Keep exam tools
             const toolsSection = `
-                <div class="nav-section-title" style="margin-top: 14px;">İnteraktif Sınav Araçları</div>
+                <div class="nav-section-title" style="margin-top: 14px;">Sınav ve Çalışma Araçları</div>
 
                 <div class="nav-item" id="nav-starred" onclick="openStarredPool()">
                     <div class="nav-item-left">
