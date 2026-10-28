@@ -812,6 +812,9 @@ function triggerManualSync() {
                                 <button class="btn-star ${getStarredExercises().includes(ex.id) ? 'starred' : ''}" onclick="toggleStar('${ex.id}')">
                                     ${getStarredExercises().includes(ex.id) ? '⭐ Yıldızlı' : '☆ Yıldıza Ekle'}
                                 </button>
+                                <button class="btn-stepper secondary" style="padding: 4px 10px; font-size: 0.78rem;" onclick="copyCurrentQuestion()" title="Soru metnini ve LaTeX kodunu panoya kopyala">
+                                    📋 Soruyu Kopyala
+                                </button>
                             </div>
                             <span style="font-size: 0.82rem; font-weight: 600; color: ${isSolved ? 'var(--accent-emerald)' : 'var(--text-muted)'};">
                                 ${isSolved ? '✓ Çözüldü Olarak İşaretlendi' : '○ Henüz Çözülmedi'}
@@ -969,6 +972,74 @@ function triggerManualSync() {
             renderMath();
         }
 
+        
+// ================= FLOATING TOAST & CLIPBOARD SYSTEM =================
+function showPortalToast(msg, duration = 2400) {
+    let toast = document.getElementById('portal-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'portal-toast';
+        toast.className = 'portal-toast';
+        document.body.appendChild(toast);
+    }
+    toast.innerHTML = msg;
+    toast.classList.add('show');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => {
+        toast.classList.remove('show');
+    }, duration);
+}
+
+function copyTextToClipboard(text, successMsg = '✓ Panoya Kopyalandı!') {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+            showPortalToast(successMsg);
+        }).catch(() => {
+            fallbackCopy(text, successMsg);
+        });
+    } else {
+        fallbackCopy(text, successMsg);
+    }
+}
+
+function fallbackCopy(text, successMsg) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+        document.execCommand('copy');
+        showPortalToast(successMsg);
+    } catch(e) {}
+    document.body.removeChild(ta);
+}
+
+function copyCurrentQuestion() {
+    const mod = modulesDB[currentModuleKey];
+    if (!mod || !mod.exercises || !mod.exercises[currentExerciseIdx]) return;
+    const ex = mod.exercises[currentExerciseIdx];
+    const textToCopy = `[${COURSES_DB[activeCourseKey]?.code || ''} • ${mod.title.split(':')[0]} • ${ex.name}]\n${ex.enonce.replace(/<[^>]+>/g, '').trim()}`;
+    copyTextToClipboard(textToCopy, '📋 Soru Metni & LaTeX Kopyalandı!');
+}
+
+function printMockExam(withSolutions = false) {
+    document.body.classList.remove('print-blank', 'print-solutions');
+    if (withSolutions) {
+        document.body.classList.add('print-solutions');
+        document.querySelectorAll('.mock-question-card details').forEach(d => d.setAttribute('open', 'true'));
+    } else {
+        document.body.classList.add('print-blank');
+        document.querySelectorAll('.mock-question-card details').forEach(d => d.removeAttribute('open'));
+    }
+    window.print();
+    setTimeout(() => {
+        document.body.classList.remove('print-blank', 'print-solutions');
+    }, 1000);
+}
+
+
         function switchCourseAndJump(cKey, modKey, exIdx) {
             if (activeCourseKey !== cKey) {
                 switchActiveCourse(cKey);
@@ -1029,60 +1100,155 @@ function triggerManualSync() {
             }
         });
 
-        // ================= FLASHCARDS ARENA =================
+                // ================= FLASHCARDS ARENA (GAMIFIED MASTERY) =================
+        let flashcardFilterCategory = 'all';
+        let flashcardStats = { known: 0, review: 0 };
+
         function openFlashcardArena() {
             currentViewMode = 'special';
             currentSpecialView = 'flashcards';
             setActiveNav('nav-flashcards');
 
             currentCardIdx = 0;
+            flashcardFilterCategory = 'all';
             renderFlashcard();
             saveAppState();
         }
 
         function getActiveFlashcards() {
-            return FLASHCARDS_BY_COURSE[activeCourseKey] || FLASHCARDS_BY_COURSE['mat204_grup'];
+            const all = FLASHCARDS_BY_COURSE[activeCourseKey] || FLASHCARDS_BY_COURSE['mat204_grup'] || [];
+            if (!flashcardFilterCategory || flashcardFilterCategory === 'all') return all;
+            return all.filter(c => c.category === flashcardFilterCategory);
+        }
+
+        function setFlashcardCategory(cat) {
+            flashcardFilterCategory = cat;
+            currentCardIdx = 0;
+            renderFlashcard();
+        }
+
+        function shuffleFlashcards() {
+            const cards = getActiveFlashcards();
+            for (let i = cards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [cards[i], cards[j]] = [cards[j], cards[i]];
+            }
+            currentCardIdx = 0;
+            renderFlashcard();
+            showPortalToast('🔀 Kartlar Karıştırıldı!');
+        }
+
+        function markCardMastery(known) {
+            if (known) {
+                flashcardStats.known++;
+                showPortalToast('✅ Bildim! (+1)');
+            } else {
+                flashcardStats.review++;
+                showPortalToast('🔄 Tekrar Edilecekler Listesine Eklendi');
+            }
+            nextCard();
+        }
+
+        function prevCard() {
+            const cards = getActiveFlashcards();
+            if (cards.length === 0) return;
+            currentCardIdx = (currentCardIdx - 1 + cards.length) % cards.length;
+            renderFlashcard();
         }
 
         function renderFlashcard() {
+            const allCards = FLASHCARDS_BY_COURSE[activeCourseKey] || FLASHCARDS_BY_COURSE['mat204_grup'] || [];
             const cards = getActiveFlashcards();
             if (currentCardIdx >= cards.length) currentCardIdx = 0;
-            const card = cards[currentCardIdx];
+            const card = cards[currentCardIdx] || { category: 'Genel', prompt: 'Bu kategoride henüz kart yok.', answer: 'Diğer kategorileri seçebilirsiniz.' };
             const main = document.getElementById('main-content');
             const c = COURSES_DB[activeCourseKey];
+
+            // Categories list for pills
+            const categories = ['all', ...new Set(allCards.map(item => item.category))];
+            let catPillsHTML = '<div class="flashcard-cat-pills">';
+            categories.forEach(cat => {
+                const isSelected = flashcardFilterCategory === cat;
+                const count = cat === 'all' ? allCards.length : allCards.filter(i => i.category === cat).length;
+                const label = cat === 'all' ? `Tüm Konular (${count})` : `${cat} (${count})`;
+                catPillsHTML += `
+                    <button class="btn-stepper ${isSelected ? 'primary' : 'secondary'}" style="padding: 5px 12px; font-size: 0.8rem; white-space: nowrap;" onclick="setFlashcardCategory('${cat}')">
+                        ${label}
+                    </button>
+                `;
+            });
+            catPillsHTML += '</div>';
+
+            const totalAnswered = flashcardStats.known + flashcardStats.review;
+            const successRate = totalAnswered > 0 ? Math.round((flashcardStats.known / totalAnswered) * 100) : 0;
 
             main.innerHTML = `
                 <div class="content-header">
                     <div>
                         <div class="breadcrumbs">${c.code} > İnteraktif Sınav Araçları > Sınav Kartları</div>
-                        <h1 class="content-title">🃏 ${c.code} Sınav Kartı Çekmece & Antrenman</h1>
+                        <h1 class="content-title">🃏 ${c.code} Sınav Kartı Çekmece &amp; Hafıza Antrenmanı</h1>
                     </div>
                 </div>
 
-                <div class="flashcard-arena">
-                    <div class="flashcard-inner">
-                        <div class="card-top">
-                            <span class="card-category">🏷️ ${card.category}</span>
-                            <span class="card-counter">${currentCardIdx + 1} / ${cards.length}</span>
-                        </div>
+                <div class="academic-card">
+                    ${catPillsHTML}
 
-                        <div class="card-prompt">
-                            ${card.prompt}
+                    <div class="flashcard-score-bar">
+                        <div class="flashcard-score-pill" style="color: var(--accent-emerald);">
+                            <span>🟢 Bildim:</span> <span>${flashcardStats.known}</span>
                         </div>
-
-                        <div class="card-answer-box" id="flashcard-answer">
-                            ${card.answer}
+                        <div class="flashcard-score-pill" style="color: #ef4444;">
+                            <span>🔴 Tekrar Et:</span> <span>${flashcardStats.review}</span>
                         </div>
+                        <div class="flashcard-score-pill" style="color: var(--accent-blue);">
+                            <span>📊 Oturum Başarısı:</span> <span>%${successRate}</span>
+                        </div>
+                        <button class="btn-stepper" style="padding: 4px 10px; font-size: 0.78rem;" onclick="shuffleFlashcards()">
+                            🔀 Karıştır
+                        </button>
+                    </div>
 
-                        <div class="card-bottom-actions">
-                            <button class="btn-stepper primary" id="btn-flip" onclick="flipCard()">Cevabı Çevir / Formülü Gör</button>
-                            <button class="btn-stepper" onclick="nextCard()">Rastgele Sıradaki Kartı Çek ➔</button>
+                    <div class="flashcard-arena">
+                        <div class="flashcard-inner">
+                            <div class="card-top">
+                                <span class="card-category">🏷️ ${card.category}</span>
+                                <span class="card-counter">${cards.length > 0 ? currentCardIdx + 1 : 0} / ${cards.length}</span>
+                            </div>
+
+                            <div class="card-prompt">
+                                ${card.prompt}
+                            </div>
+
+                            <div class="card-answer-box" id="flashcard-answer">
+                                ${card.answer}
+                            </div>
+
+                            <div class="card-bottom-actions" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 18px;">
+                                <button class="btn-stepper" onclick="prevCard()" title="Önceki Kart (Sol Ok)">
+                                    ⬅ Önceki
+                                </button>
+                                <button class="btn-stepper primary" id="btn-flip" onclick="flipCard()">
+                                    Cevabı Çevir / Formülü Gör (Space)
+                                </button>
+                                <button class="btn-stepper" onclick="nextCard()" title="Sıradaki Kart (Sağ Ok)">
+                                    Sonraki ➔
+                                </button>
+                            </div>
+
+                            <div id="flashcard-mastery-actions" style="display: none; justify-content: center; gap: 12px; margin-top: 14px; border-top: 1px dashed var(--border-subtle); padding-top: 14px;">
+                                <button class="btn-stepper flashcard-btn-review" onclick="markCardMastery(false)" title="Klavye: 1">
+                                    ❌ Tekrar Etmem Lazım [1]
+                                </button>
+                                <button class="btn-stepper flashcard-btn-known" onclick="markCardMastery(true)" title="Klavye: 2">
+                                    ✅ Bunu Kesin Biliyorum! [2]
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="intuition-callout" style="text-align: center;">
-                    Soru ekrana geldiğinde önce kendi zihninde formülü hatırla, sonra <strong>"Cevabı Çevir"</strong> butonuna basarak kendini test et!
+                    <div class="intuition-callout" style="text-align: center; margin-top: 20px;">
+                        💡 <strong>Klavye Kısayolları:</strong> <code>Space</code> = Kartı Çevir &nbsp;•&nbsp; <code>Sağ/Sol Ok</code> = Kart Değiştir &nbsp;•&nbsp; <code>1</code> = Tekrar Et &nbsp;•&nbsp; <code>2</code> = Bildim
+                    </div>
                 </div>
             `;
 
@@ -1092,12 +1258,16 @@ function triggerManualSync() {
         function flipCard() {
             const ans = document.getElementById('flashcard-answer');
             const btn = document.getElementById('btn-flip');
+            const masteryBox = document.getElementById('flashcard-mastery-actions');
+            if (!ans || !btn) return;
             if (ans.style.display === 'block') {
                 ans.style.display = 'none';
-                btn.textContent = 'Cevabı Çevir / Formülü Gör';
+                btn.textContent = 'Cevabı Çevir / Formülü Gör (Space)';
+                if (masteryBox) masteryBox.style.display = 'none';
             } else {
                 ans.style.display = 'block';
                 btn.textContent = 'Cevabı Gizle';
+                if (masteryBox) masteryBox.style.display = 'flex';
                 if (typeof renderMathInElement !== 'undefined') {
                     renderMathInElement(ans, {
                         delimiters: [
@@ -1111,11 +1281,12 @@ function triggerManualSync() {
         }
 
         function nextCard() {
-            currentCardIdx = (currentCardIdx + 1) % getActiveFlashcards().length;
+            const cards = getActiveFlashcards();
+            if (cards.length === 0) return;
+            currentCardIdx = (currentCardIdx + 1) % cards.length;
             renderFlashcard();
         }
 
-        
         // ================= MULTI-COURSE PROOFS & THEOREMS =================
         function getProofsForCourse(cKey) {
             if (cKey === 'mat201_seriler') {
@@ -2239,6 +2410,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                         <div class="question-statement" style="font-size: 1.15rem; margin-bottom: 14px;">
                             ${qItem.ex.enonce}
                         </div>
+                        <div class="print-answer-space"></div>
 
                         <details style="margin-top: 14px; cursor: pointer;">
                             <summary style="font-weight: 600; color: var(--accent-indigo); outline: none;">
@@ -2280,6 +2452,22 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                         <button class="btn-stepper secondary" onclick="newMockExam()">
                             🎲 Yeni Deneme Sınavı Üret
                         </button>
+                        <button class="btn-stepper" onclick="printMockExam(false)" style="margin-left: auto;">
+                            📄 Boş Sınav Kağıdı Yazdır
+                        </button>
+                        <button class="btn-stepper" onclick="printMockExam(true)">
+                            📑 Çözümlü Not Baremi Yazdır
+                        </button>
+                    </div>
+                </div>
+
+                <div class="print-exam-header">
+                    <h2>Galatasaray Üniversitesi • Fen-Edebiyat Fakültesi</h2>
+                    <div class="sub">${COURSES_DB[activeCourseKey].code} — ${COURSES_DB[activeCourseKey].title} Vize Deneme Sınavı (Süre: 90 Dakika • 100 Puan)</div>
+                    <div class="print-meta-grid">
+                        <div><strong>Öğrenci:</strong> Hamza</div>
+                        <div><strong>Numara:</strong> __________________</div>
+                        <div><strong>Tarih:</strong> 29 / 10 / 2026</div>
                     </div>
                 </div>
 
@@ -2612,5 +2800,56 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 renderSidebarNav();
                 updateProgressUI();
                 renderCurrentView();
+            }
+        });
+
+
+        // Global Keyboard Navigation for Study Mode & Flashcards
+        document.addEventListener('keydown', function(e) {
+            if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
+            if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+            if (currentViewMode === 'module' && currentTrack === 'exercises') {
+                if (e.key === 'ArrowRight' && !e.shiftKey) {
+                    e.preventDefault();
+                    nextStep();
+                } else if (e.key === 'ArrowLeft' && !e.shiftKey) {
+                    e.preventDefault();
+                    if (currentStepIdx > 1) {
+                        currentStepIdx--;
+                        renderModuleView();
+                    } else if (currentExerciseIdx > 0) {
+                        switchExercise(currentExerciseIdx - 1);
+                    }
+                } else if (e.key === 's' || e.key === 'S') {
+                    const mod = modulesDB[currentModuleKey];
+                    if (mod && mod.exercises[currentExerciseIdx]) {
+                        toggleStar(mod.exercises[currentExerciseIdx].id);
+                    }
+                } else if (e.key === 'h' || e.key === 'H') {
+                    toggleHint();
+                } else if (e.key === 'c' || e.key === 'C') {
+                    const mod = modulesDB[currentModuleKey];
+                    if (mod && mod.exercises[currentExerciseIdx]) {
+                        const ex = mod.exercises[currentExerciseIdx];
+                        const isSolved = getSolvedExercises().includes(ex.id);
+                        setExerciseSolved(ex.id, !isSolved);
+                    }
+                }
+            } else if (currentViewMode === 'special' && currentSpecialView === 'flashcards') {
+                if (e.key === ' ' || e.code === 'Space') {
+                    e.preventDefault();
+                    flipCard();
+                } else if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    nextCard();
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    prevCard();
+                } else if (e.key === '1') {
+                    markCardMastery(false);
+                } else if (e.key === '2') {
+                    markCardMastery(true);
+                }
             }
         });

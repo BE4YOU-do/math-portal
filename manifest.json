@@ -1,0 +1,19 @@
+{
+  "name": "GSÜ MathPortal • Vize & Sınav Koçu",
+  "short_name": "MathPortal",
+  "description": "Galatasaray Üniversitesi Lisans Matematik & Fen Vize Çalışma Portalı",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0a0e17",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
