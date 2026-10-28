@@ -1,0 +1,24 @@
+{
+  "name": "grup-teorisi",
+  "version": "1.0.0",
+  "description": "Üniversite matematik ve mühendislik öğrencileri için hazırlanmış açık kaynak interaktif ders, vize ve sınav hazırlık platformu.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BE4YOU-do/math-portal.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/BE4YOU-do/math-portal/issues"
+  },
+  "homepage": "https://github.com/BE4YOU-do/math-portal#readme",
+  "dependencies": {
+    "@vercel/blob": "^2.8.2"
+  }
+}

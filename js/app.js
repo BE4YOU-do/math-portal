@@ -3,6 +3,204 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
 
                 // ================= FLASHCARDS REPOSITORY =================
 
+
+// ================= CLOUD SYNC ENGINE (Multi-Device Sync) =================
+const SYNC_API_URL = (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'https://gsu-akademik-portal.vercel.app/api/sync'
+    : '/api/sync';
+
+let isCloudSyncing = false;
+
+function updateSyncStatusUI(status, label) {
+    const el = document.getElementById('cloud-sync-status');
+    const txt = document.getElementById('cloud-sync-text');
+    if (!el || !txt) return;
+    el.className = 'cloud-sync-status ' + (status || '');
+    if (label) txt.textContent = label;
+}
+
+function getAllLocalData() {
+    const courses = {};
+    const courseKeys = (typeof COURSES_DB !== 'undefined') ? Object.keys(COURSES_DB) : ['mat204_grup', 'mat201_seriler', 'fiz101_fizik', 'mat206_olasilik'];
+    courseKeys.forEach(cKey => {
+        let st = [];
+        let sol = [];
+        let th = [];
+        try {
+            const stRaw = localStorage.getItem(cKey + '_starred_ex') || (cKey === 'mat204_grup' ? localStorage.getItem('mat204_starred_ex') : null);
+            if (stRaw) st = JSON.parse(stRaw);
+        } catch(e) {}
+        try {
+            const solRaw = localStorage.getItem(cKey + '_solved_ex') || (cKey === 'mat204_grup' ? localStorage.getItem('mat204_solved_ex') : null);
+            if (solRaw) sol = JSON.parse(solRaw);
+        } catch(e) {}
+        try {
+            const thRaw = localStorage.getItem(cKey + '_completed_theories') || (cKey === 'mat204_grup' ? localStorage.getItem('mat204_completed_theories') : null);
+            if (thRaw) th = JSON.parse(thRaw);
+        } catch(e) {}
+
+        courses[cKey] = {
+            starred: st,
+            completed: sol,
+            completedTheory: th
+        };
+    });
+    return courses;
+}
+
+async function fetchFromCloud(isInitial) {
+    if (isCloudSyncing) return;
+    isCloudSyncing = true;
+    updateSyncStatusUI('syncing', 'Eşitleniyor...');
+
+    try {
+        const resp = await fetch(SYNC_API_URL, {
+            method: 'GET',
+            cache: 'no-store'
+        });
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const json = await resp.json();
+        if (json && json.success && json.data) {
+            const cloudCourses = json.data.courses || {};
+            let localChanged = false;
+            let needsUpload = false;
+            const localData = getAllLocalData();
+
+            for (const cKey in cloudCourses) {
+                const cloudC = cloudCourses[cKey] || {};
+                const localC = localData[cKey] || { starred: [], completed: [], completedTheory: [] };
+
+                // Starred merge
+                const cloudStarred = cloudC.starred || [];
+                const localStarred = localC.starred || [];
+                const mergedStarred = Array.from(new Set([...localStarred, ...cloudStarred]));
+                if (mergedStarred.length !== localStarred.length) {
+                    try { localStorage.setItem(cKey + '_starred_ex', JSON.stringify(mergedStarred)); } catch(e) {}
+                    localChanged = true;
+                }
+                if (mergedStarred.length !== cloudStarred.length) needsUpload = true;
+
+                // Completed exercises merge
+                const cloudSolved = cloudC.completed || [];
+                const localSolved = localC.completed || [];
+                const mergedSolved = Array.from(new Set([...localSolved, ...cloudSolved]));
+                if (mergedSolved.length !== localSolved.length) {
+                    try { localStorage.setItem(cKey + '_solved_ex', JSON.stringify(mergedSolved)); } catch(e) {}
+                    localChanged = true;
+                }
+                if (mergedSolved.length !== cloudSolved.length) needsUpload = true;
+
+                // Completed theories merge
+                const cloudTheories = cloudC.completedTheory || [];
+                const localTheories = localC.completedTheory || [];
+                const mergedTheories = Array.from(new Set([...localTheories, ...cloudTheories]));
+                if (mergedTheories.length !== localTheories.length) {
+                    try { localStorage.setItem(cKey + '_completed_theories', JSON.stringify(mergedTheories)); } catch(e) {}
+                    localChanged = true;
+                }
+                if (mergedTheories.length !== cloudTheories.length) needsUpload = true;
+            }
+
+            for (const cKey in localData) {
+                if (!cloudCourses[cKey] && (localData[cKey].starred.length || localData[cKey].completed.length || localData[cKey].completedTheory.length)) {
+                    needsUpload = true;
+                }
+            }
+
+            if (localChanged) {
+                updateProgressUI();
+                if (currentViewMode === 'special' && currentSpecialView === 'starred') {
+                    openStarredPool();
+                } else if (currentViewMode === 'module') {
+                    renderModuleView();
+                }
+            }
+
+            if (needsUpload) {
+                const mergedState = getAllLocalData();
+                fetch(SYNC_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ type: 'sync', courses: mergedState })
+                }).catch(() => {});
+            }
+
+            updateSyncStatusUI('', 'Bulut: Eşitlendi ✓');
+        } else {
+            updateSyncStatusUI('', 'Bulut: Aktif');
+        }
+    } catch(err) {
+        console.warn('Cloud sync error:', err);
+        updateSyncStatusUI('error', 'Çevrimdışı (Yerel)');
+    } finally {
+        isCloudSyncing = false;
+    }
+}
+
+async function syncToggleStarToCloud(courseKey, exId, isStarred) {
+    updateSyncStatusUI('syncing', 'Kaydediliyor...');
+    try {
+        await fetch(SYNC_API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                type: 'toggle_star',
+                courseKey: courseKey,
+                exerciseId: exId,
+                starred: isStarred
+            })
+        });
+        updateSyncStatusUI('', 'Bulut: Eşitlendi ✓');
+    } catch(e) {
+        console.warn('Sync star error:', e);
+        updateSyncStatusUI('error', 'Bulut: Beklemede');
+    }
+}
+
+async function syncToggleSolvedToCloud(courseKey, exId, isSolved) {
+    updateSyncStatusUI('syncing', 'Kaydediliyor...');
+    try {
+        await fetch(SYNC_API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                type: 'toggle_complete',
+                courseKey: courseKey,
+                exerciseId: exId,
+                completed: isSolved
+            })
+        });
+        updateSyncStatusUI('', 'Bulut: Eşitlendi ✓');
+    } catch(e) {
+        console.warn('Sync solved error:', e);
+        updateSyncStatusUI('error', 'Bulut: Beklemede');
+    }
+}
+
+async function syncToggleTheoryToCloud(courseKey, modKey, isDone) {
+    updateSyncStatusUI('syncing', 'Kaydediliyor...');
+    try {
+        await fetch(SYNC_API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                type: 'set_theory_done',
+                courseKey: courseKey,
+                moduleKey: modKey,
+                done: isDone
+            })
+        });
+        updateSyncStatusUI('', 'Bulut: Eşitlendi ✓');
+    } catch(e) {
+        console.warn('Sync theory error:', e);
+        updateSyncStatusUI('error', 'Bulut: Beklemede');
+    }
+}
+
+function triggerManualSync() {
+    fetchFromCloud(false);
+}
+
 // ================= PROGRESS TRACKING (localStorage) =================
         function getSolvedExercises() {
             try {
@@ -26,6 +224,7 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
             } catch(e) {}
             updateProgressUI();
             renderModuleView();
+            syncToggleSolvedToCloud(activeCourseKey, exId, isSolved);
         }
 
         function getCompletedTheories() {
@@ -50,6 +249,7 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
             } catch(e) {}
             updateProgressUI();
             renderModuleView();
+            syncToggleTheoryToCloud(activeCourseKey, modId, isCompleted);
         }
 
         function updateProgressUI() {
@@ -257,7 +457,8 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
 
         function renderCurrentView() {
             if (currentViewMode === 'special') {
-                if (currentSpecialView === 'unresolved') openUnresolvedPool();
+                if (currentSpecialView === 'starred') openStarredPool();
+                else if (currentSpecialView === 'unresolved') openUnresolvedPool();
                 else if (currentSpecialView === 'flashcards') openFlashcardArena();
                 else if (currentSpecialView === 'pitfalls') loadPitfallsView();
                 else if (currentSpecialView === 'mock-exam') loadMockExamView();
@@ -1069,20 +1270,31 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
 
         function toggleStar(exId) {
             let list = getStarredExercises();
+            let isStarred = false;
             if (list.includes(exId)) {
                 list = list.filter(id => id !== exId);
+                isStarred = false;
             } else {
                 list.push(exId);
+                isStarred = true;
             }
             try {
                 localStorage.setItem(activeCourseKey + '_starred_ex', JSON.stringify(list));
             } catch(e) {}
             updateProgressUI();
-            renderModuleView();
+            if (currentViewMode === 'special' && currentSpecialView === 'starred') {
+                openStarredPool();
+            } else {
+                renderModuleView();
+            }
+            syncToggleStarToCloud(activeCourseKey, exId, isStarred);
         }
 
         function openStarredPool() {
+            currentViewMode = 'special';
+            currentSpecialView = 'starred';
             setActiveNav('nav-starred');
+            saveAppState();
             const main = document.getElementById('main-content');
             const starred = getStarredExercises();
             let poolHTML = '';
@@ -1857,6 +2069,7 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
                         <span>📜</span>
                         <span>Banko Teorem İspatları</span>
                     </div>
+                    <span class="nav-count-badge" style="background: rgba(139, 92, 246, 0.18); color: var(--accent-purple);">İspat</span>
                 </div>
 
                 <div class="nav-item" id="nav-fransizca" onclick="loadSpecialView('fransizca')">
@@ -1864,6 +2077,7 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
                         <span>🇫🇷</span>
                         <span>Sınav Fransızcası Kalıpları</span>
                     </div>
+                    <span class="nav-count-badge" style="background: rgba(59, 130, 246, 0.18); color: var(--accent-blue);">Sözlük</span>
                 </div>
 
                 <div class="nav-item" id="nav-hesaplayici" onclick="loadSpecialView('hesaplayici')">
@@ -1871,6 +2085,7 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
                         <span>🧮</span>
                         <span>Canlı Bézout / Ters Motoru</span>
                     </div>
+                    <span class="nav-count-badge" style="background: rgba(16, 185, 129, 0.18); color: var(--accent-emerald);">Araç</span>
                 </div>
             `;
 
@@ -1886,7 +2101,15 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
             updateProgressUI();
             renderCurrentView();
             saveAppState();
+            fetchFromCloud(true);
         };
+
+        // Otomatik Bulut Senkronizasyonu: Kullanıcı sekmeye her döndüğünde (telefonda soru işaretleyip bilgisayara geçince)
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                fetchFromCloud(false);
+            }
+        });
 
         window.addEventListener('hashchange', function() {
             if (restoreAppState()) {
