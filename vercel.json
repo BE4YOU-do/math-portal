@@ -2,6 +2,11 @@
   "cleanUrls": true,
   "routes": [
     {
+      "src": "^/vize_kocu\\.html",
+      "status": 307,
+      "headers": { "Location": "/index.html" }
+    },
+    {
       "src": "^/api/(.*)",
       "dest": "/api/$1"
     },

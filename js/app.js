@@ -1,5 +1,93 @@
+window.COURSES_DB = window.COURSES_DB || {};
 let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
-        let modulesDB = COURSES_DB[activeCourseKey].modules;;
+let modulesDB = (window.COURSES_DB && window.COURSES_DB[activeCourseKey]) ? window.COURSES_DB[activeCourseKey].modules : {};
+
+// ================= DYNAMIC COURSE LOADER (Modular Data Fetching) =================
+const loadedCoursePromises = {};
+
+function loadScriptAsync(src) {
+    return new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.async = true;
+        s.onload = () => resolve();
+        s.onerror = (err) => reject(new Error('Script load failed: ' + src));
+        document.head.appendChild(s);
+    });
+}
+
+function showLoadingToast(msg) {
+    let toast = document.getElementById('portal-loading-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'portal-loading-toast';
+        toast.style.cssText = 'position: fixed; bottom: 24px; right: 24px; background: rgba(15, 23, 42, 0.94); color: #fff; padding: 10px 18px; border-radius: 8px; font-size: 0.9rem; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; gap: 10px; z-index: 99999; backdrop-filter: blur(8px); transition: opacity 0.2s ease;';
+        document.body.appendChild(toast);
+    }
+    toast.innerHTML = `<span style="font-size: 1.1rem;">⏳</span> <span>${msg || 'Ders içeriği yükleniyor...'}</span>`;
+    toast.style.display = 'flex';
+    toast.style.opacity = '1';
+}
+
+function hideLoadingToast() {
+    const toast = document.getElementById('portal-loading-toast');
+    if (toast) {
+        toast.style.opacity = '0';
+        setTimeout(() => { toast.style.display = 'none'; }, 200);
+    }
+}
+
+async function ensureCourseLoaded(courseKey) {
+    if (!courseKey) courseKey = 'mat204_grup';
+    window.COURSES_DB = window.COURSES_DB || {};
+    
+    if (window.COURSES_DB[courseKey] && window.COURSES_DB[courseKey].modules) {
+        return window.COURSES_DB[courseKey];
+    }
+    
+    if (loadedCoursePromises[courseKey]) {
+        return loadedCoursePromises[courseKey];
+    }
+    
+    const manifest = (typeof COURSES_MANIFEST !== 'undefined') ? COURSES_MANIFEST[courseKey] : null;
+    const courseTitle = manifest ? `${manifest.code} (${manifest.title})` : courseKey;
+    showLoadingToast(`${courseTitle} yükleniyor...`);
+    
+    loadedCoursePromises[courseKey] = (async () => {
+        try {
+            if (window.location.protocol !== 'file:') {
+                const res = await fetch(`data/courses/${courseKey}.json?v=7`);
+                if (res.ok) {
+                    const data = await res.json();
+                    window.COURSES_DB[courseKey] = data;
+                    return data;
+                }
+            }
+        } catch(e) {
+            console.warn(`[MathPortal] Fetch failed for ${courseKey}, falling back to script injection:`, e);
+        }
+        
+        try {
+            await loadScriptAsync(`data/courses/${courseKey}.js?v=7`);
+            if (window.COURSES_DB[courseKey]) {
+                return window.COURSES_DB[courseKey];
+            }
+        } catch(err) {
+            console.error(`[MathPortal] Failed to load course ${courseKey}:`, err);
+        }
+        
+        if (typeof COURSES_DB !== 'undefined' && COURSES_DB[courseKey]) {
+            return COURSES_DB[courseKey];
+        }
+        
+        throw new Error(`Ders yüklenemedi: ${courseKey}`);
+    })().finally(() => {
+        hideLoadingToast();
+        delete loadedCoursePromises[courseKey];
+    });
+    
+    return loadedCoursePromises[courseKey];
+}
 
                 // ================= FLASHCARDS REPOSITORY =================
 
@@ -380,7 +468,7 @@ function triggerManualSync() {
             } catch(e) {}
         }
 
-        function restoreAppState() {
+        async function restoreAppState() {
             // 1. Try URL Hash: #/courseKey/moduleKey/track/idx or #/courseKey/special/viewKey
             const hash = window.location.hash;
             if (hash && hash.startsWith('#/')) {
@@ -390,8 +478,10 @@ function triggerManualSync() {
                 const part3 = parts[2];
                 const part4 = parts[3];
 
-                if (cKey && COURSES_DB[cKey]) {
+                const manifest = (typeof COURSES_MANIFEST !== 'undefined') ? COURSES_MANIFEST[cKey] : null;
+                if (cKey && (manifest || (window.COURSES_DB && window.COURSES_DB[cKey]))) {
                     activeCourseKey = cKey;
+                    await ensureCourseLoaded(activeCourseKey);
                     modulesDB = COURSES_DB[activeCourseKey].modules;
                     try { localStorage.setItem('gs_active_course', activeCourseKey); } catch(e) {}
 
@@ -417,8 +507,10 @@ function triggerManualSync() {
             // 2. Try LocalStorage
             try {
                 const savedCourse = localStorage.getItem('gs_active_course') || 'mat204_grup';
-                if (COURSES_DB[savedCourse]) {
+                const manifest = (typeof COURSES_MANIFEST !== 'undefined') ? COURSES_MANIFEST[savedCourse] : null;
+                if (manifest || (window.COURSES_DB && window.COURSES_DB[savedCourse])) {
                     activeCourseKey = savedCourse;
+                    await ensureCourseLoaded(activeCourseKey);
                     modulesDB = COURSES_DB[activeCourseKey].modules;
                 }
                 const savedStateStr = localStorage.getItem('gs_portal_state_' + activeCourseKey);
@@ -442,9 +534,7 @@ function triggerManualSync() {
             } catch(e) {}
 
             // 3. Fallback to first module
-            if (!COURSES_DB[activeCourseKey]) {
-                activeCourseKey = Object.keys(COURSES_DB)[0];
-            }
+            await ensureCourseLoaded(activeCourseKey || 'mat204_grup');
             modulesDB = COURSES_DB[activeCourseKey].modules;
             currentViewMode = 'module';
             currentSpecialView = null;
@@ -1040,9 +1130,9 @@ function printMockExam(withSolutions = false) {
 }
 
 
-        function switchCourseAndJump(cKey, modKey, exIdx) {
+        async function switchCourseAndJump(cKey, modKey, exIdx) {
             if (activeCourseKey !== cKey) {
-                switchActiveCourse(cKey);
+                await switchActiveCourse(cKey);
             }
             jumpToExercise(modKey, exIdx);
         }
@@ -2580,8 +2670,11 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             }
         });
 
-        function switchActiveCourse(courseKey) {
-            if (!COURSES_DB[courseKey]) return;
+        async function switchActiveCourse(courseKey) {
+            const manifest = (typeof COURSES_MANIFEST !== 'undefined') ? COURSES_MANIFEST[courseKey] : null;
+            if (!manifest && (!window.COURSES_DB || !window.COURSES_DB[courseKey])) return;
+
+            await ensureCourseLoaded(courseKey);
             activeCourseKey = courseKey;
             try {
                 localStorage.setItem('gs_active_course', courseKey);
@@ -2639,7 +2732,8 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
         }
 
         function updateCourseHeaderUI() {
-            const c = COURSES_DB[activeCourseKey];
+            const manifest = (typeof COURSES_MANIFEST !== 'undefined') ? COURSES_MANIFEST[activeCourseKey] : null;
+            const c = (window.COURSES_DB && window.COURSES_DB[activeCourseKey]) || manifest;
             if (!c) return;
             const dot = document.getElementById('header-course-dot');
             const code = document.getElementById('header-course-code');
@@ -2665,15 +2759,18 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             const menu = document.getElementById('course-dropdown-menu');
             if (menu) {
                 let optsHTML = '';
-                Object.keys(COURSES_DB).forEach(key => {
-                    const item = COURSES_DB[key];
+                const fullList = window.COURSES_MANIFEST || COURSES_DB;
+                Object.keys(fullList).forEach(key => {
+                    const item = fullList[key];
                     const isActive = key === activeCourseKey;
+                    const modCount = item.moduleList ? item.moduleList.length : (item.modules ? Object.keys(item.modules).length : 0);
+                    const facultyInfo = item.faculty ? (item.faculty.includes('•') ? item.faculty.split('•')[1] : item.faculty) : '';
                     optsHTML += `
                         <div class="course-option ${isActive ? 'active' : ''}" onclick="switchActiveCourse('${key}')">
                             <span style="font-size: 1.2rem;">${item.icon}</span>
                             <div>
                                 <div class="course-opt-name">${item.code} — ${item.title}</div>
-                                <div class="course-opt-sub">${Object.keys(item.modules).length} Modül • ${item.faculty.split('•')[1] || ''}</div>
+                                <div class="course-opt-sub">${modCount} Modül • ${facultyInfo}</div>
                             </div>
                             ${isActive ? '<span style="margin-left: auto; color: var(--accent-emerald); font-weight: 700;">✓</span>' : ''}
                         </div>
@@ -2776,9 +2873,10 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
         }
 
 
-        window.onload = function() {
+        window.onload = async function() {
             initTheme();
-            restoreAppState();
+            await ensureCourseLoaded(activeCourseKey);
+            await restoreAppState();
             updateCourseHeaderUI();
             renderSidebarNav();
             updateProgressUI();
@@ -2794,8 +2892,8 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             }
         });
 
-        window.addEventListener('hashchange', function() {
-            if (restoreAppState()) {
+        window.addEventListener('hashchange', async function() {
+            if (await restoreAppState()) {
                 updateCourseHeaderUI();
                 renderSidebarNav();
                 updateProgressUI();
