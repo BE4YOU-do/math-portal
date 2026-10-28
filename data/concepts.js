@@ -82,6 +82,28 @@ const conceptsDB = {
         $$\\mathbf{\\forall x, y \\in G, \\quad \\phi(x \\star y) = \\phi(x) \\cdot \\phi(y)}$$
         Propriétés fondamentales : $\\phi(e_G) = e_H$ et $\\phi(x^{-1}) = [\\phi(x)]^{-1}$.`,
         intuition: `İki farklı grup yapısı arasında işlemleri ve birim/ters eleman özelliklerini muhafaza eden fonksiyonel dönüşümdür.`
+    },
+    'matrice_identite': {
+        title: 'Matrice Identité ($I_n$ - Birim Matris)',
+        definition: `La <strong>matrice identité</strong> d'ordre $n$, notée $I_n$, est la matrice carrée $n \\times n$ dont les coefficients diagonaux valent $1$ et tous les autres valent $0$ :
+        $$\\mathbf{I_n = \\begin{pmatrix} 1 & 0 & \\cdots & 0 \\\\ 0 & 1 & \\cdots & 0 \\\\ \\vdots & \\vdots & \\ddots & \\vdots \\\\ 0 & 0 & \\cdots & 1 \\end{pmatrix}}$$
+        Pour toute matrice carrée $M \\in \\mathcal{M}_n(\\mathbb{R})$, elle joue le rôle d'<strong>élément neutre multiplicatif</strong> :
+        $$\\mathbf{M \\cdot I_n = I_n \\cdot M = M}$$`,
+        intuition: `Matrisler dünyasının <strong>etkisiz elemanıdır</strong> (tıpkı reel sayılardaki 1 gibi). Herhangi bir matrisi birim matrisle çarptığınızda matris asla değişmez. Bir kümenin matris çarpımı altında grup olduğunu kanıtlarken birim eleman ($e$) adayı daima $I_n$'dir. Parametrelere sıfır verildiğinde ($a=b=c=0$) matris $I_3$'e dönüşüyorsa, birim eleman kümededir ($I_3 \\in G$).`
+    },
+    'produit_matriciel': {
+        title: 'Produit Matriciel (Matris Çarpımı & Satır × Sütun Kuralı)',
+        definition: `Soient deux matrices $A = (a_{ik})$ et $B = (b_{kj})$. Le produit $C = A \\cdot B$ s'obtient par la règle <strong>\"ligne $\\times$ colonne\"</strong> : chaque coefficient $c_{ij}$ est la somme des produits des termes de la ligne $i$ de $A$ par la colonne $j$ de $B$ :
+        $$\\mathbf{c_{ij} = \\sum_{k=1}^p a_{ik} b_{kj} = a_{i1}b_{1j} + a_{i2}b_{2j} + \\dots + a_{ip}b_{pj}}$$
+        <strong>Propriété Cruciale :</strong> Le produit matriciel est universellement <strong>associatif</strong> ($(AB)C = A(BC)$) mais en général <strong>non-commutatif</strong> ($AB \\neq BA$).`,
+        intuition: `\"Satır × Sütun\" kuralı: Sol matrisin $i$. satırındaki sayılar ile sağ matrisin $j$. sütunundaki sayılar sırayla çarpılıp toplanır. Sınavlarda en büyük kolaylık: Matris çarpımının birleşmeli (associatif) olduğu $\\mathcal{M}_n(\\mathbb{R})$'de genel bir teorem olduğundan, alt kümelerde birleşme aksiyomu doğrudan miras kalır (l'associativité est induite).`
+    },
+    'groupe_heisenberg': {
+        title: 'Groupe de Heisenberg $H_3(\\mathbb{R})$ (Üst Üçgensel Matrisler Grubu)',
+        definition: `L'ensemble des matrices carrées $3 \\times 3$ réelles unipotentes triangulaires supérieures :
+        $$\\mathbf{H_3(\\mathbb{R}) = \\left\\{ \\begin{pmatrix} 1 & a & b \\\\ 0 & 1 & c \\\\ 0 & 0 & 1 \\end{pmatrix} \\;\\middle|\\; a, b, c \\in \\mathbb{R} \\right\\}}$$
+        muni de la multiplication matricielle ordinaire est un sous-groupe de $GL_3(\\mathbb{R})$, non-abélien, fondamental en physique quantique et en géométrie différentielle.`,
+        intuition: `Asal köşegenleri 1 ve alt üçgeni 0 olan bu matrislerin çarpımı yine aynı formdadır. Değişmeli (Abelyen) değildir çünkü $M_1 M_2$ ile $M_2 M_1$ çarpımlarında sağ üstteki $b_2 + a_1 c_2 + b_1$ terimi sıra değişiminde $b_1 + a_2 c_1 + b_2$ olur; $a_1 c_2 \\neq a_2 c_1$ olduğunda çarpım sırası sonucu değiştirir.`
     }
 };
 
