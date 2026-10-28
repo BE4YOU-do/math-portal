@@ -138,7 +138,9 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
             }
         });
 
-        // ================= STATE MANAGEMENT =================
+        // ================= STATE MANAGEMENT & PERSISTENCE =================
+        let currentViewMode = 'module'; // 'module' or 'special'
+        let currentSpecialView = null; // 'pitfalls', 'mock-exam', 'unresolved', 'flashcards', 'ispatlar', 'fransizca', 'hesaplayici'
         let currentModuleKey = 'modul1';
         let currentTrack = 'theory'; // 'theory' (Konu Anlatımı & Teori Kitabı) or 'exercises'
         let currentExerciseIdx = 0;
@@ -149,6 +151,129 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
         let showAllTheoryPages = false;
         let currentCardIdx = 0;
 
+        function saveAppState() {
+            try {
+                const state = {
+                    courseKey: activeCourseKey,
+                    viewMode: currentViewMode,
+                    specialView: currentSpecialView,
+                    moduleKey: currentModuleKey,
+                    track: currentTrack,
+                    exerciseIdx: currentExerciseIdx,
+                    theoryPageIdx: currentTheoryPageIdx,
+                    showAllTheoryPages: showAllTheoryPages
+                };
+                localStorage.setItem('gs_portal_state_' + activeCourseKey, JSON.stringify(state));
+                localStorage.setItem('gs_active_course', activeCourseKey);
+
+                let hash = '';
+                if (currentViewMode === 'special' && currentSpecialView) {
+                    hash = `#/${activeCourseKey}/special/${currentSpecialView}`;
+                } else if (currentTrack === 'theory') {
+                    hash = `#/${activeCourseKey}/${currentModuleKey}/theory/${currentTheoryPageIdx}`;
+                } else {
+                    hash = `#/${activeCourseKey}/${currentModuleKey}/exercises/${currentExerciseIdx}`;
+                }
+                if (window.location.hash !== hash) {
+                    history.replaceState(null, '', hash);
+                }
+            } catch(e) {}
+        }
+
+        function restoreAppState() {
+            // 1. Try URL Hash: #/courseKey/moduleKey/track/idx or #/courseKey/special/viewKey
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#/')) {
+                const parts = hash.slice(2).split('/');
+                const cKey = parts[0];
+                const part2 = parts[1];
+                const part3 = parts[2];
+                const part4 = parts[3];
+
+                if (cKey && COURSES_DB[cKey]) {
+                    activeCourseKey = cKey;
+                    modulesDB = COURSES_DB[activeCourseKey].modules;
+                    try { localStorage.setItem('gs_active_course', activeCourseKey); } catch(e) {}
+
+                    if (part2 === 'special' && part3) {
+                        currentViewMode = 'special';
+                        currentSpecialView = part3;
+                        return true;
+                    } else if (part2 && modulesDB[part2]) {
+                        currentViewMode = 'module';
+                        currentSpecialView = null;
+                        currentModuleKey = part2;
+                        currentTrack = (part3 === 'exercises') ? 'exercises' : 'theory';
+                        if (currentTrack === 'theory') {
+                            currentTheoryPageIdx = parseInt(part4, 10) || 0;
+                        } else {
+                            currentExerciseIdx = parseInt(part4, 10) || 0;
+                        }
+                        return true;
+                    }
+                }
+            }
+
+            // 2. Try LocalStorage
+            try {
+                const savedCourse = localStorage.getItem('gs_active_course') || 'mat204_grup';
+                if (COURSES_DB[savedCourse]) {
+                    activeCourseKey = savedCourse;
+                    modulesDB = COURSES_DB[activeCourseKey].modules;
+                }
+                const savedStateStr = localStorage.getItem('gs_portal_state_' + activeCourseKey);
+                if (savedStateStr) {
+                    const st = JSON.parse(savedStateStr);
+                    if (st.viewMode === 'special' && st.specialView) {
+                        currentViewMode = 'special';
+                        currentSpecialView = st.specialView;
+                        return true;
+                    } else if (st.moduleKey && modulesDB[st.moduleKey]) {
+                        currentViewMode = 'module';
+                        currentSpecialView = null;
+                        currentModuleKey = st.moduleKey;
+                        currentTrack = st.track || 'theory';
+                        currentExerciseIdx = parseInt(st.exerciseIdx, 10) || 0;
+                        currentTheoryPageIdx = parseInt(st.theoryPageIdx, 10) || 0;
+                        showAllTheoryPages = !!st.showAllTheoryPages;
+                        return true;
+                    }
+                }
+            } catch(e) {}
+
+            // 3. Fallback to first module
+            if (!COURSES_DB[activeCourseKey]) {
+                activeCourseKey = Object.keys(COURSES_DB)[0];
+            }
+            modulesDB = COURSES_DB[activeCourseKey].modules;
+            currentViewMode = 'module';
+            currentSpecialView = null;
+            currentModuleKey = Object.keys(modulesDB)[0];
+            currentTrack = 'theory';
+            currentExerciseIdx = 0;
+            currentTheoryPageIdx = 0;
+            return false;
+        }
+
+        function renderCurrentView() {
+            if (currentViewMode === 'special') {
+                if (currentSpecialView === 'unresolved') openUnresolvedPool();
+                else if (currentSpecialView === 'flashcards') openFlashcardArena();
+                else if (currentSpecialView === 'pitfalls') loadPitfallsView();
+                else if (currentSpecialView === 'mock-exam') loadMockExamView();
+                else if (currentSpecialView) loadSpecialView(currentSpecialView);
+                else {
+                    currentViewMode = 'module';
+                    currentSpecialView = null;
+                    setActiveNav('nav-' + currentModuleKey);
+                    renderModuleView();
+                }
+            } else {
+                setActiveNav('nav-' + currentModuleKey);
+                renderModuleView();
+            }
+        }
+
         function setActiveNav(navId) {
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             if (navId) {
@@ -158,6 +283,8 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
         }
 
         function loadModule(modKey) {
+            currentViewMode = 'module';
+            currentSpecialView = null;
             currentModuleKey = modKey;
             if (!currentTrack) currentTrack = 'theory';
             currentExerciseIdx = 0;
@@ -168,6 +295,7 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
             showAllTheoryPages = false;
             setActiveNav('nav-' + modKey);
             renderModuleView();
+            saveAppState();
         }
 
         function switchTrack(trackName) {
@@ -176,6 +304,7 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
             showAllStepsMode = false;
             isHintVisible = false;
             renderModuleView();
+            saveAppState();
         }
 
         function switchExercise(exIdx) {
@@ -184,6 +313,7 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
             showAllStepsMode = false;
             isHintVisible = false;
             renderModuleView();
+            saveAppState();
         }
 
         function nextStep() {
@@ -234,11 +364,13 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
             currentTheoryPageIdx = pageIdx;
             showAllTheoryPages = false;
             renderModuleView();
+            saveAppState();
         }
 
         function toggleAllTheoryPages() {
             showAllTheoryPages = !showAllTheoryPages;
             renderModuleView();
+            saveAppState();
         }
 
         // ================= MAIN RENDER FUNCTION =================
@@ -518,6 +650,8 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
 
                 // ================= UNRESOLVED POOL (Çözülmemiş Sorular Havuzu) =================
         function openUnresolvedPool() {
+            currentViewMode = 'special';
+            currentSpecialView = 'unresolved';
             setActiveNav('nav-unresolved');
 
             const main = document.getElementById('main-content');
@@ -572,6 +706,7 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
             `;
 
             renderMath();
+            saveAppState();
         }
 
         
@@ -583,6 +718,8 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
         }
 
         function jumpToExercise(modKey, exIdx) {
+            currentViewMode = 'module';
+            currentSpecialView = null;
             currentModuleKey = modKey;
             currentTrack = 'exercises';
             currentExerciseIdx = exIdx;
@@ -590,6 +727,7 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
 
             setActiveNav('nav-' + modKey);
             renderModuleView();
+            saveAppState();
         }
 
         // ================= CONCEPT MODAL =================
@@ -634,10 +772,13 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
 
         // ================= FLASHCARDS ARENA =================
         function openFlashcardArena() {
+            currentViewMode = 'special';
+            currentSpecialView = 'flashcards';
             setActiveNav('nav-flashcards');
 
             currentCardIdx = 0;
             renderFlashcard();
+            saveAppState();
         }
 
         function getActiveFlashcards() {
@@ -717,6 +858,8 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
 
         // ================= SPECIAL VIEWS =================
         function loadSpecialView(viewKey) {
+            currentViewMode = 'special';
+            currentSpecialView = viewKey;
             setActiveNav('nav-' + viewKey);
 
             const main = document.getElementById('main-content');
@@ -804,6 +947,7 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
             }
 
             renderMath();
+            saveAppState();
         }
 
         function runCalculator() {
@@ -1102,6 +1246,8 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
 
         // ================= COMMON PITFALLS (HOCA NEREDEN PUAN KIRAR?) =================
         function loadPitfallsView() {
+            currentViewMode = 'special';
+            currentSpecialView = 'pitfalls';
             setActiveNav('nav-pitfalls');
             const main = document.getElementById('main-content');
             const c = COURSES_DB[activeCourseKey];
@@ -1299,6 +1445,7 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
             `;
 
             renderMath();
+            saveAppState();
         }
 
         // ================= MOCK EXAM SIMULATOR =================
@@ -1352,6 +1499,8 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
         }
 
         function loadMockExamView() {
+            currentViewMode = 'special';
+            currentSpecialView = 'mock-exam';
             setActiveNav('nav-mock-exam');
             const main = document.getElementById('main-content');
             if (!currentMockExam) {
@@ -1359,6 +1508,7 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
             }
 
             renderMockExamUI();
+            saveAppState();
         }
 
         function renderMockExamUI() {
@@ -1547,21 +1697,50 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
             const menu = document.getElementById('course-dropdown-menu');
             if (menu) menu.classList.remove('open');
 
-            // Reset current module to first module of new course
-            const firstModKey = Object.keys(modulesDB)[0];
-            currentModuleKey = firstModKey;
-            currentTrack = 'theory';
-            currentExerciseIdx = 0;
+            // Try restoring saved state for this course or default to first module
+            let restored = false;
+            try {
+                const savedStateStr = localStorage.getItem('gs_portal_state_' + activeCourseKey);
+                if (savedStateStr) {
+                    const st = JSON.parse(savedStateStr);
+                    if (st.viewMode === 'special' && st.specialView) {
+                        currentViewMode = 'special';
+                        currentSpecialView = st.specialView;
+                        restored = true;
+                    } else if (st.moduleKey && modulesDB[st.moduleKey]) {
+                        currentViewMode = 'module';
+                        currentSpecialView = null;
+                        currentModuleKey = st.moduleKey;
+                        currentTrack = st.track || 'theory';
+                        currentExerciseIdx = parseInt(st.exerciseIdx, 10) || 0;
+                        currentTheoryPageIdx = parseInt(st.theoryPageIdx, 10) || 0;
+                        showAllTheoryPages = !!st.showAllTheoryPages;
+                        restored = true;
+                    }
+                }
+            } catch(e) {}
+
+            if (!restored) {
+                currentViewMode = 'module';
+                currentSpecialView = null;
+                const firstModKey = Object.keys(modulesDB)[0];
+                currentModuleKey = firstModKey;
+                currentTrack = 'theory';
+                currentExerciseIdx = 0;
+                currentTheoryPageIdx = 0;
+                showAllTheoryPages = false;
+            }
+
             currentStepIdx = 1;
             showAllStepsMode = false;
-            currentTheoryPageIdx = 0;
             currentMockExam = null;
             currentCardIdx = 0;
 
             updateCourseHeaderUI();
             renderSidebarNav();
             updateProgressUI();
-            renderModuleView();
+            renderCurrentView();
+            saveAppState();
         }
 
         function updateCourseHeaderUI() {
@@ -1701,8 +1880,19 @@ let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
 
         window.onload = function() {
             initTheme();
+            restoreAppState();
             updateCourseHeaderUI();
             renderSidebarNav();
             updateProgressUI();
-            renderModuleView();
-        }
+            renderCurrentView();
+            saveAppState();
+        };
+
+        window.addEventListener('hashchange', function() {
+            if (restoreAppState()) {
+                updateCourseHeaderUI();
+                renderSidebarNav();
+                updateProgressUI();
+                renderCurrentView();
+            }
+        });
