@@ -5,7 +5,7 @@
  * Network-only for /api/ sync calls.
  */
 
-const CACHE_NAME = 'mathportal-v13';
+const CACHE_NAME = 'mathportal-v14';
 
 const PRECACHE_ASSETS = [
     './',

@@ -28,7 +28,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
     <!-- Custom Modular Stylesheet -->
-    <link rel="stylesheet" href="css/style.css?v=13">
+    <link rel="stylesheet" href="css/style.css?v=14">
 </head>
 <body>
 
@@ -37,9 +37,10 @@
         <button class="mobile-menu-btn" onclick="toggleMobileSidebar()" aria-label="Menüyü Aç">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
         </button>
-        <div class="mobile-brand-title">
+        <div class="mobile-brand-title" onclick="toggleMobileSidebar()" title="Ders ve Müfredat Menüsü">
             <span class="mobile-course-badge">MAT204</span>
             <span class="mobile-page-name">Grup Teorisi Vize</span>
+            <span style="font-size: 0.72rem; color: var(--text-muted); opacity: 0.7;">▾</span>
         </div>
         <div class="mobile-top-actions">
             <button class="mobile-action-btn" onclick="openSearchModal()" title="Hızlı Ara (Cmd+K)">
@@ -236,6 +237,30 @@
         <!-- Content dynamically injected here -->
     </main>
 
+    <!-- Mobile Bottom Navigation Bar (Thumb ergonomic quick-switcher) -->
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobil Hızlı Gezinme">
+        <button class="mobile-nav-tab active" id="tab-theory" onclick="handleMobileTab('theory')" aria-label="Konu Anlatımı">
+            <svg class="tab-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            <span class="tab-label">Konu</span>
+        </button>
+        <button class="mobile-nav-tab" id="tab-exercises" onclick="handleMobileTab('exercises')" aria-label="TD Alıştırmaları">
+            <svg class="tab-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+            <span class="tab-label">Sorular</span>
+        </button>
+        <button class="mobile-nav-tab" id="tab-flashcards" onclick="handleMobileTab('flashcards')" aria-label="Kavram Kartları">
+            <svg class="tab-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="16" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2H4"></path></svg>
+            <span class="tab-label">Kartlar</span>
+        </button>
+        <button class="mobile-nav-tab" id="tab-pitfalls" onclick="handleMobileTab('pitfalls')" aria-label="Sık Yapılan Hatalar">
+            <svg class="tab-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            <span class="tab-label">Hatalar</span>
+        </button>
+        <button class="mobile-nav-tab" id="tab-menu" onclick="toggleMobileSidebar()" aria-label="Ders Müfredatı ve Menü">
+            <svg class="tab-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            <span class="tab-label">Menü</span>
+        </button>
+    </nav>
+
     <!-- ================= CONCEPT MODAL (Drawer for used properties) ================= -->
     <div id="concept-modal" class="modal-overlay" onclick="closeConceptModal(event)">
         <div class="modal-card" onclick="event.stopPropagation()">
@@ -281,18 +306,18 @@
     </div>
 
     <!-- Modular Data & Logic Scripts -->
-    <script src="js/icons.js?v=13"></script>
-    <script src="data/courses_manifest.js?v=13"></script>
-    <script src="data/concepts.js?v=13"></script>
-    <script src="data/courses/mat204_grup.js?v=13"></script>
-    <script src="data/flashcards.js?v=13"></script>
-    <script src="js/app.js?v=13"></script>
+    <script src="js/icons.js?v=14"></script>
+    <script src="data/courses_manifest.js?v=14"></script>
+    <script src="data/concepts.js?v=14"></script>
+    <script src="data/courses/mat204_grup.js?v=14"></script>
+    <script src="data/flashcards.js?v=14"></script>
+    <script src="js/app.js?v=14"></script>
 
     <!-- Service Worker Registration for PWA Offline Math & KaTeX -->
     <script>
         if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js?v=13').catch(err => {
+                navigator.serviceWorker.register('./sw.js?v=14').catch(err => {
                     console.log('SW registration note:', err);
                 });
             });

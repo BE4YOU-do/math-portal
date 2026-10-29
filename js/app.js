@@ -586,6 +586,7 @@ function triggerManualSync() {
             showAllTheoryPages = false;
             setActiveNav('nav-' + modKey);
             renderModuleView();
+            syncMobileNavTabs(currentTrack);
             saveAppState();
         }
 
@@ -595,6 +596,7 @@ function triggerManualSync() {
             showAllStepsMode = false;
             isHintVisible = false;
             renderModuleView();
+            syncMobileNavTabs(trackName);
             saveAppState();
         }
 
@@ -1198,6 +1200,7 @@ function printMockExam(withSolutions = false) {
             currentViewMode = 'special';
             currentSpecialView = 'flashcards';
             setActiveNav('nav-flashcards');
+            syncMobileNavTabs('flashcards');
 
             currentCardIdx = 0;
             flashcardFilterCategory = 'all';
@@ -1298,7 +1301,7 @@ function printMockExam(withSolutions = false) {
                         </button>
                     </div>
 
-                    <div class="flashcard-arena">
+                    <div class="flashcard-arena" onclick="flipCard()" style="cursor: pointer;" title="Cevabı görmek için karta dokunabilirsiniz">
                         <div class="flashcard-inner">
                             <div class="card-top">
                                 <span class="card-category">${window.ICONS ? window.ICONS.tag : ""} ${card.category}</span>
@@ -1313,7 +1316,7 @@ function printMockExam(withSolutions = false) {
                                 ${card.answer}
                             </div>
 
-                            <div class="card-bottom-actions" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 18px;">
+                            <div class="card-bottom-actions" onclick="event.stopPropagation()" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 18px;">
                                 <button class="btn-stepper" onclick="prevCard()" title="Önceki Kart (Sol Ok)">
                                     ${window.ICONS ? window.ICONS.arrowLeft : ""} Önceki
                                 </button>
@@ -1325,7 +1328,7 @@ function printMockExam(withSolutions = false) {
                                 </button>
                             </div>
 
-                            <div id="flashcard-mastery-actions" style="display: none; justify-content: center; gap: 12px; margin-top: 14px; border-top: 1px dashed var(--border-subtle); padding-top: 14px;">
+                            <div id="flashcard-mastery-actions" onclick="event.stopPropagation()" style="display: none; justify-content: center; gap: 12px; margin-top: 14px; border-top: 1px dashed var(--border-subtle); padding-top: 14px;">
                                 <button class="btn-stepper flashcard-btn-review" onclick="markCardMastery(false)" title="Klavye: 1">
                                     ${window.ICONS ? window.ICONS.refresh : ""} Tekrar Edilecek [1]
                                 </button>
@@ -1336,8 +1339,9 @@ function printMockExam(withSolutions = false) {
                         </div>
                     </div>
 
-                    <div class="intuition-callout" style="text-align: center; margin-top: 20px;">
-                        <strong>Klavye Kısayolları:</strong> <code>Space</code> = Kartı Çevir &nbsp;•&nbsp; <code>Sağ/Sol Ok</code> = Kart Değiştir &nbsp;•&nbsp; <code>1</code> = Tekrar Et &nbsp;•&nbsp; <code>2</code> = Bildim
+                    <div class="intuition-callout flashcard-keyboard-hints" style="text-align: center; margin-top: 18px;">
+                        <span class="desktop-hint"><strong>Klavye Kısayolları:</strong> <code>Space</code> = Kartı Çevir &nbsp;•&nbsp; <code>Sağ/Sol Ok</code> = Kart Değiştir &nbsp;•&nbsp; <code>1</code> = Tekrar Et &nbsp;•&nbsp; <code>2</code> = Bildim</span>
+                        <span class="mobile-hint" style="display: none;"><strong>İpucu:</strong> Kartın üstüne dokunarak cevabı çevirebilir, aşağıdaki tuşlarla çalışabilirsiniz.</span>
                     </div>
                 </div>
             `;
@@ -2417,6 +2421,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             currentViewMode = 'special';
             currentSpecialView = 'pitfalls';
             setActiveNav('nav-pitfalls');
+            syncMobileNavTabs('pitfalls');
             const main = document.getElementById('main-content');
             const c = COURSES_DB[activeCourseKey];
 
@@ -2852,6 +2857,45 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 closeMobileSidebar();
             }
         };
+
+        // ================= MOBILE BOTTOM NAVIGATION HANDLERS =================
+        function handleMobileTab(tabKey) {
+            closeMobileSidebar();
+            if (tabKey === 'theory') {
+                if (currentViewMode !== 'module') {
+                    loadModule(currentModuleKey || 'modul1');
+                }
+                switchTrack('theory');
+            } else if (tabKey === 'exercises') {
+                if (currentViewMode !== 'module') {
+                    loadModule(currentModuleKey || 'modul1');
+                }
+                switchTrack('exercises');
+            } else if (tabKey === 'flashcards') {
+                openFlashcardArena();
+            } else if (tabKey === 'pitfalls') {
+                loadPitfallsView();
+            }
+            syncMobileNavTabs(tabKey);
+        }
+
+        function syncMobileNavTabs(activeKey) {
+            const tabs = {
+                'theory': 'tab-theory',
+                'exercises': 'tab-exercises',
+                'flashcards': 'tab-flashcards',
+                'pitfalls': 'tab-pitfalls'
+            };
+            document.querySelectorAll('.mobile-nav-tab').forEach(tab => {
+                if (tab.id !== 'tab-menu') tab.classList.remove('active');
+            });
+            const tabId = tabs[activeKey];
+            if (tabId) {
+                const el = document.getElementById(tabId);
+                if (el) el.classList.add('active');
+            }
+        }
+
 
 
         
