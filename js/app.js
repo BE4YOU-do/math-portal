@@ -397,20 +397,26 @@ function triggerManualSync() {
         // ================= SIDEBAR TOGGLE =================
         function toggleSidebar() {
             const aside = document.querySelector('aside');
+            if (window.innerWidth <= 900 || (aside && aside.classList.contains('mobile-open'))) {
+                closeMobileSidebar();
+                return;
+            }
+            if (!aside) return;
             const isCollapsed = aside.classList.toggle('collapsed');
             document.body.classList.toggle('sidebar-is-collapsed', isCollapsed);
             try {
-                localStorage.setItem('mat204_sidebar_collapsed', isCollapsed ? '1' : '0');
+                localStorage.setItem('portal_desktop_sidebar_collapsed', isCollapsed ? '1' : '0');
             } catch(e) {}
         }
 
-        // Check stored sidebar state
+        // Check stored sidebar state (desktop only)
         (function initSidebarState() {
             try {
-                if (localStorage.getItem('mat204_sidebar_collapsed') === '1') {
+                localStorage.removeItem('mat204_sidebar_collapsed');
+                if (window.innerWidth > 900 && localStorage.getItem('portal_desktop_sidebar_collapsed') === '1') {
                     document.addEventListener('DOMContentLoaded', () => {
                         const aside = document.querySelector('aside');
-                        if (aside) {
+                        if (aside && window.innerWidth > 900) {
                             aside.classList.add('collapsed');
                             document.body.classList.add('sidebar-is-collapsed');
                         }
@@ -2224,6 +2230,9 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
         }
 
         function openSearchModal() {
+            if (window.innerWidth <= 900) {
+                closeMobileSidebar();
+            }
             const modal = document.getElementById('spotlight-modal');
             const input = document.getElementById('spotlight-input');
             if (modal) {
@@ -2819,11 +2828,15 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
         function toggleMobileSidebar() {
             const aside = document.querySelector('aside');
             const backdrop = document.getElementById('mobile-backdrop');
+            const menuTab = document.getElementById('tab-menu');
             if (!aside) return;
 
             const isOpen = aside.classList.toggle('mobile-open');
             if (backdrop) {
                 backdrop.classList.toggle('active', isOpen);
+            }
+            if (menuTab) {
+                menuTab.classList.toggle('active', isOpen);
             }
             if (isOpen) {
                 document.body.style.overflow = 'hidden'; // prevent background scroll
@@ -2835,10 +2848,21 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
         function closeMobileSidebar() {
             const aside = document.querySelector('aside');
             const backdrop = document.getElementById('mobile-backdrop');
+            const menuTab = document.getElementById('tab-menu');
             if (aside) aside.classList.remove('mobile-open');
             if (backdrop) backdrop.classList.remove('active');
+            if (menuTab) menuTab.classList.remove('active');
             document.body.style.overflow = '';
         }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const aside = document.querySelector('aside');
+                if (aside && aside.classList.contains('mobile-open')) {
+                    closeMobileSidebar();
+                }
+            }
+        });
 
         // Auto-close mobile sidebar when user clicks a nav item on small screen
         const originalSetActiveNav = setActiveNav;
@@ -2928,6 +2952,9 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             // Close dropdown
             const menu = document.getElementById('course-dropdown-menu');
             if (menu) menu.classList.remove('open');
+            if (window.innerWidth <= 900) {
+                closeMobileSidebar();
+            }
 
             // Try restoring saved state for this course or default to first module
             let restored = false;
