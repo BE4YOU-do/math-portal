@@ -5,7 +5,7 @@ window.COURSES_MANIFEST = {
     "title": "Grup Teorisi",
     "faculty": "Lisans Matematik",
     "color": "#3b82f6",
-    "icon": "🔵",
+    "icon": "courseGrup",
     "moduleList": [
       {
         "id": "modul1",
@@ -51,7 +51,7 @@ window.COURSES_MANIFEST = {
     "title": "Seriler & Analiz",
     "faculty": "Lisans Matematik",
     "color": "#10b981",
-    "icon": "🟢",
+    "icon": "courseSeriler",
     "moduleList": [
       {
         "id": "seriler_mod1",
@@ -85,7 +85,7 @@ window.COURSES_MANIFEST = {
     "title": "Fizik 1 (Genel Mekanik)",
     "faculty": "Temel Bilimler & Fizik",
     "color": "#8b5cf6",
-    "icon": "🟣",
+    "icon": "courseFizik",
     "moduleList": [
       {
         "id": "fizik_mod1",
@@ -119,7 +119,7 @@ window.COURSES_MANIFEST = {
     "title": "Olasılık & İstatistik",
     "faculty": "Lisans Matematik",
     "color": "#f59e0b",
-    "icon": "🟠",
+    "icon": "courseOlasilik",
     "moduleList": [
       {
         "id": "olasilik_mod1",

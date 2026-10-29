@@ -108,5 +108,6 @@ const conceptsDB = {
 };
 
 function termLink(key, label) {
-    return `<span class="term-link" onclick="openConceptModal('${key}')" title="Teoremi / Tanımı İncele">🔍 ${label}</span>`;
+    return `<span class="term-link" onclick="openConceptModal('${key}')" title="Teoremi / Tanımı İncele">${label}</span>`;
 }
+

@@ -42,22 +42,28 @@
             <span class="mobile-page-name">Grup Teorisi Vize</span>
         </div>
         <div class="mobile-top-actions">
-            <button class="mobile-action-btn" onclick="openSearchModal()" title="Hızlı Ara (Cmd+K)">🔍</button>
-            <button class="mobile-action-btn" onclick="toggleTheme()" title="Tema Değiştir">🌓</button>
+            <button class="mobile-action-btn" onclick="openSearchModal()" title="Hızlı Ara (Cmd+K)">
+                <svg class="ui-icon no-margin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </button>
+            <button class="mobile-action-btn" id="mobile-theme-btn" onclick="toggleTheme()" title="Tema Değiştir">
+                <svg class="ui-icon no-margin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </button>
         </div>
     </header>
 
     <!-- Mobile Drawer Backdrop Overlay -->
     <div id="mobile-backdrop" class="mobile-drawer-backdrop" onclick="closeMobileSidebar()"></div>
 
-    <button class="floating-sidebar-toggle" onclick="toggleSidebar()">☰ Menüyü Aç</button>
+    <button class="floating-sidebar-toggle" onclick="toggleSidebar()">
+        <svg class="ui-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg> Menüyü Aç
+    </button>
 
 
     <!-- LEFT SIDEBAR -->
     <aside>
         <div class="sidebar-brand">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <span class="course-tag" style="margin-bottom: 0;">📐 Lisans Matematik</span>
+                <span class="course-tag" style="margin-bottom: 0;">Lisans Matematik</span>
                 <button class="sidebar-collapse-btn" onclick="toggleSidebar()" title="Sol Menüyü Gizle/Aç (Kısayol: [ )">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><path d="M15 15l-3-3 3-3"></path></svg>
                 </button>
@@ -91,7 +97,9 @@
 
         
             <div class="quick-search-trigger" onclick="openSearchModal()">
-                <span>🔍 Teorem veya Soru Ara...</span>
+                <span style="display: inline-flex; align-items: center;">
+                    <svg class="ui-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg> Teorem veya Soru Ara...
+                </span>
                 <kbd>⌘K</kbd>
             </div>
 <nav class="topic-nav">
@@ -149,15 +157,15 @@
 
             <div class="nav-item" id="nav-starred" onclick="openStarredPool()">
                 <div class="nav-item-left">
-                    <span>⭐</span>
+                    <svg class="ui-icon star-active" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                     <span>Yıldızlı &amp; Önemli Sorularım</span>
                 </div>
-                <span class="nav-count-badge" id="badge-starred-count" style="background: rgba(245, 158, 11, 0.2); color: var(--accent-amber);">0 ⭐</span>
+                <span class="nav-count-badge" id="badge-starred-count" style="background: rgba(245, 158, 11, 0.2); color: var(--accent-amber);">0 Kayıt</span>
             </div>
 
             <div class="nav-item" id="nav-mock-exam" onclick="loadMockExamView()">
                 <div class="nav-item-left">
-                    <span>🎯</span>
+                    <svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
                     <span>MAT204 Vize Deneme Sınavı</span>
                 </div>
                 <span class="nav-count-badge" style="background: rgba(37, 99, 235, 0.2); color: var(--accent-blue);">90 Dk</span>
@@ -165,7 +173,7 @@
 
             <div class="nav-item" id="nav-pitfalls" onclick="loadPitfallsView()">
                 <div class="nav-item-left">
-                    <span>⚠️</span>
+                    <svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                     <span>Sık Yapılan Hatalar &amp; Sınav Uyarıları</span>
                 </div>
                 <span class="nav-count-badge" style="background: rgba(239, 68, 68, 0.2); color: #ef4444;">Dikkat</span>
@@ -173,7 +181,7 @@
 
             <div class="nav-item" id="nav-unresolved" onclick="openUnresolvedPool()">
                 <div class="nav-item-left">
-                    <span>⚡</span>
+                    <svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
                     <span>Kalan &amp; Çözülecek Sorular</span>
                 </div>
                 <span class="nav-count-badge" id="badge-unresolved-count" style="background: rgba(251, 191, 36, 0.2); color: var(--accent-amber);">Pratik</span>
@@ -181,7 +189,7 @@
             
             <div class="nav-item" id="nav-flashcards" onclick="openFlashcardArena()">
                 <div class="nav-item-left">
-                    <span>🃏</span>
+                    <svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="16" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2H4"></path></svg>
                     <span>Kavram &amp; Formül Kartları</span>
                 </div>
                 <span class="nav-count-badge" style="background: rgba(244, 63, 94, 0.2); color: var(--accent-rose);">Pratik</span>
@@ -189,7 +197,7 @@
 
             <div class="nav-item" id="nav-ispatlar" onclick="loadSpecialView('ispatlar')">
                 <div class="nav-item-left">
-                    <span>📜</span>
+                    <svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
                     <span>Kritik Teorem İspatları</span>
                 </div>
                 <span class="nav-count-badge" style="background: rgba(139, 92, 246, 0.18); color: var(--accent-purple);">İspat</span>
@@ -197,7 +205,7 @@
 
             <div class="nav-item" id="nav-fransizca" onclick="loadSpecialView('fransizca')">
                 <div class="nav-item-left">
-                    <span>🇫🇷</span>
+                    <span class="badge-lang-tag">FR</span>
                     <span>Fransızca Matematiksel İfadeler</span>
                 </div>
                 <span class="nav-count-badge" style="background: rgba(59, 130, 246, 0.18); color: var(--accent-blue);">Kılavuz</span>
@@ -205,7 +213,7 @@
 
             <div class="nav-item" id="nav-hesaplayici" onclick="loadSpecialView('hesaplayici')">
                 <div class="nav-item-left">
-                    <span>🧮</span>
+                    <svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="18"></line><path d="M16 10h.01"></path><path d="M12 10h.01"></path><path d="M8 10h.01"></path><path d="M12 14h.01"></path><path d="M8 14h.01"></path><path d="M12 18h.01"></path><path d="M8 18h.01"></path></svg>
                     <span>Bézout &amp; Modüler Ters Hesaplayıcı</span>
                 </div>
                 <span class="nav-count-badge" style="background: rgba(16, 185, 129, 0.18); color: var(--accent-emerald);">Araç</span>
@@ -214,11 +222,11 @@
 
         <div class="sidebar-footer">
             <button class="theme-toggle-btn" onclick="toggleTheme()">
-                <span id="theme-icon">🌙</span> <span id="theme-text">Koyu Mod</span>
+                <span id="theme-icon"><svg class="ui-icon no-margin" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span> <span id="theme-text">Koyu Mod</span>
             </button>
             <div class="cloud-sync-status" id="cloud-sync-status" onclick="triggerManualSync()" title="Veriler buluta kaydedildi. Tıklayarak anında senkronize edebilirsiniz.">
                 <span class="sync-dot"></span>
-                <span class="sync-text" id="cloud-sync-text">Bulut: Eşitlendi ✓</span>
+                <span class="sync-text" id="cloud-sync-text">Bulut: Eşitlendi</span>
             </div>
         </div>
     </aside>
@@ -245,7 +253,9 @@
     <div id="spotlight-modal" class="spotlight-overlay" onclick="closeSearchModal(event)">
         <div class="spotlight-card" onclick="event.stopPropagation()">
             <div class="spotlight-input-wrap">
-                <span style="font-size: 1.2rem; color: var(--accent-blue);">🔍</span>
+                <span style="display: inline-flex; align-items: center; color: var(--accent-blue);">
+                    <svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </span>
                 <input type="text" id="spotlight-input" class="spotlight-input" placeholder="Teorem, kavram veya TD sorusu ara... (örn: Lagrange, Bézout, D4, İmza, Noyau)" oninput="handleSearch(this.value)">
                 <kbd style="font-size: 0.72rem; color: var(--text-muted); background: rgba(125,125,125,0.1); padding: 2px 6px; border-radius: 4px;">ESC</kbd>
             </div>
@@ -256,10 +266,11 @@
     </div>
 
     <!-- Modular Data & Logic Scripts -->
-    <script src="data/courses_manifest.js?v=8"></script>
-    <script src="data/concepts.js?v=8"></script>
-    <script src="data/courses/mat204_grup.js?v=8"></script>
-    <script src="data/flashcards.js?v=8"></script>
-    <script src="js/app.js?v=8"></script>
+    <script src="js/icons.js?v=9"></script>
+    <script src="data/courses_manifest.js?v=9"></script>
+    <script src="data/concepts.js?v=9"></script>
+    <script src="data/courses/mat204_grup.js?v=9"></script>
+    <script src="data/flashcards.js?v=9"></script>
+    <script src="js/app.js?v=9"></script>
 </body>
 </html>

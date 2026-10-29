@@ -213,7 +213,7 @@ async function fetchFromCloud(isInitial) {
                 }).catch(() => {});
             }
 
-            updateSyncStatusUI('', 'Bulut: Eşitlendi ✓');
+            updateSyncStatusUI('', 'Bulut: Eşitlendi');
         } else {
             updateSyncStatusUI('', 'Bulut: Aktif');
         }
@@ -238,7 +238,7 @@ async function syncToggleStarToCloud(courseKey, exId, isStarred) {
                 starred: isStarred
             })
         });
-        updateSyncStatusUI('', 'Bulut: Eşitlendi ✓');
+        updateSyncStatusUI('', 'Bulut: Eşitlendi');
     } catch(e) {
         console.warn('Sync star error:', e);
         updateSyncStatusUI('error', 'Bulut: Beklemede');
@@ -258,7 +258,7 @@ async function syncToggleSolvedToCloud(courseKey, exId, isSolved) {
                 completed: isSolved
             })
         });
-        updateSyncStatusUI('', 'Bulut: Eşitlendi ✓');
+        updateSyncStatusUI('', 'Bulut: Eşitlendi');
     } catch(e) {
         console.warn('Sync solved error:', e);
         updateSyncStatusUI('error', 'Bulut: Beklemede');
@@ -278,7 +278,7 @@ async function syncToggleTheoryToCloud(courseKey, modKey, isDone) {
                 done: isDone
             })
         });
-        updateSyncStatusUI('', 'Bulut: Eşitlendi ✓');
+        updateSyncStatusUI('', 'Bulut: Eşitlendi');
     } catch(e) {
         console.warn('Sync theory error:', e);
         updateSyncStatusUI('error', 'Bulut: Beklemede');
@@ -368,7 +368,7 @@ function triggerManualSync() {
 
                 const badge = document.getElementById('badge-' + modKey);
                 if (badge) {
-                    badge.textContent = `${modSolved}/${mod.exercises.length} ✓`;
+                    badge.textContent = `${modSolved}/${mod.exercises.length}`;
                     if (modSolved === mod.exercises.length) {
                         badge.style.background = 'rgba(52, 211, 153, 0.2)';
                         badge.style.color = 'var(--accent-emerald)';
@@ -381,7 +381,7 @@ function triggerManualSync() {
 
             const starList = getStarredExercises();
             const starBadge = document.getElementById('badge-starred-count');
-            if (starBadge) starBadge.textContent = `${starList.length} ⭐`;
+            if (starBadge) starBadge.textContent = `${starList.length} Kayıt`;
 
             const unBadge = document.getElementById('badge-unresolved-count');
             if (unBadge) unBadge.textContent = `${unresolvedCount} Soru`;
@@ -677,14 +677,14 @@ function triggerManualSync() {
             const luxurySwitcherHTML = `
                 <div class="luxury-track-switcher">
                     <button class="luxury-track-btn ${currentTrack === 'theory' ? 'active' : ''}" onclick="switchTrack('theory')">
-                        <span class="track-icon">📖</span>
+                        <span class="track-icon">${window.ICONS ? window.ICONS.book : ""}</span>
                         <div class="track-text-group">
                             <span class="track-main-label">Konu Anlatımı &amp; Teori Kitabı</span>
                             <span class="track-sub-label">Sayfa sayfa anlatım + İçiçe çözümlü örnekler</span>
                         </div>
                     </button>
                     <button class="luxury-track-btn ${currentTrack === 'exercises' ? 'active' : ''}" onclick="switchTrack('exercises')">
-                        <span class="track-icon">✍️</span>
+                        <span class="track-icon">${window.ICONS ? window.ICONS.penTool : ""}</span>
                         <div class="track-text-group">
                             <span class="track-main-label">İnteraktif TD Soru Bankası</span>
                             <span class="track-sub-label">Adım adım koç rehberli çözümler (${mod.exercises.length} Soru)</span>
@@ -703,9 +703,9 @@ function triggerManualSync() {
                     pagesNavHTML = '<div class="theory-pages-nav">';
                     pages.forEach((p, idx) => {
                         const activeClass = (!showAllTheoryPages && idx === currentTheoryPageIdx) ? 'active' : '';
-                        pagesNavHTML += `<button class="theory-page-btn ${activeClass}" onclick="switchTheoryPage(${idx})">📄 Sayfa ${idx+1}: ${p.title.split(':')[0]}</button>`;
+                        pagesNavHTML += `<button class="theory-page-btn ${activeClass}" onclick="switchTheoryPage(${idx})">${window.ICONS ? window.ICONS.fileText : ""} Sayfa ${idx+1}: ${p.title.split(':')[0]}</button>`;
                     });
-                    pagesNavHTML += `<button class="theory-page-btn ${showAllTheoryPages ? 'active' : ''}" onclick="toggleAllTheoryPages()">📚 Tüm Kitabı Tek Sayfada Gör</button>`;
+                    pagesNavHTML += `<button class="theory-page-btn ${showAllTheoryPages ? 'active' : ''}" onclick="toggleAllTheoryPages()">${window.ICONS ? window.ICONS.book : ""} Tüm Kitabı Tek Sayfada Gör</button>`;
                     pagesNavHTML += '</div>';
                 }
 
@@ -724,7 +724,7 @@ function triggerManualSync() {
                             <div>
                                 ${currentTheoryPageIdx > 0 ? `
                                     <button class="btn-stepper" onclick="switchTheoryPage(${currentTheoryPageIdx - 1})">
-                                        ⬅️ Önceki Sayfa (${pages[currentTheoryPageIdx - 1].title.split(':')[0]})
+                                        ${window.ICONS ? window.ICONS.arrowLeft : ""} Önceki Sayfa (${pages[currentTheoryPageIdx - 1].title.split(':')[0]})
                                     </button>
                                 ` : '<span></span>'}
                             </div>
@@ -734,11 +734,11 @@ function triggerManualSync() {
                             <div>
                                 ${currentTheoryPageIdx + 1 < pages.length ? `
                                     <button class="btn-stepper primary" onclick="switchTheoryPage(${currentTheoryPageIdx + 1})">
-                                        Sonraki Sayfaya Geç (${pages[currentTheoryPageIdx + 1].title.split(':')[0]}) ➡️
+                                        Sonraki Sayfa (${pages[currentTheoryPageIdx + 1].title.split(':')[0]}) ${window.ICONS ? window.ICONS.arrowRight : ""}
                                     </button>
                                 ` : `
                                     <button class="btn-stepper primary" onclick="switchTrack('exercises')">
-                                        Bu Modülün TD Sorularına Geç (${mod.exercises.length} Soru) ➔
+                                        Bu Modülün TD Sorularına Geç (${mod.exercises.length} Soru) ${window.ICONS ? window.ICONS.arrowRight : ""}
                                     </button>
                                 `}
                             </div>
@@ -767,11 +767,11 @@ function triggerManualSync() {
                             <div>
                                 ${!isTheoryCompleted ? `
                                     <button class="btn-stepper success" onclick="setTheoryCompleted('${mod.id}', true)">
-                                        ✓ Konu Anlatımını Tamamladım (İlerlemeye Ekle)
+                                        ${window.ICONS ? window.ICONS.check : ""} Konu Anlatımını Tamamladım
                                     </button>
                                 ` : `
                                     <button class="btn-stepper completed-state">
-                                        ✓ Konu Anlatımı Tamamlandı
+                                        ${window.ICONS ? window.ICONS.check : ""} Konu Anlatımı Tamamlandı
                                     </button>
                                     <button class="btn-stepper" onclick="setTheoryCompleted('${mod.id}', false)" style="font-size: 0.8rem; color: var(--text-muted); margin-left: 8px;">
                                         İşareti Kaldır
@@ -779,7 +779,7 @@ function triggerManualSync() {
                                 `}
                             </div>
                             <button class="btn-stepper primary" onclick="switchTrack('exercises')">
-                                Bu Modülün TD Sorularına Geç (${mod.exercises.length} Soru) ➔
+                                Bu Modülün TD Sorularına Geç (${mod.exercises.length} Soru) ${window.ICONS ? window.ICONS.arrowRight : ""}
                             </button>
                         </div>
                     </div>
@@ -835,20 +835,20 @@ function triggerManualSync() {
                     stepperActionsHTML = `
                         <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
                             <button class="btn-stepper primary pulse-btn" onclick="nextStep()">
-                                👉 Sıradaki Çözüm Adımı (${currentStepIdx + 1}/${steps.length}) ➔
+                                ${window.ICONS ? window.ICONS.arrowRight : ""} Sıradaki Adım (${currentStepIdx + 1}/${steps.length})
                             </button>
                             <button class="btn-stepper" onclick="toggleAllSteps()" style="font-size: 0.85rem;">
-                                👁️ Tüm Çözümü Göster
+                                ${window.ICONS ? window.ICONS.eye : ""} Tüm Çözümü Göster
                             </button>
                             <button class="btn-stepper hint-btn" onclick="toggleHint()">
-                                💡 Sınav İpucu & Yöntem
+                                ${window.ICONS ? window.ICONS.compass : ""} Sınav İpucu &amp; Yöntem
                             </button>
                         </div>
                     `;
                 } else {
                     stepperActionsHTML = `
                         <div class="step-complete-celebration">
-                            <span class="celebrate-icon">🎉</span>
+                            <span class="award-badge-icon">${window.ICONS ? window.ICONS.award : ""}</span>
                             <div>
                                 <strong>Tüm Çözüm Adımları Tamamlandı.</strong> İspatı incelediyseniz bu soruyu "Çözüldü" olarak kaydedebilirsiniz.
                             </div>
@@ -856,11 +856,11 @@ function triggerManualSync() {
                         <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
                             ${!isSolved ? `
                                 <button class="btn-stepper success" onclick="setExerciseSolved('${ex.id}', true)">
-                                    ✓ Soruyu Çözüldü Olarak İşaretle (İlerlemeye Ekle)
+                                    ${window.ICONS ? window.ICONS.check : ""} Çözüldü Olarak İşaretle
                                 </button>
                             ` : `
                                 <button class="btn-stepper completed-state">
-                                    ✓ Çözüldü Olarak Kaydedildi
+                                    ${window.ICONS ? window.ICONS.check : ""} Çözüldü Olarak Kaydedildi
                                 </button>
                                 <button class="btn-stepper" onclick="setExerciseSolved('${ex.id}', false)" style="font-size: 0.8rem; color: var(--text-muted);">
                                     İşareti Kaldır
@@ -868,14 +868,14 @@ function triggerManualSync() {
                             `}
                             ${currentExerciseIdx + 1 < mod.exercises.length ? `
                                 <button class="btn-stepper primary" onclick="switchExercise(${currentExerciseIdx + 1})">
-                                    Sıradaki Soruya Geç (${currentExerciseIdx + 2}/${mod.exercises.length}) ➔
+                                    Sıradaki Soru (${currentExerciseIdx + 2}/${mod.exercises.length}) ${window.ICONS ? window.ICONS.arrowRight : ""}
                                 </button>
                             ` : ''}
                             <button class="btn-stepper" onclick="resetSteps()" style="font-size: 0.82rem; color: var(--text-muted);">
-                                🔄 1. Adıma Dön
+                                ${window.ICONS ? window.ICONS.refresh : ""} Başa Dön
                             </button>
                             <button class="btn-stepper hint-btn" onclick="toggleHint()">
-                                💡 Sınav İpucu
+                                ${window.ICONS ? window.ICONS.compass : ""} Sınav İpucu
                             </button>
                         </div>
                     `;
@@ -900,14 +900,14 @@ function triggerManualSync() {
                                     ${ex.tag || 'TD Sorusu'} • Soru ${currentExerciseIdx + 1} / ${mod.exercises.length}
                                 </span>
                                 <button class="btn-star ${getStarredExercises().includes(ex.id) ? 'starred' : ''}" onclick="toggleStar('${ex.id}')">
-                                    ${getStarredExercises().includes(ex.id) ? '⭐ Yıldızlı' : '☆ Yıldıza Ekle'}
+                                    ${getStarredExercises().includes(ex.id) ? (window.ICONS ? window.ICONS.starFilled : "") + " Yıldızlı" : (window.ICONS ? window.ICONS.star : "") + " Yıldıza Ekle"}
                                 </button>
                                 <button class="btn-stepper secondary" style="padding: 4px 10px; font-size: 0.78rem;" onclick="copyCurrentQuestion()" title="Soru metnini ve LaTeX kodunu panoya kopyala">
-                                    📋 Soruyu Kopyala
+                                    ${window.ICONS ? window.ICONS.copy : ""} Soruyu Kopyala
                                 </button>
                             </div>
                             <span style="font-size: 0.82rem; font-weight: 600; color: ${isSolved ? 'var(--accent-emerald)' : 'var(--text-muted)'};">
-                                ${isSolved ? '✓ Çözüldü Olarak İşaretlendi' : '○ Henüz Çözülmedi'}
+                                ${isSolved ? (window.ICONS ? window.ICONS.check : "") + " Çözüldü" : "Henüz Çözülmedi"}
                             </span>
                         </div>
 
@@ -916,12 +916,12 @@ function triggerManualSync() {
                         </div>
 
                         <div id="question-hint-box" class="hint-callout-box" style="display: ${isHintVisible ? 'block' : 'none'};">
-                            <strong>💡 Sınav Taktik İpucu:</strong> ${ex.hint}
+                            <strong>${window.ICONS ? window.ICONS.compass : ""} Sınav Taktik İpucu:</strong> ${ex.hint}
                         </div>
 
                         <div class="exam-sheet">
                             <div class="exam-sheet-header">
-                                <span class="exam-sheet-title">📄 Resmi Sınav Çözümü &amp; Adım Adım Rehber</span>
+                                <span class="exam-sheet-title">${window.ICONS ? window.ICONS.listTodo : ""} Resmi Sınav Çözümü &amp; Adım Adım Rehber</span>
                                 <div class="step-progress-indicator" style="margin-bottom: 0; padding: 4px 10px;">
                                     <span class="step-badge">Adım ${displayCount} / ${steps.length}</span>
                                     <div class="step-dots" style="margin-left: 10px;">
@@ -1004,7 +1004,7 @@ function triggerManualSync() {
                                         <h4 style="color: var(--text-main); margin-top: 6px;">${ex.name}</h4>
                                         <p style="font-size: 0.86rem; color: var(--text-secondary); margin-top: 4px;">${cleanPreview}</p>
                                     </div>
-                                    <button class="btn-stepper primary" style="padding: 6px 14px; font-size: 0.82rem; white-space: nowrap;">Şimdi Çöz ➔</button>
+                                    <button class="btn-stepper primary" style="padding: 6px 14px; font-size: 0.82rem; white-space: nowrap;">Şimdi Çöz ${window.ICONS ? window.ICONS.arrowRight : ""}</button>
                                 </div>
                             `;
                         }
@@ -1033,7 +1033,7 @@ function triggerManualSync() {
             if (displayedCount === 0) {
                 poolHTML = `
                     <div style="text-align: center; padding: 50px 20px;">
-                        <span style="font-size: 3rem;">🎉</span>
+                        <div class="award-badge-icon" style="width: 56px; height: 56px; margin: 0 auto 12px; font-size: 2rem;">${window.ICONS ? window.ICONS.award : ""}</div>
                         <h2 style="color: var(--accent-emerald); margin-top: 10px;">Tebrikler!</h2>
                         <p style="color: var(--text-secondary); margin-top: 6px;">Bu dersteki tüm soruları başarıyla tamamladınız. Sınava tam olarak hazırsınız!</p>
                     </div>
@@ -1046,7 +1046,7 @@ function triggerManualSync() {
                 <div class="content-header">
                     <div>
                         <div class="breadcrumbs">${COURSES_DB[activeCourseKey]?.code || 'Portal'} > Sınav Araçları > Çözülecek Sorular</div>
-                        <h1 class="content-title">⚡ ${headerTitle} (${displayedCount} Soru Kaldı)</h1>
+                        <h1 class="content-title">${window.ICONS ? window.ICONS.compass : ""} ${headerTitle} (${displayedCount} Soru Kaldı)</h1>
                     </div>
                 </div>
 
@@ -1080,7 +1080,7 @@ function showPortalToast(msg, duration = 2400) {
     }, duration);
 }
 
-function copyTextToClipboard(text, successMsg = '✓ Panoya Kopyalandı!') {
+function copyTextToClipboard(text, successMsg = (window.ICONS ? window.ICONS.check : "") + " Panoya Kopyalandı") {
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(() => {
             showPortalToast(successMsg);
@@ -1111,7 +1111,7 @@ function copyCurrentQuestion() {
     if (!mod || !mod.exercises || !mod.exercises[currentExerciseIdx]) return;
     const ex = mod.exercises[currentExerciseIdx];
     const textToCopy = `[${COURSES_DB[activeCourseKey]?.code || ''} • ${mod.title.split(':')[0]} • ${ex.name}]\n${ex.enonce.replace(/<[^>]+>/g, '').trim()}`;
-    copyTextToClipboard(textToCopy, '📋 Soru Metni & LaTeX Kopyalandı!');
+    copyTextToClipboard(textToCopy, (window.ICONS ? window.ICONS.copy : "") + " Soru Metni & LaTeX Kopyalandı");
 }
 
 function printMockExam(withSolutions = false) {
@@ -1225,16 +1225,16 @@ function printMockExam(withSolutions = false) {
             }
             currentCardIdx = 0;
             renderFlashcard();
-            showPortalToast('🔀 Kartlar Karıştırıldı!');
+            showPortalToast((window.ICONS ? window.ICONS.shuffle : "") + " Kartlar Karıştırıldı");
         }
 
         function markCardMastery(known) {
             if (known) {
                 flashcardStats.known++;
-                showPortalToast('✅ Bildim! (+1)');
+                showPortalToast((window.ICONS ? window.ICONS.check : "") + " Bildim! (+1)");
             } else {
                 flashcardStats.review++;
-                showPortalToast('🔄 Tekrar Edilecekler Listesine Eklendi');
+                showPortalToast((window.ICONS ? window.ICONS.refresh : "") + " Tekrar Listesine Eklendi");
             }
             nextCard();
         }
@@ -1276,7 +1276,7 @@ function printMockExam(withSolutions = false) {
                 <div class="content-header">
                     <div>
                         <div class="breadcrumbs">${c.code} > Sınav ve Çalışma Araçları > Kavram & Formül Kartları</div>
-                        <h1 class="content-title">🃏 ${c.code} Kavram &amp; Formül Kartları</h1>
+                        <h1 class="content-title">${window.ICONS ? window.ICONS.flashcards : ""} ${c.code} Kavram &amp; Formül Kartları</h1>
                     </div>
                 </div>
 
@@ -1285,23 +1285,23 @@ function printMockExam(withSolutions = false) {
 
                     <div class="flashcard-score-bar">
                         <div class="flashcard-score-pill" style="color: var(--accent-emerald);">
-                            <span>🟢 Bildim:</span> <span>${flashcardStats.known}</span>
+                            <span>${window.ICONS ? window.ICONS.check : ""} Bildim:</span> <span>${flashcardStats.known}</span>
                         </div>
                         <div class="flashcard-score-pill" style="color: #ef4444;">
-                            <span>🔴 Tekrar Et:</span> <span>${flashcardStats.review}</span>
+                            <span>${window.ICONS ? window.ICONS.refresh : ""} Tekrar Et:</span> <span>${flashcardStats.review}</span>
                         </div>
                         <div class="flashcard-score-pill" style="color: var(--accent-blue);">
-                            <span>📊 Oturum Başarısı:</span> <span>%${successRate}</span>
+                            <span>${window.ICONS ? window.ICONS.award : ""} Başarı:</span> <span>%${successRate}</span>
                         </div>
                         <button class="btn-stepper" style="padding: 4px 10px; font-size: 0.78rem;" onclick="shuffleFlashcards()">
-                            🔀 Karıştır
+                            ${window.ICONS ? window.ICONS.shuffle : ""} Karıştır
                         </button>
                     </div>
 
                     <div class="flashcard-arena">
                         <div class="flashcard-inner">
                             <div class="card-top">
-                                <span class="card-category">🏷️ ${card.category}</span>
+                                <span class="card-category">${window.ICONS ? window.ICONS.tag : ""} ${card.category}</span>
                                 <span class="card-counter">${cards.length > 0 ? currentCardIdx + 1 : 0} / ${cards.length}</span>
                             </div>
 
@@ -1315,29 +1315,29 @@ function printMockExam(withSolutions = false) {
 
                             <div class="card-bottom-actions" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 18px;">
                                 <button class="btn-stepper" onclick="prevCard()" title="Önceki Kart (Sol Ok)">
-                                    ⬅ Önceki
+                                    ${window.ICONS ? window.ICONS.arrowLeft : ""} Önceki
                                 </button>
                                 <button class="btn-stepper primary" id="btn-flip" onclick="flipCard()">
                                     Cevabı Göster (Space)
                                 </button>
                                 <button class="btn-stepper" onclick="nextCard()" title="Sıradaki Kart (Sağ Ok)">
-                                    Sonraki ➔
+                                    Sonraki ${window.ICONS ? window.ICONS.arrowRight : ""}
                                 </button>
                             </div>
 
                             <div id="flashcard-mastery-actions" style="display: none; justify-content: center; gap: 12px; margin-top: 14px; border-top: 1px dashed var(--border-subtle); padding-top: 14px;">
                                 <button class="btn-stepper flashcard-btn-review" onclick="markCardMastery(false)" title="Klavye: 1">
-                                    ❌ Tekrar Edilecek [1]
+                                    ${window.ICONS ? window.ICONS.refresh : ""} Tekrar Edilecek [1]
                                 </button>
                                 <button class="btn-stepper flashcard-btn-known" onclick="markCardMastery(true)" title="Klavye: 2">
-                                    ✅ Biliyorum / Öğrenildi [2]
+                                    ${window.ICONS ? window.ICONS.check : ""} Biliyorum [2]
                                 </button>
                             </div>
                         </div>
                     </div>
 
                     <div class="intuition-callout" style="text-align: center; margin-top: 20px;">
-                        💡 <strong>Klavye Kısayolları:</strong> <code>Space</code> = Kartı Çevir &nbsp;•&nbsp; <code>Sağ/Sol Ok</code> = Kart Değiştir &nbsp;•&nbsp; <code>1</code> = Tekrar Et &nbsp;•&nbsp; <code>2</code> = Bildim
+                        <strong>Klavye Kısayolları:</strong> <code>Space</code> = Kartı Çevir &nbsp;•&nbsp; <code>Sağ/Sol Ok</code> = Kart Değiştir &nbsp;•&nbsp; <code>1</code> = Tekrar Et &nbsp;•&nbsp; <code>2</code> = Bildim
                     </div>
                 </div>
             `;
@@ -1591,7 +1591,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                             <div class="question-statement">${p.title}</div>
                             <div style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 14px;"><strong>Teorem Önermesi:</strong> ${p.stmt}</div>
                             <div class="exam-sheet">
-                                <div class="exam-sheet-header"><span class="exam-sheet-title">📄 Resmi İspat ve Not Baremi</span></div>
+                                <div class="exam-sheet-header"><span class="exam-sheet-title">${window.ICONS ? window.ICONS.listTodo : ""} Resmi İspat ve Not Baremi</span></div>
                                 <div class="exam-sheet-body" style="font-family: 'Newsreader', serif; font-size: 1.14rem; line-height: 1.8;">
                                     ${p.proof}
                                 </div>
@@ -1604,7 +1604,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                     <div class="content-header">
                         <div>
                             <div class="breadcrumbs">${c.code} > Sınav Araçları > Kritik İspatlar</div>
-                            <h1 class="content-title">📜 ${c.code} Sınavında Çıkabilecek Kritik Teorem İspatları</h1>
+                            <h1 class="content-title">${window.ICONS ? window.ICONS.book : ""} ${c.code} Sınavında Çıkabilecek Kritik Teorem İspatları</h1>
                         </div>
                     </div>
                     ${proofsHTML}
@@ -1625,7 +1625,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                     <div class="content-header">
                         <div>
                             <div class="breadcrumbs">${c.code} > Sınav Araçları > Fransızca</div>
-                            <h1 class="content-title">🇫🇷 ${c.code} Fransızca Matematiksel İfade ve İspat Kılavuzu</h1>
+                            <h1 class="content-title"><span class="badge-lang-tag" style="font-size: 1rem; padding: 4px 10px;">FR</span> ${c.code} Fransızca Matematiksel İfade ve İspat Kılavuzu</h1>
                         </div>
                     </div>
                     <div class="academic-card">
@@ -1639,7 +1639,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                         <div class="content-header">
                             <div>
                                 <div class="breadcrumbs">${c.code} > Sınav Araçları > Seri Hesaplayıcı</div>
-                                <h1 class="content-title">🧮 Seri Kısmi Toplam ($S_N$) ve Yakınsaklık Hesaplayıcı</h1>
+                                <h1 class="content-title">${window.ICONS ? window.ICONS.calculator : ""} Seri Kısmi Toplam ($S_N$) ve Yakınsaklık Hesaplayıcı</h1>
                             </div>
                         </div>
                         <div class="academic-card">
@@ -1670,7 +1670,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                         <div class="content-header">
                             <div>
                                 <div class="breadcrumbs">${c.code} > Sınav ve Çalışma Araçları > 3B Vektörel Analiz</div>
-                                <h1 class="content-title">🧮 3B Vektörel Analiz ve Açı Hesaplayıcı</h1>
+                                <h1 class="content-title">${window.ICONS ? window.ICONS.calculator : ""} 3B Vektörel Analiz ve Açı Hesaplayıcı</h1>
                             </div>
                         </div>
                         <div class="academic-card">
@@ -1702,7 +1702,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                         <div class="content-header">
                             <div>
                                 <div class="breadcrumbs">${c.code} > Sınav ve Çalışma Araçları > Bayes Hesaplayıcı</div>
-                                <h1 class="content-title">🧮 Bayes Teoremi ve Tanı / Tarama Testi Hesaplayıcı</h1>
+                                <h1 class="content-title">${window.ICONS ? window.ICONS.calculator : ""} Bayes Teoremi ve Tanı / Tarama Testi Hesaplayıcı</h1>
                             </div>
                         </div>
                         <div class="academic-card">
@@ -1734,7 +1734,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                         <div class="content-header">
                             <div>
                                 <div class="breadcrumbs">${c.code} > Sınav Araçları > Hesaplayıcı</div>
-                                <h1 class="content-title">🧮 Bézout Özdeşliği ve Modüler Ters Hesaplayıcı</h1>
+                                <h1 class="content-title">${window.ICONS ? window.ICONS.calculator : ""} Bézout Özdeşliği ve Modüler Ters Hesaplayıcı</h1>
                             </div>
                         </div>
                         <div class="academic-card">
@@ -1873,7 +1873,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                     \\end{aligned}$$
                 </div>
                 <div class="exam-conclusion">
-                    <strong>Vektör İlişkisi:</strong> ${dot === 0 ? '📐 Vektörler birbirine **DİKTİR** (Orthogonaux).' : (normCross === 0 ? '📏 Vektörler **PARALELDİR / ÇAKIŞIKTIR** (Colinéaires).' : 'Vektörler uzayda bir düzlem tanımlar.')}
+                    <strong>Vektör İlişkisi:</strong> ${dot === 0 ? 'Vektörler birbirine **DİKTİR** (Orthogonaux).' : (normCross === 0 ? 'Vektörler **PARALELDİR / ÇAKIŞIKTIR** (Colinéaires).' : 'Vektörler uzayda bir düzlem tanımlar.')}
                 </div>
             `;
             if (typeof renderMathInElement !== 'undefined') {
@@ -1905,7 +1905,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                     \\end{aligned}$$
                 </div>
                 <div class="mock-rubric-box" style="margin-top: 14px;">
-                    <strong>💡 Sezgisel Sınav Yorumu:</strong> Test pozitifliği %${(pT_M*100).toFixed(1)} hassas olsa dahi, hastalığın nadir olması ($P(M) = ${pM}$) sebebiyle test sonucu <strong>POZİTİF ÇIKAN birinin GERÇEKTEN HASTA OLMA OLASILIĞI SADECE %${pM_T_percent}</strong>'dir! Geriye kalan %${(100 - pM_T_percent).toFixed(2)} yalancı pozitiftir.
+                    <strong>${window.ICONS ? window.ICONS.compass : ""} Sezgisel Sınav Yorumu:</strong> Test pozitifliği %${(pT_M*100).toFixed(1)} hassas olsa dahi, hastalığın nadir olması ($P(M) = ${pM}$) sebebiyle test sonucu <strong>POZİTİF ÇIKAN birinin GERÇEKTEN HASTA OLMA OLASILIĞI SADECE %${pM_T_percent}</strong>'dir! Geriye kalan %${(100 - pM_T_percent).toFixed(2)} yalancı pozitiftir.
                 </div>
             `;
             if (typeof renderMathInElement !== 'undefined') {
@@ -1922,10 +1922,10 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             const text = document.getElementById('theme-text');
             if (icon && text) {
                 if (theme === 'dark') {
-                    icon.textContent = '☀️';
+                    icon.innerHTML = (window.ICONS ? window.ICONS.sun : "");
                     text.textContent = 'Aydınlık Mod';
                 } else {
-                    icon.textContent = '🌙';
+                    icon.innerHTML = (window.ICONS ? window.ICONS.moon : "");
                     text.textContent = 'Koyu Mod';
                 }
             }
@@ -2051,7 +2051,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                                         <p style="font-size: 0.86rem; color: var(--text-secondary); margin-top: 4px;">${cleanPreview}</p>
                                     </div>
                                     <div style="display: flex; gap: 8px; align-items: center;">
-                                        <button class="btn-stepper primary" style="padding: 6px 14px; font-size: 0.82rem; white-space: nowrap;">Çöz &amp; İncele ➔</button>
+                                        <button class="btn-stepper primary" style="padding: 6px 14px; font-size: 0.82rem; white-space: nowrap;">Çöz &amp; İncele ${window.ICONS ? window.ICONS.arrowRight : ""}</button>
                                     </div>
                                 </div>
                             `;
@@ -2072,7 +2072,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 const isCurrent = (activeFilter === cKey);
                 tabsHTML += `
                     <button class="btn-stepper ${isCurrent ? 'primary' : 'secondary'}" style="padding: 6px 14px; font-size: 0.82rem;" onclick="openStarredPool('${cKey}')">
-                        ${c.icon} ${c.code} (${allStarredCounts[cKey] || 0})
+                        ${window.getIcon ? (window.getIcon(c.icon) || c.icon) : c.icon} ${c.code} (${allStarredCounts[cKey] || 0})
                     </button>
                 `;
             });
@@ -2081,10 +2081,10 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             if (displayedCount === 0) {
                 poolHTML = `
                     <div style="text-align: center; padding: 50px 20px;">
-                        <span style="font-size: 3rem;">⭐</span>
+                        <div class="award-badge-icon" style="width: 56px; height: 56px; margin: 0 auto 12px; font-size: 2rem; color: #f59e0b; background: rgba(245, 158, 11, 0.15);">${window.ICONS ? window.ICONS.starFilled : ""}</div>
                         <h3 style="color: var(--accent-amber); margin-top: 10px;">Bu Filtrede Henüz Yıldızlı Soru Eklenmedi</h3>
                         <p style="color: var(--text-secondary); margin-top: 6px; max-width: 500px; margin-left: auto; margin-right: auto;">
-                            Çalışırken tekrar etmek istediğiniz veya önemli bulduğunuz soruların üzerindeki <strong>"☆ Yıldıza Ekle"</strong> butonuna basarak bu listeye kaydedebilirsiniz. Bulut senkronizasyonu sayesinde telefonunuzda işaretlediğiniz sorular masaüstünde de anında eşitlenecektir.
+                            Çalışırken tekrar etmek istediğiniz veya önemli bulduğunuz soruların üzerindeki <strong>"Yıldıza Ekle"</strong> butonuna basarak bu listeye kaydedebilirsiniz. Bulut senkronizasyonu sayesinde telefonunuzda işaretlediğiniz sorular masaüstünde de anında eşitlenecektir.
                         </p>
                     </div>
                 `;
@@ -2096,7 +2096,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 <div class="content-header">
                     <div>
                         <div class="breadcrumbs">${COURSES_DB[activeCourseKey]?.code || 'Portal'} > Sınav Araçları > Yıldızlı Sorular</div>
-                        <h1 class="content-title">⭐ ${headerTitle} (${displayedCount} Soru)</h1>
+                        <h1 class="content-title">${window.ICONS ? window.ICONS.starFilled : ""} ${headerTitle} (${displayedCount} Soru)</h1>
                     </div>
                 </div>
 
@@ -2226,44 +2226,44 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 traps = [
                     {
                         title: "1. Alterne Serilerde Eşdeğerlik ($u_n \sim v_n$) Tuzağı",
-                        wrongText: "❌ Hatalı Yaklaşım (-10 Puan):",
+                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-10 Puan):</span>`,
                         wrongDesc: "İşareti değişen veya alterne serilerde $\\frac{(-1)^n}{\\sqrt{n} + (-1)^n} \\sim \\frac{(-1)^n}{\\sqrt{n}}$ belirterek 'Leibniz ile yakınsar' demek.",
-                        rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
                         rightDesc: "Asimptotik eşdeğerlik ($u_n \\sim v_n$) kuralı **YALNIZCA sabit işaretli (pozitif)** serilerde geçerlidir! Alterne serilerde Taylor açılımı yaparak $u_n = \\frac{(-1)^n}{\\sqrt{n}} - \\frac{1}{n} + o(1/n)$ şeklinde iki serinin toplamı olarak incelenmelidir."
                     },
                     {
                         title: "2. Genel Terim Sıfıra Gidince 'Seri Yakınsaktır' Demek",
-                        wrongText: "❌ Hatalı Yaklaşım (-10 Puan):",
+                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-10 Puan):</span>`,
                         wrongDesc: "$\\lim_{n \\to \\infty} u_n = 0$ bulunca 'O halde seri yakınsaktır' belirterek çözümü sonlandırmak.",
-                        rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
                         rightDesc: "$\\lim u_n = 0$ yakınsaklık için yalnızca bir **GEREK ŞARTTIR**, yeter şart değildir! Karşıt örnek: $\\sum \\frac{1}{n}$ serisinde $1/n \\to 0$ fakat seri sonsuza ıraksar."
                     },
                     {
                         title: "3. D'Alembert Oranında $L = 1$ Çıkınca Karar Vermek",
-                        wrongText: "❌ Hatalı Yaklaşım (-5 Puan):",
+                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-5 Puan):</span>`,
                         wrongDesc: "$\\lim \\frac{u_{n+1}}{u_n} = 1$ çıkınca seriye yakınsak ya da ıraksak demek.",
-                        rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
                         rightDesc: "$L = 1$ durumunda D'Alembert testi **tamamen kararsızdır**. Bu durumda Riemann serisiyle karşılaştırma veya Raabe-Duhamel testine geçilmelidir."
                     },
                     {
                         title: "4. Düzgün Yakınsaklık Olmadan İntegral ve Türev Kaydırmak",
-                        wrongText: "❌ Hatalı Yaklaşım (-10 Puan):",
+                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-10 Puan):</span>`,
                         wrongDesc: "Sadece noktasal yakınsaklık varken $\\lim \\int_0^1 f_n(x)dx = \\int_0^1 \\lim f_n(x)dx$ eşitliğini doğrudan uygulamak.",
-                        rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
                         rightDesc: "İntegral veya türevin limit ile yer değiştirebilmesi için $(f_n)$ dizisinin ya da $\\sum u_n$ serisinin o aralıkta **DÜZGÜN YAKINSAK (Convergence Uniforme)** olduğunu ispatlamak şarttır."
                     },
                     {
                         title: "5. Fonksiyon Dizilerinde Supremum Normunu Yanlış Hesaplamak",
-                        wrongText: "❌ Hatalı Yaklaşım (-8 Puan):",
+                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-8 Puan):</span>`,
                         wrongDesc: "$\\|f_n - f\\|_\\infty$ yerine $x$'e sabit bir sayı (örneğin $x=1/2$) koyup limitin sıfıra gittiğini göstererek 'düzgün yakınsaktır' demek.",
-                        rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
                         rightDesc: "Düzgün yakınsaklık tüm tanım kümesindeki **en büyük sapmaya (supremum normu)** bakar. Türev yardımıyla tepe noktası ($x_n$) belirlenmeli ve $\sup |f_n(x) - f(x)|$ limitinin sıfıra yakınsayıp yakınsamadığı irdelenmelidir."
                     },
                     {
                         title: "6. Riemann Serisinde $\\alpha = 1$ Durumu",
-                        wrongText: "❌ Hatalı Yaklaşım (-5 Puan):",
+                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-5 Puan):</span>`,
                         wrongDesc: "$\\sum \\frac{1}{n^\\alpha}$ serisinin $\\alpha \\ge 1$ için yakınsadığını yazmak.",
-                        rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
                         rightDesc: "Riemann serisi sadece ve sadece **$\\alpha > 1$** için yakınsar! $\\alpha = 1$ harmonik seridir ve ıraksar."
                     }
                 ];
@@ -2271,30 +2271,30 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 traps = [
                     {
                         title: "1. Frenet Tabanında Normal (Merkezcil) İvmeyi Atlamak",
-                        wrongText: "❌ Hatalı Yaklaşım (-10 Puan):",
+                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-10 Puan):</span>`,
                         wrongDesc: "İvmeyi sadece hız büyüklüğünün skaler türevi kabul edip $\\vec{a} = \\frac{dv}{dt} \\vec{T}$ yazmak.",
-                        rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
                         rightDesc: "Eğrisel yörüngelerde hız büyüklüğü sabit olsa dahi yönü değişir. Bu nedenle merkezcil ivme bileşeni kesinlikle eklenmelidir: $\\vec{a} = \\frac{dv}{dt} \\vec{T} + \\frac{v^2}{\\rho} \\vec{N}$."
                     },
                     {
                         title: "2. Kutupsal Taban Vektörlerinin Türevini Sıfır Almak",
-                        wrongText: "❌ Hatalı Yaklaşım (-8 Puan):",
+                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-8 Puan):</span>`,
                         wrongDesc: "$\\vec{r} = r \\vec{u}_r$ türevini alırken taban türevini ihmal edip $\\vec{v} = \\dot{r} \\vec{u}_r$ yazmak.",
-                        rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
                         rightDesc: "Kutupsal taban vektörleri zamana bağlı olarak yön değiştirir: $\\frac{d\\vec{u}_r}{dt} = \\dot{\\theta}\\vec{u}_\\theta$. Dolayısıyla hız vektörü $\\vec{v} = \\dot{r}\\vec{u}_r + r\\dot{\\theta}\\vec{u}_\\theta$ şeklinde ifade edilir."
                     },
                     {
                         title: "3. Dönen Referans Sisteminde Poisson Bağıntısını Unutmak",
-                        wrongText: "❌ Hatalı Yaklaşım (-10 Puan):",
+                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-10 Puan):</span>`,
                         wrongDesc: "Sabit repere göre türevi hareketli repere göre türeve doğrudan eşitlemek.",
-                        rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
                         rightDesc: "Poisson formülü uygulanmalıdır: $\\left(\\frac{d\\vec{A}}{dt}\\right)_{R_0} = \\left(\\frac{d\\vec{A}}{dt}\\right)_{R'} + \\vec{\\Omega} \\times \\vec{A}$."
                     },
                     {
                         title: "4. Sürtünme Kuvvetini Daima $f = \\mu N$ Almak",
-                        wrongText: "❌ Hatalı Yaklaşım (-6 Puan):",
+                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-6 Puan):</span>`,
                         wrongDesc: "Cisim henüz kaymazken (statik dengedeyken) sürtünmeyi doğrudan $\\mu_s N$ olarak hesaplamak.",
-                        rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
                         rightDesc: "Statik sürtünme bir eşitsizliktir: $f_s \\le \\mu_s N$. Değeri uygulanan net kuvvete göre denge denkleminden bulunur; sadece kayma anında maksimuma ($f_{s,\\max} = \\mu_s N$) ulaşır."
                     }
                 ];
@@ -2302,23 +2302,23 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 traps = [
                     {
                         title: "1. Bağımsızlık ile Ayrıklığı Karıştırmak",
-                        wrongText: "❌ Hatalı Yaklaşım (-10 Puan):",
+                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-10 Puan):</span>`,
                         wrongDesc: "İki olay bağımsız olduğunda $A \\cap B = \\emptyset$ sanmak.",
-                        rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
                         rightDesc: "Ayrıklık (disjoints) kesişimin boş olması demektir ($P(A \\cap B) = 0$). Bağımsızlık ise $P(A \\cap B) = P(A)P(B)$ demektir. Pozitif olasılıklı iki olay hem ayrık hem bağımsız OLAMAZ!"
                     },
                     {
                         title: "2. Bayes Formülünün Paydasını Eksik Açmak",
-                        wrongText: "❌ Hatalı Yaklaşım (-8 Puan):",
+                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-8 Puan):</span>`,
                         wrongDesc: "Bayes formülünde paydadaki $P(B)$'yi açarken tümleyen durumu ($P(\\bar{A})P(B \\mid \\bar{A})$) unutmak.",
-                        rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
                         rightDesc: "Payda toplam olasılık formülüdür: $P(B) = P(A)P(B \\mid A) + P(\\bar{A})P(B \\mid \\bar{A})$. Özellikle tıbbi test sorularında sağlam popülasyon terimi sonucu belirler."
                     },
                     {
                         title: "3. İadesiz Çekilişte Olasılıkları Sabit Tutmak",
-                        wrongText: "❌ Hatalı Yaklaşım (-5 Puan):",
+                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-5 Puan):</span>`,
                         wrongDesc: "Tirage sans remise (iadesiz çekiliş) yaparken ikinci çekiliş için paydayı $n$ olarak bırakmak.",
-                        rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
                         rightDesc: "Her çekilişte torbadaki bilye sayısı 1 azalır (payda $n-1$). İadeli ise bağımsızdır ve payda sabit kalır."
                     }
                 ];
@@ -2327,44 +2327,44 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 traps = [
                     {
                         title: "1. Permütasyon Bileşke Sırası (Convention Française)",
-                        wrongText: "❌ Hatalı Yaklaşım (-5 Puan):",
+                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-5 Puan):</span>`,
                         wrongDesc: "$(\\sigma \\circ \\tau)(x)$ işleminde soldan sağa doğru giderek elemanın görüntüsünü bulmak.",
-                        rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
                         rightDesc: "Bileşke fonksiyon gibi değerlendirilir: **Sağdaki $\\tau$'dan başlanıp sola $\\sigma$'ya gidilir**: $(\\sigma \\circ \\tau)(x) = \\sigma(\\tau(x))$."
                     },
                     {
                         title: "2. Alt Grup İspatında Birim Elemanı ($e \\in H$) Unutmak",
-                        wrongText: "❌ Hatalı Yaklaşım (-6 Puan):",
+                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-6 Puan):</span>`,
                         wrongDesc: "Doğrudan $\\forall x, y \\in H, xy^{-1} \\in H$ yazmak ama kümenin boş küme olmadığını ($H \\neq \\emptyset$) göstermemek.",
-                        rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
                         rightDesc: "İspata daima 'Puisque $e \\in H$, $H \\neq \\emptyset$' tespitiyle başlanmalıdır. $H$\'nin boş küme olmadığı teyit edilmeden alt grup kriteri geçerli olmaz."
                     },
                     {
                         title: "3. Lagrange Teoreminin Tersinin Her Zaman Doğru Olduğunu Sanmak",
-                        wrongText: "❌ Hatalı Yaklaşım (-10 Puan):",
+                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-10 Puan):</span>`,
                         wrongDesc: "'$d$ böler $|G|$ ise $G$'nin mertebesi $d$ olan kesin bir alt grubu vardır' demek.",
-                        rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
                         rightDesc: "Lagrange teoreminin tersi genel gruplarda **DOĞRU DEĞİLDİR**! Klasik karşıt örnek: $|\\mathcal{A}_4| = 12$ olup $6 \\mid 12$ olmasına rağmen $\\mathcal{A}_4$'ün mertebesi 6 olan hiçbir alt grubu yoktur!"
                     },
                     {
                         title: "4. Bézout Katsayılarında Eksi İşaretini Unutmak",
-                        wrongText: "❌ Hatalı Yaklaşım (-4 Puan):",
+                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-4 Puan):</span>`,
                         wrongDesc: "Geriye doğru sararken $r = A - qB$ yerine $A + qB$ yazıp katsayı işaretlerini karıştırmak.",
-                        rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
                         rightDesc: "Her satırda parantezleri titizlikle takip ediniz: $au + bv = 1$ eşitliğinde katsayıların negatif olabileceği göz önünde bulundurulmalıdır."
                     },
                     {
                         title: "5. Devirli Gruplarda Mertebe ile Bölünebilme Yönü",
-                        wrongText: "❌ Hatalı Yaklaşım (-5 Puan):",
+                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-5 Puan):</span>`,
                         wrongDesc: "$g^n = e$ olduğunda hemen $o(g) = n$ demek.",
-                        rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
                         rightDesc: "$g^n = e \\iff o(g) \\mid n$. Yani $n$, mertebenin bir katıdır; en küçük pozitif kat mertebedir."
                     },
                     {
                         title: "6. Diedral Grupta Yansıma ve Dönme Çarpımı ($D_n$)",
-                        wrongText: "❌ Hatalı Yaklaşım (-5 Puan):",
+                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-5 Puan):</span>`,
                         wrongDesc: "$s \\cdot r^2 = r^2 \\cdot s$ olduğunu varsaymak.",
-                        rightText: "✅ Resmi Fransız Kuralı (Tam Puan):",
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
                         rightDesc: "Yansıma elemanı saat yönündeki dönmeyi tersine çevirir: **$s \\cdot r^k = r^{-k} \\cdot s = r^{n-k} \\cdot s$**. $s$ elemanı sağa aktarılırken $r$ dönme elemanının kuvvetinin işaretinin eksiye döneceği dikkate alınmalıdır."
                     }
                 ];
@@ -2399,7 +2399,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 <div class="content-header">
                     <div>
                         <div class="breadcrumbs">${c.code} > Sınav Kılavuzu > Sık Yapılan Hatalar</div>
-                        <h1 class="content-title">⚠️ Sık Yapılan Hatalar &amp; Sınav Uyarıları (${c.code})</h1>
+                        <h1 class="content-title">${window.ICONS ? window.ICONS.alertTriangle : ""} Sık Yapılan Hatalar &amp; Sınav Uyarıları (${c.code})</h1>
                     </div>
                 </div>
 
@@ -2504,14 +2504,14 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
 
                         <details style="margin-top: 14px; cursor: pointer;">
                             <summary style="font-weight: 600; color: var(--accent-indigo); outline: none;">
-                                📄 Resmi Çözümü ve Puan Baremini Göster ▾
+                                ${window.ICONS ? window.ICONS.listTodo : ""} Resmi Çözümü ve Puan Baremini Göster
                             </summary>
                             <div style="margin-top: 14px; padding: 18px 22px; background: var(--bg-paper); border: 1px solid var(--border-subtle); border-radius: 10px;">
                                 <div style="font-family: 'Newsreader', serif; font-size: 1.14rem; line-height: 1.8;">
                                     ${qItem.ex.solution}
                                 </div>
                                 <div class="mock-rubric-box">
-                                    <strong style="color: var(--accent-emerald);">🎯 Puanlama Baremi (Barème):</strong> ${qItem.rubric}
+                                    <strong style="color: var(--accent-emerald);">${window.ICONS ? window.ICONS.target : ""} Puanlama Baremi (Barème):</strong> ${qItem.rubric}
                                 </div>
                             </div>
                         </details>
@@ -2523,7 +2523,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 <div class="content-header">
                     <div>
                         <div class="breadcrumbs">${COURSES_DB[activeCourseKey].code} > Sınav ve Çalışma Araçları > Vize Deneme Sınavı</div>
-                        <h1 class="content-title">🎯 ${COURSES_DB[activeCourseKey].code} Vize Deneme Sınavı (100 Puan)</h1>
+                        <h1 class="content-title">${window.ICONS ? window.ICONS.target : ""} ${COURSES_DB[activeCourseKey].code} Vize Deneme Sınavı (100 Puan)</h1>
                     </div>
                 </div>
 
@@ -2534,19 +2534,19 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                     </div>
                     <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
                         <button class="btn-stepper ${isMockTimerRunning ? '' : 'primary'}" onclick="toggleMockTimer()">
-                            ${isMockTimerRunning ? '⏸️ Sayacı Duraklat' : '▶️ 90 Dk Sayacı Başlat'}
+                            ${isMockTimerRunning ? (window.ICONS ? window.ICONS.pause : "") + " Sayacı Duraklat" : (window.ICONS ? window.ICONS.play : "") + " 90 Dk Sayacı Başlat"}
                         </button>
                         <button class="btn-stepper" onclick="resetMockTimer()">
-                            🔄 Sayacı Sıfırla
+                            ${window.ICONS ? window.ICONS.refresh : ""} Sayacı Sıfırla
                         </button>
                         <button class="btn-stepper secondary" onclick="newMockExam()">
-                            🎲 Yeni Deneme Sınavı Üret
+                            ${window.ICONS ? window.ICONS.dice : ""} Yeni Deneme Sınavı Üret
                         </button>
                         <button class="btn-stepper" onclick="printMockExam(false)" style="margin-left: auto;">
-                            📄 Boş Sınav Kağıdı Yazdır
+                            ${window.ICONS ? window.ICONS.printer : ""} Boş Sınav Kağıdı Yazdır
                         </button>
                         <button class="btn-stepper" onclick="printMockExam(true)">
-                            📑 Çözümlü Not Baremi Yazdır
+                            ${window.ICONS ? window.ICONS.printer : ""} Çözümlü Not Baremi Yazdır
                         </button>
                     </div>
                 </div>
@@ -2562,7 +2562,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 </div>
 
                 <div style="background: rgba(37, 99, 235, 0.05); border: 1px solid rgba(37, 99, 235, 0.2); border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; font-size: 0.95rem; color: var(--text-main);">
-                    <strong>💡 Sınav Yönergesi:</strong> Boş bir kağıt ve kalem alarak 90 dakikalık süreyi başlatınız. Soruları resmi Fransızca sınav formatında (<em>Soit... Par conséquent...</em>) adım adım çözünüz. Süre tamamlandığında resmi çözümü ve puanlama baremini açarak kağıdınızı 100 üzerinden değerlendiriniz.
+                    <strong>Sınav Yönergesi:</strong> Boş bir kağıt ve kalem alarak 90 dakikalık süreyi başlatınız. Soruları resmi Fransızca sınav formatında (<em>Soit... Par conséquent...</em>) adım adım çözünüz. Süre tamamlandığında resmi çözümü ve puanlama baremini açarak kağıdınızı 100 üzerinden değerlendiriniz.
                 </div>
 
                 ${questionsHTML}
@@ -2767,7 +2767,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                     const facultyInfo = item.faculty ? (item.faculty.includes('•') ? item.faculty.split('•')[1] : item.faculty) : '';
                     optsHTML += `
                         <div class="course-option ${isActive ? 'active' : ''}" onclick="switchActiveCourse('${key}')">
-                            <span style="font-size: 1.2rem;">${item.icon}</span>
+                            <span style="display: inline-flex; align-items: center;">${window.getIcon ? (window.getIcon(item.icon) || item.icon) : item.icon}</span>
                             <div>
                                 <div class="course-opt-name">${item.code} — ${item.title}</div>
                                 <div class="course-opt-sub">${modCount} Modül • ${facultyInfo}</div>
@@ -2806,15 +2806,15 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
 
                 <div class="nav-item" id="nav-starred" onclick="openStarredPool()">
                     <div class="nav-item-left">
-                        <span>⭐</span>
+                        ${window.ICONS ? window.ICONS.starFilled : ""}
                         <span>Yıldızlı &amp; Önemli Sorularım</span>
                     </div>
-                    <span class="nav-count-badge" id="badge-starred-count" style="background: rgba(245, 158, 11, 0.2); color: var(--accent-amber);">0 ⭐</span>
+                    <span class="nav-count-badge" id="badge-starred-count" style="background: rgba(245, 158, 11, 0.2); color: var(--accent-amber);">0 Kayıt</span>
                 </div>
 
                 <div class="nav-item" id="nav-mock-exam" onclick="loadMockExamView()">
                     <div class="nav-item-left">
-                        <span>🎯</span>
+                        ${window.ICONS ? window.ICONS.target : ""}
                         <span>${c.code} Vize Deneme Sınavı</span>
                     </div>
                     <span class="nav-count-badge" style="background: rgba(37, 99, 235, 0.2); color: var(--accent-blue);">90 Dk</span>
@@ -2822,7 +2822,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
 
                 <div class="nav-item" id="nav-pitfalls" onclick="loadPitfallsView()">
                     <div class="nav-item-left">
-                        <span>⚠️</span>
+                        ${window.ICONS ? window.ICONS.alertTriangle : ""}
                         <span>Sık Yapılan Hatalar &amp; Sınav Uyarıları</span>
                     </div>
                     <span class="nav-count-badge" style="background: rgba(239, 68, 68, 0.2); color: #ef4444;">Dikkat</span>
@@ -2830,7 +2830,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
 
                 <div class="nav-item" id="nav-unresolved" onclick="openUnresolvedPool()">
                     <div class="nav-item-left">
-                        <span>⚡</span>
+                        ${window.ICONS ? window.ICONS.compass : ""}
                         <span>Kalan &amp; Çözülecek Sorular</span>
                     </div>
                     <span class="nav-count-badge" id="badge-unresolved-count" style="background: rgba(251, 191, 36, 0.2); color: var(--accent-amber);">Pratik</span>
@@ -2838,7 +2838,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 
                 <div class="nav-item" id="nav-flashcards" onclick="openFlashcardArena()">
                     <div class="nav-item-left">
-                        <span>🃏</span>
+                        ${window.ICONS ? window.ICONS.flashcards : ""}
                         <span>Kavram &amp; Formül Kartları</span>
                     </div>
                     <span class="nav-count-badge" style="background: rgba(244, 63, 94, 0.2); color: var(--accent-rose);">Pratik</span>
@@ -2846,7 +2846,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
 
                 <div class="nav-item" id="nav-ispatlar" onclick="loadSpecialView('ispatlar')">
                     <div class="nav-item-left">
-                        <span>📜</span>
+                        ${window.ICONS ? window.ICONS.book : ""}
                         <span>Kritik Teorem İspatları</span>
                     </div>
                     <span class="nav-count-badge" style="background: rgba(139, 92, 246, 0.18); color: var(--accent-purple);">İspat</span>
@@ -2854,7 +2854,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
 
                 <div class="nav-item" id="nav-fransizca" onclick="loadSpecialView('fransizca')">
                     <div class="nav-item-left">
-                        <span>🇫🇷</span>
+                        <span class="badge-lang-tag">FR</span>
                         <span>Fransızca Matematiksel İfadeler</span>
                     </div>
                     <span class="nav-count-badge" style="background: rgba(59, 130, 246, 0.18); color: var(--accent-blue);">Kılavuz</span>
@@ -2862,7 +2862,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
 
                 <div class="nav-item" id="nav-hesaplayici" onclick="loadSpecialView('hesaplayici')">
                     <div class="nav-item-left">
-                        <span>🧮</span>
+                        ${window.ICONS ? window.ICONS.calculator : ""}
                         <span>${getCalculatorTitle(activeCourseKey)}</span>
                     </div>
                     <span class="nav-count-badge" style="background: rgba(16, 185, 129, 0.18); color: var(--accent-emerald);">Araç</span>
