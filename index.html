@@ -28,7 +28,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
     <!-- Custom Modular Stylesheet -->
-    <link rel="stylesheet" href="css/style.css?v=6">
+    <link rel="stylesheet" href="css/style.css?v=11">
 </head>
 <body>
 
@@ -259,29 +259,45 @@
                 <input type="text" id="spotlight-input" class="spotlight-input" placeholder="Teorem, kavram veya TD sorusu ara... (örn: Lagrange, Bézout, D4, İmza, Noyau)" oninput="handleSearch(this.value)">
                 <kbd style="font-size: 0.72rem; color: var(--text-muted); background: rgba(125,125,125,0.1); padding: 2px 6px; border-radius: 4px;">ESC</kbd>
             </div>
+            <div class="spotlight-toolbar">
+                <div class="spotlight-course-tabs" id="spotlight-course-tabs">
+                    <!-- Populated dynamically via JS: All, MAT204, MAT201, FIZ101, MAT206 -->
+                </div>
+                <div class="spotlight-type-chips" id="spotlight-type-chips">
+                    <button class="spotlight-type-btn active" data-type="all" onclick="setSpotlightTypeFilter('all')">Tümü</button>
+                    <button class="spotlight-type-btn" data-type="concepts" onclick="setSpotlightTypeFilter('concepts')">Teoremler &amp; Tanımlar</button>
+                    <button class="spotlight-type-btn" data-type="exercises" onclick="setSpotlightTypeFilter('exercises')">TD Soruları</button>
+                    <button class="spotlight-type-btn" data-type="starred" onclick="setSpotlightTypeFilter('starred')">Yıldızlılar</button>
+                </div>
+            </div>
             <div id="spotlight-results" class="spotlight-results">
                 <!-- Search Results populated dynamically -->
+            </div>
+            <div class="spotlight-footer">
+                <span class="spotlight-footer-hint"><kbd>↑</kbd><kbd>↓</kbd> Gezin &nbsp;•&nbsp; <kbd>↵</kbd> Seç &nbsp;•&nbsp; <kbd>ESC</kbd> Kapat</span>
+                <span id="spotlight-count-badge" class="spotlight-count-badge">0 sonuç</span>
             </div>
         </div>
     </div>
 
     <!-- Modular Data & Logic Scripts -->
-    <script src="js/icons.js?v=9"></script>
-    <script src="data/courses_manifest.js?v=9"></script>
-    <script src="data/concepts.js?v=9"></script>
-    <script src="data/courses/mat204_grup.js?v=9"></script>
-    <script src="data/flashcards.js?v=9"></script>
-    <script src="js/app.js?v=9"></script>
+    <script src="js/icons.js?v=11"></script>
+    <script src="data/courses_manifest.js?v=11"></script>
+    <script src="data/concepts.js?v=11"></script>
+    <script src="data/courses/mat204_grup.js?v=11"></script>
+    <script src="data/flashcards.js?v=11"></script>
+    <script src="js/app.js?v=11"></script>
 
     <!-- Service Worker Registration for PWA Offline Math & KaTeX -->
     <script>
         if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js?v=9').catch(err => {
+                navigator.serviceWorker.register('./sw.js?v=11').catch(err => {
                     console.log('SW registration note:', err);
                 });
             });
         }
     </script>
+
 </body>
 </html>

@@ -2112,12 +2112,127 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             renderMath();
         }
 
-        // ================= SPOTLIGHT / SEARCH =================
+        // ================= SPOTLIGHT / SEARCH WITH COURSE TABS & SHORTCUTS =================
+        let spotlightCourseFilter = 'current'; // 'current', 'all', or course key
+        let spotlightTypeFilter = 'all'; // 'all', 'concepts', 'exercises', 'starred'
+        let spotlightSelectedIndex = 0;
+
+        function renderSpotlightTabs() {
+            const tabsContainer = document.getElementById('spotlight-course-tabs');
+            if (!tabsContainer) return;
+
+            const fullList = window.COURSES_MANIFEST || COURSES_DB;
+            const activeC = COURSES_DB[activeCourseKey] || (fullList ? fullList[activeCourseKey] : null);
+            const activeCode = activeC ? activeC.code : 'Aktif';
+
+            let tabsHTML = '';
+
+            // Current course tab
+            const isCurrentActive = (spotlightCourseFilter === 'current' || spotlightCourseFilter === activeCourseKey);
+            tabsHTML += `
+                <button class="spotlight-course-btn ${isCurrentActive ? 'active' : ''}" onclick="setSpotlightCourseFilter('current')">
+                    ${window.getIcon ? (window.getIcon(activeC?.icon || 'courseGrup') || '') : ''}
+                    <span>${activeCode} (Aktif Ders)</span>
+                </button>
+            `;
+
+            // All courses tab
+            const isAllActive = (spotlightCourseFilter === 'all');
+            tabsHTML += `
+                <button class="spotlight-course-btn ${isAllActive ? 'active' : ''}" onclick="setSpotlightCourseFilter('all')">
+                    ${window.ICONS ? window.ICONS.compass : ''}
+                    <span>Tüm Dersler</span>
+                </button>
+            `;
+
+            // Specific other courses
+            Object.keys(fullList).forEach(key => {
+                if (key === activeCourseKey) return;
+                const c = fullList[key];
+                const isActive = (spotlightCourseFilter === key);
+                tabsHTML += `
+                    <button class="spotlight-course-btn ${isActive ? 'active' : ''}" onclick="setSpotlightCourseFilter('${key}')">
+                        ${window.getIcon ? (window.getIcon(c.icon) || '') : ''}
+                        <span>${c.code}</span>
+                    </button>
+                `;
+            });
+
+            tabsContainer.innerHTML = tabsHTML;
+        }
+
+        function setSpotlightCourseFilter(cKey) {
+            spotlightCourseFilter = cKey;
+            renderSpotlightTabs();
+            
+            if (cKey === 'all') {
+                preloadAllCourses();
+            } else if (cKey !== 'current' && (!window.COURSES_DB[cKey] || !window.COURSES_DB[cKey].modules)) {
+                ensureCourseLoaded(cKey).then(() => {
+                    const input = document.getElementById('spotlight-input');
+                    handleSearch(input ? input.value : '');
+                });
+            }
+
+            const input = document.getElementById('spotlight-input');
+            handleSearch(input ? input.value : '');
+        }
+
+        function setSpotlightTypeFilter(type) {
+            spotlightTypeFilter = type;
+            document.querySelectorAll('#spotlight-type-chips .spotlight-type-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-type') === type);
+            });
+            const input = document.getElementById('spotlight-input');
+            handleSearch(input ? input.value : '');
+        }
+
+        async function preloadAllCourses() {
+            const fullList = window.COURSES_MANIFEST || COURSES_DB;
+            for (const key of Object.keys(fullList)) {
+                if (!window.COURSES_DB[key] || !window.COURSES_DB[key].modules) {
+                    await ensureCourseLoaded(key);
+                }
+            }
+            const input = document.getElementById('spotlight-input');
+            handleSearch(input ? input.value : '');
+        }
+
+        function highlightMatch(text, query) {
+            if (!query || !text) return text;
+            const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+            return text.replace(regex, '<mark class="search-highlight">$1</mark>');
+        }
+
+        function updateSelectedSpotlightItem() {
+            const items = document.querySelectorAll('.spotlight-item');
+            if (!items.length) return;
+            if (spotlightSelectedIndex < 0) spotlightSelectedIndex = 0;
+            if (spotlightSelectedIndex >= items.length) spotlightSelectedIndex = items.length - 1;
+
+            items.forEach((item, idx) => {
+                const isSel = (idx === spotlightSelectedIndex);
+                item.classList.toggle('selected', isSel);
+                if (isSel) {
+                    item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                }
+            });
+        }
+
         function openSearchModal() {
             const modal = document.getElementById('spotlight-modal');
             const input = document.getElementById('spotlight-input');
             if (modal) {
                 modal.style.display = 'flex';
+                spotlightCourseFilter = 'current'; // Defaults to current active course
+                spotlightTypeFilter = 'all';
+                spotlightSelectedIndex = 0;
+                renderSpotlightTabs();
+                
+                document.querySelectorAll('#spotlight-type-chips .spotlight-type-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.getAttribute('data-type') === 'all');
+                });
+
                 if (input) {
                     input.value = '';
                     input.focus();
@@ -2133,51 +2248,95 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
 
         function handleSearch(query) {
             const resultsBox = document.getElementById('spotlight-results');
+            const countBadge = document.getElementById('spotlight-count-badge');
             if (!resultsBox) return;
             const q = query.trim().toLowerCase();
 
             let conceptsHTML = '';
             let exercisesHTML = '';
+            let totalCount = 0;
 
-            // Search concepts
-            Object.keys(conceptsDB).forEach(key => {
-                const c = conceptsDB[key];
-                if (!q || c.title.toLowerCase().includes(q) || c.definition.toLowerCase().includes(q) || c.intuition.toLowerCase().includes(q)) {
-                    conceptsHTML += `
-                        <div class="spotlight-item" onclick="closeSearchModal(); openConceptModal('${key}')">
-                            <div>
-                                <div class="spotlight-item-title">${c.title}</div>
-                                <div class="spotlight-item-sub">${c.intuition.slice(0, 100)}...</div>
-                            </div>
-                            <span style="font-size: 0.72rem; color: var(--accent-indigo); font-weight: 700; text-transform: uppercase;">Teorem / Tanım</span>
-                        </div>
-                    `;
-                }
-            });
+            const effectiveCourseFilter = (spotlightCourseFilter === 'current') ? activeCourseKey : spotlightCourseFilter;
+            const starredIds = getStarredExercises();
 
-            // Search exercises across ALL courses in the platform
-            let exCount = 0;
-            Object.keys(COURSES_DB).forEach(cKey => {
-                const c = COURSES_DB[cKey];
-                Object.keys(c.modules).forEach(modKey => {
-                    const mod = c.modules[modKey];
-                    mod.exercises.forEach((ex, idx) => {
-                        if (exCount < 25 && (!q || ex.name.toLowerCase().includes(q) || ex.enonce.toLowerCase().includes(q) || (ex.tag && ex.tag.toLowerCase().includes(q)))) {
-                            exCount++;
-                            const cleanSnippet = ex.enonce ? ex.enonce.replace(/<[^>]+>/g, '').slice(0, 95) : '';
-                            exercisesHTML += `
-                                <div class="spotlight-item" onclick="closeSearchModal(); switchCourseAndJump('${cKey}', '${modKey}', ${idx})">
-                                    <div>
-                                        <div class="spotlight-item-title">${c.icon} ${c.code} • ${mod.title.split(':')[0]} • ${ex.name}</div>
-                                        <div class="spotlight-item-sub">${cleanSnippet}...</div>
+            // 1. Search concepts
+            if (spotlightTypeFilter === 'all' || spotlightTypeFilter === 'concepts') {
+                Object.keys(conceptsDB).forEach(key => {
+                    const c = conceptsDB[key];
+                    if (effectiveCourseFilter !== 'all' && effectiveCourseFilter !== 'mat204_grup') {
+                        return;
+                    }
+                    const matchTitle = c.title && c.title.toLowerCase().includes(q);
+                    const matchDef = c.definition && c.definition.toLowerCase().includes(q);
+                    const matchInt = c.intuition && c.intuition.toLowerCase().includes(q);
+
+                    if (!q || matchTitle || matchDef || matchInt) {
+                        totalCount++;
+                        const snippet = c.intuition ? c.intuition.replace(/<[^>]+>/g, '').slice(0, 95) : '';
+                        conceptsHTML += `
+                            <div class="spotlight-item" onclick="closeSearchModal(); openConceptModal('${key}')">
+                                <div>
+                                    <div class="spotlight-item-title">
+                                        ${window.ICONS ? window.ICONS.book : ''}
+                                        <span>${highlightMatch(c.title, q)}</span>
                                     </div>
-                                    <span style="font-size: 0.72rem; color: ${c.color}; font-weight: 700; text-transform: uppercase; border: 1px solid ${c.color}; padding: 2px 6px; border-radius: 4px;">${c.code}</span>
+                                    <div class="spotlight-item-sub">${highlightMatch(snippet, q)}...</div>
                                 </div>
-                            `;
-                        }
+                                <span style="font-size: 0.72rem; color: var(--accent-indigo); font-weight: 700; text-transform: uppercase;">Teorem &amp; Tanım</span>
+                            </div>
+                        `;
+                    }
+                });
+            }
+
+            // 2. Search exercises across filtered courses
+            if (spotlightTypeFilter === 'all' || spotlightTypeFilter === 'exercises' || spotlightTypeFilter === 'starred') {
+                const targetCourseKeys = (effectiveCourseFilter === 'all')
+                    ? Object.keys(COURSES_DB)
+                    : (COURSES_DB[effectiveCourseFilter] ? [effectiveCourseFilter] : []);
+
+                targetCourseKeys.forEach(cKey => {
+                    const c = COURSES_DB[cKey];
+                    if (!c || !c.modules) return;
+
+                    Object.keys(c.modules).forEach(modKey => {
+                        const mod = c.modules[modKey];
+                        if (!mod || !mod.exercises) return;
+
+                        mod.exercises.forEach((ex, idx) => {
+                            if (spotlightTypeFilter === 'starred' && !starredIds.includes(ex.id)) {
+                                return;
+                            }
+
+                            const matchName = ex.name && ex.name.toLowerCase().includes(q);
+                            const matchEnonce = ex.enonce && ex.enonce.toLowerCase().includes(q);
+                            const matchTag = ex.tag && ex.tag.toLowerCase().includes(q);
+
+                            if (!q || matchName || matchEnonce || matchTag) {
+                                totalCount++;
+                                const cleanSnippet = ex.enonce ? ex.enonce.replace(/<[^>]+>/g, '').slice(0, 95) : '';
+                                const isStarred = starredIds.includes(ex.id);
+                                const glyph = window.getIcon ? (window.getIcon(c.icon) || '') : '';
+                                const starIcon = isStarred ? (window.ICONS ? window.ICONS.starFilled : '') : '';
+
+                                exercisesHTML += `
+                                    <div class="spotlight-item" onclick="closeSearchModal(); switchCourseAndJump('${cKey}', '${modKey}', ${idx})">
+                                        <div>
+                                            <div class="spotlight-item-title">
+                                                ${glyph}
+                                                <span>${c.code} • ${mod.title.split(':')[0]} • ${highlightMatch(ex.name, q)}</span>
+                                                ${starIcon}
+                                            </div>
+                                            <div class="spotlight-item-sub">${highlightMatch(cleanSnippet, q)}...</div>
+                                        </div>
+                                        <span style="font-size: 0.72rem; color: ${c.color}; font-weight: 700; text-transform: uppercase; border: 1px solid ${c.color}; padding: 2px 6px; border-radius: 4px;">${c.code}</span>
+                                    </div>
+                                `;
+                            }
+                        });
                     });
                 });
-            });
+            }
 
             let fullHTML = '';
             if (conceptsHTML) {
@@ -2187,10 +2346,17 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 fullHTML += '<div class="spotlight-group-title">TD Soruları ve İspatlar</div>' + exercisesHTML;
             }
             if (!fullHTML) {
-                fullHTML = '<div style="text-align: center; padding: 30px; color: var(--text-muted);">Eşleşen sonuç bulunamadı.</div>';
+                fullHTML = '<div style="text-align: center; padding: 36px 20px; color: var(--text-muted); font-size: 0.92rem;">Bu filtrede eşleşen teorem veya soru bulunamadı.</div>';
             }
 
             resultsBox.innerHTML = fullHTML;
+            if (countBadge) {
+                countBadge.textContent = `${totalCount} sonuç`;
+            }
+
+            spotlightSelectedIndex = 0;
+            updateSelectedSpotlightItem();
+
             if (typeof renderMathInElement !== 'undefined') {
                 renderMathInElement(resultsBox, {
                     delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}],
@@ -2199,18 +2365,52 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             }
         }
 
-        // Global shortcut for Cmd+K or Ctrl+K or /
+        // Global shortcut for Cmd+K, /, Arrow Navigation, Enter and ESC
         document.addEventListener('keydown', function(e) {
+            const modal = document.getElementById('spotlight-modal');
+            const isSpotlightOpen = modal && modal.style.display === 'flex';
+
+            if (isSpotlightOpen) {
+                const items = document.querySelectorAll('.spotlight-item');
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (items.length) {
+                        spotlightSelectedIndex = (spotlightSelectedIndex + 1) % items.length;
+                        updateSelectedSpotlightItem();
+                    }
+                    return;
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (items.length) {
+                        spotlightSelectedIndex = (spotlightSelectedIndex - 1 + items.length) % items.length;
+                        updateSelectedSpotlightItem();
+                    }
+                    return;
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const selectedItem = document.querySelector('.spotlight-item.selected');
+                    if (selectedItem) {
+                        selectedItem.click();
+                    }
+                    return;
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    closeSearchModal();
+                    return;
+                }
+            }
+
             if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
                 e.preventDefault();
                 openSearchModal();
             } else if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(e.target.tagName)) {
                 e.preventDefault();
                 openSearchModal();
-            } else if (e.key === 'Escape') {
+            } else if (e.key === 'Escape' && isSpotlightOpen) {
                 closeSearchModal();
             }
         });
+
 
         // ================= COMMON PITFALLS & EXAM WARNINGS =================
         function loadPitfallsView() {

@@ -1356,6 +1356,123 @@
             font-family: inherit;
         }
 
+        .spotlight-toolbar {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(15, 23, 42, 0.35);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .spotlight-course-tabs {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .spotlight-course-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .spotlight-course-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.15s ease;
+        }
+
+        .spotlight-course-btn:hover {
+            color: var(--text-main);
+            background: rgba(125, 125, 125, 0.1);
+        }
+
+        .spotlight-course-btn.active {
+            background: rgba(37, 99, 235, 0.16);
+            border-color: rgba(37, 99, 235, 0.4);
+            color: var(--accent-blue);
+        }
+
+        .spotlight-type-chips {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .spotlight-type-chips::-webkit-scrollbar {
+            display: none;
+        }
+
+        .spotlight-type-btn {
+            padding: 3px 9px;
+            border-radius: 4px;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-paper);
+            color: var(--text-muted);
+            font-size: 0.74rem;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.15s ease;
+        }
+
+        .spotlight-type-btn:hover {
+            color: var(--text-main);
+            background: rgba(125, 125, 125, 0.08);
+        }
+
+        .spotlight-type-btn.active {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .spotlight-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 16px;
+            border-top: 1px solid var(--border-subtle);
+            background: rgba(15, 23, 42, 0.25);
+            font-size: 0.74rem;
+            color: var(--text-muted);
+        }
+
+        .spotlight-footer-hint kbd {
+            font-size: 0.7rem;
+            padding: 1px 5px;
+            background: rgba(125, 125, 125, 0.15);
+            border: 1px solid var(--border-subtle);
+            border-radius: 3px;
+            margin: 0 2px;
+            color: var(--text-secondary);
+        }
+
+        .spotlight-count-badge {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+        }
+
+        .search-highlight {
+            background: rgba(245, 158, 11, 0.25);
+            color: var(--text-main);
+            padding: 0 2px;
+            border-radius: 2px;
+            font-weight: 600;
+        }
+
+
         .spotlight-results {
             max-height: 420px;
             overflow-y: auto;
