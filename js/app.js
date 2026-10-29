@@ -1159,7 +1159,7 @@ function printMockExam(withSolutions = false) {
             const modalBodyEl = document.getElementById('modal-concept-body');
             const modalEl = document.getElementById('concept-modal');
 
-            modalTitleEl.innerHTML = `💡 ${c.title}`;
+            modalTitleEl.innerHTML = c.title;
             modalBodyEl.innerHTML = `
                 <div style="margin-bottom: 14px; font-family: 'Newsreader', serif; font-size: 1.15rem; color: var(--text-main); line-height: 1.8;">${c.definition}</div>
                 <div style="background: rgba(125,125,125,0.06); padding: 14px 16px; border-radius: 8px; border-left: 3px solid var(--accent-indigo); font-family: 'Inter', sans-serif;">
@@ -2146,7 +2146,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                     conceptsHTML += `
                         <div class="spotlight-item" onclick="closeSearchModal(); openConceptModal('${key}')">
                             <div>
-                                <div class="spotlight-item-title">💡 ${c.title}</div>
+                                <div class="spotlight-item-title">${c.title}</div>
                                 <div class="spotlight-item-sub">${c.intuition.slice(0, 100)}...</div>
                             </div>
                             <span style="font-size: 0.72rem; color: var(--accent-indigo); font-weight: 700; text-transform: uppercase;">Teorem / Tanım</span>
