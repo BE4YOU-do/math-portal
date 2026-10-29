@@ -1241,6 +1241,8 @@
             color: #fff;
             padding: 2px 8px;
             border-radius: 4px;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .step-title-text {
@@ -2386,7 +2388,8 @@
                 font-size: 0.82rem !important;
             }
 
-            .flashcard-keyboard-hints .desktop-hint {
+            .flashcard-keyboard-hints .desktop-hint,
+            .kbd-hint {
                 display: none !important;
             }
 

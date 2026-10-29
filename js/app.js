@@ -1321,7 +1321,7 @@ function printMockExam(withSolutions = false) {
                                     ${window.ICONS ? window.ICONS.arrowLeft : ""} Önceki
                                 </button>
                                 <button class="btn-stepper primary" id="btn-flip" onclick="flipCard()">
-                                    Cevabı Göster (Space)
+                                    Cevabı Göster <span class="kbd-hint">(Space)</span>
                                 </button>
                                 <button class="btn-stepper" onclick="nextCard()" title="Sıradaki Kart (Sağ Ok)">
                                     Sonraki ${window.ICONS ? window.ICONS.arrowRight : ""}
@@ -1330,10 +1330,10 @@ function printMockExam(withSolutions = false) {
 
                             <div id="flashcard-mastery-actions" onclick="event.stopPropagation()" style="display: none; justify-content: center; gap: 12px; margin-top: 14px; border-top: 1px dashed var(--border-subtle); padding-top: 14px;">
                                 <button class="btn-stepper flashcard-btn-review" onclick="markCardMastery(false)" title="Klavye: 1">
-                                    ${window.ICONS ? window.ICONS.refresh : ""} Tekrar Edilecek [1]
+                                    ${window.ICONS ? window.ICONS.refresh : ""} Tekrar Edilecek <span class="kbd-hint">[1]</span>
                                 </button>
                                 <button class="btn-stepper flashcard-btn-known" onclick="markCardMastery(true)" title="Klavye: 2">
-                                    ${window.ICONS ? window.ICONS.check : ""} Biliyorum [2]
+                                    ${window.ICONS ? window.ICONS.check : ""} Biliyorum <span class="kbd-hint">[2]</span>
                                 </button>
                             </div>
                         </div>
@@ -1356,7 +1356,7 @@ function printMockExam(withSolutions = false) {
             if (!ans || !btn) return;
             if (ans.style.display === 'block') {
                 ans.style.display = 'none';
-                btn.textContent = 'Cevabı Göster (Space)';
+                btn.innerHTML = 'Cevabı Göster <span class="kbd-hint">(Space)</span>';
                 if (masteryBox) masteryBox.style.display = 'none';
             } else {
                 ans.style.display = 'block';
@@ -3033,11 +3033,12 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             Object.keys(modulesDB).forEach((modKey, idx) => {
                 const mod = modulesDB[modKey];
                 const isActive = modKey === currentModuleKey ? 'active' : '';
+                const shortLabel = mod.shortTitle || (mod.title.includes(':') ? mod.title.split(':').slice(1).join(':').trim() : mod.title);
                 navModulesHTML += `
                     <div class="nav-item ${isActive}" id="nav-${modKey}" onclick="loadModule('${modKey}')">
                         <div class="nav-item-left">
                             <span>${idx + 1}</span>
-                            <span>${mod.title.split(':')[0]}</span>
+                            <span>${shortLabel}</span>
                         </div>
                         <span class="nav-count-badge" id="badge-${modKey}">0/${mod.exercises.length} ✓</span>
                     </div>

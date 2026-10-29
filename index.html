@@ -28,7 +28,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
     <!-- Custom Modular Stylesheet -->
-    <link rel="stylesheet" href="css/style.css?v=14">
+    <link rel="stylesheet" href="css/style.css?v=15">
 </head>
 <body>
 
@@ -119,23 +119,23 @@
                     <span>2</span>
                     <span>Modül 2: Gruplar & Abelyenlik</span>
                 </div>
-                <span class="nav-count-badge" id="badge-modul2">0/21 ✓</span>
+                <span class="nav-count-badge" id="badge-modul2">0/28 ✓</span>
             </div>
 
             <div class="nav-item" id="nav-modul3" onclick="loadModule('modul3')">
                 <div class="nav-item-left">
                     <span>3</span>
-                    <span>Modül 3: Diedral Simetriler ($\mathcal{D}_4$)</span>
+                    <span>Modül 3: Devirli Gruplar I ($\mathbb{Z}_n$)</span>
                 </div>
-                <span class="nav-count-badge" id="badge-modul3">0/5 ✓</span>
+                <span class="nav-count-badge" id="badge-modul3">0/7 ✓</span>
             </div>
 
             <div class="nav-item" id="nav-modul4" onclick="loadModule('modul4')">
                 <div class="nav-item-left">
                     <span>4</span>
-                    <span>Modül 4: Devirli Gruplar ($\mathbb{Z}_n$)</span>
+                    <span>Modül 4: Devirli Gruplar II &amp; Euler</span>
                 </div>
-                <span class="nav-count-badge" id="badge-modul4">0/13 ✓</span>
+                <span class="nav-count-badge" id="badge-modul4">0/6 ✓</span>
             </div>
 
             <div class="nav-item" id="nav-modul5" onclick="loadModule('modul5')">
@@ -151,7 +151,7 @@
                     <span>6</span>
                     <span>Modül 6: Morfizmler &amp; Çekirdek (Ker)</span>
                 </div>
-                <span class="nav-count-badge" id="badge-modul6">0/4 ✓</span>
+                <span class="nav-count-badge" id="badge-modul6">0/8 ✓</span>
             </div>
 
             <div class="nav-section-title" style="margin-top: 14px;">Sınav ve Çalışma Araçları</div>
@@ -306,18 +306,18 @@
     </div>
 
     <!-- Modular Data & Logic Scripts -->
-    <script src="js/icons.js?v=14"></script>
-    <script src="data/courses_manifest.js?v=14"></script>
-    <script src="data/concepts.js?v=14"></script>
-    <script src="data/courses/mat204_grup.js?v=14"></script>
-    <script src="data/flashcards.js?v=14"></script>
-    <script src="js/app.js?v=14"></script>
+    <script src="js/icons.js?v=15"></script>
+    <script src="data/courses_manifest.js?v=15"></script>
+    <script src="data/concepts.js?v=15"></script>
+    <script src="data/courses/mat204_grup.js?v=15"></script>
+    <script src="data/flashcards.js?v=15"></script>
+    <script src="js/app.js?v=15"></script>
 
     <!-- Service Worker Registration for PWA Offline Math & KaTeX -->
     <script>
         if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js?v=14').catch(err => {
+                navigator.serviceWorker.register('./sw.js?v=15').catch(err => {
                     console.log('SW registration note:', err);
                 });
             });
