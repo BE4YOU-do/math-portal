@@ -45,7 +45,7 @@ window.ICONS = {
     pause: `<svg class="ui-icon" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`,
     chevronDown: `<svg class="ui-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`,
     
-    // Academic Course Geometric Glyphs (Replacing colored circles 🔵 🟢 🟣 🟠)
+    // Academic Course Geometric Glyphs (Replacing colored circles)
     courseGrup: `<svg class="course-glyph" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 21 8.5 21 15.5 12 22 3 15.5 3 8.5 12 2"></polygon><circle cx="12" cy="12" r="3" fill="#3b82f6"></circle></svg>`,
     courseSeriler: `<svg class="course-glyph" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 4H5l7 8-7 8h14"></path></svg>`,
     courseFizik: `<svg class="course-glyph" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(45 12 12)"></ellipse><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-45 12 12)"></ellipse><circle cx="12" cy="12" r="2.5" fill="#8b5cf6"></circle></svg>`,
