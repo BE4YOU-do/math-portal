@@ -921,7 +921,7 @@ function triggerManualSync() {
 
                         <div class="exam-sheet">
                             <div class="exam-sheet-header">
-                                <span class="exam-sheet-title">${window.ICONS ? window.ICONS.listTodo : ""} Resmi Sınav Çözümü &amp; Adım Adım Rehber</span>
+                                <span class="exam-sheet-title">${window.ICONS ? window.ICONS.listTodo : ""} Ayrıntılı Sınav Çözümü &amp; Adım Adım İspat</span>
                                 <div class="step-progress-indicator" style="margin-bottom: 0; padding: 4px 10px;">
                                     <span class="step-badge">Adım ${displayCount} / ${steps.length}</span>
                                     <div class="step-dots" style="margin-left: 10px;">
@@ -1053,7 +1053,7 @@ function triggerManualSync() {
                 <div class="academic-card">
                     ${tabsHTML}
                     <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 20px;">
-                        Burada henüz çözüldü olarak işaretlemediğiniz sorular listelenir. Soruların üzerine tıklayarak resmi Fransızca çözümlerini adım adım inceleyebilirsiniz.
+                        Burada henüz çözüldü olarak işaretlemediğiniz sorular listelenir. Soruların üzerine tıklayarak ayrıntılı sınav çözümlerini adım adım inceleyebilirsiniz.
                     </p>
                     ${poolHTML}
                 </div>
@@ -1591,7 +1591,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                             <div class="question-statement">${p.title}</div>
                             <div style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 14px;"><strong>Teorem Önermesi:</strong> ${p.stmt}</div>
                             <div class="exam-sheet">
-                                <div class="exam-sheet-header"><span class="exam-sheet-title">${window.ICONS ? window.ICONS.listTodo : ""} Resmi İspat ve Not Baremi</span></div>
+                                <div class="exam-sheet-header"><span class="exam-sheet-title">${window.ICONS ? window.ICONS.listTodo : ""} Model İspat ve Puan Baremi</span></div>
                                 <div class="exam-sheet-body" style="font-family: 'Newsreader', serif; font-size: 1.14rem; line-height: 1.8;">
                                     ${p.proof}
                                 </div>
@@ -1629,7 +1629,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                         </div>
                     </div>
                     <div class="academic-card">
-                        <p style="margin-bottom: 16px; color: var(--text-secondary);">Galatasaray Üniversitesi matematik ve fen sınavlarında puan kaybını önleyen resmi Fransızca argüman ve ispat bağlaçları:</p>
+                        <p style="margin-bottom: 16px; color: var(--text-secondary);">Galatasaray Üniversitesi sınavlarında tam puan kazandıran Fransızca matematiksel argüman ve ispat kalıpları (Rédaction):</p>
                         ${phrasesHTML}
                     </div>
                 `;
@@ -1747,7 +1747,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                                     <label>Mod (n):</label>
                                     <input type="number" id="calc-n" value="26">
                                 </div>
-                                <button class="btn-stepper primary" style="margin-top: 18px;" onclick="runCalculator()">Resmi Çözümü Üret</button>
+                                <button class="btn-stepper primary" style="margin-top: 18px;" onclick="runCalculator()">Ayrıntılı Çözümü Üret</button>
                             </div>
                             <div id="calc-result-area" class="exam-sheet" style="padding: 20px; display: none;"></div>
                         </div>
@@ -2428,42 +2428,42 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                         title: "1. Alterne Serilerde Eşdeğerlik ($u_n \sim v_n$) Tuzağı",
                         wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-10 Puan):</span>`,
                         wrongDesc: "İşareti değişen veya alterne serilerde $\\frac{(-1)^n}{\\sqrt{n} + (-1)^n} \\sim \\frac{(-1)^n}{\\sqrt{n}}$ belirterek 'Leibniz ile yakınsar' demek.",
-                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
                         rightDesc: "Asimptotik eşdeğerlik ($u_n \\sim v_n$) kuralı **YALNIZCA sabit işaretli (pozitif)** serilerde geçerlidir! Alterne serilerde Taylor açılımı yaparak $u_n = \\frac{(-1)^n}{\\sqrt{n}} - \\frac{1}{n} + o(1/n)$ şeklinde iki serinin toplamı olarak incelenmelidir."
                     },
                     {
                         title: "2. Genel Terim Sıfıra Gidince 'Seri Yakınsaktır' Demek",
                         wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-10 Puan):</span>`,
                         wrongDesc: "$\\lim_{n \\to \\infty} u_n = 0$ bulunca 'O halde seri yakınsaktır' belirterek çözümü sonlandırmak.",
-                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
                         rightDesc: "$\\lim u_n = 0$ yakınsaklık için yalnızca bir **GEREK ŞARTTIR**, yeter şart değildir! Karşıt örnek: $\\sum \\frac{1}{n}$ serisinde $1/n \\to 0$ fakat seri sonsuza ıraksar."
                     },
                     {
                         title: "3. D'Alembert Oranında $L = 1$ Çıkınca Karar Vermek",
                         wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-5 Puan):</span>`,
                         wrongDesc: "$\\lim \\frac{u_{n+1}}{u_n} = 1$ çıkınca seriye yakınsak ya da ıraksak demek.",
-                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
                         rightDesc: "$L = 1$ durumunda D'Alembert testi **tamamen kararsızdır**. Bu durumda Riemann serisiyle karşılaştırma veya Raabe-Duhamel testine geçilmelidir."
                     },
                     {
                         title: "4. Düzgün Yakınsaklık Olmadan İntegral ve Türev Kaydırmak",
                         wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-10 Puan):</span>`,
                         wrongDesc: "Sadece noktasal yakınsaklık varken $\\lim \\int_0^1 f_n(x)dx = \\int_0^1 \\lim f_n(x)dx$ eşitliğini doğrudan uygulamak.",
-                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
                         rightDesc: "İntegral veya türevin limit ile yer değiştirebilmesi için $(f_n)$ dizisinin ya da $\\sum u_n$ serisinin o aralıkta **DÜZGÜN YAKINSAK (Convergence Uniforme)** olduğunu ispatlamak şarttır."
                     },
                     {
                         title: "5. Fonksiyon Dizilerinde Supremum Normunu Yanlış Hesaplamak",
                         wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-8 Puan):</span>`,
                         wrongDesc: "$\\|f_n - f\\|_\\infty$ yerine $x$'e sabit bir sayı (örneğin $x=1/2$) koyup limitin sıfıra gittiğini göstererek 'düzgün yakınsaktır' demek.",
-                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
                         rightDesc: "Düzgün yakınsaklık tüm tanım kümesindeki **en büyük sapmaya (supremum normu)** bakar. Türev yardımıyla tepe noktası ($x_n$) belirlenmeli ve $\sup |f_n(x) - f(x)|$ limitinin sıfıra yakınsayıp yakınsamadığı irdelenmelidir."
                     },
                     {
                         title: "6. Riemann Serisinde $\\alpha = 1$ Durumu",
                         wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-5 Puan):</span>`,
                         wrongDesc: "$\\sum \\frac{1}{n^\\alpha}$ serisinin $\\alpha \\ge 1$ için yakınsadığını yazmak.",
-                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
                         rightDesc: "Riemann serisi sadece ve sadece **$\\alpha > 1$** için yakınsar! $\\alpha = 1$ harmonik seridir ve ıraksar."
                     }
                 ];
@@ -2473,28 +2473,28 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                         title: "1. Frenet Tabanında Normal (Merkezcil) İvmeyi Atlamak",
                         wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-10 Puan):</span>`,
                         wrongDesc: "İvmeyi sadece hız büyüklüğünün skaler türevi kabul edip $\\vec{a} = \\frac{dv}{dt} \\vec{T}$ yazmak.",
-                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
                         rightDesc: "Eğrisel yörüngelerde hız büyüklüğü sabit olsa dahi yönü değişir. Bu nedenle merkezcil ivme bileşeni kesinlikle eklenmelidir: $\\vec{a} = \\frac{dv}{dt} \\vec{T} + \\frac{v^2}{\\rho} \\vec{N}$."
                     },
                     {
                         title: "2. Kutupsal Taban Vektörlerinin Türevini Sıfır Almak",
                         wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-8 Puan):</span>`,
                         wrongDesc: "$\\vec{r} = r \\vec{u}_r$ türevini alırken taban türevini ihmal edip $\\vec{v} = \\dot{r} \\vec{u}_r$ yazmak.",
-                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
                         rightDesc: "Kutupsal taban vektörleri zamana bağlı olarak yön değiştirir: $\\frac{d\\vec{u}_r}{dt} = \\dot{\\theta}\\vec{u}_\\theta$. Dolayısıyla hız vektörü $\\vec{v} = \\dot{r}\\vec{u}_r + r\\dot{\\theta}\\vec{u}_\\theta$ şeklinde ifade edilir."
                     },
                     {
                         title: "3. Dönen Referans Sisteminde Poisson Bağıntısını Unutmak",
                         wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-10 Puan):</span>`,
                         wrongDesc: "Sabit repere göre türevi hareketli repere göre türeve doğrudan eşitlemek.",
-                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
                         rightDesc: "Poisson formülü uygulanmalıdır: $\\left(\\frac{d\\vec{A}}{dt}\\right)_{R_0} = \\left(\\frac{d\\vec{A}}{dt}\\right)_{R'} + \\vec{\\Omega} \\times \\vec{A}$."
                     },
                     {
                         title: "4. Sürtünme Kuvvetini Daima $f = \\mu N$ Almak",
                         wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-6 Puan):</span>`,
                         wrongDesc: "Cisim henüz kaymazken (statik dengedeyken) sürtünmeyi doğrudan $\\mu_s N$ olarak hesaplamak.",
-                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
                         rightDesc: "Statik sürtünme bir eşitsizliktir: $f_s \\le \\mu_s N$. Değeri uygulanan net kuvvete göre denge denkleminden bulunur; sadece kayma anında maksimuma ($f_{s,\\max} = \\mu_s N$) ulaşır."
                     }
                 ];
@@ -2504,21 +2504,21 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                         title: "1. Bağımsızlık ile Ayrıklığı Karıştırmak",
                         wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-10 Puan):</span>`,
                         wrongDesc: "İki olay bağımsız olduğunda $A \\cap B = \\emptyset$ sanmak.",
-                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
                         rightDesc: "Ayrıklık (disjoints) kesişimin boş olması demektir ($P(A \\cap B) = 0$). Bağımsızlık ise $P(A \\cap B) = P(A)P(B)$ demektir. Pozitif olasılıklı iki olay hem ayrık hem bağımsız OLAMAZ!"
                     },
                     {
                         title: "2. Bayes Formülünün Paydasını Eksik Açmak",
                         wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-8 Puan):</span>`,
                         wrongDesc: "Bayes formülünde paydadaki $P(B)$'yi açarken tümleyen durumu ($P(\\bar{A})P(B \\mid \\bar{A})$) unutmak.",
-                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
                         rightDesc: "Payda toplam olasılık formülüdür: $P(B) = P(A)P(B \\mid A) + P(\\bar{A})P(B \\mid \\bar{A})$. Özellikle tıbbi test sorularında sağlam popülasyon terimi sonucu belirler."
                     },
                     {
                         title: "3. İadesiz Çekilişte Olasılıkları Sabit Tutmak",
                         wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-5 Puan):</span>`,
                         wrongDesc: "Tirage sans remise (iadesiz çekiliş) yaparken ikinci çekiliş için paydayı $n$ olarak bırakmak.",
-                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
                         rightDesc: "Her çekilişte torbadaki bilye sayısı 1 azalır (payda $n-1$). İadeli ise bağımsızdır ve payda sabit kalır."
                     }
                 ];
@@ -2526,45 +2526,45 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 // Default: mat204_grup
                 traps = [
                     {
-                        title: "1. Permütasyon Bileşke Sırası (Convention Française)",
+                        title: "1. Permütasyon Bileşkesinde İşlem Sırası",
                         wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-5 Puan):</span>`,
                         wrongDesc: "$(\\sigma \\circ \\tau)(x)$ işleminde soldan sağa doğru giderek elemanın görüntüsünü bulmak.",
-                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
                         rightDesc: "Bileşke fonksiyon gibi değerlendirilir: **Sağdaki $\\tau$'dan başlanıp sola $\\sigma$'ya gidilir**: $(\\sigma \\circ \\tau)(x) = \\sigma(\\tau(x))$."
                     },
                     {
                         title: "2. Alt Grup İspatında Birim Elemanı ($e \\in H$) Unutmak",
                         wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-6 Puan):</span>`,
                         wrongDesc: "Doğrudan $\\forall x, y \\in H, xy^{-1} \\in H$ yazmak ama kümenin boş küme olmadığını ($H \\neq \\emptyset$) göstermemek.",
-                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
                         rightDesc: "İspata daima 'Puisque $e \\in H$, $H \\neq \\emptyset$' tespitiyle başlanmalıdır. $H$\'nin boş küme olmadığı teyit edilmeden alt grup kriteri geçerli olmaz."
                     },
                     {
                         title: "3. Lagrange Teoreminin Tersinin Her Zaman Doğru Olduğunu Sanmak",
                         wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-10 Puan):</span>`,
                         wrongDesc: "'$d$ böler $|G|$ ise $G$'nin mertebesi $d$ olan kesin bir alt grubu vardır' demek.",
-                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
                         rightDesc: "Lagrange teoreminin tersi genel gruplarda **DOĞRU DEĞİLDİR**! Klasik karşıt örnek: $|\\mathcal{A}_4| = 12$ olup $6 \\mid 12$ olmasına rağmen $\\mathcal{A}_4$'ün mertebesi 6 olan hiçbir alt grubu yoktur!"
                     },
                     {
                         title: "4. Bézout Katsayılarında Eksi İşaretini Unutmak",
                         wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-4 Puan):</span>`,
                         wrongDesc: "Geriye doğru sararken $r = A - qB$ yerine $A + qB$ yazıp katsayı işaretlerini karıştırmak.",
-                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
                         rightDesc: "Her satırda parantezleri titizlikle takip ediniz: $au + bv = 1$ eşitliğinde katsayıların negatif olabileceği göz önünde bulundurulmalıdır."
                     },
                     {
                         title: "5. Devirli Gruplarda Mertebe ile Bölünebilme Yönü",
                         wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-5 Puan):</span>`,
                         wrongDesc: "$g^n = e$ olduğunda hemen $o(g) = n$ demek.",
-                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
                         rightDesc: "$g^n = e \\iff o(g) \\mid n$. Yani $n$, mertebenin bir katıdır; en küçük pozitif kat mertebedir."
                     },
                     {
                         title: "6. Diedral Grupta Yansıma ve Dönme Çarpımı ($D_n$)",
                         wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-5 Puan):</span>`,
                         wrongDesc: "$s \\cdot r^2 = r^2 \\cdot s$ olduğunu varsaymak.",
-                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Resmi Fransız Kuralı (Tam Puan):</span>`,
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
                         rightDesc: "Yansıma elemanı saat yönündeki dönmeyi tersine çevirir: **$s \\cdot r^k = r^{-k} \\cdot s = r^{n-k} \\cdot s$**. $s$ elemanı sağa aktarılırken $r$ dönme elemanının kuvvetinin işaretinin eksiye döneceği dikkate alınmalıdır."
                     }
                 ];
@@ -2605,7 +2605,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
 
                 <div class="academic-card">
                     <p style="font-size: 1rem; color: var(--text-secondary); margin-bottom: 24px; line-height: 1.7;">
-                        Galatasaray Üniversitesi matematik ve fen sınavlarında puan kaybını önlemek için <strong>resmi Fransız çözüm ve yazım kurallarına (rédaction)</strong> uymak esastır. Aşağıda, <strong>${c.code} (${c.title})</strong> sınav kağıdında en sık yapılan hatalar ve kaçınılması gereken kritik noktalar derlenmiştir:
+                        Galatasaray Üniversitesi matematik ve fen sınavlarında tam puan almak için <strong>akademik yazım ve ispat kurallarına (rédaction mathématique)</strong> titizlikle uymak esastır. Aşağıda, <strong>${c.code} (${c.title})</strong> sınav kağıtlarında en sık puan kaybettiren hatalar ve doğru çözüm yaklaşımları derlenmiştir:
                     </p>
 
                     ${trapsHTML}
@@ -2704,7 +2704,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
 
                         <details style="margin-top: 14px; cursor: pointer;">
                             <summary style="font-weight: 600; color: var(--accent-indigo); outline: none;">
-                                ${window.ICONS ? window.ICONS.listTodo : ""} Resmi Çözümü ve Puan Baremini Göster
+                                ${window.ICONS ? window.ICONS.listTodo : ""} Model Çözümü ve Puan Baremini Göster
                             </summary>
                             <div style="margin-top: 14px; padding: 18px 22px; background: var(--bg-paper); border: 1px solid var(--border-subtle); border-radius: 10px;">
                                 <div style="font-family: 'Newsreader', serif; font-size: 1.14rem; line-height: 1.8;">
@@ -2762,7 +2762,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 </div>
 
                 <div style="background: rgba(37, 99, 235, 0.05); border: 1px solid rgba(37, 99, 235, 0.2); border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; font-size: 0.95rem; color: var(--text-main);">
-                    <strong>Sınav Yönergesi:</strong> Boş bir kağıt ve kalem alarak 90 dakikalık süreyi başlatınız. Soruları resmi Fransızca sınav formatında (<em>Soit... Par conséquent...</em>) adım adım çözünüz. Süre tamamlandığında resmi çözümü ve puanlama baremini açarak kağıdınızı 100 üzerinden değerlendiriniz.
+                    <strong>Sınav Yönergesi:</strong> Boş bir kağıt ve kalem alarak 90 dakikalık süreyi başlatınız. Soruları akademik sınav formatına (<em>Soit... Par conséquent...</em>) uygun biçimde adım adım çözünüz. Süre tamamlandığında model çözümü ve puanlama baremini açarak kağıdınızı 100 üzerinden değerlendiriniz.
                 </div>
 
                 ${questionsHTML}
