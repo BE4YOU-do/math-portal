@@ -17,19 +17,19 @@ window.COURSES_MANIFEST = {
         "id": "modul2",
         "title": "Modül 2: Karmaşık Sayılar, Denklik Bağıntıları ve Gruplar",
         "breadcrumb": "MAT204 > Modül 2 (TD-2) > Gruplar",
-        "exerciseCount": 21
+        "exerciseCount": 23
       },
       {
         "id": "modul3",
-        "title": "Modül 3: Simetri ve Transformasyonlar (Diedral Gruplar Dₙ)",
-        "breadcrumb": "MAT204 > Modül 3 (TD-3) > Diedral",
-        "exerciseCount": 5
+        "title": "Modül 3: Devirli Gruplar ve Birimin Kökleri (Groupes Cycliques I)",
+        "breadcrumb": "MAT204 > Modül 3 (TD-3) > Devirli Gruplar",
+        "exerciseCount": 7
       },
       {
         "id": "modul4",
-        "title": "Modül 4: Devirli Gruplar (Groupes Cycliques) ve Lagrange",
-        "breadcrumb": "MAT204 > Modül 4 (TD-4) > Devirli Gruplar",
-        "exerciseCount": 13
+        "title": "Modül 4: Devirli Gruplar ve Üreteçler (Groupes Cycliques II & Euler)",
+        "breadcrumb": "MAT204 > Modül 4 (TD-4) > Üreteçler",
+        "exerciseCount": 6
       },
       {
         "id": "modul5",

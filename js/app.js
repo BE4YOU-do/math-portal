@@ -2451,18 +2451,18 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             }
 
             // Default: mat204_grup
-            const q1 = mods['modul1'].exercises[0];
-            const q2 = mods['modul2'].exercises[0];
-            const q3 = mods['modul3'].exercises[1];
-            const q4 = mods['modul4'].exercises[1];
-            const q5 = mods['modul5'].exercises[4] || mods['modul6'].exercises[0];
+            const q1 = mods['modul1']?.exercises[0];
+            const q2 = mods['modul2']?.exercises[0];
+            const q3 = mods['modul3']?.exercises[1] || mods['modul3']?.exercises[0];
+            const q4 = mods['modul4']?.exercises[1] || mods['modul4']?.exercises[0];
+            const q5 = mods['modul5']?.exercises[4] || mods['modul6']?.exercises[0];
 
             return [
                 { num: 1, points: 20, topic: 'Aritmetik ve Doğrusal Kombinasyon', ex: q1, rubric: '+5 Puan: Hipotez tanımı, +10 Puan: Doğrusal kombinasyon hesabı, +5 Puan: Sonuç ve d=±1.' },
                 { num: 2, points: 20, topic: 'Denklik Bağıntısı ve Sınıflar', ex: q2, rubric: '+5 Puan: Yansıma, +5 Puan: Simetri, +5 Puan: Geçişme, +5 Puan: Denklik sınıfı.' },
-                { num: 3, points: 20, topic: 'Diedral Simetriler ve $D_n$', ex: q3, rubric: '+6 Puan: Temel bağıntı s r = r^-1 s, +8 Puan: Alt grup elemanları, +6 Puan: Mertebe kontrolü.' },
-                { num: 4, points: 20, topic: 'Eleman Mertebesi ve Devirli Grup', ex: q4, rubric: '+10 Puan: (<=) Tek yönlü gerektirme, +10 Puan: (=>) Kalanlı bölme ve minimalite çelişkisi.' },
-                { num: 5, points: 20, topic: 'Permütasyonlar / $\mathcal{S}_4$ Yapısı', ex: q5, rubric: '+6 Puan: Ayrık döngü ayrışımı, +8 Puan: Mertebe (EKOK) hesabı, +6 Puan: İmza kuralı.' }
+                { num: 3, points: 20, topic: 'Devirli Grup ve Mertebe Bağıntısı ($g^n=e \\iff m \\mid n$)', ex: q3, rubric: '+6 Puan: (<=) Tek yönlü gerektirme, +10 Puan: (=>) Kalanlı bölme algoritması, +4 Puan: Minimalite ve r=0 sonucu.' },
+                { num: 4, points: 20, topic: 'Devirli Grupların Alt Grup Yapısı (Théorème Fondamental)', ex: q4, rubric: '+6 Puan: Bölünebilirlik ve üreteç tespiti, +8 Puan: Her bölen için tek alt grup, +6 Puan: Alt grup elemanları.' },
+                { num: 5, points: 20, topic: 'Permütasyonlar / $\\mathcal{S}_4$ ve Morfizmler', ex: q5, rubric: '+6 Puan: Ayrık döngü ayrışımı, +8 Puan: Mertebe (EKOK) hesabı, +6 Puan: İmza kuralı.' }
             ];
         }
 
