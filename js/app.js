@@ -677,6 +677,13 @@ function triggerManualSync() {
             const main = document.getElementById('main-content');
             const mod = modulesDB[currentModuleKey];
             if (!mod || !main) return;
+
+            // Preserve horizontal scroll position of pills bars before DOM replacement
+            const prevPillsBar = main.querySelector('.exercise-pills-bar');
+            const savedPillsScrollLeft = prevPillsBar ? prevPillsBar.scrollLeft : null;
+            const prevTheoryNav = main.querySelector('.theory-pages-nav');
+            const savedTheoryNavScrollLeft = prevTheoryNav ? prevTheoryNav.scrollLeft : null;
+
             const solvedList = getSolvedExercises();
             const completedTheories = getCompletedTheories();
             const isTheoryCompleted = completedTheories.includes(mod.id);
@@ -944,6 +951,33 @@ function triggerManualSync() {
                         </div>
                     </div>
                 `;
+
+                const newPillsBar = main.querySelector('.exercise-pills-bar');
+                if (newPillsBar) {
+                    const activePill = newPillsBar.querySelector('.pill-btn.active');
+                    if (savedPillsScrollLeft !== null) {
+                        newPillsBar.scrollLeft = savedPillsScrollLeft;
+                        if (activePill) {
+                            const pillLeft = activePill.offsetLeft;
+                            const pillRight = pillLeft + activePill.offsetWidth;
+                            const viewLeft = newPillsBar.scrollLeft;
+                            const viewRight = viewLeft + newPillsBar.clientWidth;
+                            if (pillLeft < viewLeft) {
+                                newPillsBar.scrollLeft = Math.max(0, pillLeft - 12);
+                            } else if (pillRight > viewRight) {
+                                newPillsBar.scrollLeft = pillRight - newPillsBar.clientWidth + 12;
+                            }
+                        }
+                    } else if (activePill) {
+                        const targetScroll = activePill.offsetLeft - (newPillsBar.clientWidth / 2) + (activePill.offsetWidth / 2);
+                        newPillsBar.scrollLeft = Math.max(0, targetScroll);
+                    }
+                }
+            }
+
+            const newTheoryNav = main.querySelector('.theory-pages-nav');
+            if (newTheoryNav && savedTheoryNavScrollLeft !== null) {
+                newTheoryNav.scrollLeft = savedTheoryNavScrollLeft;
             }
 
             renderMath();
@@ -1261,6 +1295,8 @@ function printMockExam(withSolutions = false) {
             if (currentCardIdx >= cards.length) currentCardIdx = 0;
             const card = cards[currentCardIdx] || { category: 'Genel', prompt: 'Bu kategoride henüz kart yok.', answer: 'Diğer kategorileri seçebilirsiniz.' };
             const main = document.getElementById('main-content');
+            const prevCatPills = main ? main.querySelector('.flashcard-cat-pills') : null;
+            const savedCatScrollLeft = prevCatPills ? prevCatPills.scrollLeft : null;
             const c = COURSES_DB[activeCourseKey];
 
             // Categories list for pills
@@ -1351,6 +1387,11 @@ function printMockExam(withSolutions = false) {
                     </div>
                 </div>
             `;
+
+            const newCatPills = main.querySelector('.flashcard-cat-pills');
+            if (newCatPills && savedCatScrollLeft !== null) {
+                newCatPills.scrollLeft = savedCatScrollLeft;
+            }
 
             renderMath();
         }
@@ -1590,6 +1631,8 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             setActiveNav('nav-' + viewKey);
 
             const main = document.getElementById('main-content');
+            const prevCatPills = main ? main.querySelector('.flashcard-cat-pills') : null;
+            const savedCatScrollLeft = prevCatPills ? prevCatPills.scrollLeft : null;
             const c = COURSES_DB[activeCourseKey];
 
             if (viewKey === 'ispatlar') {
@@ -2432,6 +2475,8 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             setActiveNav('nav-pitfalls');
             syncMobileNavTabs('pitfalls');
             const main = document.getElementById('main-content');
+            const prevCatPills = main ? main.querySelector('.flashcard-cat-pills') : null;
+            const savedCatScrollLeft = prevCatPills ? prevCatPills.scrollLeft : null;
             const c = COURSES_DB[activeCourseKey];
 
             let traps = [];
