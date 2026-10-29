@@ -5,7 +5,7 @@
  * Network-only for /api/ sync calls.
  */
 
-const CACHE_NAME = 'mathportal-v15';
+const CACHE_NAME = 'mathportal-v16';
 
 const PRECACHE_ASSETS = [
     './',
@@ -73,21 +73,16 @@ self.addEventListener('fetch', event => {
         return;
     }
 
-    // Same-origin assets: Stale-While-Revalidate
+    // Same-origin assets: Network-First with Cache Fallback so new deployments appear immediately
     event.respondWith(
-        caches.match(event.request).then(cachedResponse => {
-            const fetchPromise = fetch(event.request).then(networkResponse => {
-                if (networkResponse && networkResponse.status === 200) {
-                    const responseClone = networkResponse.clone();
-                    caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseClone));
-                }
-                return networkResponse;
-            }).catch(() => {
-                // Return cached version or offline page if network fails
-                return cachedResponse;
-            });
-
-            return cachedResponse || fetchPromise;
+        fetch(event.request).then(networkResponse => {
+            if (networkResponse && networkResponse.status === 200) {
+                const responseClone = networkResponse.clone();
+                caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseClone));
+            }
+            return networkResponse;
+        }).catch(() => {
+            return caches.match(event.request);
         })
     );
 });

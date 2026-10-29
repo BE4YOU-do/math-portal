@@ -28,7 +28,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
     <!-- Custom Modular Stylesheet -->
-    <link rel="stylesheet" href="css/style.css?v=15">
+    <link rel="stylesheet" href="css/style.css?v=16">
 </head>
 <body>
 
@@ -306,18 +306,25 @@
     </div>
 
     <!-- Modular Data & Logic Scripts -->
-    <script src="js/icons.js?v=15"></script>
-    <script src="data/courses_manifest.js?v=15"></script>
-    <script src="data/concepts.js?v=15"></script>
-    <script src="data/courses/mat204_grup.js?v=15"></script>
-    <script src="data/flashcards.js?v=15"></script>
-    <script src="js/app.js?v=15"></script>
+    <script src="js/icons.js?v=16"></script>
+    <script src="data/courses_manifest.js?v=16"></script>
+    <script src="data/concepts.js?v=16"></script>
+    <script src="data/courses/mat204_grup.js?v=16"></script>
+    <script src="data/flashcards.js?v=16"></script>
+    <script src="js/app.js?v=16"></script>
 
     <!-- Service Worker Registration for PWA Offline Math & KaTeX -->
     <script>
         if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+            let refreshing = false;
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (!refreshing) {
+                    refreshing = true;
+                    window.location.reload();
+                }
+            });
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js?v=15').catch(err => {
+                navigator.serviceWorker.register('./sw.js?v=16').catch(err => {
                     console.log('SW registration note:', err);
                 });
             });
