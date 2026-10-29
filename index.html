@@ -272,5 +272,16 @@
     <script src="data/courses/mat204_grup.js?v=9"></script>
     <script src="data/flashcards.js?v=9"></script>
     <script src="js/app.js?v=9"></script>
+
+    <!-- Service Worker Registration for PWA Offline Math & KaTeX -->
+    <script>
+        if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js?v=9').catch(err => {
+                    console.log('SW registration note:', err);
+                });
+            });
+        }
+    </script>
 </body>
 </html>

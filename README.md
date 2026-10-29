@@ -1,17 +1,34 @@
-# 📐 MathPortal — Lisans Matematik & Fen Çalışma Portalı
+# MathPortal • Lisans Matematik & Fen Portalı
 
-Üniversite matematik ve mühendislik öğrencileri için hazırlanmış açık kaynak interaktif ders, vize ve sınav hazırlık platformu.
+Galatasaray Üniversitesi matematik ve temel bilimler lisans programları için hazırlanmış interaktif ders kitabı, adım adım TD çözümleri ve sınav çalışma platformu.
 
-### 📚 İçerik ve Müfredatlar
-- **🔵 MAT204 — Grup Teorisi :** 6 Modül, 68 TD Sorusu, Ders Kitabı Teorisi, Kritik Teorem İspatları, Sınav Fransızcası ve Deneme Sınavı.
-- **🟢 MAT201 — Seriler & Analiz :** Diziler, Temel Seri Kriterleri, Fonksiyon Serileri, 38 TD Sorusu ve Çözümleri.
-- **🟣 FIZ101 — Fizik 1 (Genel Mekanik) :** Vektörler, Kinematik, Frenet Bazı, DM-1 ve DM-2 Resmi Çözümleri.
-- **🟠 MAT206 — Olasılık & İstatistik :** Kombinatorik, Kolmogorov Aksiyomları ve Bayes Teoremi.
+---
 
-### 🚀 Özellikler
-- 📖 Sayfa sayfa ders kitabı teorik anlatımı ve entegre çözümlü TD soruları.
-- ✍️ Adım adım interaktif rehberli soru çözüm akışı.
-- ⏱️ 90 dakikalık vize deneme sınavı ve resmi not baremi (Barème).
-- 🔍 `Cmd + K` anlık teorem ve soru arama özelliği (Spotlight).
-- ⭐ Çapraz cihaz bulut senkronizasyonlu yıldızlı ve çözülecek sorular listesi.
-- 📱 Progressive Web App (PWA) desteği ve %100 mobil uyumlu arayüz.
+### Müfredat ve Ders Modülleri
+
+- **MAT204 — Grup Teorisi**  
+  6 Modül, 68 İnteraktif TD Sorusu (TD-1 ila TD-6 tam hizalama), Kapsamlı Ders Kitabı Teorisi, Kritik Teorem İspatları, Resmi Fransızca Sınav Kılavuzu ve 90 Dakikalık Deneme Sınavı.
+- **MAT201 — Seriler & Analiz**  
+  Diziler, Seriler, Yakınsaklık Kriterleri (Riemann, D'Alembert, Cauchy, Leibniz), Fonksiyon Serileri ve 38 TD Sorusu.
+- **FIZ101 — Fizik 1 (Genel Mekanik)**  
+  3B Vektörel Analiz, Kinematik, Frenet Tabanı, Dönen Referans Sistemleri, DM-1 ve DM-2 Resmi Çözümleri.
+- **MAT206 — Olasılık & İstatistik**  
+  Kombinatorik, Kolmogorov Aksiyomları, Koşullu Olasılık ve Bayes Teoremi Hesaplayıcısı.
+
+---
+
+### Mimari & Teknik Özellikler
+
+- **Vektörel İkonografi**: İşletim sistemi emojilerinden tamamen arındırılmış, temaya duyarlı SVG ikon ve akademik glif sistemi (`js/icons.js`).
+- **Modüler JSON Mimarisi**: Ders bazlı dinamik modüler veri yükleme (`data/courses/*.json`); tekil ve hızlı açılış süresi.
+- **PWA & Offline Desteği**: Service Worker (`sw.js`) ve web manifest desteği sayesinde KaTeX kütüphanesi, matematiksel fontlar ve ders verileri çevrimdışı önbelleklenir.
+- **İnteraktif Soru Bankası**: Sınav odaklı adım adım çözüm akışı, taktik ipuçları ve resmi Fransızca çözüm notasyonu.
+- **Spotlight Arama**: `Cmd + K` (veya `Ctrl + K`) ile tüm teorem, kavram ve sorular arasında anlık tam metin arama.
+- **Çapraz Cihaz Senkronizasyonu**: Yıldızlı sorular, çözülen alıştırmalar ve vize ilerlemesi mobil ve masaüstü arasında otomatik eşitlenir.
+
+---
+
+### Canlı Erişim
+
+Portal doğrudan Vercel üzerinde barındırılmaktadır:  
+**https://gsu-akademik-portal.vercel.app**

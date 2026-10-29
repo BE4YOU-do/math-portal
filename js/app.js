@@ -2892,6 +2892,16 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             }
         });
 
+        window.addEventListener('online', function() {
+            updateSyncStatusUI('syncing', 'Bağlantı Kuruldu');
+            fetchFromCloud(false);
+        });
+
+        window.addEventListener('offline', function() {
+            updateSyncStatusUI('offline', 'Çevrimdışı (PWA)');
+        });
+
+
         window.addEventListener('hashchange', async function() {
             if (await restoreAppState()) {
                 updateCourseHeaderUI();
