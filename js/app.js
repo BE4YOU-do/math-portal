@@ -56,7 +56,7 @@ async function ensureCourseLoaded(courseKey) {
     loadedCoursePromises[courseKey] = (async () => {
         try {
             if (window.location.protocol !== 'file:') {
-                const res = await fetch(`data/courses/${courseKey}.json?v=7`);
+                const res = await fetch(`data/courses/${courseKey}.json?v=19`);
                 if (res.ok) {
                     const data = await res.json();
                     window.COURSES_DB[courseKey] = data;
@@ -68,7 +68,7 @@ async function ensureCourseLoaded(courseKey) {
         }
         
         try {
-            await loadScriptAsync(`data/courses/${courseKey}.js?v=7`);
+            await loadScriptAsync(`data/courses/${courseKey}.js?v=19`);
             if (window.COURSES_DB[courseKey]) {
                 return window.COURSES_DB[courseKey];
             }
@@ -926,6 +926,8 @@ function triggerManualSync() {
                             </span>
                         </div>
 
+                        ${ex.subtitle ? `<div style="font-size: 1.02rem; font-weight: 700; color: var(--accent-indigo); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px dashed var(--border-subtle);">${ex.name} — ${ex.subtitle}</div>` : ''}
+
                         <div class="question-statement" style="font-size: 1.18rem; margin-bottom: 18px; line-height: 1.7;">
                             ${ex.enonce}
                         </div>
@@ -949,6 +951,18 @@ function triggerManualSync() {
                                 ${stepperActionsHTML}
                             </div>
                         </div>
+
+                        <details style="margin-top: 16px; background: var(--bg-paper); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 10px 14px;" ${getExerciseNote(ex.id) ? 'open' : ''}>
+                            <summary style="cursor: pointer; font-size: 0.86rem; font-weight: 600; color: var(--text-secondary); user-select: none;">
+                                ${window.ICONS ? window.ICONS.penTool : "📝"} Kişisel Sınav Notum ${getExerciseNote(ex.id) ? '<span style="color: var(--accent-emerald); margin-left: 6px;">(Not Kayıtlı ✓)</span>' : '<span style="color: var(--text-muted); font-weight: 400; margin-left: 6px;">(Bu soru için kendinize ipucu veya hatırlatma ekleyin)</span>'}
+                            </summary>
+                            <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 8px;">
+                                <textarea id="user-note-input-${ex.id}" rows="2" placeholder="Örn: Sınavda bu soruda önce e ∈ H olduğunu yazmayı unutma, sonra xy⁻¹ ∈ H göster..." style="width: 100%; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 10px 12px; color: var(--text-main); font-family: inherit; font-size: 0.9rem; resize: vertical;">${getExerciseNote(ex.id)}</textarea>
+                                <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                                    <button class="btn-stepper primary" style="padding: 6px 14px; font-size: 0.82rem;" onclick="saveExerciseNote('${ex.id}')">Notu Kaydet</button>
+                                </div>
+                            </div>
+                        </details>
                     </div>
                 `;
 
@@ -1621,7 +1635,35 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             if (cKey === 'mat201_seriler') return 'Seri Yakınsaklık & Kısmi Toplam';
             if (cKey === 'fiz101_fizik') return '3B Vektörel Analiz & Çarpım';
             if (cKey === 'mat206_olasilik') return 'Bayes Teoremi & Tanı Simülatörü';
-            return 'Bézout & Modüler Ters Hesaplayıcı';
+            return 'Grup Teorisi & Bézout Laboratuvarı';
+        }
+
+        function getExerciseNote(exId) {
+            try {
+                const raw = localStorage.getItem(activeCourseKey + '_user_notes');
+                const map = raw ? JSON.parse(raw) : {};
+                return map[exId] || '';
+            } catch (e) {
+                return '';
+            }
+        }
+
+        function saveExerciseNote(exId) {
+            const ta = document.getElementById('user-note-input-' + exId);
+            if (!ta) return;
+            try {
+                const raw = localStorage.getItem(activeCourseKey + '_user_notes');
+                const map = raw ? JSON.parse(raw) : {};
+                const val = ta.value.trim();
+                if (val) {
+                    map[exId] = val;
+                } else {
+                    delete map[exId];
+                }
+                localStorage.setItem(activeCourseKey + '_user_notes', JSON.stringify(map));
+                showPortalToast((window.ICONS ? window.ICONS.check : "✓") + " Kişisel sınav notunuz kaydedildi");
+                renderModuleView();
+            } catch (e) {}
         }
 
         // ================= SPECIAL VIEWS =================
@@ -1782,30 +1824,91 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                     `;
                     setTimeout(runBayesCalculator, 100);
                 } else {
-                    // Default: mat204_grup
+                    // Default: mat204_grup — 3-Tab Group Theory & Arithmetic Laboratory
                     main.innerHTML = `
                         <div class="content-header">
                             <div>
-                                <div class="breadcrumbs">${c.code} > Sınav Araçları > Hesaplayıcı</div>
-                                <h1 class="content-title">${window.ICONS ? window.ICONS.calculator : ""} Bézout Özdeşliği ve Modüler Ters Hesaplayıcı</h1>
+                                <div class="breadcrumbs">${c.code} > Sınav ve Çalışma Araçları > İnteraktif Grup Teorisi Laboratuvarı</div>
+                                <h1 class="content-title">${window.ICONS ? window.ICONS.calculator : ""} MAT204 Grup Teorisi &amp; Aritmetik Laboratuvarı</h1>
                             </div>
                         </div>
-                        <div class="academic-card">
+
+                        <div class="theory-pages-nav" style="margin-bottom: 18px;">
+                            <button class="theory-page-btn active" id="lab-tab-btn-bezout" onclick="switchMat204LabTab('bezout')">
+                                1. Bézout, Öklid &amp; Modüler Ters ($a^{-1} \\pmod n$)
+                            </button>
+                            <button class="theory-page-btn" id="lab-tab-btn-znun" onclick="switchMat204LabTab('znun')">
+                                2. $\\mathbb{Z}_n$ ve $U(n)$ Grup &amp; Alt Grup Analizörü
+                            </button>
+                            <button class="theory-page-btn" id="lab-tab-btn-sn" onclick="switchMat204LabTab('sn')">
+                                3. $\\mathcal{S}_n$ Permütasyon, Ayrık Döngü &amp; İmza ($\\varepsilon$)
+                            </button>
+                        </div>
+
+                        <!-- TAB 1: BEZOUT & MODULAR INVERSE -->
+                        <div class="academic-card" id="lab-panel-bezout">
+                            <p style="color: var(--text-secondary); font-size: 0.94rem; margin-bottom: 14px;">
+                                İki tam sayı için <strong>Öklid Algoritması (Divisions Euclidiennes)</strong>, geriye doğru yerine koyma ile <strong>Bézout Katsayıları ($au + nv = \\gcd(a,n)$)</strong> ve $\\mathbb{Z}_n$ içindeki <strong>Modüler Çarpımsal Ters ($\\bar{a}^{-1}$)</strong> adımlarını resmi sınav formatında üretir.
+                            </p>
                             <div class="calc-box">
                                 <div class="calc-input-wrapper">
-                                    <label>Sayı (a):</label>
-                                    <input type="number" id="calc-a" value="7">
+                                    <label>Sayı ($a$):</label>
+                                    <input type="number" id="calc-a" value="17">
                                 </div>
                                 <div class="calc-input-wrapper">
-                                    <label>Mod (n):</label>
-                                    <input type="number" id="calc-n" value="26">
+                                    <label>Mod / İkinci Sayı ($n$):</label>
+                                    <input type="number" id="calc-n" value="43">
                                 </div>
-                                <button class="btn-stepper primary" style="margin-top: 18px;" onclick="runCalculator()">Ayrıntılı Çözümü Üret</button>
+                                <button class="btn-stepper primary" style="margin-top: 18px;" onclick="runCalculator()">Adım Adım Sınav Çözümünü Üret</button>
                             </div>
                             <div id="calc-result-area" class="exam-sheet" style="padding: 20px; display: none;"></div>
                         </div>
+
+                        <!-- TAB 2: Z_n & U(n) GROUP ANALYZER -->
+                        <div class="academic-card" id="lab-panel-znun" style="display: none;">
+                            <p style="color: var(--text-secondary); font-size: 0.94rem; margin-bottom: 14px;">
+                                Seçilen $n$ ($2 \\le n \\le 60$) değeri için $(\\mathbb{Z}_n, +)$ ve $(U(n), \\times)$ gruplarının mertebesini ($\\varphi(n)$), her elemanın mertebesini ($o(x)$), üreteçlerini ve tüm devirli alt gruplarını eksiksiz hesaplar.
+                            </p>
+                            <div class="calc-box">
+                                <div class="calc-input-wrapper">
+                                    <label>Modül ($n$, $2 \\le n \\le 60$):</label>
+                                    <input type="number" id="calc-group-n" value="12" min="2" max="60">
+                                </div>
+                                <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 18px;">
+                                    <button class="btn-stepper primary" onclick="runZnUnAnalyzer()">$\\mathbb{Z}_n$ ve $U(n)$ Gruplarını Analiz Et</button>
+                                    <button class="btn-stepper secondary" onclick="document.getElementById('calc-group-n').value=10; runZnUnAnalyzer();">Örnek: n=10</button>
+                                    <button class="btn-stepper secondary" onclick="document.getElementById('calc-group-n').value=12; runZnUnAnalyzer();">Örnek: n=12</button>
+                                    <button class="btn-stepper secondary" onclick="document.getElementById('calc-group-n').value=20; runZnUnAnalyzer();">Örnek: n=20</button>
+                                    <button class="btn-stepper secondary" onclick="document.getElementById('calc-group-n').value=30; runZnUnAnalyzer();">Örnek: n=30</button>
+                                </div>
+                            </div>
+                            <div id="calc-znun-result" class="exam-sheet" style="padding: 20px; display: none;"></div>
+                        </div>
+
+                        <!-- TAB 3: S_n PERMUTATION & SIGNATURE SOLVER -->
+                        <div class="academic-card" id="lab-panel-sn" style="display: none;">
+                            <p style="color: var(--text-secondary); font-size: 0.94rem; margin-bottom: 14px;">
+                                Döngü notasyonuyla girilen $\\sigma$ ve $\\tau$ permütasyonlarının bileşkesini ($\\sigma \\circ \\tau$, sağdan sola!), ayrık döngü ayrışımını, mertebesini ($\\mathrm{ppcm}$), transpozisyon çarpımını ve imzasını ($\\varepsilon = \\pm 1$) hesaplar.
+                            </p>
+                            <div class="calc-box" style="align-items: flex-end;">
+                                <div class="calc-input-wrapper" style="flex: 1; min-width: 180px;">
+                                    <label>Permütasyon $\\sigma$ (Döngü yazılışı):</label>
+                                    <input type="text" id="calc-perm-sigma" value="(1 2 3 4)" style="width: 100%;" placeholder="Örn: (1 2 3)(4 5)">
+                                </div>
+                                <div class="calc-input-wrapper" style="flex: 1; min-width: 180px;">
+                                    <label>Permütasyon $\\tau$ (Döngü yazılışı):</label>
+                                    <input type="text" id="calc-perm-tau" value="(1 3)(2 4)" style="width: 100%;" placeholder="Örn: (1 4 2)">
+                                </div>
+                                <div class="calc-input-wrapper">
+                                    <label>Derece ($n$):</label>
+                                    <input type="number" id="calc-perm-n" value="4" min="2" max="9" style="width: 80px;">
+                                </div>
+                                <button class="btn-stepper primary" onclick="runPermutationAnalyzer()">Permütasyonları Çözümle</button>
+                            </div>
+                            <div id="calc-sn-result" class="exam-sheet" style="padding: 20px; display: none;"></div>
+                        </div>
                     `;
-                    setTimeout(runCalculator, 100);
+                    setTimeout(runCalculator, 80);
                 }
             }
 
@@ -1885,6 +1988,220 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             }
         }
 
+
+        function runZnUnAnalyzer() {
+            const nInput = document.getElementById('calc-group-n');
+            const out = document.getElementById('calc-znun-result');
+            if (!nInput || !out) return;
+            const n = Math.min(60, Math.max(2, parseInt(nInput.value, 10) || 12));
+            nInput.value = n;
+            out.style.display = 'block';
+
+            // Divisors of n
+            const divisors = [];
+            for (let d = 1; d <= n; d++) {
+                if (n % d === 0) divisors.push(d);
+            }
+
+            // Elements of U(n)
+            const units = [];
+            for (let k = 1; k < n; k++) {
+                if (gcdInt(k, n) === 1) units.push(k);
+            }
+            const phi = units.length;
+
+            // Subgroups of (Z_n, +)
+            let znSubgroupsHTML = '';
+            divisors.forEach(d => {
+                const gen = (n / d) % n;
+                const elems = [];
+                for (let j = 0; j < d; j++) elems.push(`\\overline{${(j * (n / d)) % n}}`);
+                znSubgroupsHTML += `<li><strong>Ordre $d = ${d}$ :</strong> $H_{${d}} = \\langle \\overline{${gen}} \\rangle = \\{ ${elems.join(', ')} \\}$</li>`;
+            });
+
+            // Orders in U(n)
+            let unRowsHTML = '';
+            const unGenerators = [];
+            units.forEach(u => {
+                let cur = u % n;
+                let ord = 1;
+                const powers = [`${u}^1 \\equiv ${cur}`];
+                while (cur !== 1 && ord <= n) {
+                    cur = (cur * u) % n;
+                    ord++;
+                    if (ord <= 6 || cur === 1) powers.push(`${u}^{${ord}} \\equiv ${cur}`);
+                }
+                if (ord === phi) unGenerators.push(u);
+                unRowsHTML += `
+                    <tr>
+                        <td style="padding: 6px 10px; border-bottom: 1px solid var(--border-subtle); font-weight: 700;">$\\overline{${u}}$</td>
+                        <td style="padding: 6px 10px; border-bottom: 1px solid var(--border-subtle);">$${powers.join(', \\; ')}$</td>
+                        <td style="padding: 6px 10px; border-bottom: 1px solid var(--border-subtle); font-weight: 700; color: var(--accent-blue);">$o(\\overline{${u}}) = ${ord}$</td>
+                        <td style="padding: 6px 10px; border-bottom: 1px solid var(--border-subtle);">${ord === phi ? '<span style="color: var(--accent-emerald); font-weight: 700;">Üreteç (Générateur) ✓</span>' : `Alt grup mertebesi ${ord}`}</td>
+                    </tr>
+                `;
+            });
+
+            const isUnCyclic = unGenerators.length > 0;
+
+            out.innerHTML = `
+                <h3 style="color: var(--accent-blue); margin-bottom: 10px;">1. Toplamsal Devirli Grup $(\\mathbb{Z}_{${n}}, +)$ Analizi</h3>
+                <div class="math-callout">
+                    <p>• <strong>Grup Mertebesi :</strong> $|\\mathbb{Z}_{${n}}| = ${n}$ &nbsp;|&nbsp; <strong>Üreteç Sayısı :</strong> $\\varphi(${n}) = ${phi}$.</p>
+                    <p>• <strong>$(\\mathbb{Z}_{${n}}, +)$ Üreteçleri :</strong> $\\{ ${units.map(u => '\\overline{' + u + '}').join(', ')} \\}$.</p>
+                    <p style="margin-top: 8px;">• <strong>Tüm Devirli Alt Grupları (${divisors.length} adet, $d \\mid ${n}$) :</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 4px; line-height: 1.75;">${znSubgroupsHTML}</ul>
+                </div>
+
+                <h3 style="color: var(--accent-blue); margin: 18px 0 10px;">2. Çarpımsal Grup $(U(${n}), \\times)$ ve Eleman Mertebeleri</h3>
+                <div class="math-callout">
+                    <p>• <strong>Grup Tanımı ve Mertebesi :</strong> $U(${n}) = \\{ ${units.join(', ')} \\}$, $|U(${n})| = \\varphi(${n}) = \\mathbf{${phi}}$.</p>
+                    <p>• <strong>Devirlilik Durumu :</strong> ${isUnCyclic ? `<span style="color: var(--accent-emerald); font-weight: 700;">$U(${n})$ DEVİRLİ BİR GRUPTUR</span> ($U(${n}) \\cong \\mathbb{Z}_{${phi}}$). Üreteçleri: $\\{ ${unGenerators.join(', ')} \\}$.` : `<span style="color: var(--accent-rose); font-weight: 700;">$U(${n})$ DEVİRLİ DEĞİLDİR!</span> Hiçbir elemanın mertebesi $|U(${n})| = ${phi}$ değerine ulaşmaz.`}</p>
+                </div>
+
+                <div style="overflow-x: auto; margin-top: 12px;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left;">
+                        <thead>
+                            <tr style="background: rgba(125,125,125,0.1);">
+                                <th style="padding: 8px 10px;">Eleman $x \\in U(${n})$</th>
+                                <th style="padding: 8px 10px;">Mod ${n}'de Kuvvetleri</th>
+                                <th style="padding: 8px 10px;">Mertebe $o(x)$</th>
+                                <th style="padding: 8px 10px;">Grup İçi Rolü</th>
+                            </tr>
+                        </thead>
+                        <tbody>${unRowsHTML}</tbody>
+                    </table>
+                </div>
+            `;
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(out, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], throwOnError: false });
+            }
+        }
+
+        function parseCycleNotation(str, n) {
+            const map = {};
+            for (let i = 1; i <= n; i++) map[i] = i;
+            if (!str || !str.trim() || str.trim().toLowerCase() === 'id') return map;
+
+            const cycleMatches = str.match(/\(([^)]+)\)/g);
+            if (!cycleMatches) return map;
+
+            // Apply cycles from right to left so even non-disjoint cycle products work!
+            for (let cIdx = cycleMatches.length - 1; cIdx >= 0; cIdx--) {
+                const raw = cycleMatches[cIdx].slice(1, -1).trim();
+                const nums = raw.split(/[\s,]+/).map(x => parseInt(x, 10)).filter(x => !isNaN(x) && x >= 1 && x <= n);
+                if (nums.length >= 2) {
+                    const nextMap = Object.assign({}, map);
+                    for (let i = 1; i <= n; i++) {
+                        const imageInCurrent = map[i];
+                        const pos = nums.indexOf(imageInCurrent);
+                        if (pos !== -1) {
+                            nextMap[i] = nums[(pos + 1) % nums.length];
+                        }
+                    }
+                    Object.assign(map, nextMap);
+                }
+            }
+            return map;
+        }
+
+        function decomposeDisjointCycles(map, n) {
+            const visited = {};
+            const cycles = [];
+            for (let i = 1; i <= n; i++) {
+                if (!visited[i]) {
+                    const cyc = [];
+                    let cur = i;
+                    while (!visited[cur]) {
+                        visited[cur] = true;
+                        cyc.push(cur);
+                        cur = map[cur];
+                    }
+                    if (cyc.length > 1) cycles.push(cyc);
+                }
+            }
+            return cycles;
+        }
+
+        function formatCyclesLatex(cycles) {
+            if (!cycles || cycles.length === 0) return '\\mathrm{id}';
+            return cycles.map(c => '(' + c.join('\\,') + ')').join('');
+        }
+
+        function runPermutationAnalyzer() {
+            const sInput = document.getElementById('calc-perm-sigma');
+            const tInput = document.getElementById('calc-perm-tau');
+            const nInput = document.getElementById('calc-perm-n');
+            const out = document.getElementById('calc-sn-result');
+            if (!sInput || !tInput || !nInput || !out) return;
+
+            const n = Math.min(9, Math.max(2, parseInt(nInput.value, 10) || 4));
+            nInput.value = n;
+            out.style.display = 'block';
+
+            const sigma = parseCycleNotation(sInput.value, n);
+            const tau = parseCycleNotation(tInput.value, n);
+
+            // Composition comp = sigma o tau: comp(x) = sigma(tau(x))
+            const comp = {};
+            const invSigma = {};
+            const traceSteps = [];
+            for (let i = 1; i <= n; i++) {
+                comp[i] = sigma[tau[i]];
+                invSigma[sigma[i]] = i;
+                traceSteps.push(`${i} \\xrightarrow{\\tau} ${tau[i]} \\xrightarrow{\\sigma} ${comp[i]}`);
+            }
+
+            const cycSigma = decomposeDisjointCycles(sigma, n);
+            const cycTau = decomposeDisjointCycles(tau, n);
+            const cycComp = decomposeDisjointCycles(comp, n);
+            const cycInv = decomposeDisjointCycles(invSigma, n);
+
+            const calcOrder = (cycles) => cycles.reduce((acc, c) => lcmInt(acc, c.length), 1);
+            const calcTranspositions = (cycles) => {
+                const trans = [];
+                cycles.forEach(c => {
+                    for (let i = c.length - 1; i >= 1; i--) {
+                        trans.push(`(${c[0]}\\,${c[i]})`);
+                    }
+                });
+                return trans;
+            };
+
+            const ordSigma = calcOrder(cycSigma);
+            const ordTau = calcOrder(cycTau);
+            const ordComp = calcOrder(cycComp);
+
+            const transComp = calcTranspositions(cycComp);
+            const signComp = (transComp.length % 2 === 0) ? '+1' : '-1';
+
+            const topRow = Array.from({length: n}, (_, i) => i + 1).join(' & ');
+            const botComp = Array.from({length: n}, (_, i) => comp[i + 1]).join(' & ');
+
+            out.innerHTML = `
+                <h3 style="color: var(--accent-blue); margin-bottom: 10px;">1. Bileşke Hesabı ($\\sigma \\circ \\tau$ — Sağdan Sola Uygulama)</h3>
+                <div class="math-callout">
+                    <p>Elemanların $\\tau$ ardından $\\sigma$ altındaki izi ($\n(\\sigma \\circ \\tau)(x) = \\sigma(\\tau(x))$) :</p>
+                    $$ ${traceSteps.join(', \\qquad ')} $$
+                    $$ \\sigma \\circ \\tau = \\begin{pmatrix} ${topRow} \\\\ ${botComp} \\end{pmatrix} = \\mathbf{${formatCyclesLatex(cycComp)}} $$
+                </div>
+
+                <h3 style="color: var(--accent-blue); margin: 16px 0 10px;">2. Ayrık Döngü, Mertebe ($o$), Ters ve İmza ($\\varepsilon$) Tablosu</h3>
+                <div class="math-callout">
+                    <ul style="margin-left: 20px; line-height: 1.85;">
+                        <li><strong>$\\sigma$ Ayrık Döngü Yapısı :</strong> $${formatCyclesLatex(cycSigma)}$ &nbsp;|&nbsp; <strong>Mertebe :</strong> $o(\\sigma) = \\mathbf{${ordSigma}}$ &nbsp;|&nbsp; <strong>Tersi :</strong> $\\sigma^{-1} = ${formatCyclesLatex(cycInv)}$.</li>
+                        <li><strong>$\\tau$ Ayrık Döngü Yapısı :</strong> $${formatCyclesLatex(cycTau)}$ &nbsp;|&nbsp; <strong>Mertebe :</strong> $o(\\tau) = \\mathbf{${ordTau}}$.</li>
+                        <li><strong>$\\sigma \\circ \\tau$ Ayrık Döngü Yapısı :</strong> $\\mathbf{${formatCyclesLatex(cycComp)}}$ &nbsp;|&nbsp; <strong>Mertebe :</strong> $o(\\sigma \\circ \\tau) = \\mathrm{ppcm}(${cycComp.length ? cycComp.map(c => c.length).join(',') : '1'}) = \\mathbf{${ordComp}}$.</li>
+                        <li><strong>$\\sigma \\circ \\tau$ Transpozisyon Çarpımı :</strong> $${transComp.length ? transComp.join('') : '\\mathrm{id} \\text{ (0 transpozisyon)}'}$ (${transComp.length} transpozisyon).</li>
+                        <li><strong>İmza ve Parite :</strong> $\\mathbf{\\varepsilon(\\sigma \\circ \\tau) = (-1)^{${transComp.length}} = ${signComp}}$ $\\implies$ ${signComp === '+1' ? `<span style="color: var(--accent-emerald); font-weight: 700;">Çift Permütasyon ($\\sigma \\circ \\tau \\in \\mathcal{A}_{${n}}$)</span>` : `<span style="color: var(--accent-rose); font-weight: 700;">Tek Permütasyon ($\\sigma \\circ \\tau \\notin \\mathcal{A}_{${n}}$)</span>`}.</li>
+                    </ul>
+                </div>
+            `;
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(out, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], throwOnError: false });
+            }
+        }
+
         function runVectorCalculator() {
             const ax = parseFloat(document.getElementById('vec-ax').value) || 0;
             const ay = parseFloat(document.getElementById('vec-ay').value) || 0;
@@ -1934,6 +2251,220 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             }
         }
 
+
+        function runZnUnAnalyzer() {
+            const nInput = document.getElementById('calc-group-n');
+            const out = document.getElementById('calc-znun-result');
+            if (!nInput || !out) return;
+            const n = Math.min(60, Math.max(2, parseInt(nInput.value, 10) || 12));
+            nInput.value = n;
+            out.style.display = 'block';
+
+            // Divisors of n
+            const divisors = [];
+            for (let d = 1; d <= n; d++) {
+                if (n % d === 0) divisors.push(d);
+            }
+
+            // Elements of U(n)
+            const units = [];
+            for (let k = 1; k < n; k++) {
+                if (gcdInt(k, n) === 1) units.push(k);
+            }
+            const phi = units.length;
+
+            // Subgroups of (Z_n, +)
+            let znSubgroupsHTML = '';
+            divisors.forEach(d => {
+                const gen = (n / d) % n;
+                const elems = [];
+                for (let j = 0; j < d; j++) elems.push(`\\overline{${(j * (n / d)) % n}}`);
+                znSubgroupsHTML += `<li><strong>Ordre $d = ${d}$ :</strong> $H_{${d}} = \\langle \\overline{${gen}} \\rangle = \\{ ${elems.join(', ')} \\}$</li>`;
+            });
+
+            // Orders in U(n)
+            let unRowsHTML = '';
+            const unGenerators = [];
+            units.forEach(u => {
+                let cur = u % n;
+                let ord = 1;
+                const powers = [`${u}^1 \\equiv ${cur}`];
+                while (cur !== 1 && ord <= n) {
+                    cur = (cur * u) % n;
+                    ord++;
+                    if (ord <= 6 || cur === 1) powers.push(`${u}^{${ord}} \\equiv ${cur}`);
+                }
+                if (ord === phi) unGenerators.push(u);
+                unRowsHTML += `
+                    <tr>
+                        <td style="padding: 6px 10px; border-bottom: 1px solid var(--border-subtle); font-weight: 700;">$\\overline{${u}}$</td>
+                        <td style="padding: 6px 10px; border-bottom: 1px solid var(--border-subtle);">$${powers.join(', \\; ')}$</td>
+                        <td style="padding: 6px 10px; border-bottom: 1px solid var(--border-subtle); font-weight: 700; color: var(--accent-blue);">$o(\\overline{${u}}) = ${ord}$</td>
+                        <td style="padding: 6px 10px; border-bottom: 1px solid var(--border-subtle);">${ord === phi ? '<span style="color: var(--accent-emerald); font-weight: 700;">Üreteç (Générateur) ✓</span>' : `Alt grup mertebesi ${ord}`}</td>
+                    </tr>
+                `;
+            });
+
+            const isUnCyclic = unGenerators.length > 0;
+
+            out.innerHTML = `
+                <h3 style="color: var(--accent-blue); margin-bottom: 10px;">1. Toplamsal Devirli Grup $(\\mathbb{Z}_{${n}}, +)$ Analizi</h3>
+                <div class="math-callout">
+                    <p>• <strong>Grup Mertebesi :</strong> $|\\mathbb{Z}_{${n}}| = ${n}$ &nbsp;|&nbsp; <strong>Üreteç Sayısı :</strong> $\\varphi(${n}) = ${phi}$.</p>
+                    <p>• <strong>$(\\mathbb{Z}_{${n}}, +)$ Üreteçleri :</strong> $\\{ ${units.map(u => '\\overline{' + u + '}').join(', ')} \\}$.</p>
+                    <p style="margin-top: 8px;">• <strong>Tüm Devirli Alt Grupları (${divisors.length} adet, $d \\mid ${n}$) :</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 4px; line-height: 1.75;">${znSubgroupsHTML}</ul>
+                </div>
+
+                <h3 style="color: var(--accent-blue); margin: 18px 0 10px;">2. Çarpımsal Grup $(U(${n}), \\times)$ ve Eleman Mertebeleri</h3>
+                <div class="math-callout">
+                    <p>• <strong>Grup Tanımı ve Mertebesi :</strong> $U(${n}) = \\{ ${units.join(', ')} \\}$, $|U(${n})| = \\varphi(${n}) = \\mathbf{${phi}}$.</p>
+                    <p>• <strong>Devirlilik Durumu :</strong> ${isUnCyclic ? `<span style="color: var(--accent-emerald); font-weight: 700;">$U(${n})$ DEVİRLİ BİR GRUPTUR</span> ($U(${n}) \\cong \\mathbb{Z}_{${phi}}$). Üreteçleri: $\\{ ${unGenerators.join(', ')} \\}$.` : `<span style="color: var(--accent-rose); font-weight: 700;">$U(${n})$ DEVİRLİ DEĞİLDİR!</span> Hiçbir elemanın mertebesi $|U(${n})| = ${phi}$ değerine ulaşmaz.`}</p>
+                </div>
+
+                <div style="overflow-x: auto; margin-top: 12px;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left;">
+                        <thead>
+                            <tr style="background: rgba(125,125,125,0.1);">
+                                <th style="padding: 8px 10px;">Eleman $x \\in U(${n})$</th>
+                                <th style="padding: 8px 10px;">Mod ${n}'de Kuvvetleri</th>
+                                <th style="padding: 8px 10px;">Mertebe $o(x)$</th>
+                                <th style="padding: 8px 10px;">Grup İçi Rolü</th>
+                            </tr>
+                        </thead>
+                        <tbody>${unRowsHTML}</tbody>
+                    </table>
+                </div>
+            `;
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(out, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], throwOnError: false });
+            }
+        }
+
+        function parseCycleNotation(str, n) {
+            const map = {};
+            for (let i = 1; i <= n; i++) map[i] = i;
+            if (!str || !str.trim() || str.trim().toLowerCase() === 'id') return map;
+
+            const cycleMatches = str.match(/\(([^)]+)\)/g);
+            if (!cycleMatches) return map;
+
+            // Apply cycles from right to left so even non-disjoint cycle products work!
+            for (let cIdx = cycleMatches.length - 1; cIdx >= 0; cIdx--) {
+                const raw = cycleMatches[cIdx].slice(1, -1).trim();
+                const nums = raw.split(/[\s,]+/).map(x => parseInt(x, 10)).filter(x => !isNaN(x) && x >= 1 && x <= n);
+                if (nums.length >= 2) {
+                    const nextMap = Object.assign({}, map);
+                    for (let i = 1; i <= n; i++) {
+                        const imageInCurrent = map[i];
+                        const pos = nums.indexOf(imageInCurrent);
+                        if (pos !== -1) {
+                            nextMap[i] = nums[(pos + 1) % nums.length];
+                        }
+                    }
+                    Object.assign(map, nextMap);
+                }
+            }
+            return map;
+        }
+
+        function decomposeDisjointCycles(map, n) {
+            const visited = {};
+            const cycles = [];
+            for (let i = 1; i <= n; i++) {
+                if (!visited[i]) {
+                    const cyc = [];
+                    let cur = i;
+                    while (!visited[cur]) {
+                        visited[cur] = true;
+                        cyc.push(cur);
+                        cur = map[cur];
+                    }
+                    if (cyc.length > 1) cycles.push(cyc);
+                }
+            }
+            return cycles;
+        }
+
+        function formatCyclesLatex(cycles) {
+            if (!cycles || cycles.length === 0) return '\\mathrm{id}';
+            return cycles.map(c => '(' + c.join('\\,') + ')').join('');
+        }
+
+        function runPermutationAnalyzer() {
+            const sInput = document.getElementById('calc-perm-sigma');
+            const tInput = document.getElementById('calc-perm-tau');
+            const nInput = document.getElementById('calc-perm-n');
+            const out = document.getElementById('calc-sn-result');
+            if (!sInput || !tInput || !nInput || !out) return;
+
+            const n = Math.min(9, Math.max(2, parseInt(nInput.value, 10) || 4));
+            nInput.value = n;
+            out.style.display = 'block';
+
+            const sigma = parseCycleNotation(sInput.value, n);
+            const tau = parseCycleNotation(tInput.value, n);
+
+            // Composition comp = sigma o tau: comp(x) = sigma(tau(x))
+            const comp = {};
+            const invSigma = {};
+            const traceSteps = [];
+            for (let i = 1; i <= n; i++) {
+                comp[i] = sigma[tau[i]];
+                invSigma[sigma[i]] = i;
+                traceSteps.push(`${i} \\xrightarrow{\\tau} ${tau[i]} \\xrightarrow{\\sigma} ${comp[i]}`);
+            }
+
+            const cycSigma = decomposeDisjointCycles(sigma, n);
+            const cycTau = decomposeDisjointCycles(tau, n);
+            const cycComp = decomposeDisjointCycles(comp, n);
+            const cycInv = decomposeDisjointCycles(invSigma, n);
+
+            const calcOrder = (cycles) => cycles.reduce((acc, c) => lcmInt(acc, c.length), 1);
+            const calcTranspositions = (cycles) => {
+                const trans = [];
+                cycles.forEach(c => {
+                    for (let i = c.length - 1; i >= 1; i--) {
+                        trans.push(`(${c[0]}\\,${c[i]})`);
+                    }
+                });
+                return trans;
+            };
+
+            const ordSigma = calcOrder(cycSigma);
+            const ordTau = calcOrder(cycTau);
+            const ordComp = calcOrder(cycComp);
+
+            const transComp = calcTranspositions(cycComp);
+            const signComp = (transComp.length % 2 === 0) ? '+1' : '-1';
+
+            const topRow = Array.from({length: n}, (_, i) => i + 1).join(' & ');
+            const botComp = Array.from({length: n}, (_, i) => comp[i + 1]).join(' & ');
+
+            out.innerHTML = `
+                <h3 style="color: var(--accent-blue); margin-bottom: 10px;">1. Bileşke Hesabı ($\\sigma \\circ \\tau$ — Sağdan Sola Uygulama)</h3>
+                <div class="math-callout">
+                    <p>Elemanların $\\tau$ ardından $\\sigma$ altındaki izi ($\n(\\sigma \\circ \\tau)(x) = \\sigma(\\tau(x))$) :</p>
+                    $$ ${traceSteps.join(', \\qquad ')} $$
+                    $$ \\sigma \\circ \\tau = \\begin{pmatrix} ${topRow} \\\\ ${botComp} \\end{pmatrix} = \\mathbf{${formatCyclesLatex(cycComp)}} $$
+                </div>
+
+                <h3 style="color: var(--accent-blue); margin: 16px 0 10px;">2. Ayrık Döngü, Mertebe ($o$), Ters ve İmza ($\\varepsilon$) Tablosu</h3>
+                <div class="math-callout">
+                    <ul style="margin-left: 20px; line-height: 1.85;">
+                        <li><strong>$\\sigma$ Ayrık Döngü Yapısı :</strong> $${formatCyclesLatex(cycSigma)}$ &nbsp;|&nbsp; <strong>Mertebe :</strong> $o(\\sigma) = \\mathbf{${ordSigma}}$ &nbsp;|&nbsp; <strong>Tersi :</strong> $\\sigma^{-1} = ${formatCyclesLatex(cycInv)}$.</li>
+                        <li><strong>$\\tau$ Ayrık Döngü Yapısı :</strong> $${formatCyclesLatex(cycTau)}$ &nbsp;|&nbsp; <strong>Mertebe :</strong> $o(\\tau) = \\mathbf{${ordTau}}$.</li>
+                        <li><strong>$\\sigma \\circ \\tau$ Ayrık Döngü Yapısı :</strong> $\\mathbf{${formatCyclesLatex(cycComp)}}$ &nbsp;|&nbsp; <strong>Mertebe :</strong> $o(\\sigma \\circ \\tau) = \\mathrm{ppcm}(${cycComp.length ? cycComp.map(c => c.length).join(',') : '1'}) = \\mathbf{${ordComp}}$.</li>
+                        <li><strong>$\\sigma \\circ \\tau$ Transpozisyon Çarpımı :</strong> $${transComp.length ? transComp.join('') : '\\mathrm{id} \\text{ (0 transpozisyon)}'}$ (${transComp.length} transpozisyon).</li>
+                        <li><strong>İmza ve Parite :</strong> $\\mathbf{\\varepsilon(\\sigma \\circ \\tau) = (-1)^{${transComp.length}} = ${signComp}}$ $\\implies$ ${signComp === '+1' ? `<span style="color: var(--accent-emerald); font-weight: 700;">Çift Permütasyon ($\\sigma \\circ \\tau \\in \\mathcal{A}_{${n}}$)</span>` : `<span style="color: var(--accent-rose); font-weight: 700;">Tek Permütasyon ($\\sigma \\circ \\tau \\notin \\mathcal{A}_{${n}}$)</span>`}.</li>
+                    </ul>
+                </div>
+            `;
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(out, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], throwOnError: false });
+            }
+        }
+
         function runBayesCalculator() {
             const pM = parseFloat(document.getElementById('bayes-prior').value) || 0.001;
             const pT_M = parseFloat(document.getElementById('bayes-sens').value) || 0.99;
@@ -1959,6 +2490,330 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 </div>
                 <div class="mock-rubric-box" style="margin-top: 14px;">
                     <strong>${window.ICONS ? window.ICONS.compass : ""} Sezgisel Sınav Yorumu:</strong> Test pozitifliği %${(pT_M*100).toFixed(1)} hassas olsa dahi, hastalığın nadir olması ($P(M) = ${pM}$) sebebiyle test sonucu <strong>POZİTİF ÇIKAN birinin GERÇEKTEN HASTA OLMA OLASILIĞI SADECE %${pM_T_percent}</strong>'dir! Geriye kalan %${(100 - pM_T_percent).toFixed(2)} yalancı pozitiftir.
+                </div>
+            `;
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(out, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], throwOnError: false });
+            }
+        }
+
+        // ================= MAT204 GROUP THEORY LABORATORY FUNCTIONS =================
+        function switchMat204LabTab(tabName) {
+            ['bezout', 'znun', 'sn'].forEach(t => {
+                const btn = document.getElementById('lab-tab-btn-' + t);
+                const panel = document.getElementById('lab-panel-' + t);
+                if (btn) btn.classList.toggle('active', t === tabName);
+                if (panel) panel.style.display = (t === tabName) ? 'block' : 'none';
+            });
+            if (tabName === 'bezout') runCalculator();
+            if (tabName === 'znun') runZnUnAnalyzer();
+            if (tabName === 'sn') runPermutationAnalyzer();
+        }
+
+        function gcdInt(a, b) {
+            a = Math.abs(a);
+            b = Math.abs(b);
+            while (b !== 0) {
+                const t = b;
+                b = a % b;
+                a = t;
+            }
+            return a;
+        }
+
+        function lcmInt(a, b) {
+            if (a === 0 || b === 0) return 0;
+            return Math.abs((a * b) / gcdInt(a, b));
+        }
+
+        function runCalculator() {
+            const aInput = document.getElementById('calc-a');
+            const nInput = document.getElementById('calc-n');
+            const out = document.getElementById('calc-result-area');
+            if (!aInput || !nInput || !out) return;
+
+            let a = parseInt(aInput.value, 10);
+            let n = parseInt(nInput.value, 10);
+            if (isNaN(a) || isNaN(n) || n <= 1) {
+                out.style.display = 'block';
+                out.innerHTML = `<p style="color: var(--accent-rose);">Lütfen geçerli tam sayılar giriniz ($n \\ge 2$).</p>`;
+                return;
+            }
+            out.style.display = 'block';
+
+            const aOrig = a;
+            const nOrig = n;
+            let A = Math.abs(a);
+            let B = Math.abs(n);
+            const steps = [];
+            let r0 = A, r1 = B;
+            let s0 = 1, s1 = 0;
+            let t0 = 0, t1 = 1;
+
+            while (r1 !== 0) {
+                const q = Math.floor(r0 / r1);
+                const r2 = r0 - q * r1;
+                const s2 = s0 - q * s1;
+                const t2 = t0 - q * t1;
+                steps.push({ dividend: r0, divisor: r1, q, r: r2, s: s2, t: t2 });
+                r0 = r1; r1 = r2;
+                s0 = s1; s1 = s2;
+                t0 = t1; t1 = t2;
+            }
+
+            const d = r0;
+            const u = (a < 0) ? -s0 : s0;
+            const v = (n < 0) ? -t0 : t0;
+
+            let euclidLines = steps.map(st => `${st.dividend} &= ${st.divisor} \\times ${st.q} + ${st.r}`).join(' \\\\\n');
+            let inverseHTML = '';
+            if (d === 1) {
+                const inv = ((u % nOrig) + nOrig) % nOrig;
+                inverseHTML = `
+                    <div class="exam-conclusion" style="margin-top: 14px;">
+                        <strong>Modüler Ters Sonucu ($U(${nOrig})$) :</strong><br>
+                        $\\gcd(${aOrig}, ${nOrig}) = 1$ olduğundan $\\overline{${aOrig}}$ sınıfı $\\mathbb{Z}_{${nOrig}}$ içinde terslenebilirdir ($\\overline{${aOrig}} \\in U(${nOrig})$).<br>
+                        Bézout eşitliği mod ${nOrig}'de indirgendiğinde :
+                        $$ ${aOrig} \\times (${u}) + ${nOrig} \\times (${v}) = 1 \\implies ${aOrig} \\times (${u}) \\equiv 1 \\pmod{${nOrig}} $$
+                        Kanonic temsilci : $\\mathbf{\\overline{${aOrig}}^{-1} = \\overline{${inv}} \\pmod{${nOrig}}}$ &nbsp; (Kontrol: $${aOrig} \\times ${inv} = ${aOrig * inv} \\equiv 1 \\pmod{${nOrig}}$).
+                    </div>
+                `;
+            } else {
+                inverseHTML = `
+                    <div class="hint-callout-box" style="margin-top: 14px;">
+                        <strong>Terslenemezlik Sonucu ($\\overline{${aOrig}} \\notin U(${nOrig})$) :</strong><br>
+                        $\\gcd(${aOrig}, ${nOrig}) = ${d} \\neq 1$ olduğundan $\\overline{${aOrig}}$ elemanı $\\mathbb{Z}_{${nOrig}}$ halkasında <strong>sıfır bölenidir</strong> ve çarpımsal tersi <strong>YOKTUR</strong>.
+                    </div>
+                `;
+            }
+
+            out.innerHTML = `
+                <h3 style="color: var(--accent-blue); margin-bottom: 10px;">1. Algorithme d'Euclide (Ardışık Kalanlı Bölmeler)</h3>
+                <div class="math-callout">
+                    $$\\begin{aligned}
+                    ${euclidLines}
+                    \\end{aligned}$$
+                    <p style="margin-top: 8px;">Son sıfır olmayan kalan : $\\mathbf{\\gcd(${aOrig}, ${nOrig}) = ${d}}$.</p>
+                </div>
+
+                <h3 style="color: var(--accent-blue); margin: 16px 0 10px;">2. Identité de Bézout ($au + nv = \\gcd(a,n)$)</h3>
+                <div class="math-callout">
+                    $$ \\mathbf{${aOrig} \\times (${u}) + ${nOrig} \\times (${v}) = ${d}} $$
+                    <p style="margin-top: 6px; font-size: 0.92rem; color: var(--text-secondary);">Bézout katsayı çifti : $(u, v) = (${u}, ${v}) \\in \\mathbb{Z}^2$.</p>
+                </div>
+                ${inverseHTML}
+            `;
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(out, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], throwOnError: false });
+            }
+        }
+
+        function runZnUnAnalyzer() {
+            const nInput = document.getElementById('calc-group-n');
+            const out = document.getElementById('calc-znun-result');
+            if (!nInput || !out) return;
+            const n = Math.min(60, Math.max(2, parseInt(nInput.value, 10) || 12));
+            nInput.value = n;
+            out.style.display = 'block';
+
+            // Divisors of n
+            const divisors = [];
+            for (let d = 1; d <= n; d++) {
+                if (n % d === 0) divisors.push(d);
+            }
+
+            // Elements of U(n)
+            const units = [];
+            for (let k = 1; k < n; k++) {
+                if (gcdInt(k, n) === 1) units.push(k);
+            }
+            const phi = units.length;
+
+            // Subgroups of (Z_n, +)
+            let znSubgroupsHTML = '';
+            divisors.forEach(d => {
+                const gen = (n / d) % n;
+                const elems = [];
+                for (let j = 0; j < d; j++) elems.push(`\\overline{${(j * (n / d)) % n}}`);
+                znSubgroupsHTML += `<li><strong>Ordre $d = ${d}$ :</strong> $H_{${d}} = \\langle \\overline{${gen}} \\rangle = \\{ ${elems.join(', ')} \\}$</li>`;
+            });
+
+            // Orders in U(n)
+            let unRowsHTML = '';
+            const unGenerators = [];
+            units.forEach(u => {
+                let cur = u % n;
+                let ord = 1;
+                const powers = [`${u}^1 \\equiv ${cur}`];
+                while (cur !== 1 && ord <= n) {
+                    cur = (cur * u) % n;
+                    ord++;
+                    if (ord <= 6 || cur === 1) powers.push(`${u}^{${ord}} \\equiv ${cur}`);
+                }
+                if (ord === phi) unGenerators.push(u);
+                unRowsHTML += `
+                    <tr>
+                        <td style="padding: 6px 10px; border-bottom: 1px solid var(--border-subtle); font-weight: 700;">$\\overline{${u}}$</td>
+                        <td style="padding: 6px 10px; border-bottom: 1px solid var(--border-subtle);">$${powers.join(', \\; ')}$</td>
+                        <td style="padding: 6px 10px; border-bottom: 1px solid var(--border-subtle); font-weight: 700; color: var(--accent-blue);">$o(\\overline{${u}}) = ${ord}$</td>
+                        <td style="padding: 6px 10px; border-bottom: 1px solid var(--border-subtle);">${ord === phi ? '<span style="color: var(--accent-emerald); font-weight: 700;">Üreteç (Générateur) ✓</span>' : `Alt grup mertebesi ${ord}`}</td>
+                    </tr>
+                `;
+            });
+
+            const isUnCyclic = unGenerators.length > 0;
+
+            out.innerHTML = `
+                <h3 style="color: var(--accent-blue); margin-bottom: 10px;">1. Toplamsal Devirli Grup $(\\mathbb{Z}_{${n}}, +)$ Analizi</h3>
+                <div class="math-callout">
+                    <p>• <strong>Grup Mertebesi :</strong> $|\\mathbb{Z}_{${n}}| = ${n}$ &nbsp;|&nbsp; <strong>Üreteç Sayısı :</strong> $\\varphi(${n}) = ${phi}$.</p>
+                    <p>• <strong>$(\\mathbb{Z}_{${n}}, +)$ Üreteçleri :</strong> $\\{ ${units.map(u => '\\overline{' + u + '}').join(', ')} \\}$.</p>
+                    <p style="margin-top: 8px;">• <strong>Tüm Devirli Alt Grupları (${divisors.length} adet, $d \\mid ${n}$) :</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 4px; line-height: 1.75;">${znSubgroupsHTML}</ul>
+                </div>
+
+                <h3 style="color: var(--accent-blue); margin: 18px 0 10px;">2. Çarpımsal Grup $(U(${n}), \\times)$ ve Eleman Mertebeleri</h3>
+                <div class="math-callout">
+                    <p>• <strong>Grup Tanımı ve Mertebesi :</strong> $U(${n}) = \\{ ${units.join(', ')} \\}$, $|U(${n})| = \\varphi(${n}) = \\mathbf{${phi}}$.</p>
+                    <p>• <strong>Devirlilik Durumu :</strong> ${isUnCyclic ? `<span style="color: var(--accent-emerald); font-weight: 700;">$U(${n})$ DEVİRLİ BİR GRUPTUR</span> ($U(${n}) \\cong \\mathbb{Z}_{${phi}}$). Üreteçleri: $\\{ ${unGenerators.join(', ')} \\}$.` : `<span style="color: var(--accent-rose); font-weight: 700;">$U(${n})$ DEVİRLİ DEĞİLDİR!</span> Hiçbir elemanın mertebesi $|U(${n})| = ${phi}$ değerine ulaşmaz.`}</p>
+                </div>
+
+                <div style="overflow-x: auto; margin-top: 12px;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left;">
+                        <thead>
+                            <tr style="background: rgba(125,125,125,0.1);">
+                                <th style="padding: 8px 10px;">Eleman $x \\in U(${n})$</th>
+                                <th style="padding: 8px 10px;">Mod ${n}'de Kuvvetleri</th>
+                                <th style="padding: 8px 10px;">Mertebe $o(x)$</th>
+                                <th style="padding: 8px 10px;">Grup İçi Rolü</th>
+                            </tr>
+                        </thead>
+                        <tbody>${unRowsHTML}</tbody>
+                    </table>
+                </div>
+            `;
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(out, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], throwOnError: false });
+            }
+        }
+
+        function parseCycleNotation(str, n) {
+            const map = {};
+            for (let i = 1; i <= n; i++) map[i] = i;
+            if (!str || !str.trim() || str.trim().toLowerCase() === 'id') return map;
+
+            const cycleMatches = str.match(/\(([^)]+)\)/g);
+            if (!cycleMatches) return map;
+
+            // Apply cycles from right to left so even non-disjoint cycle products work!
+            for (let cIdx = cycleMatches.length - 1; cIdx >= 0; cIdx--) {
+                const raw = cycleMatches[cIdx].slice(1, -1).trim();
+                const nums = raw.split(/[\s,]+/).map(x => parseInt(x, 10)).filter(x => !isNaN(x) && x >= 1 && x <= n);
+                if (nums.length >= 2) {
+                    const nextMap = Object.assign({}, map);
+                    for (let i = 1; i <= n; i++) {
+                        const imageInCurrent = map[i];
+                        const pos = nums.indexOf(imageInCurrent);
+                        if (pos !== -1) {
+                            nextMap[i] = nums[(pos + 1) % nums.length];
+                        }
+                    }
+                    Object.assign(map, nextMap);
+                }
+            }
+            return map;
+        }
+
+        function decomposeDisjointCycles(map, n) {
+            const visited = {};
+            const cycles = [];
+            for (let i = 1; i <= n; i++) {
+                if (!visited[i]) {
+                    const cyc = [];
+                    let cur = i;
+                    while (!visited[cur]) {
+                        visited[cur] = true;
+                        cyc.push(cur);
+                        cur = map[cur];
+                    }
+                    if (cyc.length > 1) cycles.push(cyc);
+                }
+            }
+            return cycles;
+        }
+
+        function formatCyclesLatex(cycles) {
+            if (!cycles || cycles.length === 0) return '\\mathrm{id}';
+            return cycles.map(c => '(' + c.join('\\,') + ')').join('');
+        }
+
+        function runPermutationAnalyzer() {
+            const sInput = document.getElementById('calc-perm-sigma');
+            const tInput = document.getElementById('calc-perm-tau');
+            const nInput = document.getElementById('calc-perm-n');
+            const out = document.getElementById('calc-sn-result');
+            if (!sInput || !tInput || !nInput || !out) return;
+
+            const n = Math.min(9, Math.max(2, parseInt(nInput.value, 10) || 4));
+            nInput.value = n;
+            out.style.display = 'block';
+
+            const sigma = parseCycleNotation(sInput.value, n);
+            const tau = parseCycleNotation(tInput.value, n);
+
+            // Composition comp = sigma o tau: comp(x) = sigma(tau(x))
+            const comp = {};
+            const invSigma = {};
+            const traceSteps = [];
+            for (let i = 1; i <= n; i++) {
+                comp[i] = sigma[tau[i]];
+                invSigma[sigma[i]] = i;
+                traceSteps.push(`${i} \\xrightarrow{\\tau} ${tau[i]} \\xrightarrow{\\sigma} ${comp[i]}`);
+            }
+
+            const cycSigma = decomposeDisjointCycles(sigma, n);
+            const cycTau = decomposeDisjointCycles(tau, n);
+            const cycComp = decomposeDisjointCycles(comp, n);
+            const cycInv = decomposeDisjointCycles(invSigma, n);
+
+            const calcOrder = (cycles) => cycles.reduce((acc, c) => lcmInt(acc, c.length), 1);
+            const calcTranspositions = (cycles) => {
+                const trans = [];
+                cycles.forEach(c => {
+                    for (let i = c.length - 1; i >= 1; i--) {
+                        trans.push(`(${c[0]}\\,${c[i]})`);
+                    }
+                });
+                return trans;
+            };
+
+            const ordSigma = calcOrder(cycSigma);
+            const ordTau = calcOrder(cycTau);
+            const ordComp = calcOrder(cycComp);
+
+            const transComp = calcTranspositions(cycComp);
+            const signComp = (transComp.length % 2 === 0) ? '+1' : '-1';
+
+            const topRow = Array.from({length: n}, (_, i) => i + 1).join(' & ');
+            const botComp = Array.from({length: n}, (_, i) => comp[i + 1]).join(' & ');
+
+            out.innerHTML = `
+                <h3 style="color: var(--accent-blue); margin-bottom: 10px;">1. Bileşke Hesabı ($\\sigma \\circ \\tau$ — Sağdan Sola Uygulama)</h3>
+                <div class="math-callout">
+                    <p>Elemanların $\\tau$ ardından $\\sigma$ altındaki izi ($\n(\\sigma \\circ \\tau)(x) = \\sigma(\\tau(x))$) :</p>
+                    $$ ${traceSteps.join(', \\qquad ')} $$
+                    $$ \\sigma \\circ \\tau = \\begin{pmatrix} ${topRow} \\\\ ${botComp} \\end{pmatrix} = \\mathbf{${formatCyclesLatex(cycComp)}} $$
+                </div>
+
+                <h3 style="color: var(--accent-blue); margin: 16px 0 10px;">2. Ayrık Döngü, Mertebe ($o$), Ters ve İmza ($\\varepsilon$) Tablosu</h3>
+                <div class="math-callout">
+                    <ul style="margin-left: 20px; line-height: 1.85;">
+                        <li><strong>$\\sigma$ Ayrık Döngü Yapısı :</strong> $${formatCyclesLatex(cycSigma)}$ &nbsp;|&nbsp; <strong>Mertebe :</strong> $o(\\sigma) = \\mathbf{${ordSigma}}$ &nbsp;|&nbsp; <strong>Tersi :</strong> $\\sigma^{-1} = ${formatCyclesLatex(cycInv)}$.</li>
+                        <li><strong>$\\tau$ Ayrık Döngü Yapısı :</strong> $${formatCyclesLatex(cycTau)}$ &nbsp;|&nbsp; <strong>Mertebe :</strong> $o(\\tau) = \\mathbf{${ordTau}}$.</li>
+                        <li><strong>$\\sigma \\circ \\tau$ Ayrık Döngü Yapısı :</strong> $\\mathbf{${formatCyclesLatex(cycComp)}}$ &nbsp;|&nbsp; <strong>Mertebe :</strong> $o(\\sigma \\circ \\tau) = \\mathrm{ppcm}(${cycComp.length ? cycComp.map(c => c.length).join(',') : '1'}) = \\mathbf{${ordComp}}$.</li>
+                        <li><strong>$\\sigma \\circ \\tau$ Transpozisyon Çarpımı :</strong> $${transComp.length ? transComp.join('') : '\\mathrm{id} \\text{ (0 transpozisyon)}'}$ (${transComp.length} transpozisyon).</li>
+                        <li><strong>İmza ve Parite :</strong> $\\mathbf{\\varepsilon(\\sigma \\circ \\tau) = (-1)^{${transComp.length}} = ${signComp}}$ $\\implies$ ${signComp === '+1' ? `<span style="color: var(--accent-emerald); font-weight: 700;">Çift Permütasyon ($\\sigma \\circ \\tau \\in \\mathcal{A}_{${n}}$)</span>` : `<span style="color: var(--accent-rose); font-weight: 700;">Tek Permütasyon ($\\sigma \\circ \\tau \\notin \\mathcal{A}_{${n}}$)</span>`}.</li>
+                    </ul>
                 </div>
             `;
             if (typeof renderMathInElement !== 'undefined') {
@@ -2709,19 +3564,26 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 ];
             }
 
-            // Default: mat204_grup
-            const q1 = mods['modul1']?.exercises[0];
-            const q2 = mods['modul2']?.exercises[0];
-            const q3 = mods['modul3']?.exercises[1] || mods['modul3']?.exercises[0];
-            const q4 = mods['modul4']?.exercises[1] || mods['modul4']?.exercises[0];
-            const q5 = mods['modul5']?.exercises[4] || mods['modul6']?.exercises[0];
+            // Default: mat204_grup — Randomized balanced GSU Midterm Exam
+            const pickRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+            const m1Pool = mods['modul1']?.exercises || [];
+            const m2Pool = mods['modul2']?.exercises || [];
+            const m34Pool = [...(mods['modul3']?.exercises || []), ...(mods['modul4']?.exercises || [])];
+            const m5Pool = mods['modul5']?.exercises || [];
+            const m6Pool = mods['modul6']?.exercises || [];
+
+            const q1 = pickRandom(m1Pool) || m1Pool[0];
+            const q2 = pickRandom(m2Pool) || m2Pool[0];
+            const q3 = pickRandom(m34Pool) || m34Pool[0];
+            const q4 = pickRandom(m5Pool) || m5Pool[0];
+            const q5 = pickRandom(m6Pool) || m6Pool[0];
 
             return [
-                { num: 1, points: 20, topic: 'Aritmetik ve Doğrusal Kombinasyon', ex: q1, rubric: '+5 Puan: Hipotez tanımı, +10 Puan: Doğrusal kombinasyon hesabı, +5 Puan: Sonuç ve d=±1.' },
-                { num: 2, points: 20, topic: 'Denklik Bağıntısı ve Sınıflar', ex: q2, rubric: '+5 Puan: Yansıma, +5 Puan: Simetri, +5 Puan: Geçişme, +5 Puan: Denklik sınıfı.' },
-                { num: 3, points: 20, topic: 'Devirli Grup ve Mertebe Bağıntısı ($g^n=e \\iff m \\mid n$)', ex: q3, rubric: '+6 Puan: (<=) Tek yönlü gerektirme, +10 Puan: (=>) Kalanlı bölme algoritması, +4 Puan: Minimalite ve r=0 sonucu.' },
-                { num: 4, points: 20, topic: 'Devirli Grupların Alt Grup Yapısı (Théorème Fondamental)', ex: q4, rubric: '+6 Puan: Bölünebilirlik ve üreteç tespiti, +8 Puan: Her bölen için tek alt grup, +6 Puan: Alt grup elemanları.' },
-                { num: 5, points: 20, topic: 'Permütasyonlar / $\\mathcal{S}_4$ ve Morfizmler', ex: q5, rubric: '+6 Puan: Ayrık döngü ayrışımı, +8 Puan: Mertebe (EKOK) hesabı, +6 Puan: İmza kuralı.' }
+                { num: 1, points: 20, topic: 'Aritmetik, Bézout ve Modüler Aritmetik', ex: q1, rubric: '+5 Puan: Hipotez ve modüler/bölünebilme tanımı, +10 Puan: Algoritma / tümevarım ara işlemleri, +5 Puan: Nihai sonuç.' },
+                { num: 2, points: 20, topic: 'Grup Yapısı, Alt Gruplar ve Eleman Mertebesi', ex: q2, rubric: '+5 Puan: Birim eleman ve boş olmama ($e \\in H$), +10 Puan: Kapalılık ve ters eleman ($xy^{-1} \\in H$), +5 Puan: Sonuç.' },
+                { num: 3, points: 20, topic: 'Devirli Gruplar, Üreteçler ve $\\mathbb{Z}_n / U(n)$', ex: q3, rubric: '+6 Puan: Mertebe ve bölünebilme bağıntısı, +8 Puan: Alt grup / üreteç ($\varphi(n)$) hesabı, +6 Puan: Tam liste.' },
+                { num: 4, points: 20, topic: 'Simetrik Grup $\\mathcal{S}_n$, Ayrık Döngüler ve İmza', ex: q4, rubric: '+6 Puan: Ayrık döngülere ayrışım, +8 Puan: Mertebe ($\\mathrm{ppcm}$) ve alt grup analizi, +6 Puan: İmza ve sonuç.' },
+                { num: 5, points: 20, topic: 'Grup Morfizmaları, Çekirdek ($\\ker f$) ve İzomorfizma', ex: q5, rubric: '+6 Puan: Morfizma özelliğinin ($f(xy)=f(x)f(y)$) gösterimi, +8 Puan: $\\ker f$ ve $\\mathrm{Im}\\,f$ hesabı, +6 Puan: İzomorfizma sonucu.' }
             ];
         }
 
@@ -2746,6 +3608,15 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
 
             let questionsHTML = '';
             currentMockExam.forEach(qItem => {
+                const exSteps = (qItem.ex.steps && qItem.ex.steps.length)
+                    ? qItem.ex.steps.map((s, idx) => `
+                        <div style="margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px dashed var(--border-subtle);">
+                            <div style="font-size: 0.85rem; font-weight: 700; color: var(--accent-blue); margin-bottom: 4px;">Adım ${idx + 1} — ${s.title}</div>
+                            <div>${s.content}</div>
+                        </div>
+                    `).join('')
+                    : qItem.ex.solution;
+
                 questionsHTML += `
                     <div class="mock-question-card">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
@@ -2767,7 +3638,7 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                             </summary>
                             <div style="margin-top: 14px; padding: 18px 22px; background: var(--bg-paper); border: 1px solid var(--border-subtle); border-radius: 10px;">
                                 <div style="font-family: 'Newsreader', serif; font-size: 1.14rem; line-height: 1.8;">
-                                    ${qItem.ex.solution}
+                                    ${exSteps}
                                 </div>
                                 <div class="mock-rubric-box">
                                     <strong style="color: var(--accent-emerald);">${window.ICONS ? window.ICONS.target : ""} Puanlama Baremi (Barème):</strong> ${qItem.rubric}
