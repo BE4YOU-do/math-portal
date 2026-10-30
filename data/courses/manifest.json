@@ -17,7 +17,7 @@
         "id": "modul2",
         "title": "Modül 2: Karmaşık Sayılar, Denklik Bağıntıları ve Gruplar",
         "breadcrumb": "MAT204 > Modül 2 (TD-2) > Gruplar",
-        "exerciseCount": 23
+        "exerciseCount": 28
       },
       {
         "id": "modul3",
@@ -41,7 +41,7 @@
         "id": "modul6",
         "title": "Modül 6: Grup Morfizmleri (Morphismes de Groupes)",
         "breadcrumb": "MAT204 > Modül 6 (Ders Notu) > Morfizmalar",
-        "exerciseCount": 4
+        "exerciseCount": 8
       }
     ]
   },
@@ -63,19 +63,25 @@
         "id": "seriler_mod2",
         "title": "Modül 2: Seriler ve Kısmi Toplamlar (Séries Numériques)",
         "breadcrumb": "MAT201 > Modül 2 > Temel Seriler",
-        "exerciseCount": 8
+        "exerciseCount": 9
       },
       {
         "id": "seriler_mod3",
         "title": "Modül 3: Yakınsaklık Kriterleri (Critères de Convergence)",
         "breadcrumb": "MAT201 > Modül 3 > Testler",
-        "exerciseCount": 13
+        "exerciseCount": 12
       },
       {
         "id": "seriler_mod4",
         "title": "Modül 4: Fonksiyon Dizileri ve Serileri (Suites de Fonctions)",
         "breadcrumb": "MAT201 > Modül 4 > Fonksiyon Serileri",
         "exerciseCount": 12
+      },
+      {
+        "id": "seriler_mod5",
+        "title": "Modül 5: Quiz & Vize Master Özeti (Karar Ağaçları & 8 Arketip)",
+        "breadcrumb": "MAT201 > Modül 5",
+        "exerciseCount": 8
       }
     ]
   },
@@ -125,13 +131,25 @@
         "id": "olasilik_mod1",
         "title": "Modül 1: Kombinatorik ve Temel Olasılık Aksiyomları",
         "breadcrumb": "MAT206 > Modül 1 > Temel Olasılık",
-        "exerciseCount": 2
+        "exerciseCount": 3
       },
       {
         "id": "olasilik_mod2",
         "title": "Modül 2: Koşullu Olasılık ve Bayes Teoremi",
         "breadcrumb": "MAT206 > Modül 2 > Koşullu Olasılık",
-        "exerciseCount": 2
+        "exerciseCount": 3
+      },
+      {
+        "id": "olasilik_mod3",
+        "title": "Modül 3: Kesikli Rastgele Değişkenler (Binom, Poisson, Geometrik)",
+        "breadcrumb": "MAT206 > Modül 3",
+        "exerciseCount": 3
+      },
+      {
+        "id": "olasilik_mod4",
+        "title": "Modül 4: Sürekli Dağılımlar, Yoğunluk & Limit Teoremleri",
+        "breadcrumb": "MAT206 > Modül 4",
+        "exerciseCount": 3
       }
     ]
   }

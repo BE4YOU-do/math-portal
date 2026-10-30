@@ -1,0 +1,45 @@
+\documentclass[11pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[turkish]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=2.2cm}
+\usepackage{tcolorbox}
+
+\title{\textbf{\Huge MAT206 - Olasılık Teorisi (Probabilités)}\\\Large Kapsamlı Ders Notları ve Çözümlü Alıştırmalar}
+\author{Galatasaray Üniversitesi --- Matematik Bölümü}
+\date{2026 Akademik Yılı}
+
+\begin{document}
+\shorthandoff{=}
+\maketitle
+
+\chapter{Kombinatorik ve Olasılık Aksiyomları (Dénombrement et Axiomes)}
+\section{Temel Sayma İlkeleri ve Çekiliş Modelleri}
+Sonlu bir $\Omega$ örneklem uzayında eş-olasılık (équiprobabilité) varsayımı altında bir $A \subset \Omega$ olayının olasılığı:
+\[ P(A) = \frac{\text{Card}(A)}{\text{Card}(\Omega)} \]
+formülü ile hesaplanır.
+
+\section{Kolmogorov Aksiyomları ve Poincaré Formülü}
+$(\Omega, \mathcal{F})$ ölçülebilir uzayı üzerinde bir $P: \mathcal{F} \to [0,1]$ fonksiyonunun olasılık ölçüsü olması için:
+\begin{enumerate}
+    \item $\forall A \in \mathcal{F}, \; P(A) \ge 0$
+    \item $P(\Omega) = 1$
+    \item $(\sigma\text{-additivité})$ İkişer ikişer ayrık $(A_n)_{n \ge 1}$ olay dizisi için $P\left(\bigsqcup_{n=1}^\infty A_n\right) = \sum_{n=1}^\infty P(A_n)$.
+\end{enumerate}
+
+\chapter{Koşullu Olasılık, Tam Olasılık ve Bayes Teoremi}
+\section{Tam Olasılık ve Bayes Formülü}
+$(B_1, B_2, \dots, B_n)$ örneklem uzayının bir parçalanışı (système complet d'événements) olsun. Herhangi bir $A$ olayı için:
+\[ P(A) = \sum_{i=1}^n P(A \mid B_i) P(B_i) \quad \text{ve} \quad P(B_k \mid A) = \frac{P(A \mid B_k) P(B_k)}{\sum_{i=1}^n P(A \mid B_i) P(B_i)} \]
+
+\chapter{Kesikli Rastgele Değişkenler (Variables Aléatoires Discrètes)}
+\section{Beklenen Değer, Varyans ve König-Huygens Teoremi}
+\[ E[X] = \sum_{x \in X(\Omega)} x P(X=x), \qquad V(X) = E[(X - E[X])^2] = E[X^2] - (E[X])^2 \]
+
+\chapter{Sürekli Rastgele Değişkenler ve Limit Teoremleri}
+\section{Yoğunluk Fonksiyonu ve Birikimli Dağılım Fonksiyonu}
+\[ P(a \le X \le b) = \int_a^b f(x)\,dx = F_X(b) - F_X(a), \qquad E[X] = \int_{-\infty}^{+\infty} x f(x)\,dx \]
+
+\end{document}
+

@@ -1,0 +1,257 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[turkish]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=1.8cm}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usepackage{xcolor}
+
+\title{\vspace{-1.2cm}\textbf{\Huge MAT201 - Sınav Master Özeti}\\\Large (Fiche Complète de Révision pour le Quiz --- Semaines 1 à 6)}
+\author{\textbf{Université Galatasaray} --- Meral Tosun}
+\date{\small Hafta 1-6 Tam Kapsam: Teori, Karar Ağaçları, 8 Tip Çözümlü Soru ve Vrai/Faux}
+
+\begin{document}
+\shorthandoff{=}
+\maketitle
+\vspace{-0.5cm}
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=\textbf{0. REFLEKS: Genel Terim Testi (Condition Nécessaire)}]
+Bir serinin yakınsak olabilmesi için \textbf{ZORUNLU} şart genel terimin sıfıra gitmesidir:
+\[ \lim_{n \to \infty} u_n \neq 0 \implies \sum u_n \text{ \textbf{DIVERGE GROSSIÈREMENT} (Doğrudan Iraksak, başka teste gerek yok!)} \]
+\textit{Dikkat:} $\lim u_n = 0$ çıkarsa bu yakınsaklığı garanti etmez (Örn: $\sum \frac{1}{n}$ için $1/n \to 0$ ama seri ıraksaktır).
+\end{tcolorbox}
+
+\section*{BÖLÜM 1: Sayısal Seriler Karar Ağacı (Séries Numériques)}
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=\textbf{A. Pozitif Terimli Seriler ($u_n \ge 0$)}]
+Karşına çıkan serinin cebirsel formuna göre şu test uygulanır:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Geometrik Seri ($\sum q^n$):} 
+    $|q| < 1 \iff$ Converge. Toplam: $S = \frac{\text{ilk terim}}{1 - q}$. ($|q| \ge 1 \implies$ Diverge).
+    \item \textbf{Riemann Serisi ($\sum \frac{1}{n^\alpha}$):} 
+    $\alpha > 1 \iff$ Converge. ($\alpha \le 1 \iff$ Diverge).
+    \item \textbf{Polinom veya Köklü İfadelerin Bölümü $\implies$ Asimptotik Denklik (Équivalents $\sim$):}
+    Payın en yüksek dereceli terimini paydanınkine böl: $u_n \sim \frac{c}{n^\alpha}$. Riemann serisiyle karşılaştır.
+    \item \textbf{Faktöriyel ($n!$) veya Üstel ($a^n$) $\implies$ D'Alembert (Oran Testi):}
+    \[ L = \lim_{n \to \infty} \frac{u_{n+1}}{u_n} : \quad L < 1 \text{ (Converge)}, \quad L > 1 \text{ (Diverge)}, \quad L=1 \text{ (Kararsız)} \]
+    \textit{Kritik limit:} $\lim_{n \to \infty} \left(1 + \frac{1}{n}\right)^n = e$.
+    \item \textbf{İfadenin Tamamı $n$. Kuvvette $\implies$ Cauchy Kök Testi:}
+    \[ L = \lim_{n \to \infty} \sqrt[n]{u_n} : \quad L < 1 \text{ (Converge)}, \quad L > 1 \text{ (Diverge)}, \quad L=1 \text{ (Kararsız)} \]
+    \item \textbf{İçinde $\ln n$ Olan İfadeler $\implies$ Bertrand / İntegral Testi:}
+    $\sum \frac{1}{n(\ln n)^\alpha}$ serisi $\iff \alpha > 1$ iken yakınsar ($t = \ln x$ değişken değiştirmeli integral).
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=purple!5!white,colframe=purple!75!black,title=\textbf{B. İşareti Değişen / Alterne Seriler ($(-1)^n a_n$)}]
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{1. Adım (Mutlak Değer):} $\sum |u_n|$ serisinin karakterine bak.
+    \begin{itemize}
+        \item $\sum |u_n|$ yakınsıyorsa $\implies$ \textbf{CONVERGENCE ABSOLUE (Mutlak Yakınsak)}. İşlem biter!
+        \item $\sum |u_n|$ ıraksıyorsa $\implies$ 2. Adıma geç:
+    \end{itemize}
+    \item \textbf{2. Adım (Leibniz Testi):} $u_n = (-1)^n a_n$ için iki şartı sağla:
+    \begin{enumerate}
+        \item $a_n$ dizisi azalandır ($a_{n+1} \le a_n$ veya $f'(x) \le 0$).
+        \item $\lim_{n \to \infty} a_n = 0$.
+    \end{enumerate}
+    $\implies$ Seri yakınsaktır. Mutlak değeri ıraksadığı için buna \textbf{SEMI-CONVERGENTE (Şartlı Yakınsak)} denir!
+\end{enumerate}
+\textbf{UYARI:} İşareti değişen serilerde $u_n \sim v_n$ kuralı \textbf{asla uygulanamaz}!
+\end{tcolorbox}
+
+\newpage
+
+\section*{BÖLÜM 2: Fonksiyon Dizileri ve Serileri (Suites et Séries de Fonctions)}
+
+\begin{tcolorbox}[colback=teal!5!white,colframe=teal!75!black,title=\textbf{Fonksiyon Dizileri ($f_n(x)$) --- 3 Adımlı Standart Şablon}]
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{1. ADIM (Noktasal Limit - Limite Simple):} Her $x \in D$ sabit tutulur, $n \to \infty$ limiti alınır: $f(x) = \lim_{n \to \infty} f_n(x)$.
+    \item \textbf{2. ADIM (Süreklilik Kontrolü):} 
+    Her $f_n$ fonksiyonu sürekli olduğu halde $f(x)$ limiti süreksiz çıkarsa:
+    \begin{center}
+    $\implies$ \textbf{DÜZGÜN YAKINSAK DEĞİLDİR (Non Uniformément Convergente)!} (İşlem biter).
+    \end{center}
+    \item \textbf{3. ADIM (Limit Sürekliyse $\implies$ Supremum / Türev Hesabı):}
+    Hata fonksiyonunun en büyük değerine (norm sonsuzuna) bakılır:
+    \[ \|f_n - f\|_{\infty, D} = \sup_{x \in D} |f_n(x) - f(x)| \]
+    $g_n(x) = f_n(x) - f(x)$ fonksiyonunun türevi alınıp $g_n'(x) = 0$ yapan $x_n$ tepe noktası bulunur:
+    \begin{itemize}
+        \item $\lim_{n \to \infty} |g_n(x_n)| = 0 \implies$ \textbf{DÜZGÜN YAKINSAKTIR}.
+        \item $\lim_{n \to \infty} |g_n(x_n)| = c \neq 0$ (sabit kalırsa) $\implies$ \textbf{DÜZGÜN YAKINSAK DEĞİLDİR}. İşte o $x_n$ dizisi senin karşıt örneğindir (suite test).
+    \end{itemize}
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=\textbf{Fonksiyon Serileri ($\sum f_n(x)$) --- Yakınsaklık Hiyerarşisi}]
+\[ \textbf{Normal Yakınsaklık} \implies \textbf{Düzgün Yakınsaklık} \implies \textbf{Noktasal Yakınsaklık} \]
+\[ \textbf{Normal Yakınsaklık} \implies \textbf{Mutlak Yakınsaklık} \implies \textbf{Noktasal Yakınsaklık} \]
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Normal Yakınsaklık (Weierstrass $M$-Testi):}
+    Her $x \in D$ için $|f_n(x)| \le M_n$ olacak şekilde $x$'ten bağımsız bir sayısal $M_n$ dizisi bulunur.
+    Eğer sayısal seri $\sum M_n$ yakınsıyorsa, fonksiyon serisi $\sum f_n$ \textbf{normal yakınsar} (dolayısıyla düzgün, mutlak ve noktasal da yakınsar!).
+    \item \textbf{Kalan Terim ile Düzgün Yakınsaklık:}
+    $\sum f_n(x)$ serisi $D$ üzerinde düzgün yakınsaktır $\iff \lim_{N \to \infty} \sup_{x \in D} |R_N(x)| = 0$.
+    Burada $R_N(x) = \sum_{n=N+1}^{+\infty} f_n(x)$ serinin kalan terimidir.
+    \item \textbf{Düzgün Cauchy Kriteri:}
+    $\forall \epsilon > 0, \exists N \in \mathbb{N}, \forall m > n \ge N : \sup_{x \in D} |S_m(x) - S_n(x)| < \epsilon$.
+\end{itemize}
+\end{tcolorbox}
+
+\newpage
+
+\section*{BÖLÜM 3: Sınavda Çıkacak 8 Arketip Soru ve Tam Çözümleri}
+
+\subsection*{Tip 1: Alterne Seri ve Şartlı Yakınsaklık (Leibniz Testi)}
+\textbf{Soru:} Étudier la convergence simple et absolue de $\sum_{n \ge 1} \frac{(-1)^n}{\sqrt{n}}$.
+\begin{proof}[Résolution]
+Posons $u_n = \frac{(-1)^n}{\sqrt{n}} = (-1)^n a_n$ avec $a_n = \frac{1}{\sqrt{n}} > 0$.
+\begin{enumerate}
+    \item \textbf{Convergence absolue :} $|u_n| = \frac{1}{n^{1/2}}$. C'est une série de Riemann avec $\alpha = 1/2 \le 1$, donc elle \textbf{diverge}. La série n'est pas absolument convergente.
+    \item \textbf{Critère de Leibniz :} La suite $(a_n)$ est strictement décroissante (car $n \mapsto \sqrt{n}$ est croissante) et $\lim_{n \to +\infty} a_n = 0$. D'après le critère spécial des séries alternées, la série $\sum u_n$ \textbf{converge}.
+\end{enumerate}
+\textbf{Conclusion :} La série est \textbf{conditionnellement convergente (semi-convergente)}.
+\end{proof}
+
+\subsection*{Tip 2: D'Alembert Oran Testi (Faktöriyel ve Üstel İfadeler)}
+\textbf{Soru:} Étudier la nature de la série $\sum_{n \ge 1} \frac{2^n n!}{n^n}$.
+\begin{proof}[Résolution]
+Tous les termes sont strictement positifs ($u_n > 0$). Calculons le quotient $\frac{u_{n+1}}{u_n}$ :
+\[ \frac{u_{n+1}}{u_n} = \frac{2^{n+1} (n+1)!}{(n+1)^{n+1}} \times \frac{n^n}{2^n n!} = 2 \frac{n+1}{n+1} \left(\frac{n}{n+1}\right)^n = 2 \left( \frac{1}{1 + \frac{1}{n}} \right)^n \]
+Puisque $\lim_{n \to +\infty} \left(1 + \frac{1}{n}\right)^n = e$, on a :
+\[ L = \lim_{n \to +\infty} \frac{u_{n+1}}{u_n} = \frac{2}{e} \]
+Comme $e \approx 2.718 > 2$, on a $L = \frac{2}{e} < 1$. D'après le critère de d'Alembert, la série $\sum u_n$ \textbf{converge}.
+\end{proof}
+
+\subsection*{Tip 3: Cauchy Kök Testi ($n$. Kuvvet İfadeleri)}
+\textbf{Soru:} Étudier la nature de la série $\sum_{n \ge 3} \left(1 - \frac{2}{n}\right)^{n^2}$.
+\begin{proof}[Résolution]
+Le terme général est strictement positif pour $n \ge 3$. Appliquons la racine $n$-ième :
+\[ \sqrt[n]{u_n} = \left( \left(1 - \frac{2}{n}\right)^{n^2} \right)^{1/n} = \left(1 - \frac{2}{n}\right)^n \]
+D'après la limite classique $\lim_{n \to +\infty} \left(1 + \frac{x}{n}\right)^n = e^x$ avec $x = -2$ :
+\[ L = \lim_{n \to +\infty} \sqrt[n]{u_n} = e^{-2} = \frac{1}{e^2} \]
+Puisque $e^2 > 1$, on a $L = \frac{1}{e^2} < 1$. D'après le critère de Cauchy, la série \textbf{converge}.
+\end{proof}
+
+\subsection*{Tip 4: Dizilerde Cauchy Tanımı ($\epsilon - N$ İspatı)}
+\textbf{Soru:} Montrer que la suite $u_n = \frac{1}{n}$ est une suite de Cauchy.
+\begin{proof}[Résolution]
+Soit $\epsilon > 0$. Soient $m, n \in \mathbb{N}$ avec $m, n \ge N$. Évaluons la différence $|u_n - u_m|$ :
+\[ |u_n - u_m| = \left| \frac{1}{n} - \frac{1}{m} \right| \le \frac{1}{n} + \frac{1}{m} \]
+Comme $n \ge N$ et $m \ge N$, on a $\frac{1}{n} \le \frac{1}{N}$ et $\frac{1}{m} \le \frac{1}{N}$, donc :
+\[ |u_n - u_m| \le \frac{2}{N} \]
+Il suffit de choisir un entier $N > \frac{2}{\epsilon}$. Alors pour tous $m, n \ge N$, on a $|u_n - u_m| < \epsilon$.
+La suite $(1/n)$ est donc une \textbf{suite de Cauchy}.
+\end{proof}
+
+\newpage
+
+\subsection*{Tip 5: Fonksiyon Dizisinde Süreksizlik ile Düzgün Yakınsaklığı Çürütme}
+\textbf{Soru:} Soit $f_n(x) = \frac{nx}{1+nx}$ sur $[0, 1]$. Étudier la convergence simple et uniforme.
+\begin{proof}[Résolution]
+\begin{enumerate}
+    \item \textbf{Limite simple :} 
+    - Pour $x = 0$ : $f_n(0) = 0 \to 0$.\\
+    - Pour $x \in ]0, 1]$ : $f_n(x) = \frac{nx}{1+nx} = \frac{1}{1 + \frac{1}{nx}} \xrightarrow[n \to +\infty]{} 1$.\\
+    La limite simple est $f(x) = 0$ si $x=0$, et $f(x)=1$ si $x \in ]0, 1]$.
+    \item \textbf{Convergence uniforme :}
+    Chaque $f_n$ est continue sur $[0, 1]$. Or la limite simple $f$ est discontinue en $x=0$ car $\lim_{x \to 0^+} f(x) = 1 \neq f(0) = 0$.
+    Par contraposée du théorème de transfert de la continuité, la suite $(f_n)$ \textbf{ne converge pas uniformément} sur $[0, 1]$.
+\end{enumerate}
+\end{proof}
+
+\subsection*{Tip 6: Fonksiyon Dizisinde Türevle Tepe Noktası (Extremum) Bulma}
+\textbf{Soru:} Soit $f_n(x) = \frac{nx}{1+n^2 x^2}$ sur $[0, 1]$. Étudier la convergence uniforme.
+\begin{proof}[Résolution]
+\begin{enumerate}
+    \item \textbf{Limite simple :} Pour $x=0$, $f_n(0)=0$. Pour $x \in ]0, 1]$, $f_n(x) \sim \frac{nx}{n^2 x^2} = \frac{1}{nx} \to 0$. Donc $f(x) = 0$.
+    \item \textbf{Norme uniforme (Türev) :} Calculons la dérivée de $f_n$ sur $[0, 1]$ :
+    \[ f_n'(x) = \frac{n(1+n^2 x^2) - nx(2n^2 x)}{(1+n^2 x^2)^2} = \frac{n(1 - n^2 x^2)}{(1+n^2 x^2)^2} \]
+    La dérivée s'annule en $x_n = \frac{1}{n} \in [0, 1]$. En ce point, la fonction atteint son maximum :
+    \[ f_n(x_n) = f_n\left(\frac{1}{n}\right) = \frac{n(1/n)}{1 + n^2(1/n^2)} = \frac{1}{1+1} = \frac{1}{2} \]
+    Par conséquent :
+    \[ \|f_n - 0\|_{\infty, [0, 1]} = \sup_{x \in [0, 1]} |f_n(x)| = \frac{1}{2} \xrightarrow[n \to +\infty]{} \frac{1}{2} \neq 0 \]
+    La suite $(f_n)$ \textbf{ne converge pas uniformément} sur $[0, 1]$ (la suite test est $x_n = 1/n$).
+\end{enumerate}
+\end{proof}
+
+\subsection*{Tip 7: Fonksiyon Serisinde Normal Yakınsaklık (Weierstrass $M$-Testi)}
+\textbf{Soru:} Étudier la convergence normale de la série $\sum_{n \ge 1} \frac{\sin(nx)}{n^2}$ sur $\mathbb{R}$.
+\begin{proof}[Résolution]
+Pour tout $x \in \mathbb{R}$ et tout $n \ge 1$ :
+\[ \left| \frac{\sin(nx)}{n^2} \right| \le \frac{1}{n^2} \]
+En passant à la borne supérieure : $\|u_n\|_{\infty, \mathbb{R}} = \sup_{x \in \mathbb{R}} \left|\frac{\sin(nx)}{n^2}\right| \le \frac{1}{n^2} = M_n$.
+La série numérique $\sum \frac{1}{n^2}$ est une série de Riemann convergente ($\alpha = 2 > 1$).
+Par le critère de Weierstrass, la série $\sum u_n$ \textbf{converge normalement sur $\mathbb{R}$}.
+Par implication, elle converge également \textbf{uniformément, absolument et simplement sur $\mathbb{R}$}.
+\end{proof}
+
+\subsection*{Tip 8: Teleskopik Fonksiyon Serisi}
+\textbf{Soru:} Calculer la somme et étudier la convergence uniforme de $\sum_{n=1}^{+\infty} \frac{x}{(1+nx)(1+(n+1)x)}$ sur $[0, +\infty[$.
+\begin{proof}[Résolution]
+On remarque que $u_n(x) = \frac{1}{1+nx} - \frac{1}{1+(n+1)x}$. C'est une série télescopique :
+\[ S_N(x) = \sum_{n=1}^N u_n(x) = \frac{1}{1+x} - \frac{1}{1+(N+1)x} \]
+- Pour $x = 0$ : $S_N(0) = 0 \to 0$.\\
+- Pour $x > 0$ : $\lim_{N \to +\infty} \frac{1}{1+(N+1)x} = 0$, donc $S(x) = \frac{1}{1+x}$.\\
+La somme est $S(0) = 0$ et $S(x) = \frac{1}{1+x}$ pour $x > 0$.
+Puisque $\lim_{x \to 0^+} S(x) = 1 \neq S(0) = 0$, la somme $S$ est discontinue en 0. Comme chaque terme $u_n$ est continu, la série \textbf{ne converge pas uniformément sur $[0, +\infty[$}.
+\end{proof}
+
+\newpage
+
+\section*{BÖLÜM 4: Sınav Föyündeki 8 Vrai / Faux Sorusunun Tamamı}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{"Si une suite de fonctions continues converge simplement alors sa limite est continue."}
+    \begin{center}
+    \textbf{\textcolor{red}{FAUX}} --- \textit{Contre-exemple :} $f_n(x) = x^n$ sur $[0, 1]$. Limite $f(x)=0$ ($x < 1$) et $f(1)=1$ discontinue en 1.
+    \end{center}
+
+    \item \textbf{"Si une suite de fonctions converge simplement vers une fonction continue alors la convergence est uniforme."}
+    \begin{center}
+    \textbf{\textcolor{red}{FAUX}} --- \textit{Contre-exemple :} $f_n(x) = \frac{nx}{1+n^2 x^2}$ sur $[0, 1]$. Limite $f(x) = 0$ continue, mais $\|f_n\|_\infty = f_n(1/n) = 1/2 \not\to 0$.
+    \end{center}
+
+    \item \textbf{"Si une suite de fonctions converge uniformément sur tout segment de $]0, 1[$ alors elle converge uniformément sur $]0, 1[$."}
+    \begin{center}
+    \textbf{\textcolor{red}{FAUX}} --- \textit{Contre-exemple :} $f_n(x) = x^n$ sur $]0, 1[$. Sur tout $[a, b] \subset ]0, 1[$, $\sup |x^n| = b^n \to 0$. Mais sur $]0, 1[$, $\sup x^n = 1 \not\to 0$.
+    \end{center}
+
+    \item \textbf{"Si une suite de fonctions converge uniformément sur $D$ alors elle converge uniformément sur toute partie $A \subset D$."}
+    \begin{center}
+    \textbf{\textcolor{blue!80!black}{VRAI}} --- \textit{Démonstration :} $\sup_{x \in A} |f_n - f| \le \sup_{x \in D} |f_n - f| \xrightarrow[n \to \infty]{} 0$.
+    \end{center}
+
+    \item \textbf{"Si une série de fonctions converge absolument en tout point de $D$ alors elle converge uniformément sur $D$."}
+    \begin{center}
+    \textbf{\textcolor{red}{FAUX}} --- \textit{Contre-exemple :} $\sum_{n \ge 0} x^n$ sur $[0, 1[$. Converge absolument partout, mais le reste $R_N(x) = \frac{x^{N+1}}{1-x}$ tend vers $+\infty$ en $1^-$.
+    \end{center}
+
+    \item \textbf{"Si une série de fonctions converge normalement sur $D$ alors elle converge uniformément sur $D$."}
+    \begin{center}
+    \textbf{\textcolor{blue!80!black}{VRAI}} --- \textit{Démonstration :} $|\sum_{k=n+1}^m f_k(x)| \le \sum_{k=n+1}^m \|f_k\|_\infty < \epsilon$. Vérifie le critère de Cauchy uniforme.
+    \end{center}
+
+    \item \textbf{"Si une série de fonctions converge uniformément sur $D$ alors elle converge normalement sur $D$."}
+    \begin{center}
+    \textbf{\textcolor{red}{FAUX}} --- \textit{Contre-exemple :} $\sum_{n \ge 1} \frac{(-1)^n x}{n}$ sur $[0, 1]$. Leibniz avec reste $|R_N| \le \frac{1}{N+1} \to 0$ (CV uniforme), mais $\|u_n\|_\infty = \frac{1}{n}$ et $\sum \frac{1}{n} = +\infty$ (pas normale).
+    \end{center}
+
+    \item \textbf{"Si une série $\sum f_n$ converge uniformément sur $D$ alors la suite $(f_n)$ converge uniformément vers zéro sur $D$."}
+    \begin{center}
+    \textbf{\textcolor{blue!80!black}{VRAI}} --- \textit{Démonstration :} $f_n = S_n - S_{n-1} \implies \|f_n\|_\infty \le \|S_n - S\|_\infty + \|S_{n-1} - S\|_\infty \to 0$.
+    \end{center}
+\end{enumerate}
+
+\section*{BÖLÜM 5: Fransızca Sınav Jeton Cümleleri (Tam Puan Kalıpları)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Leibniz İçin:} \textit{"C'est une série alternée de la forme $\sum (-1)^n a_n$ avec $a_n > 0$. La suite $(a_n)$ est strictement décroissante et tend vers 0. D'après le critère spécial des séries alternées (Leibniz), la série converge."}
+    \item \textbf{D'Alembert İçin:} \textit{"Puisque $\lim_{n \to +\infty} \frac{u_{n+1}}{u_n} = L < 1$, d'après le critère de d'Alembert, la série $\sum u_n$ converge."}
+    \item \textbf{Asimptotik Denklik İçin:} \textit{"Comme $u_n > 0$ et $u_n \sim \frac{1}{n^2}$, par comparaison avec la série de Riemann convergente ($\alpha = 2 > 1$), la série $\sum u_n$ converge."}
+    \item \textbf{Düzgün Yakınsaklık Reddi (Süreksizlik):} \textit{"Pour tout $n$, $f_n$ est continue sur $D$, or la limite simple $f$ est discontinue en $x_0$. Par contraposée du théorème de continuité, la suite $(f_n)$ ne converge pas uniformément sur $D$."}
+    \item \textbf{Weierstrass Normal Yakınsaklık İçin:} \textit{"Pour tout $x \in D$, $|u_n(x)| \le M_n$. La série numérique $\sum M_n$ converge, donc d'après le critère de Weierstrass, la série converge normalement sur $D$."}
+\end{itemize}
+
+\end{document}

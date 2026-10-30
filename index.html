@@ -28,7 +28,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
     <!-- Custom Modular Stylesheet -->
-    <link rel="stylesheet" href="css/style.css?v=21">
+    <link rel="stylesheet" href="css/style.css?v=22">
 </head>
 <body>
 
@@ -220,6 +220,14 @@
                 </div>
                 <span class="nav-count-badge" style="background: rgba(16, 185, 129, 0.18); color: var(--accent-emerald);">Araç</span>
             </div>
+
+            <div class="nav-item" id="nav-kaynaklar" onclick="loadSpecialView('kaynaklar')">
+                <div class="nav-item-left">
+                    <svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                    <span>Ders Kaynakları (PDF &amp; LaTeX)</span>
+                </div>
+                <span class="nav-count-badge" style="background: rgba(59, 130, 246, 0.18); color: var(--accent-blue);">Arşiv</span>
+            </div>
         </nav>
 
         <div class="sidebar-footer">
@@ -307,12 +315,12 @@
     </div>
 
     <!-- Modular Data & Logic Scripts -->
-    <script src="js/icons.js?v=21"></script>
-    <script src="data/courses_manifest.js?v=21"></script>
-    <script src="data/concepts.js?v=21"></script>
-    <script src="data/courses/mat204_grup.js?v=21"></script>
-    <script src="data/flashcards.js?v=21"></script>
-    <script src="js/app.js?v=21"></script>
+    <script src="js/icons.js?v=22"></script>
+    <script src="data/courses_manifest.js?v=22"></script>
+    <script src="data/concepts.js?v=22"></script>
+    <script src="data/courses/mat204_grup.js?v=22"></script>
+    <script src="data/flashcards.js?v=22"></script>
+    <script src="js/app.js?v=22"></script>
 
     <!-- Service Worker Registration for PWA Offline Math & KaTeX -->
     <script>
@@ -325,7 +333,7 @@
                 }
             });
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js?v=21').catch(err => {
+                navigator.serviceWorker.register('./sw.js?v=22').catch(err => {
                     console.log('SW registration note:', err);
                 });
             });

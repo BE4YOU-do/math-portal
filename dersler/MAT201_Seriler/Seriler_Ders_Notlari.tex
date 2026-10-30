@@ -1,0 +1,1636 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[turkish]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=2cm}
+\usepackage{tcolorbox}
+\usepackage{hyperref}
+
+\title{\textbf{Seriler ve Diziler\\ (Séries et Suites)}}
+\author{Ders Notları ve Çözümler}
+\date{Université Galatasaray}
+
+\begin{document}
+\shorthandoff{=}
+\maketitle
+\tableofcontents
+
+\chapter{Chapitre 1: Diziler (Suites Numériques)}
+
+\section{TD 0 - Rappels sur les Suites}
+
+\subsection*{Exemple 1.4: [Sınırlı Diziler (Suites Bornées)]}
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Hatırlatma (Rappel): Sınırlı Diziler]
+Bir $(u_n)$ dizisi için:
+\begin{itemize}
+    \item \textbf{Üstten Sınırlı (Majorée):} Her $n$ için $u_n \le M$ olacak şekilde bir $M \in \mathbb{R}$ varsa.
+    \item \textbf{Alttan Sınırlı (Minorée):} Her $n$ için $u_n \ge m$ olacak şekilde bir $m \in \mathbb{R}$ varsa.
+    \item \textbf{Sınırlı (Bornée):} Hem alttan hem üstten sınırlıysa (yani $|u_n| \le K$).
+\end{itemize}
+Trigonometrik fonksiyonlar her zaman sınırlıdır: $-1 \le \sin(x) \le 1$ ve $-1 \le \cos(x) \le 1$.
+\end{tcolorbox}
+
+\textbf{Soru:}
+Montrer que la suite $u_n = 2 \sin n - 3 \cos(n^2)$ est bornée.
+
+\begin{proof}[Résolution]
+Par l'inégalité triangulaire, on a :
+\[ |u_n| = |2 \sin n - 3 \cos(n^2)| \le |2 \sin n| + |-3 \cos(n^2)| \]
+\[ |u_n| \le 2 |\sin n| + 3 |\cos(n^2)| \]
+Or, on sait que pour tout $x \in \mathbb{R}$, $|\sin x| \le 1$ et $|\cos x| \le 1$. En appliquant ceci, on obtient :
+\[ |u_n| \le 2(1) + 3(1) = 5 \]
+Ainsi, pour tout $n \in \mathbb{N}$, on a $|u_n| \le 5$. Ceci montre que la suite est \textbf{bornée}.
+\end{proof}
+
+\subsection*{Exemple 1.6 et 1.7: [Monotonluk (Suites Monotones)]}
+
+\begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=Hatırlatma (Rappel): Monotonluk Testleri]
+Bir dizinin artan (croissante) veya azalan (décroissante) olduğunu kanıtlamak için iki ana yöntem vardır:
+\begin{itemize}
+    \item \textbf{Fark Yöntemi:} $u_{n+1} - u_n$ farkına bakılır. $>0$ ise artan, $<0$ ise azalandır. (En genel yöntem).
+    \item \textbf{Oran Yöntemi:} Tüm terimler pozitifse ($u_n > 0$), $\frac{u_{n+1}}{u_n}$ oranına bakılır. $>1$ ise artan, $<1$ ise azalandır. (Özellikle faktöriyel ve üslü ifadelerde çok işe yarar).
+\end{itemize}
+\end{tcolorbox}
+
+\textbf{Soru 1 (Exemple 1.6):} Étudier la monotonie de $u_n = \frac{n}{n+1}$ pour $n \ge 0$.\\
+\textbf{Soru 2 (Exemple 1.7):} Étudier la monotonie de $u_n = \frac{2^n}{n!}$ pour $n \ge 1$.
+
+\begin{proof}[Résolution]
+\textbf{Partie 1 (Méthode de la différence) :}
+Calculons $u_{n+1} - u_n$ :
+\[ u_{n+1} - u_n = \frac{n+1}{n+2} - \frac{n}{n+1} \]
+En réduisant au même dénominateur :
+\[ = \frac{(n+1)^2 - n(n+2)}{(n+1)(n+2)} = \frac{n^2+2n+1 - (n^2+2n)}{(n+1)(n+2)} = \frac{1}{(n+1)(n+2)} \]
+Pour tout $n \ge 0$, le dénominateur est strictement positif, donc $u_{n+1} - u_n > 0$.
+La suite est donc \textbf{strictement croissante}.
+
+\textbf{Partie 2 (Méthode du quotient) :}
+Puisque tous les termes sont strictement positifs ($u_n > 0$), on peut calculer le quotient $\frac{u_{n+1}}{u_n}$ :
+\[ \frac{u_{n+1}}{u_n} = \frac{\frac{2^{n+1}}{(n+1)!}}{\frac{2^n}{n!}} = \frac{2^{n+1}}{(n+1)!} \times \frac{n!}{2^n} \]
+En simplifiant les puissances et les factorielles :
+\[ = \frac{2^n \cdot 2}{n! \cdot (n+1)} \times \frac{n!}{2^n} = \frac{2}{n+1} \]
+Pour $n \ge 1$, on a $n+1 \ge 2$, d'où :
+\[ \frac{2}{n+1} \le \frac{2}{2} = 1 \]
+Ainsi, $\frac{u_{n+1}}{u_n} \le 1$. La suite est donc \textbf{décroissante}.
+\end{proof}
+
+\subsection*{Exemple 1.9: [Limiti Doğrudan Kanıtlama ($\epsilon - N$ Tanımı)]}
+
+\begin{tcolorbox}[colback=purple!5!white,colframe=purple!75!black,title=Hatırlatma (Rappel): Limitin Formel Tanımı]
+Dizinin limitinin $L$ olması ($u_n \to L$), şu formel anlama gelir:
+Öyle bir $N$ (eşik değeri) bulunmalıdır ki, bu $N$'den sonraki her $n$ adımı için dizi elemanı ile $L$ arasındaki mesafe istediğimiz kadar küçük bir $\epsilon > 0$ sayısından daha az olsun.
+Matematiksel olarak: $\forall \epsilon > 0, \exists N \in \mathbb{N} \implies (n \ge N \implies |u_n - L| < \epsilon)$.
+\end{tcolorbox}
+
+\textbf{Soru:}
+Montrons directement que $\lim_{n \to +\infty} \frac{1}{n} = 0$.
+
+\begin{proof}[Démonstration]
+Soit $\epsilon > 0$. Nous cherchons un entier $N \in \mathbb{N}$ tel que pour tout $n \ge N$, on ait :
+\[ \left| \frac{1}{n} - 0 \right| < \epsilon \]
+Ceci équivaut à :
+\[ \frac{1}{n} < \epsilon \iff n > \frac{1}{\epsilon} \]
+Il suffit de choisir un entier $N > \frac{1}{\epsilon}$ (par exemple $N = \lfloor \frac{1}{\epsilon} \rfloor + 1$).
+Alors, pour tout $n \ge N$, on a bien :
+\[ \frac{1}{n} \le \frac{1}{N} < \epsilon \]
+Ce qui prouve que $\lim_{n \to +\infty} \frac{1}{n} = 0$.
+\end{proof}
+
+\subsection*{Exemple 1.18 et 1.20: [Sıkıştırma Teoremi (Théorème des Deux Gendarmes)]}
+
+\begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black,title=Hatırlatma (Rappel): Sıkıştırma Teoremi (Sandviç Kuralı)]
+Dizilerde limit hesaplarken bazen dizinin doğrudan limitini almak çok zordur (örneğin faktöriyel veya trigonometrik karmaşalar içeriyorsa).
+Eğer $u_n$ dizisini, aynı limite sahip iki dizi ($v_n$ ve $w_n$) arasına sıkıştırabilirsek ($v_n \le u_n \le w_n$), ortadaki dizi de mecburen o limite gider.
+(Fransızlar buna İki Jandarma (Gendarme) Teoremi der: Sağdan ve soldan iki jandarma ortadaki suçluyu karakola ($L$ limitine) götürür).
+\end{tcolorbox}
+
+\textbf{Soru 1 (Exemple 1.18):} Calculer $\lim_{n \to +\infty} \frac{3 + \sin(n^2)}{n}$.\\
+\textbf{Soru 2 (Exemple 1.20):} Montrer par le théorème des deux gendarmes que $\lim_{n \to +\infty} \frac{2^n}{n!} = 0$.
+
+\begin{proof}[Résolution]
+\textbf{Partie 1 :}
+Soit $u_n = \frac{3 + \sin(n^2)}{n}$.
+On sait que pour tout $n \in \mathbb{N}$, $-1 \le \sin(n^2) \le 1$. En ajoutant 3 :
+\[ 2 \le 3 + \sin(n^2) \le 4 \]
+En divisant par $n > 0$ :
+\[ \frac{2}{n} \le \frac{3 + \sin(n^2)}{n} \le \frac{4}{n} \]
+Or, $\lim_{n \to +\infty} \frac{2}{n} = 0$ et $\lim_{n \to +\infty} \frac{4}{n} = 0$.
+D'après le théorème des deux gendarmes, on conclut que :
+\[ \lim_{n \to +\infty} u_n = 0 \]
+
+\textbf{Partie 2 :}
+Soit $u_n = \frac{2^n}{n!}$.
+Pour $n \ge 4$, on peut écrire :
+\[ n! = 1 \cdot 2 \cdot 3 \cdot 4 \cdots n \]
+Cette factorielle contient $(n-3)$ termes qui sont supérieurs ou égaux à 4 :
+\[ n! \ge (1 \cdot 2 \cdot 3) \cdot (4 \cdot 4 \cdots 4) = 6 \cdot 4^{n-3} \]
+On peut donc majorer la suite :
+\[ 0 \le \frac{2^n}{n!} \le \frac{2^n}{6 \cdot 4^{n-3}} \]
+En simplifiant le terme de droite :
+\[ \frac{2^n}{6 \cdot 4^{n-3}} = \frac{2^n \cdot 4^3}{6 \cdot 4^n} = \frac{64}{6} \left(\frac{2}{4}\right)^n = \frac{32}{3} \left(\frac{1}{2}\right)^n \]
+On obtient l'encadrement suivant :
+\[ 0 \le u_n \le \frac{32}{3} \left(\frac{1}{2}\right)^n \]
+Comme $1/2 \in ]-1, 1[$, la suite géométrique $(1/2)^n$ tend vers 0. Par le théorème des deux gendarmes, on a :
+\[ \lim_{n \to +\infty} \frac{2^n}{n!} = 0 \]
+\end{proof}
+
+\subsection*{Exemple 1.23: [Monoton ve Sınırlı Dizilerin Yakınsaklığı]}
+
+\begin{tcolorbox}[colback=cyan!5!white,colframe=cyan!75!black,title=Hatırlatma (Rappel): Monotonluk ve Sınırlılık (Convergence des suites monotones)]
+Çok önemli bir teorem:
+\begin{itemize}
+    \item Bir dizi \textbf{artan (croissante)} ve \textbf{üstten sınırlıysa (majorée)}, kesinlikle \textbf{yakınsaktır}.
+    \item Bir dizi \textbf{azalan (décroissante)} ve \textbf{alttan sınırlıysa (minorée)}, kesinlikle \textbf{yakınsaktır}.
+\end{itemize}
+Dikkat: Sadece sınırlı olmak yetmez (örn: $(-1)^n$), sadece monoton olmak da yetmez (örn: $n$). İkisi birleşince yakınsaklığı garanti eder!
+\end{tcolorbox}
+
+\textbf{Soru:}
+Considérons la suite $u_n = 2 - \frac{1}{n+1}$. Montrer qu'elle est croissante, majorée et par conséquent convergente.
+
+\begin{proof}[Résolution]
+Montrons d'abord que la suite est croissante en étudiant $u_{n+1} - u_n$ :
+\[ u_{n+1} - u_n = \left(2 - \frac{1}{n+2}\right) - \left(2 - \frac{1}{n+1}\right) \]
+\[ = \frac{1}{n+1} - \frac{1}{n+2} = \frac{1}{(n+1)(n+2)} > 0 \]
+La suite est donc \textbf{croissante}.
+
+Montrons ensuite qu'elle est majorée :
+Pour tout $n \ge 0$, $\frac{1}{n+1} > 0$. Par conséquent :
+\[ 2 - \frac{1}{n+1} < 2 \]
+La suite est donc \textbf{majorée} par 2.
+D'après le théorème de la limite monotone (toute suite croissante et majorée est convergente), la suite $(u_n)$ est \textbf{convergente}. Sa limite est :
+\[ \lim_{n \to +\infty} \left(2 - \frac{1}{n+1}\right) = 2 - 0 = 2 \]
+\end{proof}
+
+\subsection*{Exemple 1.32: [Cauchy Dizileri (Suites de Cauchy)]}
+
+\begin{tcolorbox}[colback=brown!5!white,colframe=brown!75!black,title=Hatırlatma (Rappel): Cauchy Dizisi]
+Bir dizinin Cauchy dizisi olması, terimler ilerledikçe kendi aralarındaki mesafenin (ardışık olmalarına gerek yok, rastgele iki terim $u_n, u_m$) sıfıra yaklaşması demektir.
+Reel sayılarda (Dans $\mathbb{R}$), bir dizinin yakınsak olması ile Cauchy dizisi olması birbirine denktir (Critère de Cauchy). 
+Formel tanım: $\forall \epsilon > 0, \exists N \in \mathbb{N} \implies (m, n \ge N \implies |u_n - u_m| < \epsilon)$.
+\end{tcolorbox}
+
+\textbf{Soru:}
+Considérons la suite $u_n = \frac{1}{n}$. Montrons qu'elle est de Cauchy.
+
+\begin{proof}[Démonstration]
+Soit $\epsilon > 0$. Prenons deux entiers $n, m \ge N$.
+Évaluons la différence $|u_n - u_m|$ :
+\[ |u_n - u_m| = \left| \frac{1}{n} - \frac{1}{m} \right| \]
+Par l'inégalité triangulaire :
+\[ \left| \frac{1}{n} - \frac{1}{m} \right| \le \frac{1}{n} + \frac{1}{m} \]
+Comme $n \ge N$ et $m \ge N$, on a :
+\[ \frac{1}{n} + \frac{1}{m} \le \frac{1}{N} + \frac{1}{N} = \frac{2}{N} \]
+Nous voulons que cette quantité soit strictement inférieure à $\epsilon$ :
+\[ \frac{2}{N} < \epsilon \implies N > \frac{2}{\epsilon} \]
+Il suffit de choisir un entier $N > \frac{2}{\epsilon}$. Ainsi, pour tout $n, m \ge N$, on a $|u_n - u_m| < \epsilon$.
+La suite $(1/n)$ est donc une \textbf{suite de Cauchy}.
+\end{proof}
+
+\chapter{Chapitre 2: Seriler (Séries Numériques)}
+
+\section{Serilerin Tanımı ve Kısmi Toplamlar (Sommes Partielles)}
+
+\begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=Hatırlatma: Dizi ve Seri Arasındaki Fark]
+\begin{itemize}
+    \item \textbf{Dizi (Suite) $u_n$:} Sayıların virgülle ardışık dizilmesidir. Örn: $1, \frac{1}{2}, \frac{1}{4}, \dots$
+    \item \textbf{Seri (Série) $\sum u_n$:} Bu dizinin elemanlarının sonsuza kadar \textbf{toplanmasıdır}. Örn: $1 + \frac{1}{2} + \frac{1}{4} + \dots$
+\end{itemize}
+Bir serinin yakınsak olması demek, bu sonsuz toplamın sonlu bir sayıya eşit olması demektir!
+\end{tcolorbox}
+
+\section{Temel Seri Testleri (Critères de Convergence)}
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Çok Önemli: Genel Terim Testi (Condition Nécessaire)]
+Bir serinin $\sum u_n$ yakınsak olabilmesi için \textbf{ZORUNLU} şart şudur:
+\[ \lim_{n \to \infty} u_n = 0 \]
+Eğer dizinin kendisi sıfıra gitmiyorsa, o sayıları sonsuza kadar toplarsak sonuç asla sonlu çıkmaz! 
+\textit{Uyarı: Bu sadece bir ön şarttır. Limit 0 çıksa bile seri ıraksak olabilir (Örn: Harmonik Seri $\sum \frac{1}{n}$).}
+\end{tcolorbox}
+
+\section{TD 1 - Premières Séries Numériques}
+
+\subsection*{Exercice 1: [Toplam Sembolü ve İndis Değiştirme (Sommes et Changement d'Indice)]}
+
+\begin{tcolorbox}[colback=purple!5!white,colframe=purple!75!black,title=Hatırlatma (Rappel): Toplam Sembolü Özellikleri]
+Toplam sembolü ($\sum$) ile işlem yaparken bazı temel kuralları hatırlayalım:
+\begin{itemize}
+    \item \textbf{Doğrusallık (Linéarité):} $\sum (a \cdot u_k + b \cdot v_k) = a \sum u_k + b \sum v_k$. Yani sabit katsayıları dışarı alabilir, toplamları ayırabiliriz.
+    \item \textbf{Gauss Formülü:} İlk $n$ tam sayının toplamı: $\sum_{k=1}^n k = \frac{n(n+1)}{2}$.
+    \item \textbf{Sabit Terim Toplamı:} $c$ bir sabit olmak üzere $\sum_{k=1}^n c = c \times n$.
+    \item \textbf{İndis Değiştirme (Changement d'indice):} Toplamın başladığı noktayı değiştirmek için değişkeni öteliyoruz. Yeni bir değişken atamak (örn. $j = k + a$) alt sınır, üst sınır ve içerideki fonksiyonu aynı anda bu yeni değişkene göre güncellemeyi gerektirir.
+\end{itemize}
+\end{tcolorbox}
+
+\textbf{Soru:}
+(a) Calculer $\sum_{k=1}^n (2k - 1)$.\\
+(b) Effectuer un changement d'indice dans $\sum_{k=0}^n \frac{1}{k+2}$ afin de l'écrire sous la forme d'une somme dont l'indice commence à 2.
+
+\begin{proof}[Résolution]
+\textbf{Partie (a) :}
+Par linéarité de la somme, on a :
+\[ \sum_{k=1}^n (2k - 1) = 2 \sum_{k=1}^n k - \sum_{k=1}^n 1 \]
+En utilisant la formule de Gauss ($\sum_{k=1}^n k = \frac{n(n+1)}{2}$) et le fait que $\sum_{k=1}^n 1 = n$ :
+\[ = 2 \left( \frac{n(n+1)}{2} \right) - n = n(n+1) - n = n^2 \]
+Ainsi, on obtient :
+\[ \sum_{k=1}^n (2k - 1) = n^2 \]
+
+\textbf{Partie (b) :}
+On a la somme initiale : 
+\[ \sum_{k=0}^n \frac{1}{k+2} \]
+Effectuons le changement d'indice $j = k + 2$. Ainsi, $k = j - 2$.
+Les nouvelles bornes deviennent :
+- Pour $k = 0 \implies j = 2$
+- Pour $k = n \implies j = n + 2$
+
+Le terme général devient : $\frac{1}{(j-2)+2} = \frac{1}{j}$.
+En remplaçant le tout, on a :
+\[ \sum_{k=0}^n \frac{1}{k+2} = \sum_{j=2}^{n+2} \frac{1}{j} \]
+L'indice de sommation étant une variable muette, on peut le renommer en $k$ :
+\[ \sum_{k=2}^{n+2} \frac{1}{k} \]
+\end{proof}
+
+\subsection*{Exercice 2: [Geometrik Seriler (Séries Géométriques)]}
+
+\begin{tcolorbox}[colback=teal!5!white,colframe=teal!75!black,title=Hatırlatma (Rappel): Geometrik Seri ve Kısmi Toplam]
+\textbf{Geometrik Seri:} Her terimi bir önceki terimin sabit bir $q$ (raison) sayısıyla çarpılmasıyla elde edilen serilerdir: $\sum q^n = 1 + q + q^2 + q^3 + \dots$ \\
+\textbf{Kısmi Toplam (Somme Partielle) Formülü:} İlk $N+1$ terimin toplamı ($S_N$):
+\[ S_N = \sum_{n=0}^N q^n = \frac{1 - q^{N+1}}{1 - q} \quad (q \neq 1 \text{ için}) \]
+Bu serinin sonsuza kadar yakınsak (convergente) olabilmesi için $N \to \infty$ iken $q^{N+1}$ teriminin sıfıra gitmesi gerekir, ki bu da yalnızca $|q| < 1$ olmasıyla mümkündür.
+\end{tcolorbox}
+
+\textbf{Soru:}
+Soit $q \in \mathbb{R} \setminus \{1\}$. Montrer que la série géométrique $\sum_{n=0}^{+\infty} q^n$ converge si et seulement si $|q| < 1$. Dans ce cas, calculer sa somme.
+
+\begin{proof}[Résolution]
+Considérons la somme partielle $S_N$ :
+\[ S_N = \sum_{n=0}^N q^n = 1 + q + q^2 + \dots + q^N \]
+En multipliant par $q$ :
+\[ q S_N = q + q^2 + q^3 + \dots + q^{N+1} \]
+En soustrayant la deuxième équation de la première :
+\[ S_N - q S_N = 1 - q^{N+1} \implies S_N = \frac{1 - q^{N+1}}{1 - q} \]
+Pour étudier la convergence, regardons la limite quand $N \to +\infty$ :
+\[ \lim_{N \to +\infty} S_N = \lim_{N \to +\infty} \frac{1 - q^{N+1}}{1 - q} \]
+Le comportement dépend de $q^{N+1}$ :
+\begin{itemize}
+    \item \textbf{Si $|q| < 1$ :} $\lim_{N \to +\infty} q^{N+1} = 0$, donc $S_N \to \frac{1}{1 - q}$. La série \textbf{converge}.
+    \item \textbf{Si $q > 1$ :} $\lim_{N \to +\infty} q^{N+1} = +\infty$, donc la limite diverge vers $+\infty$. La série \textbf{diverge}.
+    \item \textbf{Si $q \le -1$ :} $q^{N+1}$ n'admet pas de limite, donc la série \textbf{diverge}.
+\end{itemize}
+La série converge \textbf{si et seulement si} $|q| < 1$, et sa somme est :
+\[ \sum_{n=0}^{+\infty} q^n = \frac{1}{1-q} \]
+\end{proof}
+
+\subsection*{Exercice 3: [Genel Terim Testi (Condition Nécessaire de Convergence)]}
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Hatırlatma (Rappel): Yakınsaklık İçin Gerekli Şart]
+Bir $\sum u_n$ serisinin yakınsak olabilmesi için genel terimi olan $u_n$'nin mutlaka 0'a gitmesi gerekir: $\lim_{n \to \infty} u_n = 0$. 
+Eğer bu limit 0'dan farklıysa veya limit yoksa, hiç işlem yapmadan seriye \textbf{"ıraksaktır" (divergente)} deriz. Buna Fransızca'da \textbf{divergence grossière} (kaba ıraksaklık) denir. 
+\textit{Ancak dikkat:} Limit 0'a gidiyorsa bu tek başına serinin yakınsak olduğunu kanıtlamaz! (Bkz. sorunun devamı).
+\end{tcolorbox}
+
+\textbf{Soru:}
+Pour chacune des séries suivantes, étudier la limite du terme général et préciser ce que l'on peut en déduire concernant la convergence :
+\[ \sum_{n=1}^{+\infty} \frac{n+2}{n+1}, \quad \sum_{n=1}^{+\infty} \cos\left(\frac{1}{n}\right), \quad \sum_{n=1}^{+\infty} \frac{1}{n^2} \]
+La condition $u_n \to 0$ est-elle suffisante pour assurer la convergence de la série $\sum u_n$ ?
+
+\begin{proof}[Résolution]
+Étudions la limite du terme général $u_n$ dans chaque cas :
+
+\textbf{1ère série :} $u_n = \frac{n+2}{n+1}$
+\[ \lim_{n \to +\infty} \frac{n(1 + \frac{2}{n})}{n(1 + \frac{1}{n})} = \frac{1+0}{1+0} = 1 \]
+Comme la limite n'est pas 0 ($1 \neq 0$), la condition nécessaire n'est pas vérifiée. 
+\textbf{Conclusion :} La série est \textbf{grossièrement divergente}.
+
+\textbf{2ème série :} $u_n = \cos\left(\frac{1}{n}\right)$
+Puisque $1/n \to 0$ et que le cosinus est continu en 0 :
+\[ \lim_{n \to +\infty} \cos\left(\frac{1}{n}\right) = \cos(0) = 1 \]
+Comme $1 \neq 0$, la condition nécessaire n'est pas vérifiée.
+\textbf{Conclusion :} La série est \textbf{grossièrement divergente}.
+
+\textbf{3ème série :} $u_n = \frac{1}{n^2}$
+\[ \lim_{n \to +\infty} \frac{1}{n^2} = 0 \]
+\textbf{Conclusion :} La condition nécessaire est satisfaite, la série peut converger ou diverger (il se trouve qu'elle converge car c'est une série de Riemann avec $\alpha=2>1$).
+
+\textbf{Réponse à la question :}
+Non, la condition $u_n \to 0$ n'est \textbf{pas suffisante} pour assurer la convergence de la série. Un contre-exemple classique est la \textbf{série harmonique} $\sum_{n=1}^{+\infty} \frac{1}{n}$ où $u_n \to 0$ mais la série diverge.
+\end{proof}
+
+\subsection*{Exercice 4: [Geometrik Seri Uygulamaları (Calculs de Séries Géométriques)]}
+
+\textbf{Soru:}
+Déterminer la nature des séries suivantes et calculer leur somme lorsqu'elles convergent :
+\[ \sum_{n=0}^{+\infty} \left(\frac{3}{4}\right)^n, \quad \sum_{n=0}^{+\infty} \left(-\frac{1}{3}\right)^n, \quad \sum_{n=0}^{+\infty} \left(-\frac{5}{4}\right)^n \]
+
+\begin{proof}[Résolution]
+On sait que la série géométrique $\sum q^n$ converge si et seulement si $|q| < 1$, de somme $\frac{\text{premier terme}}{1-q}$.
+
+\textbf{1.} $u_n = \left(\frac{3}{4}\right)^n$. On a $q = \frac{3}{4}$. Puisque $|q| < 1$, la série \textbf{converge}.
+La somme est :
+\[ \sum_{n=0}^{+\infty} \left(\frac{3}{4}\right)^n = \frac{1}{1 - \frac{3}{4}} = \frac{1}{1/4} = 4 \]
+
+\textbf{2.} $u_n = \left(-\frac{1}{3}\right)^n$. On a $q = -\frac{1}{3}$. Puisque $|q| = \frac{1}{3} < 1$, la série \textbf{converge}.
+La somme est :
+\[ \sum_{n=0}^{+\infty} \left(-\frac{1}{3}\right)^n = \frac{1}{1 - (-\frac{1}{3})} = \frac{1}{4/3} = \frac{3}{4} \]
+
+\textbf{3.} $u_n = \left(-\frac{5}{4}\right)^n$. On a $q = -\frac{5}{4}$. Puisque $|q| = \frac{5}{4} \ge 1$, la condition n'est pas satisfaite.
+La série \textbf{diverge}.
+\end{proof}
+
+\subsection*{Exercice 5: [Ondalık Yazılımlar ve Geometrik Seriler (Écritures décimales)]}
+
+\begin{tcolorbox}[colback=orange!5!white,colframe=orange!75!black,title=Hatırlatma (Rappel): Devirli Ondalık Sayılar]
+Lisede gördüğümüz $0.\overline{3}$ veya $0.\overline{9}$ gibi devirli ondalık (décimal périodique) sayıların ardında yatan asıl mantık serilerdir. Bir sayının ondalık açılımı aslında 10'un negatif kuvvetlerinin bir toplamıdır.
+Örneğin: $0.xyz = \frac{x}{10^1} + \frac{y}{10^2} + \frac{z}{10^3}$
+Devirli bir kısmı sonsuza kadar gidiyorsa, bu sonsuz toplam (seri) bir geometrik seri oluşturur.
+\end{tcolorbox}
+
+\textbf{Soru:}
+(1) Écrire $0.3333\dots$ sous la forme d'une série géométrique. Montrer que $0.33\dots = \frac{1}{3}$.\\
+(2) En utilisant la même méthode, déterminer la valeur exacte de $0.999999\dots$
+
+\begin{proof}[Résolution]
+\textbf{Partie (1) :}
+On peut écrire $0.3333\dots$ comme une somme de puissances de 10 :
+\[ 0.3333\dots = \frac{3}{10} + \frac{3}{100} + \frac{3}{1000} + \dots = \sum_{n=1}^{+\infty} \frac{3}{10^n} \]
+Ceci est une série géométrique de raison $q = \frac{1}{10}$. On met 3 en facteur :
+\[ = 3 \sum_{n=1}^{+\infty} \left(\frac{1}{10}\right)^n \]
+Puisque $|q| = 1/10 < 1$, la série converge. Son premier terme (pour $n=1$) est $1/10$.
+\[ \sum_{n=1}^{+\infty} \left(\frac{1}{10}\right)^n = \frac{1/10}{1 - 1/10} = \frac{1/10}{9/10} = \frac{1}{9} \]
+Donc, $0.3333\dots = 3 \times \frac{1}{9} = \frac{1}{3}$.
+
+\textbf{Partie (2) :}
+De même pour $0.9999\dots$ :
+\[ 0.9999\dots = \frac{9}{10} + \frac{9}{100} + \dots = \sum_{n=1}^{+\infty} \frac{9}{10^n} = 9 \sum_{n=1}^{+\infty} \left(\frac{1}{10}\right)^n \]
+D'après le calcul précédent, la somme géométrique vaut $1/9$.
+\[ 0.9999\dots = 9 \times \frac{1}{9} = 1 \]
+La valeur exacte est bien $1$.
+\end{proof}
+
+\subsection*{Exercice 6: [Teleskopik Seriler (Séries Télescopiques)]}
+
+\begin{tcolorbox}[colback=cyan!5!white,colframe=cyan!75!black,title=Hatırlatma (Rappel): Teleskopik Seri]
+Teleskopik seriler, genel terimi $u_n = v_{n} - v_{n+1}$ (veya tam tersi) şeklinde yazılabilen serilerdir. Böyle bir serinin kısmi toplamını ($S_N$) açtığımızda, aradaki tüm terimler birbirini sadeleştirir (Domino etkisi gibi).
+Sadece baştaki ve sondaki terimler hayatta kalır:
+$S_N = (v_1 - v_2) + (v_2 - v_3) + \dots + (v_N - v_{N+1}) = v_1 - v_{N+1}$.
+Sonrasında $N \to \infty$ iken limite bakılarak serinin değeri bulunur.
+\end{tcolorbox}
+
+\textbf{Soru:}
+On considère la série $\sum_{n=2}^{+\infty} \left( \frac{1}{\sqrt{n-1}} - \frac{2}{\sqrt{n}} + \frac{1}{\sqrt{n+1}} \right)$.
+Calculer la somme partielle $S_N$. En déduire que la série converge et calculer sa somme.
+
+\begin{proof}[Résolution]
+Étudions le terme général $u_n = \frac{1}{\sqrt{n-1}} - \frac{2}{\sqrt{n}} + \frac{1}{\sqrt{n+1}}$.
+On peut séparer le terme central en deux :
+\[ u_n = \left( \frac{1}{\sqrt{n-1}} - \frac{1}{\sqrt{n}} \right) - \left( \frac{1}{\sqrt{n}} - \frac{1}{\sqrt{n+1}} \right) \]
+Posons $v_n = \frac{1}{\sqrt{n-1}} - \frac{1}{\sqrt{n}}$. On a alors $v_{n+1} = \frac{1}{\sqrt{n}} - \frac{1}{\sqrt{n+1}}$.
+Ainsi, $u_n = v_n - v_{n+1}$. La série est donc \textbf{télescopique}.
+
+Calculons la somme partielle $S_N$ pour $n \ge 2$ :
+\[ S_N = \sum_{n=2}^N (v_n - v_{n+1}) = (v_2 - v_3) + (v_3 - v_4) + \dots + (v_N - v_{N+1}) \]
+Tous les termes intermédiaires s'annulent, il reste :
+\[ S_N = v_2 - v_{N+1} \]
+Avec $v_2 = 1 - \frac{1}{\sqrt{2}}$ et $v_{N+1} = \frac{1}{\sqrt{N}} - \frac{1}{\sqrt{N+1}}$, on obtient :
+\[ S_N = 1 - \frac{1}{\sqrt{2}} - \frac{1}{\sqrt{N}} + \frac{1}{\sqrt{N+1}} \]
+En passant à la limite quand $N \to +\infty$, on a $\frac{1}{\sqrt{N}} \to 0$ et $\frac{1}{\sqrt{N+1}} \to 0$.
+Donc :
+\[ \lim_{N \to +\infty} S_N = 1 - \frac{1}{\sqrt{2}} \]
+La série \textbf{converge} et sa somme vaut $1 - \frac{1}{\sqrt{2}}$.
+\end{proof}
+
+\subsection*{Exercice 7: [Geometrik Serilerin Kombinasyonu (Combinaison)]}
+
+\textbf{Soru:}
+On considère la série $\sum_{n=0}^{+\infty} \left( \frac{3}{2^n} + 5 \left(-\frac{2}{7}\right)^n \right)$.
+Montrer qu'elle converge. Calculer sa somme.
+
+\begin{proof}[Résolution]
+Par linéarité, la somme de deux séries convergentes est convergente. Étudions les deux parties :
+\[ \sum_{n=0}^{+\infty} \frac{3}{2^n} \quad \text{et} \quad \sum_{n=0}^{+\infty} 5 \left(-\frac{2}{7}\right)^n \]
+
+\textbf{Première partie :} $3 \sum_{n=0}^{+\infty} \left(\frac{1}{2}\right)^n$
+C'est une série géométrique avec $q = 1/2$. Comme $|q| < 1$, elle converge.
+Sa somme est : $3 \times \frac{1}{1 - 1/2} = 3 \times 2 = 6$.
+
+\textbf{Deuxième partie :} $5 \sum_{n=0}^{+\infty} \left(-\frac{2}{7}\right)^n$
+C'est une série géométrique avec $q = -2/7$. Comme $|q| < 1$, elle converge.
+Sa somme est : $5 \times \frac{1}{1 - (-2/7)} = 5 \times \frac{1}{9/7} = 5 \times \frac{7}{9} = \frac{35}{9}$.
+
+La série globale est la somme de deux séries convergentes, elle est donc \textbf{convergente}.
+Sa somme totale est :
+\[ S = 6 + \frac{35}{9} = \frac{54}{9} + \frac{35}{9} = \frac{89}{9} \]
+\end{proof}
+
+\subsection*{Exercice 8: [İntegral Testi ve Bertrand Serileri (Critère Intégral)]}
+
+\begin{tcolorbox}[colback=brown!5!white,colframe=brown!75!black,title=Hatırlatma (Rappel): İntegral Testi ve Limit Karşılaştırması]
+\textbf{Limit Karşılaştırması:} $u_n$ ve $v_n$ pozitif iki seri olsun. Eğer $\lim_{n \to \infty} \frac{u_n}{v_n} = 0$ ise, bu $u_n$'nin $v_n$'den çok daha hızlı 0'a gittiği (yani $u_n \ll v_n$) anlamına gelir. \newline
+\textbf{İntegral Testi (Critère intégral de Cauchy):} Sürekli, pozitif ve \textbf{azalan (décroissante)} bir $f(x)$ fonksiyonu için, $u_n = f(n)$ serisinin karakteri (yakınsak/ıraksak), $\int_a^\infty f(x) dx$ genelleştirilmiş integralinin karakteriyle \textbf{birebir aynıdır}. İntegral yakınsıyorsa seri de yakınsar, ıraksıyorsa seri de ıraksar.
+\end{tcolorbox}
+
+\textbf{Soru:}
+On considère les séries $\sum_{n=2}^{+\infty} \frac{1}{n \ln n}$ et $\sum_{n=2}^{+\infty} \frac{1}{n(\ln n)^2}$. Montrer que leurs termes généraux tendent vers 0 plus vite que $\frac{1}{n}$, puis étudier la nature de chacune de ces séries.
+
+\begin{proof}[Résolution]
+\textbf{Partie 1 : Vitesse de décroissance}
+Comparons les termes généraux avec $1/n$ en calculant le quotient :
+Pour la première série :
+\[ \lim_{n \to +\infty} \frac{\frac{1}{n \ln n}}{\frac{1}{n}} = \lim_{n \to +\infty} \frac{1}{\ln n} = 0 \]
+Pour la deuxième série :
+\[ \lim_{n \to +\infty} \frac{\frac{1}{n (\ln n)^2}}{\frac{1}{n}} = \lim_{n \to +\infty} \frac{1}{(\ln n)^2} = 0 \]
+Dans les deux cas, le quotient tend vers 0. Ainsi, les termes généraux tendent vers 0 \textbf{plus vite} que $1/n$ ($u_n = o(1/n)$).
+
+\textbf{Partie 2 : Nature des séries par le critère intégral}
+Les fonctions $f(x) = \frac{1}{x \ln x}$ et $g(x) = \frac{1}{x (\ln x)^2}$ sont continues, positives et \textbf{décroissantes} sur $[2, +\infty[$.
+
+\textbf{1ère série :} Intégrale $\int_2^X \frac{1}{x \ln x} dx$
+On pose $u = \ln x$, donc $du = \frac{dx}{x}$.
+\[ \int_{\ln 2}^{\ln X} \frac{1}{u} du = [\ln |u|]_{\ln 2}^{\ln X} = \ln(\ln X) - \ln(\ln 2) \]
+Quand $X \to +\infty$, $\ln(\ln X) \to +\infty$. L'intégrale diverge, donc la série \textbf{diverge}.
+
+\textbf{2ème série :} Intégrale $\int_2^X \frac{1}{x (\ln x)^2} dx$
+Avec le même changement de variable $u = \ln x$ :
+\[ \int_{\ln 2}^{\ln X} \frac{1}{u^2} du = \left[ -\frac{1}{u} \right]_{\ln 2}^{\ln X} = \frac{1}{\ln 2} - \frac{1}{\ln X} \]
+Quand $X \to +\infty$, $1/\ln X \to 0$. L'intégrale converge vers $1/\ln 2$. Donc la série \textbf{converge}.
+\end{proof}
+
+\subsection*{Exercice 9: [Geometri Uygulaması - Flocon de Koch (Koch Kar Tanesi)]}
+
+\textbf{Soru:}
+(Une application : le flocon de Koch) On part d'un triangle équilatéral d'aire 1. À la première étape, on ajoute 3 triangles équilatéraux, chacun d'aire $\frac{1}{9}$. À chaque nouvelle étape, le nombre de triangles ajoutés est multiplié par 4 et l'aire de chacun de ces triangles est divisée par 9. On note $A_n$ l'aire totale obtenue après $n$ étapes.
+(1) Calculer $A_1$, $A_2$ et $A_3$.\\
+(2) Montrer que $A_n = 1 + \frac{1}{3} \sum_{k=0}^{n-1} \left(\frac{4}{9}\right)^k$.\\
+(3) Calculer $\lim_{n \to +\infty} A_n$.
+
+\begin{proof}[Résolution]
+\textbf{Partie (1) :}
+L'aire initiale est $A_0 = 1$.
+À chaque étape $n$, le nombre de nouveaux triangles est multiplié par 4 (soit $3 \times 4^{n-1}$ triangles), et l'aire de chacun est divisée par 9 (soit $1/9^n$).
+
+- \textbf{Pour } $A_1$ : On ajoute 3 triangles d'aire $1/9$. 
+Aire ajoutée = $3 \times \frac{1}{9} = \frac{1}{3}$. Donc $A_1 = 1 + \frac{1}{3} = \frac{4}{3}$.
+- \textbf{Pour } $A_2$ : On ajoute $3 \times 4 = 12$ triangles d'aire $\frac{1}{81}$.
+Aire ajoutée = $12 \times \frac{1}{81} = \frac{4}{27}$. Donc $A_2 = \frac{4}{3} + \frac{4}{27} = \frac{40}{27}$.
+- \textbf{Pour } $A_3$ : On ajoute $12 \times 4 = 48$ triangles d'aire $\frac{1}{729}$.
+Aire ajoutée = $48 \times \frac{1}{729} = \frac{16}{243}$. Donc $A_3 = \frac{40}{27} + \frac{16}{243} = \frac{376}{243}$.
+
+\textbf{Partie (2) :}
+À l'étape $k$, l'aire totale ajoutée est $E_k = (3 \times 4^{k-1}) \times \frac{1}{9^k} = \frac{1}{3} \left(\frac{4}{9}\right)^{k-1}$.
+L'aire totale $A_n$ est la somme de l'aire initiale et des aires ajoutées jusqu'à l'étape $n$ :
+\[ A_n = 1 + \sum_{k=1}^n \frac{1}{3} \left(\frac{4}{9}\right)^{k-1} \]
+En effectuant le changement d'indice $j = k - 1$, la somme varie de $j=0$ à $n-1$ :
+\[ A_n = 1 + \frac{1}{3} \sum_{j=0}^{n-1} \left(\frac{4}{9}\right)^j \]
+En renommant $j$ en $k$, on obtient :
+\[ A_n = 1 + \frac{1}{3} \sum_{k=0}^{n-1} \left(\frac{4}{9}\right)^k \]
+
+\textbf{Partie (3) :}
+Quand $n \to +\infty$, la somme $\sum_{k=0}^{n-1} (4/9)^k$ est la somme partielle d'une série géométrique de raison $q = 4/9 < 1$, qui converge vers $\frac{1}{1 - 4/9} = \frac{9}{5}$.
+Ainsi, $\lim_{n \to +\infty} A_n = 1 + \frac{1}{3} \times \frac{9}{5} = 1 + \frac{3}{5} = \frac{8}{5}$.
+L'aire totale du flocon de Koch est $\frac{8}{5}$.
+\end{proof}
+
+\section{TD 3 - Critères de Convergence (Karşılaştırma ve Yakınsaklık Testleri)}
+
+\subsection*{Exercice 1: [Karşılaştırma Testi (Critère de Comparaison)]}
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Hatırlatma (Rappel): Eşlenik ile Çarpma ve Karşılaştırma]
+\textbf{Eşlenik (Quantité Conjuguée):} Köklü ifadelerin farkı durumunda, ifadeyi kökten kurtarmak için eşleniği ile çarparız: $(\sqrt{A} - \sqrt{B}) = \frac{A - B}{\sqrt{A} + \sqrt{B}}$.
+\textbf{Karşılaştırma (Comparaison):} Pozitif terimli serilerde, $u_n \le v_n$ ise ve büyük olan $\sum v_n$ yakınsıyorsa, küçük olan $\sum u_n$ de mecburen yakınsar.
+\end{tcolorbox}
+
+\textbf{Soru:}
+Étudier la nature de la série $\sum_{n \ge 1} \left( \sqrt{n^3+5} - \sqrt{n^3+2} \right)$. Rationaliser le terme général et le comparer à une série de Riemann.
+
+\begin{proof}[Résolution]
+Le terme général est $u_n = \sqrt{n^3+5} - \sqrt{n^3+2}$. Multiplions par la quantité conjuguée :
+\[ u_n = \frac{(\sqrt{n^3+5} - \sqrt{n^3+2})(\sqrt{n^3+5} + \sqrt{n^3+2})}{\sqrt{n^3+5} + \sqrt{n^3+2}} = \frac{3}{\sqrt{n^3+5} + \sqrt{n^3+2}} \]
+Cherchons un équivalent quand $n \to +\infty$. Les termes dominants sont $n^3$.
+\[ \sqrt{n^3+5} \sim n^{3/2} \quad \text{et} \quad \sqrt{n^3+2} \sim n^{3/2} \]
+Le dénominateur est donc équivalent à $2n^{3/2}$.
+\[ u_n \sim \frac{3}{2n^{3/2}} \]
+La série de référence est $\sum \frac{1}{n^{3/2}}$, qui est une série de Riemann convergente car $\alpha = 3/2 > 1$.
+Par le critère de comparaison par équivalents pour les séries à termes positifs, la série $\sum u_n$ \textbf{converge}.
+\end{proof}
+
+\subsection*{Exercice 2: [Asimptotik Denklik (Comparaison par Équivalents)]}
+
+\begin{tcolorbox}[colback=purple!5!white,colframe=purple!75!black,title=Hatırlatma (Rappel): Polinomlarda Denklik]
+$n \to \infty$ durumunda, rasyonel fonksiyonlarda (polinom bölü polinom) her zaman \textbf{en yüksek dereceli} terimler baskındır. Diğer küçük dereceli terimleri ve sabitleri limite giderken görmezden gelebiliriz. 
+İki pozitif seri için $u_n \sim v_n$ ise, bu iki seri "kardeş" olur, yani biri yakınsıyorsa diğeri de yakınsar, biri ıraksıyorsa diğeri de ıraksar.
+\end{tcolorbox}
+
+\textbf{Soru:}
+Étudier la nature des séries suivantes. Dans chaque cas, déterminer un équivalent simple du terme général et comparer avec une série de Riemann :
+(1) $\sum_{n \ge 1} \frac{3n^2+2n+1}{n^4+1}$ \qquad (2) $\sum_{n \ge 1} \frac{1}{\sqrt{n^2+3n}}$
+
+\begin{proof}[Résolution]
+\textbf{Partie (1) :} $u_n = \frac{3n^2+2n+1}{n^4+1}$.
+En ne gardant que les termes de plus haut degré :
+\[ u_n \sim \frac{3n^2}{n^4} = \frac{3}{n^2} \]
+La série $\sum \frac{1}{n^2}$ est une série de Riemann avec $\alpha = 2 > 1$, donc convergente.
+Par le critère d'équivalence, la série \textbf{converge}.
+
+\textbf{Partie (2) :} $u_n = \frac{1}{\sqrt{n^2+3n}}$.
+De même :
+\[ u_n \sim \frac{1}{\sqrt{n^2}} = \frac{1}{n} \]
+La série harmonique $\sum \frac{1}{n}$ est divergente (Riemann avec $\alpha = 1 \le 1$).
+Par le critère d'équivalence, la série \textbf{diverge}.
+\end{proof}
+
+\subsection*{Exercice 3: [Riemann Serileri (Séries de Riemann)]}
+
+\textbf{Soru:}
+(1) Déterminer la nature de $\sum_{n \ge 1} \frac{1}{n^{3/4}}$.\\
+(2) Étudier la série $\sum_{n \ge 1} \frac{1}{n^{(n+1)/n}}$ en remarquant que $\frac{1}{n^{(n+1)/n}} = \frac{1}{n} \frac{1}{n^{1/n}}$.
+
+\begin{proof}[Résolution]
+\textbf{Partie (1) :} $\sum \frac{1}{n^{3/4}}$.
+Il s'agit d'une série de Riemann avec $\alpha = 3/4 \le 1$. La série \textbf{diverge}.
+
+\textbf{Partie (2) :} $u_n = \frac{1}{n^{(n+1)/n}}$.
+Réécrivons le terme général :
+\[ u_n = \frac{1}{n^{1 + 1/n}} = \frac{1}{n} \times \frac{1}{n^{1/n}} \]
+Cherchons la limite de $n^{1/n}$ en passant à l'exponentielle :
+\[ n^{1/n} = \exp\left( \frac{\ln n}{n} \right) \]
+Puisque $\lim_{n \to +\infty} \frac{\ln n}{n} = 0$, on a $\lim_{n \to +\infty} n^{1/n} = e^0 = 1$.
+Ainsi, $u_n \sim \frac{1}{n}$.
+Puisque la série harmonique diverge, par le critère d'équivalence, la série \textbf{diverge}.
+\end{proof}
+
+\subsection*{Exercice 4: [İntegral Testi (Critère Intégral)]}
+
+\textbf{Soru:}
+Pour $\alpha \in \mathbb{R}$, on considère la série $\sum_{n \ge 2} \frac{1}{n(\ln n)^\alpha}$.
+(1) On pose $f(x) = \frac{1}{x(\ln x)^\alpha}$. Montrer que, pour $\alpha > 0$, la fonction $f$ est positive et décroissante sur $[2, +\infty[$.
+(2) À l'aide du changement de variable $t = \ln x$, étudier l'intégrale $\int_2^{+\infty} \frac{dx}{x(\ln x)^\alpha}$.
+(3) En déduire que la série converge si et seulement si $\alpha > 1$.
+
+\begin{proof}[Résolution]
+\textbf{Partie (1) :} Pour $x \ge 2$, on a $x > 0$ et $\ln x > 0$. Puisque $\alpha > 0$, la fonction $f(x) = \frac{1}{x(\ln x)^\alpha}$ est bien positive.
+Calculons la dérivée $f'(x)$ :
+\[ f'(x) = -1 \cdot (x(\ln x)^\alpha)^{-2} \cdot \left[ 1 \cdot (\ln x)^\alpha + x \cdot \alpha (\ln x)^{\alpha-1} \frac{1}{x} \right] \]
+\[ = - \frac{(\ln x)^\alpha + \alpha (\ln x)^{\alpha-1}}{(x(\ln x)^\alpha)^2} \]
+Pour $x \ge 2$ et $\alpha > 0$, le numérateur est positif. Avec le signe moins, $f'(x) < 0$. $f$ est donc \textbf{décroissante}.
+
+\textbf{Partie (2) :} Intégrale $I = \int_2^{X} \frac{dx}{x(\ln x)^\alpha}$.
+Posons $t = \ln x$, d'où $dt = \frac{dx}{x}$.
+\[ I = \int_{\ln 2}^{\ln X} \frac{dt}{t^\alpha} \]
+- Si $\alpha \neq 1$, $I = \left[ \frac{t^{1-\alpha}}{1-\alpha} \right]_{\ln 2}^{\ln X}$. Quand $X \to +\infty$, cette intégrale converge si $1-\alpha < 0 \iff \alpha > 1$.
+- Si $\alpha = 1$, $I = [\ln|t|]_{\ln 2}^{\ln X} = \ln(\ln X) - \ln(\ln 2)$, qui diverge.
+L'intégrale converge si et seulement si $\alpha > 1$.
+
+\textbf{Partie (3) :} D'après le critère intégral (pour une fonction positive décroissante), la série et l'intégrale ont la même nature.
+La série \textbf{converge si et seulement si} $\alpha > 1$.
+\end{proof}
+
+\subsection*{Exercice 5: [D'Alembert (Oran) Testi (Critère de d'Alembert)]}
+
+\begin{tcolorbox}[colback=teal!5!white,colframe=teal!75!black,title=Hatırlatma (Rappel): D'Alembert Kriteri]
+D'Alembert (veya Ratio/Oran) Testi, özellikle faktöriyel (!) ve üslü terimler ($a^n$) içeren serilerde kullanılır.
+Pozitif bir seri için $L = \lim_{n \to \infty} \frac{u_{n+1}}{u_n}$ hesaplanır:
+\begin{itemize}
+    \item $L < 1 \implies$ Seri \textbf{yakınsak (convergente)}.
+    \item $L > 1 \implies$ Seri \textbf{ıraksak (divergente)}.
+    \item $L = 1 \implies$ \textbf{Kararsız durum} (Test sonuç vermez, Riemann vb. başka bir test gerekir).
+\end{itemize}
+Hatırlatma: $\lim_{n \to \infty} \left(1 + \frac{1}{n}\right)^n = e \approx 2.718$.
+\end{tcolorbox}
+
+\textbf{Soru:}
+Étudier la nature des séries suivantes avec d'Alembert:
+(1) $\sum_{n \ge 1} \frac{n!}{n^n}$ \qquad (2) $\sum_{n \ge 1} \frac{2^n n!}{n^n}$
+
+\begin{proof}[Résolution]
+\textbf{Partie (1) :} $u_n = \frac{n!}{n^n}$. Calculons le rapport de d'Alembert :
+\[ \frac{u_{n+1}}{u_n} = \frac{(n+1)!}{(n+1)^{n+1}} \times \frac{n^n}{n!} = \frac{(n+1)}{(n+1)(n+1)^n} n^n = \left(\frac{n}{n+1}\right)^n = \frac{1}{(1 + \frac{1}{n})^n} \]
+Quand $n \to +\infty$, $(1+1/n)^n \to e$. Donc la limite est $L = \frac{1}{e}$.
+Comme $e \approx 2.718$, $L < 1$. D'après la règle de d'Alembert, la série \textbf{converge}.
+
+\textbf{Partie (2) :} $u_n = \frac{2^n n!}{n^n}$.
+Le rapport donne :
+\[ \frac{u_{n+1}}{u_n} = \frac{2^{n+1}}{2^n} \times \frac{(n+1)!}{(n+1)^{n+1}} \times \frac{n^n}{n!} = 2 \times \frac{1}{(1 + \frac{1}{n})^n} \]
+La limite est $L = \frac{2}{e}$.
+Comme $2 < e$, on a $L < 1$. La série \textbf{converge}.
+\end{proof}
+
+\subsection*{Exercice 6: [Kriter Seçimi (Choix d'un critère)]}
+
+\textbf{Soru:}
+Étudier la nature des séries suivantes en choisissant un critère adapté. Justifier le choix.
+(1) $\sum_{n \ge 2} \frac{\ln n}{n^{3/2}}$ (On pourra utiliser ln n $\le$ n$^{1/4}$)\\
+(2) $\sum_{n \ge 2} \frac{1}{n^{1+1/\ln n}}$
+
+\begin{proof}[Résolution]
+\textbf{Partie (1) :} $u_n = \frac{\ln n}{n^{3/2}}$.
+Utilisons la majoration $\ln n \le n^{1/4}$ pour $n$ assez grand :
+\[ u_n \le \frac{n^{1/4}}{n^{3/2}} = \frac{1}{n^{3/2 - 1/4}} = \frac{1}{n^{5/4}} \]
+La série de Riemann $\sum \frac{1}{n^{5/4}}$ converge ($\alpha = 5/4 > 1$).
+Par le critère de comparaison, la série $\sum u_n$ \textbf{converge}.
+
+\textbf{Partie (2) :} $u_n = \frac{1}{n^{1+1/\ln n}} = \frac{1}{n \cdot n^{1/\ln n}}$.
+Simplifions le terme $n^{1/\ln n}$ :
+\[ n^{1/\ln n} = \exp\left( \frac{1}{\ln n} \ln n \right) = e^1 = e \]
+Ainsi, $u_n = \frac{1}{e \cdot n}$.
+La série harmonique $\sum \frac{1}{n}$ diverge. Comme $u_n$ est proportionnel à la série harmonique, la série \textbf{diverge}.
+\end{proof}
+
+\subsection*{Exercice 7: [Büyüme Hızları (Vitesses de croissance)]}
+
+\textbf{Soru:}
+Soient $a > 1$ et $p > 0$.
+(1) À l'aide du critère de d'Alembert, étudier la convergence des séries $\sum \frac{n^p}{a^n}$ et $\sum \frac{a^n}{n!}$.
+(2) En déduire que $\lim \frac{n^p}{a^n} = 0$ et $\lim \frac{a^n}{n!} = 0$. Interpréter.
+
+\begin{proof}[Résolution]
+\textbf{Partie (1) :}
+- Pour $u_n = \frac{n^p}{a^n}$ :
+\[ \frac{u_{n+1}}{u_n} = \frac{(n+1)^p}{a^{n+1}} \times \frac{a^n}{n^p} = \left(\frac{n+1}{n}\right)^p \frac{1}{a} = \left(1 + \frac{1}{n}\right)^p \frac{1}{a} \xrightarrow{n \to \infty} \frac{1}{a} \]
+Comme $a > 1$, on a $1/a < 1$, donc la série \textbf{converge}.
+- Pour $v_n = \frac{a^n}{n!}$ :
+\[ \frac{v_{n+1}}{v_n} = \frac{a^{n+1}}{(n+1)!} \times \frac{n!}{a^n} = \frac{a}{n+1} \xrightarrow{n \to \infty} 0 \]
+Comme $0 < 1$, la série \textbf{converge}.
+
+\textbf{Partie (2) :}
+D'après la condition nécessaire de convergence, le terme général d'une série convergente doit tendre vers 0.
+Par conséquent : $\lim_{n \to +\infty} \frac{n^p}{a^n} = 0$ et $\lim_{n \to +\infty} \frac{a^n}{n!} = 0$.
+\textbf{Interprétation :} L'exponentielle croît plus vite que toute puissance ($n^p \ll a^n$), et la factorielle croît plus vite que l'exponentielle ($a^n \ll n!$).
+\end{proof}
+
+\section{TD 4 - Séries Numériques à Termes Quelconques}
+
+\subsection*{Exercice 1: [Mutlak Yakınsaklık (Convergence absolue)]}
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Hatırlatma (Rappel): Mutlak Yakınsaklık]
+Bir seri negatif terimler de içerebilir. Eğer serinin mutlak değerini aldığımızda elde ettiğimiz pozitif terimli seri yakınsıyorsa ($\sum |u_n|$ convergente), orijinal seriye \textbf{mutlak yakınsak (absolument convergente)} denir.
+Çok önemli teorem: \textbf{Mutlak yakınsak her seri, normalde de yakınsaktır.}
+\[ \sum |u_n| \text{ converge } \implies \sum u_n \text{ converge} \]
+\end{tcolorbox}
+
+\textbf{Soru:}
+On considère les séries suivantes :
+\[ \sum_{n \ge 1} \frac{(-1)^n}{n^2}, \quad \sum_{n \ge 1} \frac{\sin n}{n^2}, \quad \sum_{n \ge 1} \frac{(-1)^n(2 + \cos n)}{n^2} \]
+(1) Lesquelles de ces séries sont alternées?\\
+(2) Étudier la convergence absolue de chacune de ces séries.\\
+(3) En déduire leur convergence.
+
+\begin{proof}[Résolution]
+\textbf{Partie (1) :} Une série est dite alternée si son terme général change de signe à chaque itération (de la forme $(-1)^n a_n$ avec $a_n \ge 0$).
+- La première série est \textbf{alternée} car $\frac{1}{n^2} \ge 0$.
+- La deuxième série n'est \textbf{pas alternée} car le signe de $\sin n$ change de manière irrégulière.
+- La troisième série est \textbf{alternée} car pour tout $n$, $\cos n \ge -1$, donc $2 + \cos n \ge 1 > 0$.
+
+\textbf{Partie (2) :} Étudions la convergence absolue en prenant la valeur absolue du terme général :
+- Pour la première : $\left| \frac{(-1)^n}{n^2} \right| = \frac{1}{n^2}$. C'est une série de Riemann avec $\alpha = 2 > 1$, donc elle converge. La série est \textbf{absolument convergente}.
+- Pour la deuxième : $\left| \frac{\sin n}{n^2} \right| = \frac{|\sin n|}{n^2} \le \frac{1}{n^2}$. Par le critère de comparaison, comme $\sum \frac{1}{n^2}$ converge, la série est \textbf{absolument convergente}.
+- Pour la troisième : $\left| \frac{(-1)^n(2 + \cos n)}{n^2} \right| = \frac{2 + \cos n}{n^2} \le \frac{3}{n^2}$. De même, par comparaison avec une série de Riemann convergente, elle est \textbf{absolument convergente}.
+
+\textbf{Partie (3) :} D'après le théorème fondamental, toute série absolument convergente est convergente. On en déduit que \textbf{les trois séries convergent}.
+\end{proof}
+
+\subsection*{Exercice 2: [Leibniz Testi (Critère de Leibniz)]}
+
+\begin{tcolorbox}[colback=purple!5!white,colframe=purple!75!black,title=Hatırlatma (Rappel): Alterne Seriler İçin Leibniz Kriteri]
+Alterne bir seri ($(-1)^n a_n$, burada $a_n \ge 0$) şu iki şartı sağlıyorsa kesinlikle \textbf{yakınsaktır}:
+1. Dizi $a_n$ azalan (décroissante) olmalıdır.
+2. Limit sıfıra gitmelidir ($\lim_{n \to \infty} a_n = 0$).
+Eğer seri Leibniz ile yakınsıyor ancak mutlak değerce ıraksıyorsa, buna \textbf{koşullu yakınsak (semi-convergente)} denir.
+\end{tcolorbox}
+
+\textbf{Soru:}
+Étudier la nature des séries suivantes et pour chacune (1) vérifier les hypothèses du critère de Leibniz, (2) en déduire la convergence, et déterminer si la convergence est absolue.
+\[ \sum_{n \ge 1} \frac{(-1)^{n+1} n}{n^2 + 1}, \quad \sum_{n \ge 1} \frac{(-1)^{n+1}}{\sqrt{n}} \]
+
+\begin{proof}[Résolution]
+\textbf{Première série :} $u_n = (-1)^{n+1} a_n$ avec $a_n = \frac{n}{n^2+1}$.
+\begin{itemize}
+    \item \textbf{Vérification de Leibniz :}
+    La limite est claire : $\lim_{n \to +\infty} \frac{n}{n^2+1} = \lim_{n \to +\infty} \frac{1}{n} = 0$.
+    Pour la monotonie, posons $f(x) = \frac{x}{x^2+1}$. Sa dérivée est $f'(x) = \frac{1(x^2+1) - x(2x)}{(x^2+1)^2} = \frac{1-x^2}{(x^2+1)^2}$. Pour $x \ge 1$, $f'(x) \le 0$, donc la suite $a_n$ est \textbf{décroissante}.
+    Les hypothèses de Leibniz sont vérifiées, donc la série \textbf{converge}.
+    \item \textbf{Convergence absolue :}
+    $|u_n| = \frac{n}{n^2+1} \sim \frac{1}{n}$. La série harmonique $\sum \frac{1}{n}$ diverge. Par le critère d'équivalence, la série des valeurs absolues diverge. 
+    \textbf{Conclusion :} La série est \textbf{semi-convergente} (convergente mais pas absolument).
+\end{itemize}
+
+\textbf{Deuxième série :} $u_n = (-1)^{n+1} a_n$ avec $a_n = \frac{1}{\sqrt{n}}$.
+\begin{itemize}
+    \item \textbf{Vérification de Leibniz :}
+    $\lim_{n \to +\infty} \frac{1}{\sqrt{n}} = 0$. La suite $a_n$ est trivialement \textbf{décroissante} car la fonction racine est croissante au dénominateur. La série \textbf{converge}.
+    \item \textbf{Convergence absolue :}
+    $|u_n| = \frac{1}{\sqrt{n}} = \frac{1}{n^{1/2}}$. C'est une série de Riemann avec $\alpha = 1/2 \le 1$, donc elle diverge.
+    \textbf{Conclusion :} La série est \textbf{semi-convergente}.
+\end{itemize}
+\end{proof}
+
+\subsection*{Exercice 3: [Alterne Seriyi Tanıma (Reconnaître une série alternée)]}
+
+\textbf{Soru:}
+On considère la série $\sum_{n \ge 0} \frac{\sin(n\pi/2)}{n+1}$.
+(1) Calculer $\sin(n\pi/2)$ pour $n = 0, 1, 2, 3, 4, 5, 6, 7$.\\
+(2) Montrer que les termes d'indice pair sont nuls.\\
+(3) Montrer que, pour $n = 2k + 1$, on a $\sin((2k + 1)\pi/2) = (-1)^k$.\\
+(4) En déduire que la série peut s'écrire $\sum_{k \ge 0} \frac{(-1)^k}{2k + 2}$.\\
+(5) Montrer que cette série converge.\\
+(6) La convergence est-elle absolue?
+
+\begin{proof}[Résolution]
+\textbf{Partie (1) :} Valeurs successives de $\sin(n\pi/2)$ pour $n = 0, \dots, 7$ :
+$0, 1, 0, -1, 0, 1, 0, -1$.
+
+\textbf{Partie (2) :} Pour un indice pair $n = 2k$, on a :
+$\sin\left(\frac{2k\pi}{2}\right) = \sin(k\pi) = 0$ pour tout $k \in \mathbb{N}$. Les termes d'indice pair sont bien nuls.
+
+\textbf{Partie (3) :} Pour un indice impair $n = 2k + 1$, on a :
+$\sin\left(\frac{(2k+1)\pi}{2}\right) = \sin\left(k\pi + \frac{\pi}{2}\right)$.
+D'après les formules trigonométriques, $\sin(k\pi + \pi/2) = \cos(k\pi) = (-1)^k$.
+
+\textbf{Partie (4) :} Puisque les termes pairs sont nuls, la somme infinie se réduit aux termes impairs. Remplaçons $n$ par $2k+1$ :
+Le dénominateur devient $n+1 = (2k+1)+1 = 2k+2$.
+La série s'écrit donc : $\sum_{k=0}^{+\infty} \frac{(-1)^k}{2k+2}$.
+
+\textbf{Partie (5) :} On a une série alternée $\sum (-1)^k a_k$ avec $a_k = \frac{1}{2k+2}$.
+La suite $(a_k)$ est manifestement décroissante et tend vers 0. D'après le \textbf{critère de Leibniz}, la série converge.
+
+\textbf{Partie (6) :} Étudions la convergence absolue :
+$|u_k| = \frac{1}{2k+2} \sim \frac{1}{2k}$.
+La série $\sum \frac{1}{2k} = \frac{1}{2} \sum \frac{1}{k}$ est divergente (série harmonique). La convergence \textbf{n'est pas absolue} (elle est semi-convergente).
+\end{proof}
+
+\subsection*{Exercice 4: [Cauchy Kök Testi (Critère de Cauchy)]}
+
+\begin{tcolorbox}[colback=teal!5!white,colframe=teal!75!black,title=Hatırlatma (Rappel): Cauchy Kök Testi (Critère de Cauchy)]
+Eğer bir serinin genel teriminin tamamı $n$. kuvvet formundaysa (yani $u_n = (a_n)^n$ gibi), Cauchy kök testi uygulanır:
+\[ L = \lim_{n \to \infty} \sqrt[n]{|u_n|} \]
+- $L < 1 \implies$ Seri mutlak yakınsak.
+- $L > 1 \implies$ Seri ıraksak.
+- $L = 1 \implies$ Kararsız (Başka test gerekir).
+Dikkat: Limit alınırken ünlü $\lim_{n \to \infty} \left(1 + \frac{x}{n}\right)^n = e^x$ formülü sıkça çıkar.
+\end{tcolorbox}
+
+\textbf{Soru:}
+Étudier la nature des séries suivantes et pour chacune (1) calculer $\sqrt[n]{|u_n|}$, (2) déterminer sa limite et conclure sur la nature de la série.
+\[ \sum_{n \ge 1} \left( \frac{2n+1}{3n+2} \right)^n, \quad \sum_{n \ge 1} \left( \frac{n^2-2}{3n^2} \right)^n, \quad \sum_{n \ge 3} \left( 1 - \frac{2}{n} \right)^{n^2} \]
+
+\begin{proof}[Résolution]
+\textbf{Première série :} $u_n = \left( \frac{2n+1}{3n+2} \right)^n$
+\begin{itemize}
+    \item Racine $n$-ième : $\sqrt[n]{u_n} = \frac{2n+1}{3n+2}$.
+    \item Limite : En prenant les termes de plus haut degré, $\lim_{n \to +\infty} \frac{2n}{3n} = \frac{2}{3}$.
+    \item Conclusion : Comme $L = 2/3 < 1$, d'après le critère de Cauchy, la série \textbf{converge}.
+\end{itemize}
+
+\textbf{Deuxième série :} $u_n = \left( \frac{n^2-2}{3n^2} \right)^n$
+\begin{itemize}
+    \item Racine $n$-ième : $\sqrt[n]{u_n} = \frac{n^2-2}{3n^2}$.
+    \item Limite : $\lim_{n \to +\infty} \frac{n^2}{3n^2} = \frac{1}{3}$.
+    \item Conclusion : Comme $L = 1/3 < 1$, d'après le critère de Cauchy, la série \textbf{converge}.
+\end{itemize}
+
+\textbf{Troisième série :} $u_n = \left( 1 - \frac{2}{n} \right)^{n^2}$
+\begin{itemize}
+    \item Racine $n$-ième : $\sqrt[n]{u_n} = \left( \left( 1 - \frac{2}{n} \right)^{n^2} \right)^{1/n} = \left( 1 - \frac{2}{n} \right)^n$.
+    \item Limite : D'après la limite classique $\lim_{n \to +\infty} \left(1 + \frac{x}{n}\right)^n = e^x$, on a ici $x = -2$, donc $L = e^{-2} = \frac{1}{e^2}$.
+    \item Conclusion : Puisque $e \approx 2.718$, $e^2 > 1$, donc $L = \frac{1}{e^2} < 1$. La série \textbf{converge}.
+\end{itemize}
+\end{proof}
+
+\subsection*{Exercice 5: [Mutlak Yakınsaklığın Özellikleri (Propriétés de la convergence absolue)]}
+
+\textbf{Soru:}
+Soit $\sum_{n \ge 0} u_n$ une série réelle absolument convergente. On pose $u_n^+ = \max(u_n, 0)$ et $u_n^- = \max(-u_n, 0)$.
+(1) Montrer que $u_n = u_n^+ - u_n^-$ et $|u_n| = u_n^+ + u_n^-$.\\
+(2) Montrer que $0 \le u_n^+ \le |u_n|$ et $0 \le u_n^- \le |u_n|$.\\
+(3) En déduire que les séries $\sum u_n^+$ et $\sum u_n^-$ convergent.\\
+(4) Montrer que $\sum u_n = \sum u_n^+ - \sum u_n^-$.
+
+\begin{proof}[Résolution]
+\textbf{Partie (1) :} Procédons par disjonction des cas.
+- Si $u_n \ge 0$ : $\max(u_n, 0) = u_n$ et $\max(-u_n, 0) = 0$. Donc $u_n^+ = u_n$ et $u_n^- = 0$.
+On a bien $u_n^+ - u_n^- = u_n - 0 = u_n$ et $u_n^+ + u_n^- = u_n + 0 = u_n = |u_n|$ (car $u_n$ est positif).
+- Si $u_n < 0$ : $\max(u_n, 0) = 0$ et $\max(-u_n, 0) = -u_n$. Donc $u_n^+ = 0$ et $u_n^- = -u_n$.
+On a bien $u_n^+ - u_n^- = 0 - (-u_n) = u_n$ et $u_n^+ + u_n^- = 0 + (-u_n) = -u_n = |u_n|$ (car $u_n$ est négatif).
+Dans les deux cas, les relations sont vérifiées.
+
+\textbf{Partie (2) :} 
+Par définition, un maximum avec 0 est toujours positif, donc $u_n^+ \ge 0$ et $u_n^- \ge 0$.
+De la relation $|u_n| = u_n^+ + u_n^-$, comme ce sont deux termes positifs, on a trivialement :
+$u_n^+ \le |u_n|$ et $u_n^- \le |u_n|$.
+Ainsi : $0 \le u_n^+ \le |u_n|$ et $0 \le u_n^- \le |u_n|$.
+
+\textbf{Partie (3) :} 
+Par hypothèse, la série $\sum u_n$ est absolument convergente, c'est-à-dire que $\sum |u_n|$ converge.
+Puisque $0 \le u_n^+ \le |u_n|$ et $0 \le u_n^- \le |u_n|$, par le \textbf{critère de comparaison} des séries à termes positifs, les séries $\sum u_n^+$ et $\sum u_n^-$ \textbf{convergent}.
+
+\textbf{Partie (4) :} 
+Puisque $\sum u_n^+$ et $\sum u_n^-$ sont deux séries convergentes, on peut utiliser la \textbf{linéarité} des séries convergentes :
+\[ \sum_{n \ge 0} (u_n^+ - u_n^-) = \sum_{n \ge 0} u_n^+ - \sum_{n \ge 0} u_n^- \]
+Or d'après (1), $u_n^+ - u_n^- = u_n$, donc :
+\[ \sum_{n \ge 0} u_n = \sum_{n \ge 0} u_n^+ - \sum_{n \ge 0} u_n^- \]
+Ce qui achève la démonstration.
+\end{proof}
+
+\chapter{Chapitre 3: Fonksiyon Dizileri ve Serileri (Suites et Séries de Fonctions)}
+
+\begin{tcolorbox}[colback=teal!5!white,colframe=teal!75!black,title=Temel Teori: Noktasal ve Düzgün Yakınsaklık (Convergence Simple vs Uniforme)]
+Fonksiyon dizileri ($f_n(x)$), kalkülüsün ve analizin en önemli konularından biridir. İki farklı yakınsaklık türü vardır:
+\begin{enumerate}
+    \item \textbf{Noktasal Yakınsaklık (Convergence Simple - $\xrightarrow{C.S.}$):} Her bir $x \in D$ sabitlenir ve sayısal dizi gibi limitine bakılır: $f(x) = \lim_{n \to \infty} f_n(x)$. Burada $N$ sayısı hem $\epsilon$'a hem de $x$'e bağlıdır ($N(\epsilon, x)$).
+    \item \textbf{Düzgün Yakınsaklık (Convergence Uniforme - $\xrightarrow{C.U.}$):} Fonksiyon grafiğinin tamamı $f(x)$ limit fonksiyonunun etrafındaki $\epsilon$ şeridine aynı anda girer. Burada seçilen $N$ sayısı \textbf{bütün $x \in D$ noktaları için ortaktır} ($N(\epsilon)$).
+    \[ \|f_n - f\|_{\infty, D} = \sup_{x \in D} |f_n(x) - f(x)| \xrightarrow[n \to +\infty]{} 0 \]
+\end{enumerate}
+\textbf{Altın Kural (Sürekliliğin Aktarılması):} Eğer her bir $f_n$ fonksiyonu sürekli ise ve $f_n \xrightarrow{C.U.} f$ düzgün yakınsıyorsa, limit fonksiyonu $f$ de \textbf{kesinlikle süreklidir}. Eğer $f$ süreksiz çıkarsa, yakınsaklık \textbf{asla düzgün olamaz}!
+\end{tcolorbox}
+
+\section{TD 5 (14 Octobre) - Séries Conditionnelles et Suites de Fonctions}
+
+\subsection*{Exercice 1: [Somme de deux séries (Şartlı Yakınsaklık ve Eşdeğerlik Tehlikesi)]}
+
+\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Çok Önemli Uyarı: İşareti Değişen Serilerde Eşdeğerlik Kuralı GEÇERSİZDİR!]
+Pozitif terimli serilerde $u_n \sim v_n$ ise serilerin karakteri aynıdır. Fakat \textbf{işareti değişen serilerde eşdeğerlik kuralı kullanılamaz!} İki dizi birbirine denk olsa bile biri yakınsak diğeri ıraksak olabilir.
+\end{tcolorbox}
+
+\textbf{Soru:}
+On pose, pour $n \ge 1$,
+\[ u_n = \frac{(-1)^n}{\sqrt{n}}, \quad v_n = \frac{(-1)^n}{\sqrt{n}} + \frac{1}{n} \]
+(1) Montrer que la série $\sum u_n$ converge conditionnellement.\\
+(2) Étudier la convergence de la série $\sum v_n$.\\
+(3) Étudier la convergence de la série $\sum (u_n + v_n)$.\\
+(4) Que montre cet exemple sur l'addition de deux séries dont les termes tendent vers zéro ?
+
+\begin{proof}[Résolution]
+\textbf{Partie (1) :} Étudions la série $\sum u_n = \sum \frac{(-1)^n}{\sqrt{n}}$.
+\begin{itemize}
+    \item \textbf{Convergence de la série :} C'est une série alternée de la forme $\sum (-1)^n a_n$ avec $a_n = \frac{1}{\sqrt{n}}$. 
+    La suite $(a_n)$ est à termes strictement positifs, strictement décroissante car $n \mapsto \sqrt{n}$ est strictement croissante, et $\lim_{n \to +\infty} a_n = \lim_{n \to +\infty} \frac{1}{\sqrt{n}} = 0$.
+    D'après le \textbf{critère spécial des séries alternées (Leibniz)}, la série $\sum u_n$ \textbf{converge}.
+    \item \textbf{Convergence absolue :}
+    $|u_n| = \left| \frac{(-1)^n}{\sqrt{n}} \right| = \frac{1}{\sqrt{n}} = \frac{1}{n^{1/2}}$.
+    Il s'agit d'une série de Riemann d'exposant $\alpha = \frac{1}{2} \le 1$. Par conséquent, la série $\sum |u_n|$ \textbf{diverge}.
+\end{itemize}
+Puisque la série converge mais ne converge pas absolument, la série $\sum u_n$ est \textbf{conditionnellement convergente} (ou semi-convergente).
+
+\textbf{Partie (2) :} Étudions la série $\sum v_n$.
+On remarque que pour tout $n \ge 1$ :
+\[ v_n = u_n + \frac{1}{n} \iff \frac{1}{n} = v_n - u_n \]
+Supposons par l'absurde que la série $\sum v_n$ converge. 
+Puisque $\sum u_n$ converge (d'après la partie 1), la combinaison linéaire de deux séries convergentes serait convergente, ce qui impliquerait que la série :
+\[ \sum_{n \ge 1} (v_n - u_n) = \sum_{n \ge 1} \frac{1}{n} \]
+convergerait également. Or, $\sum \frac{1}{n}$ est la série harmonique (Riemann avec $\alpha = 1$), qui est notoirement \textbf{divergente} ($\sum_{n=1}^{+\infty} \frac{1}{n} = +\infty$).
+Cette contradiction prouve que la série $\sum v_n$ \textbf{diverge}.
+
+\textbf{Partie (3) :} Étudions la somme $\sum (u_n + v_n)$.
+On a :
+\[ u_n + v_n = \frac{(-1)^n}{\sqrt{n}} + \frac{(-1)^n}{\sqrt{n}} + \frac{1}{n} = \frac{2(-1)^n}{\sqrt{n}} + \frac{1}{n} \]
+De même, si $\sum (u_n + v_n)$ convergeait, alors comme la série $\sum \frac{2(-1)^n}{\sqrt{n}} = 2 \sum u_n$ converge par linéarité, la différence :
+\[ \sum_{n \ge 1} \left( (u_n + v_n) - 2u_n \right) = \sum_{n \ge 1} \frac{1}{n} \]
+convergerait, ce qui est absurde. Donc la série $\sum (u_n + v_n)$ \textbf{diverge}.
+
+\textbf{Partie (4) :} Remarque sur cet exemple :
+Cet exemple met en évidence deux propriétés fondamentales :
+\begin{enumerate}
+    \item On observe que $v_n = \frac{(-1)^n}{\sqrt{n}} \left(1 + \frac{(-1)^n}{\sqrt{n}}\right) \sim \frac{(-1)^n}{\sqrt{n}} = u_n$ quand $n \to +\infty$. Pourtant, $\sum u_n$ converge alors que $\sum v_n$ diverge. Cela prouve rigoureusement que \textbf{la règle des équivalents est en général fausse pour les séries qui ne sont pas à termes de signe constant}.
+    \item L'addition d'un terme général qui tend vers zéro ($\frac{1}{n} \to 0$) à une série convergente peut détruire la convergence et rendre la série divergente, car la série de ce terme perturbateur n'est pas sommable.
+\end{enumerate}
+\end{proof}
+
+\subsection*{Exercice 2: [Convergence absolue et conditionnelle (Combinaisons de Séries)]}
+
+\textbf{Soru:}
+Étudier la nature des séries suivantes. Lorsqu'une série converge, préciser si sa convergence est absolue ou conditionnelle.
+\[ (a) \sum_{n \ge 1} \frac{(-1)^n}{3n-2}, \quad (b) \sum_{n \ge 1} \left( \frac{(-1)^n}{n} + \frac{1}{n^2} \right), \quad (c) \sum_{n \ge 1} \left( \frac{(-1)^n}{n} + \frac{(-1)^{n+1}}{n} + \frac{1}{n^2} \right) \]
+(1) Étudier séparément les séries intervenant dans les expressions (b) et (c).\\
+(2) Peut-on obtenir une série absolument convergente en additionnant deux séries conditionnellement convergentes?
+
+\begin{proof}[Résolution]
+\textbf{Étude de la série (a) :} $u_n = \frac{(-1)^n}{3n-2}$.
+\begin{itemize}
+    \item \textbf{Convergence :} C'est une série alternée avec $a_n = \frac{1}{3n-2} > 0$.
+    On a $a_{n+1} - a_n = \frac{1}{3n+1} - \frac{1}{3n-2} = \frac{-3}{(3n+1)(3n-2)} < 0$, donc $(a_n)$ est strictement décroissante.
+    De plus, $\lim_{n \to +\infty} a_n = 0$.
+    Par le critère de Leibniz, la série $\sum u_n$ \textbf{converge}.
+    \item \textbf{Convergence absolue :}
+    $|u_n| = \frac{1}{3n-2} \sim \frac{1}{3n}$.
+    La série $\sum \frac{1}{n}$ est divergente (série harmonique). Par le critère d'équivalence pour les séries à termes strictement positifs, $\sum |u_n|$ \textbf{diverge}.
+\end{itemize}
+Conclusion pour (a) : La série est \textbf{conditionnellement convergente}.
+
+\textbf{Étude de la série (b) et partie (1) :}
+L'expression est la somme de $a_n = \frac{(-1)^n}{n}$ et $b_n = \frac{1}{n^2}$.
+\begin{itemize}
+    \item $\sum a_n = \sum \frac{(-1)^n}{n}$ converge par le critère de Leibniz (série harmonique alternée), mais ne converge pas absolument car $\sum |a_n| = \sum \frac{1}{n}$ diverge. Elle est donc \textbf{conditionnellement convergente}.
+    \item $\sum b_n = \sum \frac{1}{n^2}$ est une série de Riemann avec $\alpha = 2 > 1$, elle est donc \textbf{absolument convergente}.
+    \item Par linéarité, la somme de deux séries convergentes converge, donc $\sum \left( \frac{(-1)^n}{n} + \frac{1}{n^2} \right)$ \textbf{converge}.
+    \item Étudions la convergence absolue :
+    \[ \left| \frac{(-1)^n}{n} + \frac{1}{n^2} \right| = \frac{1}{n} \left| (-1)^n + \frac{1}{n} \right| \sim \frac{1}{n} \]
+    car $\left| (-1)^n + \frac{1}{n} \right| \xrightarrow[n \to +\infty]{} 1$.
+    Par comparaison par équivalents avec la série harmonique divergente $\sum \frac{1}{n}$, la série des valeurs absolues \textbf{diverge}.
+\end{itemize}
+Conclusion pour (b) : La série est \textbf{conditionnellement convergente}.
+
+\textbf{Étude de la série (c) et partie (1) :}
+Remarquons que $(-1)^{n+1} = -(-1)^n$. Par conséquent :
+\[ \frac{(-1)^n}{n} + \frac{(-1)^{n+1}}{n} = \frac{(-1)^n}{n} - \frac{(-1)^n}{n} = 0 \]
+Le terme général se réduit donc exactement à :
+\[ w_n = \frac{1}{n^2} \]
+pour tout $n \ge 1$.
+Puisque $\sum \frac{1}{n^2}$ est une série de Riemann convergente avec $\alpha = 2 > 1$, la série (c) \textbf{converge absolument}.
+
+\textbf{Partie (2) :} 
+\textbf{Oui}, on peut parfaitement obtenir une série absolument convergente en additionnant deux séries conditionnellement convergentes.
+L'exemple (c) en fournit une preuve directe : 
+Posons $x_n = \frac{(-1)^n}{n}$ et $y_n = \frac{(-1)^{n+1}}{n} + \frac{1}{n^2}$.
+Ces deux séries sont chacune conditionnellement convergentes (par les questions précédentes).
+Cependant, leur somme vaut :
+\[ x_n + y_n = \frac{1}{n^2} \]
+dont la série $\sum (x_n + y_n) = \sum \frac{1}{n^2}$ est \textbf{absolument convergente}.
+(De façon encore plus triviale : si $\sum u_n$ est semi-convergente, alors $\sum (-u_n)$ l'est aussi, et leur somme est la série nulle $\sum 0 = 0$, qui est absolument convergente).
+\end{proof}
+
+\subsection*{Exercice 3: [Convergence simple et uniforme de $f_n(x) = x^n$ (Rôle du Domaine)]}
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=Hatırlatma: Bir Fonksiyon Dizisinin Düzgün Yakınsaklığı Nasıl İncelenir?]
+Bir $(f_n)$ fonksiyon dizisinin $D$ kümesinde $f$'e düzgün yakınsak olup olmadığını incelemek için şu adımlar izlenir:
+\begin{enumerate}
+    \item Önce her $x \in D$ için noktasal limit $f(x) = \lim_{n \to \infty} f_n(x)$ bulunur.
+    \item $f_n$ fonksiyonları sürekli olduğu halde limit $f$ süreksiz çıkarsa $\implies$ \textbf{Düzgün yakınsak DEĞİLDİR}.
+    \item Eğer $f$ sürekli ise, hata fonksiyonunun tepe noktasına (supremumuna) bakılır:
+    \[ M_n = \sup_{x \in D} |f_n(x) - f(x)| \]
+    Eğer $\lim_{n \to \infty} M_n = 0$ ise \textbf{düzgün yakınsaktır}, sıfırdan farklı bir sayı veya sonsuz çıkarsa \textbf{düzgün yakınsak değildir}.
+\end{enumerate}
+\end{tcolorbox}
+
+\textbf{Soru:}
+Pour $n \ge 1$, on considère la fonction $f_n : [0, 1] \to \mathbb{R}$ définie par $f_n(x) = x^n$.
+(1) Déterminer la limite simple $f$ de la suite $(f_n)$ sur $[0, 1]$.\\
+(2) La convergence est-elle uniforme sur $[0, 1]$ ?\\
+(3) Soit $a \in ]0, 1[$. Montrer que $(f_n)$ converge uniformément vers 0 sur $[0, a]$.\\
+(4) La suite $(f_n)$ converge-t-elle uniformément vers 0 sur $[0, 1[$ ?\\
+(5) Comparer les résultats obtenus sur $[0, 1]$, $[0, 1[$ et $[0, a]$. Que peut-on en conclure sur le rôle du domaine dans la convergence uniforme ?
+
+\begin{proof}[Résolution]
+\textbf{Partie (1) : Limite simple sur $[0, 1]$}
+Soit $x \in [0, 1]$.
+\begin{itemize}
+    \item Si $x \in [0, 1[$, on a $|x| < 1$, donc $\lim_{n \to +\infty} x^n = 0$.
+    \item Si $x = 1$, pour tout $n \ge 1$, $f_n(1) = 1^n = 1$, donc $\lim_{n \to +\infty} f_n(1) = 1$.
+\end{itemize}
+La suite $(f_n)$ converge simplement sur $[0, 1]$ vers la fonction $f$ définie par :
+\[ f(x) = \begin{cases} 0 & \text{si } x \in [0, 1[ \\ 1 & \text{si } x = 1 \end{cases} \]
+
+\textbf{Partie (2) : Convergence uniforme sur $[0, 1]$}
+\begin{itemize}
+    \item \textbf{Méthode par la continuité (Théorème fondamental) :}
+    Pour tout $n \ge 1$, la fonction $f_n : x \mapsto x^n$ est un polynôme, donc elle est continue sur $[0, 1]$.
+    Si la suite $(f_n)$ convergeait uniformément vers $f$ sur $[0, 1]$, alors la fonction limite $f$ serait nécessairement continue sur $[0, 1]$.
+    Or, on constate que :
+    \[ \lim_{x \to 1^-} f(x) = 0 \neq f(1) = 1 \]
+    La fonction $f$ est discontinue au point $x = 1$. Par contraposée du théorème de continuité, la suite $(f_n)$ \textbf{ne converge pas uniformément} vers $f$ sur $[0, 1]$.
+    \item \textbf{Vérification directe par la norme uniforme :}
+    Pour tout $n \ge 1$ :
+    \[ \|f_n - f\|_{\infty, [0, 1]} = \sup_{x \in [0, 1]} |f_n(x) - f(x)| \ge \sup_{x \in [0, 1[} |x^n - 0| = \sup_{x \in [0, 1[} x^n = 1 \]
+    Comme cette borne supérieure vaut 1 pour tout $n$, elle ne tend pas vers 0 quand $n \to +\infty$.
+\end{itemize}
+
+\textbf{Partie (3) : Convergence uniforme sur $[0, a]$ avec $a \in ]0, 1[$}
+Sur l'intervalle $[0, a]$, la limite simple est identiquement nulle : $f(x) = 0$.
+Calculons la norme uniforme sur $[0, a]$ :
+\[ \|f_n - f\|_{\infty, [0, a]} = \sup_{x \in [0, a]} |x^n - 0| = \sup_{x \in [0, a]} x^n \]
+Puisque la fonction $x \mapsto x^n$ est strictement croissante et positive sur $[0, a]$, son maximum est atteint à la borne supérieure $x = a$ :
+\[ \sup_{x \in [0, a]} x^n = a^n \]
+Comme $a \in ]0, 1[$, on a $\lim_{n \to +\infty} a^n = 0$.
+Par conséquent, $\lim_{n \to +\infty} \|f_n - f\|_{\infty, [0, a]} = 0$.
+La suite $(f_n)$ \textbf{converge uniformément vers 0 sur $[0, a]$}.
+
+\textbf{Partie (4) : Convergence uniforme sur $[0, 1[$}
+Sur $[0, 1[$, la limite simple est $f(x) = 0$.
+Calculons la borne supérieure sur $[0, 1[$ :
+\[ \|f_n - f\|_{\infty, [0, 1[} = \sup_{x \in [0, 1[} |x^n - 0| = \sup_{x \in [0, 1[} x^n = \lim_{x \to 1^-} x^n = 1 \]
+Puisque $\|f_n - f\|_{\infty, [0, 1[} = 1 \not\to 0$ quand $n \to +\infty$, la suite $(f_n)$ \textbf{ne converge pas uniformément vers 0 sur $[0, 1[$}.
+\textit{Remarque :} Ici la fonction limite $f=0$ est continue sur $[0, 1[$, ce qui montre bien que la continuité de la limite est une condition nécessaire mais non suffisante pour assurer la convergence uniforme.
+
+\textbf{Partie (5) : Rôle du domaine dans la convergence uniforme}
+En comparant les résultats sur $[0, 1]$, $[0, 1[$ et $[0, a]$ :
+\begin{itemize}
+    \item La convergence est uniforme sur tout segment compact $[0, a] \subset [0, 1[$. On dit qu'il y a \textbf{convergence uniforme sur tout compact} (ou convergence compacte).
+    \item En revanche, la convergence n'est uniforme ni sur l'intervalle ouvert $[0, 1[$, ni sur l'intervalle fermé $[0, 1]$.
+\end{itemize}
+\textbf{Conclusion :} La convergence uniforme dépend fondamentalement de la géométrie de l'ensemble de définition : s'éloigner du bord à problème ($x=1$) permet de récupérer la convergence uniforme, alors que s'approcher arbitrairement de ce bord détruit l'uniformité de la convergence.
+\end{proof}
+
+\subsection*{Exercice 4: [Convergence uniforme de $f_n(x) = x^n(1-x)$ (Sınır Etkisinin Yok Edilmesi)]}
+
+\textbf{Soru:}
+Pour $n \ge 1$, on considère la fonction $f_n : [0, 1] \to \mathbb{R}$ définie par $f_n(x) = x^n(1-x)$.\\
+(1) Déterminer la limite simple de $(f_n)$ sur $[0, 1]$.\\
+(2) (En utilisant $1 - x^{n+1} = (1-x)(1 + x + \cdots + x^n)$) Montrer que, pour tout $x \in [0, 1]$,
+\[ 0 \le f_n(x) \le \frac{1}{n+1} \]
+(3) En déduire que $(f_n)$ converge uniformément vers 0 sur $[0, 1]$.\\
+(4) Comparer ce résultat avec celui obtenu pour $g_n(x) = x^n$.
+
+\begin{proof}[Résolution]
+\textbf{Partie (1) : Limite simple sur $[0, 1]$}
+Soit $x \in [0, 1]$.
+\begin{itemize}
+    \item Pour $x \in [0, 1[$, $\lim_{n \to +\infty} x^n = 0$, donc $\lim_{n \to +\infty} f_n(x) = 0 \cdot (1-x) = 0$.
+    \item Pour $x = 1$, pour tout $n \ge 1$, $f_n(1) = 1^n (1-1) = 0$.
+\end{itemize}
+La suite $(f_n)$ converge simplement sur $[0, 1]$ vers la fonction identiquement nulle : $f(x) = 0$.
+
+\textbf{Partie (2) : Majoration fondamentale}
+Soit $x \in [0, 1]$. Puisque $x \ge 0$ et $1-x \ge 0$, on a immédiatement $f_n(x) = x^n(1-x) \ge 0$.
+Utilisons l'identité donnée :
+\[ 1 - x^{n+1} = (1-x)(1 + x + x^2 + \cdots + x^n) = \sum_{k=0}^n (1-x)x^k \]
+Pour $x \in [0, 1]$, on a pour tout $k \in \{0, 1, \dots, n\}$, $x^n \le x^k$.
+Puisque $1-x \ge 0$, on peut multiplier par $(1-x)$ :
+\[ x^n (1-x) \le x^k (1-x) \]
+En sommant ces inégalités pour $k$ variant de $0$ à $n$ :
+\[ \sum_{k=0}^n x^n(1-x) \le \sum_{k=0}^n x^k(1-x) \]
+Le membre de gauche contient $(n+1)$ termes identiques égaux à $f_n(x)$ :
+\[ (n+1) f_n(x) \le 1 - x^{n+1} \]
+Puisque $x \in [0, 1]$, on a $x^{n+1} \ge 0$, d'où $1 - x^{n+1} \le 1$. Il s'ensuit que :
+\[ (n+1) f_n(x) \le 1 \implies f_n(x) \le \frac{1}{n+1} \]
+On a donc bien établi que pour tout $x \in [0, 1]$ :
+\[ 0 \le f_n(x) \le \frac{1}{n+1} \]
+
+\textit{Remarque alternative par dérivée :} On a $f_n'(x) = n x^{n-1}(1-x) - x^n = x^{n-1}[n - (n+1)x]$. Le maximum est atteint en $x_n = \frac{n}{n+1}$, et $f_n(x_n) = \left(\frac{n}{n+1}\right)^n \frac{1}{n+1} \le \frac{1}{n+1}$.
+
+\textbf{Partie (3) : Convergence uniforme}
+D'après l'encadrement précédent, pour tout $x \in [0, 1]$ :
+\[ |f_n(x) - 0| = f_n(x) \le \frac{1}{n+1} \]
+Comme cette majoration est indépendante de $x$, on passe à la borne supérieure sur $[0, 1]$ :
+\[ \|f_n - 0\|_{\infty, [0, 1]} = \sup_{x \in [0, 1]} |f_n(x)| \le \frac{1}{n+1} \]
+Or $\lim_{n \to +\infty} \frac{1}{n+1} = 0$.
+Par le théorème des gendarmes, $\lim_{n \to +\infty} \|f_n - 0\|_{\infty, [0, 1]} = 0$.
+La suite $(f_n)$ \textbf{converge uniformément vers 0 sur $[0, 1]$}.
+
+\textbf{Partie (4) : Comparaison avec $g_n(x) = x^n$}
+Pour la suite $g_n(x) = x^n$, la convergence n'était pas uniforme sur $[0, 1]$ car les valeurs restaient proches de 1 lorsque $x \to 1^-$ (discontinuité au bord).
+Dans le cas de $f_n(x) = x^n(1-x)$, la présence du facteur amortisseur $(1-x)$ force la fonction à s'annuler exactement en $x=1$ : il compense la croissance de $x^n$ et écrase la bosse vers zéro au voisinage de 1. Cela régularise le comportement au bord et transforme une convergence non uniforme en une \textbf{convergence uniforme} sur tout le compact $[0, 1]$.
+\end{proof}
+
+\subsection*{Exercice 5: [Suites de Fonctions Classiques (Recherche de Suites Test)]}
+
+\begin{tcolorbox}[colback=purple!5!white,colframe=purple!75!black,title=Sınav Taktiği: Düzgün Yakınsak Olmadığını Göstermek İçin "Suite Test" Bulma]
+Eğer bir fonksiyon dizisinin $D$ üzerinde düzgün yakınsak \textbf{olmadığını} ispatlamak istiyorsak, öyle bir $x_n \in D$ dizisi seçeriz ki:
+\[ |f_n(x_n) - f(x_n)| \xrightarrow[n \to \infty]{} c \neq 0 \]
+Bu dizi genellikle fonksiyonun türevini sıfır yapan maksimum noktasıdır (örneğin $x_n = \frac{1}{n}$, $x_n = n$ veya sınıra yaklaşan bir nokta).
+\end{tcolorbox}
+
+\textbf{Soru:}
+Pour chacune des suites de fonctions suivantes : (1) déterminer la limite simple sur le domaine indiqué, (2) étudier la convergence uniforme, (3) lorsque la convergence n'est pas uniforme, trouver si possible une suite $(x_n)$ de points du domaine telle que $|f_n(x_n) - f(x_n)|$ ne tende pas vers 0.
+\[ (a) f_n(x) = \frac{x}{n}, x \in [0, 1]; \quad (b) f_n(x) = \frac{x}{n}, x \in [0, +\infty[ \]
+\[ (c) f_n(x) = \frac{nx}{1 + n^2 x^2}, x \in [0, 1]; \quad (d) f_n(x) = \frac{x^n}{1 + x^n}, x \in [0, 1] \]
+
+\begin{proof}[Résolution]
+\textbf{Cas (a) :} $f_n(x) = \frac{x}{n}$ sur $D = [0, 1]$.
+\begin{enumerate}
+    \item \textbf{Limite simple :} Pour chaque $x \in [0, 1]$ fixé, $\lim_{n \to +\infty} \frac{x}{n} = 0$. Donc la limite simple est $f(x) = 0$.
+    \item \textbf{Convergence uniforme :}
+    $\|f_n - 0\|_{\infty, [0, 1]} = \sup_{x \in [0, 1]} \frac{x}{n} = \frac{1}{n} \xrightarrow[n \to +\infty]{} 0$.
+    La convergence est donc \textbf{uniforme sur $[0, 1]$}.
+\end{enumerate}
+
+\textbf{Cas (b) :} $f_n(x) = \frac{x}{n}$ sur $D = [0, +\infty[$.
+\begin{enumerate}
+    \item \textbf{Limite simple :} Pour tout $x \in [0, +\infty[$ fixé, $\lim_{n \to +\infty} \frac{x}{n} = 0$. Donc $f(x) = 0$.
+    \item \textbf{Convergence uniforme :}
+    $\|f_n - 0\|_{\infty, [0, +\infty[} = \sup_{x \ge 0} \frac{x}{n} = +\infty \neq 0$.
+    La convergence \textbf{n'est pas uniforme sur $[0, +\infty[$}.
+    \item \textbf{Suite test :} Posons $x_n = n \in [0, +\infty[$. Alors :
+    \[ |f_n(x_n) - f(x_n)| = \frac{n}{n} = 1 \xrightarrow[n \to +\infty]{} 1 \neq 0 \]
+\end{enumerate}
+
+\textbf{Cas (c) :} $f_n(x) = \frac{nx}{1 + n^2 x^2}$ sur $D = [0, 1]$.
+\begin{enumerate}
+    \item \textbf{Limite simple :}
+    - Pour $x = 0$, $f_n(0) = 0 \to 0$.\\
+    - Pour $x \in ]0, 1]$, $f_n(x) = \frac{nx}{1 + n^2 x^2} \sim \frac{nx}{n^2 x^2} = \frac{1}{nx} \xrightarrow[n \to +\infty]{} 0$.\\
+    Donc la limite simple est identiquement nulle sur tout $[0, 1]$ : $f(x) = 0$.
+    \item \textbf{Convergence uniforme :}
+    Étudions les variations de $f_n$ sur $[0, 1]$ en calculant sa dérivée :
+    \[ f_n'(x) = \frac{n(1 + n^2 x^2) - nx(2 n^2 x)}{(1 + n^2 x^2)^2} = \frac{n(1 - n^2 x^2)}{(1 + n^2 x^2)^2} \]
+    La dérivée s'annule en $x_n = \frac{1}{n} \in [0, 1]$ pour $n \ge 1$.
+    La fonction $f_n$ est strictement croissante sur $[0, 1/n]$ puis strictement décroissante sur $[1/n, 1]$.
+    Son maximum absolu est donc atteint en $x_n = \frac{1}{n}$ :
+    \[ f_n\left(\frac{1}{n}\right) = \frac{n(1/n)}{1 + n^2 (1/n^2)} = \frac{1}{1 + 1} = \frac{1}{2} \]
+    Par conséquent :
+    \[ \|f_n - 0\|_{\infty, [0, 1]} = \sup_{x \in [0, 1]} |f_n(x)| = \frac{1}{2} \xrightarrow[n \to +\infty]{} \frac{1}{2} \neq 0 \]
+    La convergence \textbf{n'est pas uniforme sur $[0, 1]$}.
+    \item \textbf{Suite test :} La suite des extremums $x_n = \frac{1}{n} \in [0, 1]$ donne :
+    \[ |f_n(x_n) - f(x_n)| = f_n(1/n) - 0 = \frac{1}{2} \xrightarrow[n \to +\infty]{} \frac{1}{2} \neq 0 \]
+\end{enumerate}
+
+\textbf{Cas (d) :} $f_n(x) = \frac{x^n}{1 + x^n}$ sur $D = [0, 1]$.
+\begin{enumerate}
+    \item \textbf{Limite simple :}
+    - Si $x \in [0, 1[$, $x^n \to 0$, d'où $f_n(x) = \frac{x^n}{1+x^n} \to \frac{0}{1+0} = 0$.\\
+    - Si $x = 1$, $f_n(1) = \frac{1^n}{1+1^n} = \frac{1}{2}$.\\
+    La limite simple est :
+    \[ f(x) = \begin{cases} 0 & \text{si } x \in [0, 1[ \\ \frac{1}{2} & \text{si } x = 1 \end{cases} \]
+    \item \textbf{Convergence uniforme :}
+    Chaque $f_n$ est continue sur $[0, 1]$ (quotient de fonctions continues dont le dénominateur ne s'annule pas car $1+x^n \ge 1$).
+    Or, la fonction limite $f$ présente une discontinuité en $x = 1$ car $\lim_{x \to 1^-} f(x) = 0 \neq f(1) = \frac{1}{2}$.
+    Par le théorème de conservation de la continuité, la convergence \textbf{ne peut pas être uniforme sur $[0, 1]$}.
+    \item \textbf{Suite test :} Choisissons $x_n = \left(\frac{1}{2}\right)^{1/n} \in [0, 1[$.
+    Alors $x_n^n = \frac{1}{2}$.
+    Puisque $x_n \in [0, 1[$, on a $f(x_n) = 0$.
+    On évalue alors :
+    \[ |f_n(x_n) - f(x_n)| = \frac{1/2}{1 + 1/2} - 0 = \frac{1/2}{3/2} = \frac{1}{3} \xrightarrow[n \to +\infty]{} \frac{1}{3} \neq 0 \]
+\end{enumerate}
+\end{proof}
+
+\subsection*{Exercice 6: [Questions de Réflexion (Sous-Ensembles et Segments Compacts)]}
+
+\textbf{Soru:}
+Soit $(f_n)$ une suite de fonctions qui converge uniformément vers $f$ sur un ensemble $D$.\\
+(1) Si $A \subset D$, la convergence de $(f_n)$ vers $f$ est-elle nécessairement uniforme sur $A$ ? Justifier.\\
+(2) Supposons maintenant que $(f_n)$ converge uniformément vers $f$ sur tout segment contenu dans $D$. Peut-on en déduire que $(f_n)$ converge uniformément vers $f$ sur $D$ ?\\
+(3) Donner un contre-exemple.
+
+\begin{proof}[Résolution]
+\textbf{Partie (1) : Restriction à un sous-ensemble $A \subset D$}
+\textbf{Oui}, la convergence est nécessairement uniforme sur tout sous-ensemble $A \subset D$.
+\begin{itemize}
+    \item \textbf{Démonstration :} Par propriété fondamentale de la borne supérieure, si $A \subset D$, alors :
+    \[ \sup_{x \in A} |f_n(x) - f(x)| \le \sup_{x \in D} |f_n(x) - f(x)| \]
+    Par hypothèse, $(f_n)$ converge uniformément vers $f$ sur $D$, ce qui signifie que :
+    \[ \lim_{n \to +\infty} \sup_{x \in D} |f_n(x) - f(x)| = 0 \]
+    Puisque pour tout $n$, $0 \le \sup_{x \in A} |f_n(x) - f(x)|$, le \textbf{théorème des gendarmes} s'applique directement et donne :
+    \[ \lim_{n \to +\infty} \sup_{x \in A} |f_n(x) - f(x)| = 0 \]
+    Ce qui prouve que la suite converge uniformément sur $A$.
+\end{itemize}
+
+\textbf{Partie (2) et (3) : Réciproque et contre-exemple}
+\textbf{Non}, on ne peut pas en déduire que $(f_n)$ converge uniformément sur $D$.
+La convergence uniforme sur tout segment compact (notée convergence uniforme locale ou convergence compacte) est strictement plus faible que la convergence uniforme globale sur $D$.
+
+\textbf{Contre-exemple (deux illustrations fondamentales) :}
+\begin{enumerate}
+    \item \textbf{Exemple 1 (Intervalle borné non fermé) :} 
+    Considérons $D = [0, 1[$ et $f_n(x) = x^n$.
+    - Tout segment contenu dans $D$ est de la forme $[a, b]$ avec $0 \le a \le b < 1$. Sur ce segment, la fonction étant croissante :
+    \[ \sup_{x \in [a, b]} |f_n(x) - 0| = b^n \xrightarrow[n \to +\infty]{} 0 \quad (\text{car } b < 1) \]
+    La convergence est donc uniforme sur tout segment de $[0, 1[$.
+    - Pourtant, sur $D = [0, 1[$, on a :
+    \[ \sup_{x \in [0, 1[} |f_n(x) - 0| = \sup_{x \in [0, 1[} x^n = 1 \xrightarrow[n \to +\infty]{} 1 \neq 0 \]
+    La convergence n'est pas uniforme sur $D$.
+    \item \textbf{Exemple 2 (Domaine non borné) :} 
+    Considérons $D = [0, +\infty[$ et $f_n(x) = \frac{x}{n}$.
+    - Tout segment de $D$ est inclus dans un intervalle $[0, M]$ avec $M > 0$. Sur ce segment :
+    \[ \sup_{x \in [0, M]} \left| \frac{x}{n} \right| = \frac{M}{n} \xrightarrow[n \to +\infty]{} 0 \]
+    La convergence est uniforme sur tout segment de $[0, +\infty[$.
+    - Pourtant, sur $D = [0, +\infty[$, on a $\sup_{x \ge 0} \frac{x}{n} = +\infty$, donc la convergence n'est pas uniforme sur $D$.
+\end{enumerate}
+\end{proof}
+
+\section{TD 5 Suite / TD 6 (21 Octobre) - Suites et Séries de Fonctions, Continuité et Cauchy Uniforme}
+
+\begin{tcolorbox}[colback=green!5!white,colframe=green!60!black,title=Temel Teori: Fonksiyon Serilerinde Yakınsaklık Hiyerarşisi (Séries de Fonctions)]
+Bir fonksiyon serisi $\sum f_n(x)$ için yakınsaklık türleri arasında şu hiyerarşi geçerlidir:
+\[ \text{\textbf{Normal Yakınsaklık}} \implies \text{\textbf{Düzgün Yakınsaklık}} \implies \text{\textbf{Noktasal Yakınsaklık}} \]
+\[ \text{\textbf{Normal Yakınsaklık}} \implies \text{\textbf{Mutlak Yakınsaklık}} \implies \text{\textbf{Noktasal Yakınsaklık}} \]
+\begin{itemize}
+    \item \textbf{Normal Yakınsaklık (Convergence Normale):} $\sum \|f_n\|_{\infty, D} < +\infty$ olmasıdır. En güçlü yakınsaklıktır! Sayısal seriye indirger (\textbf{Weierstrass $M$-testi}).
+    \item \textbf{Düzgün Yakınsaklık (Convergence Uniforme):} Kısmi toplamlar dizisinin $S_N(x)$ düzgün yakınsamasıdır. Bu da \textbf{kalan terimin} (reste) sıfıra gitmesine denktir:
+    \[ \lim_{N \to +\infty} \sup_{x \in D} |R_N(x)| = 0, \quad \text{où } R_N(x) = \sum_{n=N+1}^{+\infty} f_n(x) \]
+    \item \textbf{DİKKAT (Tersleri Yanlıştır!):} Düzgün yakınsak bir seri normal yakınsak olmak zorunda \textbf{değildir} (en meşhur karşıt örnek: $\sum \frac{(-1)^n x}{n}$ serisi).
+\end{itemize}
+\end{tcolorbox}
+
+\subsection*{Exercice 1: [Convergence simple et uniforme de suites de fonctions]}
+
+\textbf{Soru:}
+Pour chacune des suites de fonctions suivantes, déterminer la limite simple, puis étudier la convergence uniforme sur le domaine indiqué.
+\[ a) f_n(x) = \frac{x}{1+nx}, x \in [0, 1] \]
+\[ b) f_n(x) = \frac{x}{n+x}, x \in [0, +\infty[ \]
+\[ c) f_n(x) = \frac{x^2}{n+x^2}, x \in \mathbb{R} \]
+
+\begin{proof}[Résolution]
+\textbf{Cas a) :} $f_n(x) = \frac{x}{1+nx}$ sur $D = [0, 1]$.
+\begin{itemize}
+    \item \textbf{Limite simple :}
+    - Pour $x = 0$ : $f_n(0) = 0 \to 0$.\\
+    - Pour $x \in ]0, 1]$ : $f_n(x) = \frac{x}{1+nx} \sim \frac{x}{nx} = \frac{1}{n} \xrightarrow[n \to +\infty]{} 0$.\\
+    Donc la limite simple est la fonction nulle sur $[0, 1]$ : $f(x) = 0$.
+    \item \textbf{Convergence uniforme :}
+    Calculons la dérivée de $f_n$ sur $[0, 1]$ :
+    \[ f_n'(x) = \frac{1 \cdot (1+nx) - x \cdot n}{(1+nx)^2} = \frac{1}{(1+nx)^2} > 0 \]
+    La fonction $f_n$ est strictement croissante sur $[0, 1]$. Son maximum est donc atteint en $x = 1$ :
+    \[ \|f_n - 0\|_{\infty, [0, 1]} = \sup_{x \in [0, 1]} f_n(x) = f_n(1) = \frac{1}{1+n} \]
+    Puisque $\lim_{n \to +\infty} \frac{1}{1+n} = 0$, on a :
+    \[ \lim_{n \to +\infty} \|f_n - f\|_{\infty, [0, 1]} = 0 \]
+    La suite $(f_n)$ \textbf{converge uniformément vers 0 sur $[0, 1]$}.
+\end{itemize}
+
+\textbf{Cas b) :} $f_n(x) = \frac{x}{n+x}$ sur $D = [0, +\infty[$.
+\begin{itemize}
+    \item \textbf{Limite simple :}
+    Pour chaque $x \ge 0$ fixé, $\lim_{n \to +\infty} (n+x) = +\infty$, donc $\lim_{n \to +\infty} \frac{x}{n+x} = 0$.
+    La limite simple est $f(x) = 0$.
+    \item \textbf{Convergence uniforme :}
+    Pour tout $n \ge 1$, la fonction $f_n$ est continue et croissante sur $[0, +\infty[$, et :
+    \[ \lim_{x \to +\infty} f_n(x) = \lim_{x \to +\infty} \frac{x}{n+x} = 1 \]
+    Par conséquent :
+    \[ \|f_n - 0\|_{\infty, [0, +\infty[} = \sup_{x \ge 0} \frac{x}{n+x} = 1 \xrightarrow[n \to +\infty]{} 1 \neq 0 \]
+    La suite $(f_n)$ \textbf{ne converge pas uniformément sur $[0, +\infty[$}.\\
+    \textit{Suite test explicite :} Pour $x_n = n \in [0, +\infty[$, on a $f_n(x_n) = \frac{n}{n+n} = \frac{1}{2} \not\to 0$.
+\end{itemize}
+
+\textbf{Cas c) :} $f_n(x) = \frac{x^2}{n+x^2}$ sur $D = \mathbb{R}$.
+\begin{itemize}
+    \item \textbf{Limite simple :}
+    Pour tout $x \in \mathbb{R}$ fixé, $\lim_{n \to +\infty} \frac{x^2}{n+x^2} = 0$.
+    La limite simple est $f(x) = 0$.
+    \item \textbf{Convergence uniforme :}
+    Pour tout $n \ge 1$ :
+    \[ \lim_{x \to +\infty} f_n(x) = \lim_{x \to +\infty} \frac{x^2}{n+x^2} = 1 \]
+    D'où :
+    \[ \|f_n - 0\|_{\infty, \mathbb{R}} = \sup_{x \in \mathbb{R}} \frac{x^2}{n+x^2} = 1 \xrightarrow[n \to +\infty]{} 1 \neq 0 \]
+    La suite $(f_n)$ \textbf{ne converge pas uniformément sur $\mathbb{R}$}.\\
+    \textit{Suite test explicite :} Pour $x_n = \sqrt{n} \in \mathbb{R}$, on a $f_n(x_n) = \frac{n}{n+n} = \frac{1}{2} \not\to 0$.
+\end{itemize}
+\end{proof}
+
+\subsection*{Exercice 2: [Convergence uniforme et continuité ($f_n(x) = \frac{nx}{1+nx}$)]}
+
+\textbf{Soru:}
+On considère la suite de fonctions définies sur $[0, 1]$ par :
+\[ f_n(x) = \frac{nx}{1+nx} \]
+(1) Déterminer la limite simple $f$ de la suite $(f_n)$.\\
+(2) La fonction $f$ est-elle continue sur $[0, 1]$ ?\\
+(3) En déduire que la convergence n'est pas uniforme sur $[0, 1]$.\\
+(4) Retrouver ce résultat en calculant $\sup_{x \in [0, 1]} |f_n(x) - f(x)|$.\\
+(5) Montrer que la convergence est uniforme sur $[a, 1]$ pour tout $a \in ]0, 1[$.
+
+\begin{proof}[Résolution]
+\textbf{Partie (1) : Limite simple sur $[0, 1]$}
+Soit $x \in [0, 1]$.
+\begin{itemize}
+    \item Si $x = 0$ : pour tout $n \ge 1$, $f_n(0) = \frac{0}{1+0} = 0 \to 0$.
+    \item Si $x \in ]0, 1]$ : on a $nx \to +\infty$, d'où :
+    \[ f_n(x) = \frac{nx}{1+nx} = \frac{1}{\frac{1}{nx} + 1} \xrightarrow[n \to +\infty]{} \frac{1}{0 + 1} = 1 \]
+\end{itemize}
+La suite $(f_n)$ converge simplement sur $[0, 1]$ vers la fonction :
+\[ f(x) = \begin{cases} 0 & \text{si } x = 0 \\ 1 & \text{si } x \in ]0, 1] \end{cases} \]
+
+\textbf{Partie (2) : Continuité de $f$}
+Calculons la limite de $f$ en 0 à droite :
+\[ \lim_{x \to 0^+} f(x) = 1 \]
+Or $f(0) = 0$. Comme $\lim_{x \to 0^+} f(x) \neq f(0)$, la fonction $f$ est \textbf{discontinue au point $x = 0$}. Par conséquent, $f$ n'est pas continue sur $[0, 1]$.
+
+\textbf{Partie (3) : Déduction de la non-uniformité}
+Pour tout $n \ge 1$, la fonction $f_n$ est continue sur $[0, 1]$ (fonction rationnelle dont le dénominateur $1+nx \ge 1 > 0$ ne s'annule pas).
+D'après le \textbf{théorème de transfert de la continuité}, si la suite de fonctions continues $(f_n)$ convergeait uniformément vers $f$ sur $[0, 1]$, alors la fonction limite $f$ serait continue sur $[0, 1]$.
+Puisque $f$ n'est pas continue sur $[0, 1]$, par contraposée, la suite $(f_n)$ \textbf{ne converge pas uniformément vers $f$ sur $[0, 1]$}.
+
+\textbf{Partie (4) : Calcul explicite du supremum}
+Soit $x \in [0, 1]$. 
+- En $x = 0$ : $|f_n(0) - f(0)| = |0 - 0| = 0$.\\
+- Pour $x \in ]0, 1]$ :
+\[ |f_n(x) - f(x)| = \left| \frac{nx}{1+nx} - 1 \right| = \left| \frac{nx - (1+nx)}{1+nx} \right| = \frac{1}{1+nx} \]
+La fonction $x \mapsto \frac{1}{1+nx}$ est strictement décroissante sur $]0, 1]$. Par conséquent, sa borne supérieure est atteinte lorsque $x \to 0^+$ :
+\[ \sup_{x \in [0, 1]} |f_n(x) - f(x)| = \sup_{x \in ]0, 1]} \frac{1}{1+nx} = \lim_{x \to 0^+} \frac{1}{1+nx} = 1 \]
+Puisque $\|f_n - f\|_{\infty, [0, 1]} = 1 \xrightarrow[n \to +\infty]{} 1 \neq 0$, on retrouve bien que la convergence \textbf{n'est pas uniforme sur $[0, 1]$}.
+
+\textbf{Partie (5) : Convergence uniforme sur $[a, 1]$ avec $a \in ]0, 1[$}
+Sur le segment $[a, 1]$, on a $x \ge a > 0$, donc la limite simple est constante égale à 1 : $f(x) = 1$.
+Pour tout $x \in [a, 1]$ :
+\[ |f_n(x) - f(x)| = \frac{1}{1+nx} \]
+Puisque la fonction $x \mapsto \frac{1}{1+nx}$ est strictement décroissante, son maximum sur $[a, 1]$ est atteint à la borne inférieure $x = a$ :
+\[ \|f_n - f\|_{\infty, [a, 1]} = \sup_{x \in [a, 1]} \frac{1}{1+nx} = \frac{1}{1+na} \]
+Puisque $a > 0$, on a :
+\[ \lim_{n \to +\infty} \frac{1}{1+na} = 0 \]
+D'où $\lim_{n \to +\infty} \|f_n - f\|_{\infty, [a, 1]} = 0$.
+La convergence est donc \textbf{uniforme sur $[a, 1]$} pour tout $a \in ]0, 1[$.
+\end{proof}
+
+\subsection*{Exercice 3: [Suite de fonctions à maximum variable ($f_n(x) = nx(1-x)^n$)]}
+
+\textbf{Soru:}
+Pour tout $n \ge 1$, on pose :
+\[ f_n(x) = nx(1-x)^n, \quad x \in [0, 1] \]
+(1) Déterminer la limite simple de $(f_n)$ sur $[0, 1]$.\\
+(2) Étudier les variations de $f_n$ et déterminer son maximum sur $[0, 1]$.\\
+(3) La convergence est-elle uniforme sur $[0, 1]$ ?\\
+(4) Montrer que la convergence est uniforme sur $[a, 1]$ pour tout $a \in ]0, 1[$.
+
+\begin{proof}[Résolution]
+\textbf{Partie (1) : Limite simple sur $[0, 1]$}
+Soit $x \in [0, 1]$.
+\begin{itemize}
+    \item Si $x = 0$ : $f_n(0) = n \cdot 0 \cdot 1^n = 0 \to 0$.
+    \item Si $x = 1$ : $f_n(1) = n \cdot 1 \cdot (1-1)^n = 0 \to 0$.
+    \item Si $x \in ]0, 1[$ : on pose $q = 1-x$. Comme $x \in ]0, 1[$, on a $0 < q < 1$.
+    D'après les croissances comparées usuelles, $\lim_{n \to +\infty} n q^n = 0$.
+    Ainsi, $\lim_{n \to +\infty} f_n(x) = x \lim_{n \to +\infty} n(1-x)^n = 0$.
+\end{itemize}
+La suite $(f_n)$ converge simplement sur $[0, 1]$ vers la fonction nulle : $f(x) = 0$.
+
+\textbf{Partie (2) : Variations et maximum de $f_n$}
+Pour tout $n \ge 1$, la fonction $f_n$ est dérivable sur $[0, 1]$. Calculons sa dérivée :
+\[ f_n'(x) = n(1-x)^n + nx \cdot n(1-x)^{n-1}(-1) = n(1-x)^{n-1} \left[ (1-x) - nx \right] = n(1-x)^{n-1} \left[ 1 - (n+1)x \right] \]
+Pour $x \in ]0, 1[$, le terme $n(1-x)^{n-1}$ est strictement positif. Le signe de $f_n'(x)$ est donc exactement celui de $1 - (n+1)x$.
+- $f_n'(x) > 0 \iff x < \frac{1}{n+1}$.\\
+- $f_n'(x) = 0 \iff x = \frac{1}{n+1}$.\\
+- $f_n'(x) < 0 \iff x > \frac{1}{n+1}$.\\
+La fonction $f_n$ est donc strictement croissante sur $[0, \frac{1}{n+1}]$ et strictement décroissante sur $[\frac{1}{n+1}, 1]$.
+Elle admet un maximum global absolu en $x_n = \frac{1}{n+1} \in [0, 1]$.
+Calculons la valeur de ce maximum :
+\[ M_n = f_n\left(\frac{1}{n+1}\right) = n \left(\frac{1}{n+1}\right) \left(1 - \frac{1}{n+1}\right)^n = \frac{n}{n+1} \left(\frac{n}{n+1}\right)^n = \left(\frac{n}{n+1}\right)^{n+1} = \left( 1 - \frac{1}{n+1} \right)^{n+1} \]
+Calculons sa limite en utilisant la forme exponentielle :
+\[ M_n = \exp\left( (n+1) \ln\left(1 - \frac{1}{n+1}\right) \right) \]
+Or au voisinage de 0, $\ln(1 - u) = -u + o(u)$, donc :
+\[ (n+1) \ln\left(1 - \frac{1}{n+1}\right) = (n+1) \left( -\frac{1}{n+1} + o\left(\frac{1}{n+1}\right) \right) = -1 + o(1) \]
+Par continuité de l'exponentielle :
+\[ \lim_{n \to +\infty} M_n = e^{-1} = \frac{1}{e} \]
+
+\textbf{Partie (3) : Étude de la convergence uniforme sur $[0, 1]$}
+On a :
+\[ \|f_n - 0\|_{\infty, [0, 1]} = \sup_{x \in [0, 1]} |f_n(x)| = M_n = \left( 1 - \frac{1}{n+1} \right)^{n+1} \]
+Par passage à la limite :
+\[ \lim_{n \to +\infty} \|f_n - 0\|_{\infty, [0, 1]} = \frac{1}{e} \neq 0 \]
+La suite $(f_n)$ \textbf{ne converge pas uniformément vers 0 sur $[0, 1]$}.
+\textit{Remarque cruciale :} Les fonctions $f_n$ sont continues et la limite $f=0$ est continue. Pourtant, la convergence n'est pas uniforme ! C'est le phénomène de la bosse glissante qui s'échappe vers l'origine en conservant une hauteur finie ($1/e$).
+
+\textbf{Partie (4) : Convergence uniforme sur $[a, 1]$ avec $a \in ]0, 1[$}
+Soit $a \in ]0, 1[$. Puisque $\lim_{n \to +\infty} \frac{1}{n+1} = 0$, il existe un entier $N \in \mathbb{N}$ tel que pour tout $n \ge N$ :
+\[ \frac{1}{n+1} < a \]
+Ainsi, pour tout $n \ge N$, le point de maximum global $x_n = \frac{1}{n+1}$ se trouve strictement à gauche du segment $[a, 1]$.
+Puisque $f_n$ est strictement décroissante sur $[\frac{1}{n+1}, 1]$, elle est en particulier strictement décroissante sur $[a, 1]$.
+Par conséquent, son maximum sur $[a, 1]$ est atteint à la borne gauche $x = a$ :
+\[ \sup_{x \in [a, 1]} |f_n(x)| = f_n(a) = na(1-a)^n \]
+Comme $a \in ]0, 1[$, on a $0 < 1-a < 1$. Par croissances comparées :
+\[ \lim_{n \to +\infty} na(1-a)^n = 0 \]
+Il s'ensuit que $\lim_{n \to +\infty} \|f_n - 0\|_{\infty, [a, 1]} = 0$.
+La convergence est donc \textbf{uniforme sur $[a, 1]$}.
+\end{proof}
+
+\subsection*{Exercice 4: [Critère de Cauchy uniforme (Suites et Séries de Fonctions)]}
+
+\begin{tcolorbox}[colback=teal!5!white,colframe=teal!75!black,title=Hatırlatma: Düzgün Cauchy Kriteri (Critère de Cauchy Uniforme)]
+Bir $(f_n)$ fonksiyon dizisinin $D$ üzerinde düzgün yakınsak olması için \textbf{gerek ve yeter şart}, dizinin $D$ üzerinde \textbf{düzgün Cauchy} olmasıdır:
+\[ \forall \epsilon > 0, \exists N \in \mathbb{N}, \forall m > n \ge N, \forall x \in D : |f_m(x) - f_n(x)| < \epsilon \]
+Bu kriter, limit fonksiyonu $f$'in ne olduğunu \textbf{bilmediğimiz veya hesaplayamadığımız} durumlarda düzgün yakınsaklığı kanıtlamak için kullanılan en güçlü araçtır!
+\end{tcolorbox}
+
+\textbf{Soru:}
+(1) Soit $(f_n)$ une suite de fonctions définies sur un ensemble non-vide $D$. Montrer que la condition :
+\[ \sup_{x \in D} |f_{n+1}(x) - f_n(x)| \xrightarrow[n \to +\infty]{} 0 \]
+ne suffit pas à garantir que $(f_n)$ est uniformément de Cauchy sur $D$.\\
+(2) Pour $n \ge 1$, on considère la suite de fonctions définies sur $[0, 1]$ par :
+\[ f_n(x) = \sum_{k=1}^n \frac{x^k}{k^2} \]
+Montrer, à l'aide du critère de Cauchy uniforme, que $(f_n)$ converge uniformément sur $[0, 1]$ sans chercher à déterminer sa limite.\\
+(3) On considère la série de fonctions $\sum_{n=1}^{+\infty} \frac{x^n}{n}$ avec $x \in [0, 1[$. Montrer, à l'aide du critère de Cauchy uniforme, que cette série ne converge pas uniformément sur $[0, 1[$.
+
+\begin{proof}[Résolution]
+\textbf{Partie (1) : Insuffisance de la condition $|f_{n+1}-f_n| \to 0$}
+Considérons la suite de fonctions constantes sur $D$ définie par les sommes partielles de la série harmonique :
+\[ f_n(x) = \sum_{k=1}^n \frac{1}{k} = H_n \quad \text{pour tout } x \in D \]
+Pour tout $x \in D$ :
+\[ |f_{n+1}(x) - f_n(x)| = \frac{1}{n+1} \]
+D'où $\sup_{x \in D} |f_{n+1}(x) - f_n(x)| = \frac{1}{n+1} \xrightarrow[n \to +\infty]{} 0$. La condition est donc bien satisfaite.
+Pourtant, choisissons $m = 2n$. Alors pour tout $x \in D$ :
+\[ |f_{2n}(x) - f_n(x)| = \sum_{k=n+1}^{2n} \frac{1}{k} \ge \sum_{k=n+1}^{2n} \frac{1}{2n} = n \cdot \frac{1}{2n} = \frac{1}{2} \]
+En passant au supremum sur $D$, $\sup_{x \in D} |f_{2n}(x) - f_n(x)| \ge \frac{1}{2}$ pour tout $n \ge 1$.
+Il est donc impossible de rendre cette quantité strictement inférieure à $\epsilon = \frac{1}{4}$ pour $n$ grand.
+La suite $(f_n)$ n'est donc \textbf{pas uniformément de Cauchy sur $D$} (elle diverge d'ailleurs vers $+\infty$ en tout point).
+
+\textbf{Partie (2) : Convergence uniforme de $f_n(x) = \sum_{k=1}^n \frac{x^k}{k^2}$ sur $[0, 1]$}
+Soient $m, n \in \mathbb{N}$ tels que $m > n \ge 1$. Pour tout $x \in [0, 1]$ :
+\[ |f_m(x) - f_n(x)| = \left| \sum_{k=n+1}^m \frac{x^k}{k^2} \right| = \sum_{k=n+1}^m \frac{x^k}{k^2} \]
+Puisque $x \in [0, 1]$, on a $0 \le x^k \le 1$ pour tout $k \ge 1$. Par conséquent :
+\[ |f_m(x) - f_n(x)| \le \sum_{k=n+1}^m \frac{1}{k^2} \le \sum_{k=n+1}^{+\infty} \frac{1}{k^2} \]
+Cette majoration est totalement indépendante de $x \in [0, 1]$. En passant à la borne supérieure sur $[0, 1]$ :
+\[ \sup_{x \in [0, 1]} |f_m(x) - f_n(x)| \le \sum_{k=n+1}^{+\infty} \frac{1}{k^2} \]
+La série numérique $\sum_{k=1}^{+\infty} \frac{1}{k^2}$ est une série de Riemann convergente ($\alpha = 2 > 1$). Par propriété du reste d'une série convergente :
+\[ R_n = \sum_{k=n+1}^{+\infty} \frac{1}{k^2} \xrightarrow[n \to +\infty]{} 0 \]
+Soit $\epsilon > 0$. Il existe donc un entier $N \in \mathbb{N}$ tel que pour tout $n \ge N$, $R_n < \epsilon$.
+Ainsi, pour tous $m > n \ge N$ :
+\[ \sup_{x \in [0, 1]} |f_m(x) - f_n(x)| \le R_n < \epsilon \]
+La suite $(f_n)$ est donc \textbf{uniformément de Cauchy sur $[0, 1]$}.
+L'espace d'arrivée $\mathbb{R}$ muni de la valeur absolue étant complet, d'après le critère de Cauchy uniforme, la suite $(f_n)$ \textbf{converge uniformément sur $[0, 1]$}.
+
+\textbf{Partie (3) : Non-convergence uniforme de $\sum_{n=1}^{+\infty} \frac{x^n}{n}$ sur $[0, 1[$}
+Notons $S_n(x) = \sum_{k=1}^n \frac{x^k}{k}$ les sommes partielles de la série.
+Supposons par l'absurde que la série converge uniformément sur $[0, 1[$.
+D'après le critère de Cauchy uniforme, pour $\epsilon = \frac{1}{4} > 0$, il devrait exister un entier $N \in \mathbb{N}$ tel que pour tous $m > n \ge N$ :
+\[ \sup_{x \in [0, 1[} |S_m(x) - S_n(x)| < \frac{1}{4} \]
+Prenons en particulier $m = 2n$ pour un entier $n \ge N$. Pour tout $x \in [0, 1[$ :
+\[ S_{2n}(x) - S_n(x) = \sum_{k=n+1}^{2n} \frac{x^k}{k} \]
+Puisque chaque terme $x \mapsto \frac{x^k}{k}$ est continu et croissant sur $[0, 1[$, on a :
+\[ \sup_{x \in [0, 1[} |S_{2n}(x) - S_n(x)| = \lim_{x \to 1^-} \sum_{k=n+1}^{2n} \frac{x^k}{k} = \sum_{k=n+1}^{2n} \frac{1}{k} \]
+Or, par minoration usuelle :
+\[ \sum_{k=n+1}^{2n} \frac{1}{k} \ge n \cdot \frac{1}{2n} = \frac{1}{2} \]
+On obtient donc :
+\[ \sup_{x \in [0, 1[} |S_{2n}(x) - S_n(x)| \ge \frac{1}{2} > \frac{1}{4} \]
+ce qui contredit l'hypothèse de Cauchy uniforme.
+Par conséquent, la série de fonctions $\sum_{n=1}^{+\infty} \frac{x^n}{n}$ \textbf{ne converge pas uniformément sur $[0, 1[$}.
+\end{proof}
+
+\subsection*{Exercice 5: [Séries de fonctions (Convergence Simple, Absolue, Uniforme et Normale)]}
+
+\textbf{Soru:}
+Étudier la convergence simple, absolue, uniforme et normale des séries suivantes sur les domaines indiqués :
+\[ a) \sum_{n=1}^{+\infty} \frac{\sin(nx)}{n^2}, x \in \mathbb{R} \]
+\[ b) \sum_{n=1}^{+\infty} \frac{(-1)^n x}{n}, x \in [0, 1] \]
+\[ c) \sum_{n=1}^{+\infty} \frac{x}{(1+nx)(1+(n+1)x)}, x \in [0, +\infty[ \]
+\textbf{Question théorique :} Soit $\sum_{n=1}^{+\infty} f_n$ une série de fonctions convergeant simplement sur un ensemble $D$, de somme $S$. On note $R_N(x) = S(x) - \sum_{n=1}^N f_n(x)$.
+Montrer que la série converge uniformément sur $D$ si et seulement si $\sup_{x \in D} |R_N(x)| \xrightarrow[N \to +\infty]{} 0$.
+
+\begin{proof}[Résolution]
+\textbf{Série a) :} $\sum_{n=1}^{+\infty} u_n(x)$ avec $u_n(x) = \frac{\sin(nx)}{n^2}$ sur $D = \mathbb{R}$.
+\begin{itemize}
+    \item \textbf{Convergence normale :}
+    Pour tout $x \in \mathbb{R}$, on sait que $|\sin(nx)| \le 1$. Ainsi :
+    \[ |u_n(x)| = \left| \frac{\sin(nx)}{n^2} \right| \le \frac{1}{n^2} \]
+    Cette borne est indépendante de $x$. En passant à la borne supérieure :
+    \[ \|u_n\|_{\infty, \mathbb{R}} = \sup_{x \in \mathbb{R}} \left| \frac{\sin(nx)}{n^2} \right| \le \frac{1}{n^2} \]
+    (et cette valeur est effectivement atteinte pour $x = \frac{\pi}{2n}$, donc $\|u_n\|_{\infty, \mathbb{R}} = \frac{1}{n^2}$).\\
+    La série numérique $\sum \frac{1}{n^2}$ est une série de Riemann convergente ($\alpha = 2 > 1$).
+    Par le \textbf{critère de Weierstrass}, la série $\sum u_n$ \textbf{converge normalement sur $\mathbb{R}$}.
+    \item \textbf{Autres convergences :}
+    Puisque la convergence normale implique toutes les autres formes de convergence, la série converge également \textbf{uniformément}, \textbf{absolument} et \textbf{simplement sur $\mathbb{R}$}.
+\end{itemize}
+
+\textbf{Série b) :} $\sum_{n=1}^{+\infty} u_n(x)$ avec $u_n(x) = \frac{(-1)^n x}{n}$ sur $D = [0, 1]$.
+\begin{itemize}
+    \item \textbf{Convergence simple :}
+    - Pour $x = 0$ : $u_n(0) = 0$ pour tout $n$, la somme vaut 0.\\
+    - Pour $x \in ]0, 1]$ : on a $\sum \frac{(-1)^n x}{n} = x \sum \frac{(-1)^n}{n}$. C'est le produit de $x$ par la série harmonique alternée, qui converge d'après le critère de Leibniz.\\
+    Donc la série \textbf{converge simplement sur $[0, 1]$}.
+    \item \textbf{Convergence absolue :}
+    Pour tout $x \in ]0, 1]$, $|u_n(x)| = \frac{x}{n}$. La série $\sum \frac{x}{n} = x \sum \frac{1}{n}$ diverge car $\sum \frac{1}{n}$ est la série harmonique divergente.
+    La série \textbf{ne converge absolument en aucun point de $]0, 1]$} (elle ne converge absolument qu'au point isolé $x = 0$).
+    \item \textbf{Convergence normale :}
+    $\|u_n\|_{\infty, [0, 1]} = \sup_{x \in [0, 1]} \frac{x}{n} = \frac{1}{n}$.
+    La série numérique associée est $\sum \frac{1}{n}$, qui diverge.
+    Par conséquent, la série \textbf{ne converge pas normalement sur $[0, 1]$}.
+    \item \textbf{Convergence uniforme :}
+    Pour chaque $x \in [0, 1]$, la série est alternée et satisfait les hypothèses du critère de Leibniz. D'après la formule de majoration du reste des séries alternées :
+    \[ |R_N(x)| = \left| \sum_{n=N+1}^{+\infty} \frac{(-1)^n x}{n} \right| \le |u_{N+1}(x)| = \frac{x}{N+1} \]
+    Comme $x \in [0, 1]$, on a immédiatement :
+    \[ |R_N(x)| \le \frac{1}{N+1} \]
+    Cette majoration est indépendante de $x$. En passant au supremum sur $[0, 1]$ :
+    \[ \sup_{x \in [0, 1]} |R_N(x)| \le \frac{1}{N+1} \xrightarrow[N \to +\infty]{} 0 \]
+    La série \textbf{converge uniformément sur $[0, 1]$}.\\
+    \textit{Remarque théorique majeure :} Cet exercice démontre qu'une série peut être uniformément convergente tout en n'étant ni normalement convergente, ni absolument convergente !
+\end{itemize}
+
+\textbf{Série c) :} $\sum_{n=1}^{+\infty} u_n(x)$ avec $u_n(x) = \frac{x}{(1+nx)(1+(n+1)x)}$ sur $D = [0, +\infty[$.
+\begin{itemize}
+    \item \textbf{Décomposition télescopique :}
+    Calculons la différence :
+    \[ \frac{1}{1+nx} - \frac{1}{1+(n+1)x} = \frac{(1+(n+1)x) - (1+nx)}{(1+nx)(1+(n+1)x)} = \frac{x}{(1+nx)(1+(n+1)x)} = u_n(x) \]
+    Il s'agit donc d'une \textbf{série télescopique} !
+    \item \textbf{Sommes partielles et convergence simple :}
+    Pour tout $x \ge 0$, la somme partielle d'ordre $N$ s'écrit par télescopage :
+    \[ S_N(x) = \sum_{n=1}^N u_n(x) = \sum_{n=1}^N \left( \frac{1}{1+nx} - \frac{1}{1+(n+1)x} \right) = \frac{1}{1+x} - \frac{1}{1+(N+1)x} \]
+    Étudions la limite quand $N \to +\infty$ selon la valeur de $x$ :
+    - Si $x = 0$ : $u_n(0) = 0$ pour tout $n$, donc $S_N(0) = 0 \to 0$.\\
+    - Si $x > 0$ : $\lim_{N \to +\infty} \frac{1}{1+(N+1)x} = 0$, d'où $\lim_{N \to +\infty} S_N(x) = \frac{1}{1+x}$.\\
+    La série converge simplement sur $[0, +\infty[$ vers la fonction somme :
+    \[ S(x) = \begin{cases} 0 & \text{si } x = 0 \\ \frac{1}{1+x} & \text{si } x > 0 \end{cases} \]
+    \item \textbf{Convergence uniforme :}
+    Pour tout $n \ge 1$, la fonction $u_n$ est continue sur $[0, +\infty[$, donc chaque somme partielle $S_N$ est continue sur $[0, +\infty[$.
+    Observons la limite de la fonction somme $S$ en 0 :
+    \[ \lim_{x \to 0^+} S(x) = \lim_{x \to 0^+} \frac{1}{1+x} = 1 \neq S(0) = 0 \]
+    La fonction somme $S$ est discontinue en 0.
+    Par le \textbf{théorème de continuité des séries de fonctions}, si la série convergeait uniformément sur $[0, +\infty[$, sa somme $S$ serait continue sur cet intervalle.
+    Par contraposée, la série \textbf{ne converge pas uniformément sur $[0, +\infty[$}.
+    \item \textbf{Convergence absolue et normale :}
+    Comme $u_n(x) \ge 0$ pour tout $x \ge 0$, la convergence absolue est équivalente à la convergence simple : elle converge donc absolument sur $[0, +\infty[$.
+    En revanche, elle ne converge pas normalement sur $[0, +\infty[$ (car la convergence normale impliquerait la convergence uniforme, ce qui est faux).
+\end{itemize}
+
+\textbf{Démonstration de la question théorique :}
+Par définition, la série $\sum_{n=1}^{+\infty} f_n$ converge uniformément sur $D$ vers sa somme $S$ si et seulement si la suite des sommes partielles $S_N = \sum_{n=1}^N f_n$ converge uniformément vers $S$ sur $D$.
+Par définition de la convergence uniforme d'une suite de fonctions, cela équivaut à :
+\[ \lim_{N \to +\infty} \|S - S_N\|_{\infty, D} = 0 \iff \lim_{N \to +\infty} \sup_{x \in D} |S(x) - S_N(x)| = 0 \]
+Or, par définition du reste d'ordre $N$ :
+\[ R_N(x) = S(x) - \sum_{n=1}^N f_n(x) = S(x) - S_N(x) \]
+On a donc identiquement $|S(x) - S_N(x)| = |R_N(x)|$.
+Par conséquent, la série converge uniformément sur $D$ si et seulement si :
+\[ \lim_{N \to +\infty} \sup_{x \in D} |R_N(x)| = 0 \]
+Ce qui achève la démonstration.
+\end{proof}
+
+\subsection*{Exercice 6: [Vrai ou Faux: 8 Propositions Fondamentales sur les Suites et Séries de Fonctions]}
+
+\textbf{Soru:}
+Pour chacune des affirmations suivantes, déterminer si elle est vraie ou fausse. Justifier toute réponse affirmative par une démonstration et toute réponse négative par un contre-exemple.
+\begin{enumerate}
+    \item Si une suite de fonctions continues converge simplement alors sa limite est continue.
+    \item Si une suite de fonctions converge simplement vers une fonction continue alors la convergence est uniforme.
+    \item Si une suite de fonctions converge uniformément sur tout segment de $]0, 1[$ alors elle converge uniformément sur $]0, 1[$.
+    \item Si une suite de fonctions converge uniformément sur $D$ alors elle converge uniformément sur toute partie $A \subset D$.
+    \item Si une série de fonctions converge absolument en tout point de $D$ alors elle converge uniformément sur $D$.
+    \item Si une série de fonctions converge normalement sur $D$ alors elle converge uniformément sur $D$.
+    \item Si une série de fonctions converge uniformément sur $D$ alors elle converge normalement sur $D$.
+    \item Si une série $\sum f_n$ converge uniformément sur $D$ alors la suite $(f_n)$ converge uniformément vers zéro sur $D$.
+\end{enumerate}
+
+\begin{proof}[Résolution]
+\textbf{Proposition 1 : "Si une suite de fonctions continues converge simplement alors sa limite est continue."}
+\begin{center}
+\textbf{\textcolor{red}{FAUX}}
+\end{center}
+\textbf{Contre-exemple :} Posons $f_n(x) = x^n$ sur $D = [0, 1]$.
+Chaque fonction $f_n$ est continue sur $[0, 1]$. Pourtant, sa limite simple est :
+\[ f(x) = \begin{cases} 0 & \text{si } x \in [0, 1[ \\ 1 & \text{si } x = 1 \end{cases} \]
+qui est discontinue en $x = 1$. La convergence simple ne préserve pas la continuité.
+
+\vspace{0.3cm}
+\textbf{Proposition 2 : "Si une suite de fonctions converge simplement vers une fonction continue alors la convergence est uniforme."}
+\begin{center}
+\textbf{\textcolor{red}{FAUX}}
+\end{center}
+\textbf{Contre-exemple :} Posons $f_n(x) = \frac{nx}{1 + n^2 x^2}$ sur $D = [0, 1]$.
+Pour tout $x \in [0, 1]$, la limite simple est la fonction nulle $f(x) = 0$, qui est parfaitement continue sur $[0, 1]$.
+Pourtant, en $x_n = \frac{1}{n} \in [0, 1]$, on a $f_n(x_n) = \frac{1}{2}$, d'où $\|f_n - 0\|_{\infty, [0, 1]} = \frac{1}{2} \not\to 0$.
+La convergence n'est pas uniforme. La continuité de la limite est une condition nécessaire mais nullement suffisante.
+
+\vspace{0.3cm}
+\textbf{Proposition 3 : "Si une suite de fonctions converge uniformément sur tout segment de $]0, 1[$ alors elle converge uniformément sur $]0, 1[$."}
+\begin{center}
+\textbf{\textcolor{red}{FAUX}}
+\end{center}
+\textbf{Contre-exemple :} Posons $f_n(x) = x^n$ sur $D = ]0, 1[$.
+- Soit $[a, b] \subset ]0, 1[$ un segment arbitraire, avec $0 < a \le b < 1$. Puisque $x \mapsto x^n$ est croissante :
+\[ \sup_{x \in [a, b]} |f_n(x) - 0| = b^n \xrightarrow[n \to +\infty]{} 0 \quad (\text{car } b < 1) \]
+La suite converge donc uniformément sur tout segment de $]0, 1[$.
+- En revanche, sur l'intervalle ouvert $]0, 1[$ tout entier :
+\[ \sup_{x \in ]0, 1[} |f_n(x) - 0| = \sup_{x \in ]0, 1[} x^n = 1 \xrightarrow[n \to +\infty]{} 1 \neq 0 \]
+La convergence n'est pas uniforme sur $]0, 1[$.
+
+\vspace{0.3cm}
+\textbf{Proposition 4 : "Si une suite de fonctions converge uniformément sur $D$ alors elle converge uniformément sur toute partie $A \subset D$."}
+\begin{center}
+\textbf{\textcolor{blue!80!black}{VRAI}}
+\end{center}
+\textbf{Démonstration :} Soit $A \subset D$. Par propriété de la borne supérieure sur une partie :
+\[ \sup_{x \in A} |f_n(x) - f(x)| \le \sup_{x \in D} |f_n(x) - f(x)| \]
+Puisque $(f_n)$ converge uniformément vers $f$ sur $D$, par hypothèse :
+\[ \lim_{n \to +\infty} \sup_{x \in D} |f_n(x) - f(x)| = 0 \]
+Comme $0 \le \sup_{x \in A} |f_n(x) - f(x)|$, par le théorème d'encadrement des limites, on obtient :
+\[ \lim_{n \to +\infty} \sup_{x \in A} |f_n(x) - f(x)| = 0 \]
+Ce qui établit la convergence uniforme sur $A$.
+
+\vspace{0.3cm}
+\textbf{Proposition 5 : "Si une série de fonctions converge absolument en tout point de $D$ alors elle converge uniformément sur $D$."}
+\begin{center}
+\textbf{\textcolor{red}{FAUX}}
+\end{center}
+\textbf{Contre-exemple :} Considérons la série géométrique $\sum_{n=0}^{+\infty} x^n$ sur $D = [0, 1[$.
+Pour chaque $x \in [0, 1[$, on a $|x^n| = x^n$ et la série numérique $\sum x^n = \frac{1}{1-x}$ converge. La série converge donc absolument en chaque point de $D$.
+Pourtant, le reste d'ordre $N$ s'écrit $R_N(x) = \sum_{n=N+1}^{+\infty} x^n = \frac{x^{N+1}}{1-x}$.
+Pour tout $N \in \mathbb{N}$ fixé :
+\[ \lim_{x \to 1^-} R_N(x) = \lim_{x \to 1^-} \frac{x^{N+1}}{1-x} = +\infty \]
+Donc $\sup_{x \in [0, 1[} |R_N(x)| = +\infty$. La série ne converge donc absolument pas uniformément sur $[0, 1[$.
+
+\vspace{0.3cm}
+\textbf{Proposition 6 : "Si une série de fonctions converge normalement sur $D$ alors elle converge uniformément sur $D$."}
+\begin{center}
+\textbf{\textcolor{blue!80!black}{VRAI}}
+\end{center}
+\textbf{Démonstration :} Par hypothèse de convergence normale, la série numérique à termes positifs $\sum_{n=1}^{+\infty} \|f_n\|_{\infty, D}$ converge.
+Soit $\epsilon > 0$. D'après le critère de Cauchy pour les séries numériques, il existe $N \in \mathbb{N}$ tel que pour tous $m > n \ge N$ :
+\[ \sum_{k=n+1}^m \|f_k\|_{\infty, D} < \epsilon \]
+Or, pour tout $x \in D$, par l'inégalité triangulaire :
+\[ \left| \sum_{k=n+1}^m f_k(x) \right| \le \sum_{k=n+1}^m |f_k(x)| \le \sum_{k=n+1}^m \|f_k\|_{\infty, D} \]
+En passant à la borne supérieure sur $D$ :
+\[ \sup_{x \in D} \left| \sum_{k=n+1}^m f_k(x) \right| \le \sum_{k=n+1}^m \|f_k\|_{\infty, D} < \epsilon \]
+La suite des sommes partielles vérifie donc le \textbf{critère de Cauchy uniforme} sur $D$.
+L'espace $\mathbb{R}$ étant complet, la série $\sum f_n$ converge uniformément sur $D$.
+
+\vspace{0.3cm}
+\textbf{Proposition 7 : "Si une série de fonctions converge uniformément sur $D$ alors elle converge normalement sur $D$."}
+\begin{center}
+\textbf{\textcolor{red}{FAUX}}
+\end{center}
+\textbf{Contre-exemple :} Considérons la série $\sum_{n=1}^{+\infty} \frac{(-1)^n x}{n}$ sur $D = [0, 1]$ (étudiée à l'Exercice 5b).
+- Par le critère de Leibniz, $|R_N(x)| \le \frac{x}{N+1} \le \frac{1}{N+1}$, d'où $\sup_{x \in [0, 1]} |R_N(x)| \le \frac{1}{N+1} \to 0$. La série converge donc uniformément sur $[0, 1]$.
+- Pourtant, $\|f_n\|_{\infty, [0, 1]} = \sup_{x \in [0, 1]} \frac{x}{n} = \frac{1}{n}$. La série numérique $\sum \frac{1}{n}$ est la série harmonique divergente. La série ne converge donc pas normalement.
+(Autre exemple encore plus simple : la série constante $f_n(x) = \frac{(-1)^n}{n}$ sur $[0, 1]$).
+
+\vspace{0.3cm}
+\textbf{Proposition 8 : "Si une série $\sum f_n$ converge uniformément sur $D$ alors la suite $(f_n)$ converge uniformément vers zéro sur $D$."}
+\begin{center}
+\textbf{\textcolor{blue!80!black}{VRAI}}
+\end{center}
+\textbf{Démonstration :} Notons $S_n = \sum_{k=1}^n f_k$ la suite des sommes partielles et $S$ la somme de la série.
+Par hypothèse, la série converge uniformément vers $S$ sur $D$, ce qui signifie que :
+\[ \|S_n - S\|_{\infty, D} \xrightarrow[n \to +\infty]{} 0 \]
+Pour tout $n \ge 2$, on a la relation :
+\[ f_n = S_n - S_{n-1} = (S_n - S) - (S_{n-1} - S) \]
+Par l'inégalité triangulaire pour la norme uniforme (ou pour la valeur absolue en tout point $x \in D$) :
+\[ \|f_n\|_{\infty, D} = \|(S_n - S) - (S_{n-1} - S)\|_{\infty, D} \le \|S_n - S\|_{\infty, D} + \|S_{n-1} - S\|_{\infty, D} \]
+Puisque $\lim_{n \to +\infty} \|S_n - S\|_{\infty, D} = 0$ et $\lim_{n \to +\infty} \|S_{n-1} - S\|_{\infty, D} = 0$, la somme des deux termes tend vers 0.
+Par encadrement :
+\[ \lim_{n \to +\infty} \|f_n - 0\|_{\infty, D} = 0 \]
+Ce qui prouve que la suite $(f_n)$ \textbf{converge uniformément vers la fonction nulle sur $D$}.
+\end{proof}
+
+\end{document}

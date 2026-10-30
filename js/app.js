@@ -56,7 +56,7 @@ async function ensureCourseLoaded(courseKey) {
     loadedCoursePromises[courseKey] = (async () => {
         try {
             if (window.location.protocol !== 'file:') {
-                const res = await fetch(`data/courses/${courseKey}.json?v=21`);
+                const res = await fetch(`data/courses/${courseKey}.json?v=22`);
                 if (res.ok) {
                     const data = await res.json();
                     window.COURSES_DB[courseKey] = data;
@@ -68,7 +68,7 @@ async function ensureCourseLoaded(courseKey) {
         }
         
         try {
-            await loadScriptAsync(`data/courses/${courseKey}.js?v=21`);
+            await loadScriptAsync(`data/courses/${courseKey}.js?v=22`);
             if (window.COURSES_DB[courseKey]) {
                 return window.COURSES_DB[courseKey];
             }
@@ -1531,12 +1531,38 @@ Par récurrence immédiate pour $n \\geq N$ :
 $$ u_n \\leq u_N \\cdot q^{n-N} = \\left(\\frac{u_N}{q^N}\\right) q^n $$
 La série géométrique $\\sum q^n$ converge car $0 < q < 1$.  
 Par le critère de comparaison à termes positifs, $\\sum u_n$ converge également. $\\blacksquare$`
+                    },
+                    {
+                        title: "Théorème 4 : Règle de Cauchy (Critère de la Racine $n$-ième)",
+                        stmt: "Soit $\\sum u_n$ une série à termes positifs telle que $\\lim_{n\\to\\infty} \\sqrt[n]{u_n} = L$. Si $L < 1$, la série converge ; si $L > 1$, elle diverge.",
+                        proof: `Supposons $L < 1$ et fixons $q \\in ]L, 1[$. Par définition de la limite, il existe un entier $N$ tel que pour tout $n \\ge N$ :
+$$ \\sqrt[n]{u_n} \\le q \\iff 0 \\le u_n \\le q^n $$
+Puisque $0 < q < 1$, la série géométrique $\\sum q^n$ converge. Par le théorème de comparaison des séries à termes positifs, $\\sum u_n$ converge. Si $L > 1$, alors pour $n$ assez grand $\\sqrt[n]{u_n} > 1 \\implies u_n > 1 \\not\\to 0$, donc la série diverge grossièrement. $\\blacksquare$`
+                    },
+                    {
+                        title: "Théorème 5 : Critère de Weierstrass (Convergence Normale $\\implies$ Uniforme)",
+                        stmt: "Soit $\\sum f_n$ une série de fonctions sur $D$. S'il existe une suite numérique $(M_n)$ telle que $\\forall x \\in D, |f_n(x)| \\le M_n$ et $\\sum M_n < \\infty$, alors $\\sum f_n$ converge normalement donc uniformément sur $D$.",
+                        proof: `Puisque la série numérique à termes positifs $\\sum M_n$ converge, son reste $R_N^{(M)} = \\sum_{n=N+1}^{+\\infty} M_n$ tend vers $0$ lorsque $N \\to +\\infty$.<br>
+Pour tout $x \\in D$, par inégalité triangulaire :
+$$ |R_N(x)| = \\left|\\sum_{n=N+1}^{+\\infty} f_n(x)\\right| \\le \\sum_{n=N+1}^{+\\infty} |f_n(x)| \\le \\sum_{n=N+1}^{+\\infty} M_n = R_N^{(M)} $$
+En passant à la borne supérieure sur $D$ :
+$$ 0 \\le \\sup_{x \\in D} |R_N(x)| \\le R_N^{(M)} \\xrightarrow[N \\to +\\infty]{} 0 $$
+Par le théorème des gendarmes, $\\|R_N\\|_{\\infty, D} \\to 0$, donc $\\sum f_n$ converge uniformément sur $D$. $\\blacksquare$`
+                    },
+                    {
+                        title: "Théorème 6 : Convergence Absolue $\\implies$ Convergence (par Critère de Cauchy)",
+                        stmt: "Dans $\\mathbb{R}$ ou $\\mathbb{C}$, toute série absolument convergente est convergente.",
+                        proof: `Supposons que $\\sum |u_n|$ converge. D'après le critère de Cauchy pour la série numérique $\\sum |u_n|$, pour tout $\\epsilon > 0$, il existe un rang $N \\in \\mathbb{N}$ tel que pour tous $m > n \\ge N$ :
+$$ \\sum_{k=n+1}^m |u_k| < \\epsilon $$
+Par l'inégalité triangulaire sur les sommes partielles $S_n = \\sum_{k=0}^n u_k$ :
+$$ |S_m - S_n| = \\left|\\sum_{k=n+1}^m u_k\\right| \\le \\sum_{k=n+1}^m |u_k| < \\epsilon $$
+La suite $(S_n)$ est donc une suite de Cauchy dans $\\mathbb{R}$ (ou $\\mathbb{C}$), qui est complet : la série $\\sum u_n$ converge. $\\blacksquare$`
                     }
                 ];
             } else if (cKey === 'fiz101_fizik') {
                 return [
                     {
-                        title: "Théorème 1 : Formule de Poisson pour les Repères Tournants",
+                        title: "Théorème 1 : Formule de Poisson (Bour) pour les Repères Tournants",
                         stmt: "Pour tout vecteur $\\vec{A}$ et un repère $R'$ en rotation à la vitesse angulaire $\\vec{\\Omega}_{R'/R}$ par rapport à $R$ : $\\left[\\frac{d\\vec{A}}{dt}\\right]_R = \\left[\\frac{d\\vec{A}}{dt}\\right]_{R'} + \\vec{\\Omega}_{R'/R} \\wedge \\vec{A}$.",
                         proof: `Soit $(\\vec{e}_1', \\vec{e}_2', \\vec{e}_3')$ une base orthonormée liée à $R'$.  
 Décomposons $\\vec{A}$ sur cette base : $\\vec{A} = A_1' \\vec{e}_1' + A_2' \\vec{e}_2' + A_3' \\vec{e}_3'$.  
@@ -1549,16 +1575,35 @@ $$ \\sum_{i=1}^3 A_i' (\\vec{\\Omega} \\wedge \\vec{e}_i') = \\vec{\\Omega} \\we
 On obtient bien la formule de Poisson : $\\mathbf{\\left[\\frac{d\\vec{A}}{dt}\\right]_R = \\left[\\frac{d\\vec{A}}{dt}\\right]_{R'} + \\vec{\\Omega} \\wedge \\vec{A}}$. $\\blacksquare$`
                     },
                     {
-                        title: "Théorème 2 : Dérivation de la Base de Frenet & Accélérations",
-                        stmt: "Dans le repère de Frenet $(\\vec{T}, \\vec{N})$, la vitesse est $\\vec{v} = v\\vec{T}$ et l'accélération vaut $\\vec{a} = \\frac{dv}{dt}\\vec{T} + \\frac{v^2}{\\rho}\\vec{N}$.",
+                        title: "Théorème 2 : Dérivation de la Base de Frenet & Accélérations ($a_t, a_n$)",
+                        stmt: "Dans le repère de Frenet $(\\vec{T}, \\vec{N})$, la vitesse est $\\vec{v} = v\\vec{T}$ et l'accélération vaut $\\vec{a} = \\frac{dv}{dt}\\vec{T} + \\frac{v^2}{R_c}\\vec{N}$.",
                         proof: `Soit $s(t)$ l'abscisse curviligne du point matériel $P$ sur sa trajectoire.  
 Le vecteur vitesse est par définition : $\\vec{v} = \\frac{d\\vec{OP}}{dt} = \\frac{d\\vec{OP}}{ds} \\frac{ds}{dt} = v \\vec{T}$, où $\\vec{T}$ est le vecteur unitaire tangent.  
 Dérivons la vitesse par rapport au temps :
 $$ \\vec{a} = \\frac{d\\vec{v}}{dt} = \\frac{d(v\\vec{T})}{dt} = \\frac{dv}{dt}\\vec{T} + v \\frac{d\\vec{T}}{dt} $$
 Exprimons $\\frac{d\\vec{T}}{dt}$ en utilisant l'angle tangentiel $\\theta$ :
-$$ \\frac{d\\vec{T}}{dt} = \\frac{d\\vec{T}}{d\\theta} \\frac{d\\theta}{ds} \\frac{ds}{dt} = \\vec{N} \\cdot \\frac{1}{\\rho} \\cdot v = \\frac{v}{\\rho}\\vec{N} $$
+$$ \\frac{d\\vec{T}}{dt} = \\frac{d\\vec{T}}{d\\theta} \\frac{d\\theta}{ds} \\frac{ds}{dt} = \\vec{N} \\cdot \\frac{1}{R_c} \\cdot v = \\frac{v}{R_c}\\vec{N} $$
 En réinjectant dans l'expression de l'accélération :
-$$ \\mathbf{\\vec{a} = \\underbrace{\\frac{dv}{dt}\\vec{T}}_{\\vec{a}_T \\text{ (tangentielle)}} + \\underbrace{\\frac{v^2}{\\rho}\\vec{N}}_{\\vec{a}_N \\text{ (normale / centripète)}}} \\quad \\blacksquare $$`
+$$ \\mathbf{\\vec{a} = \\underbrace{\\frac{dv}{dt}\\vec{T}}_{\\vec{a}_t \\text{ (tangentielle)}} + \\underbrace{\\frac{v^2}{R_c}\\vec{N}}_{\\vec{a}_n \\text{ (normale / centripète)}}} \\quad \\blacksquare $$`
+                    },
+                    {
+                        title: "Théorème 3 : Orthogonalité d'un Vecteur Unitaire et de sa Dérivée (DM-1)",
+                        stmt: "Pour tout vecteur unitaire $\\vec{u}(t)$ (tel que $\\|\\vec{u}(t)\\| = 1$), son vecteur dérivé $\\frac{d\\vec{u}}{dt}$ est orthogonal à $\\vec{u}$.",
+                        proof: `Puisque $\\vec{u}(t)$ est unitaire à tout instant $t$, son carré scalaire est constant et vaut $1$ :
+$$ \\vec{u}(t) \\cdot \\vec{u}(t) = \\|\\vec{u}(t)\\|^2 = 1 $$
+En dérivant cette égalité par rapport au temps $t$ (par bilinéarité et symétrie du produit scalaire) :
+$$ \\frac{d}{dt}(\\vec{u} \\cdot \\vec{u}) = \\frac{d\\vec{u}}{dt} \\cdot \\vec{u} + \\vec{u} \\cdot \\frac{d\\vec{u}}{dt} = 2\\left(\\vec{u} \\cdot \\frac{d\\vec{u}}{dt}\\right) = 0 $$
+On en déduit que $\\mathbf{\\vec{u} \\cdot \\frac{d\\vec{u}}{dt} = 0}$, c'est-à-dire $\\mathbf{\\frac{d\\vec{u}}{dt} \\perp \\vec{u}}$. $\\blacksquare$`
+                    },
+                    {
+                        title: "Théorème 4 : Vitesse et Accélération en Coordonnées Polaires / Cylindriques (DM-2)",
+                        stmt: "En coordonnées cylindriques $(\\rho, \\varphi, z)$, $\\vec{v} = \\dot{\\rho}\\vec{e}_\\rho + \\rho\\dot{\\varphi}\\vec{e}_\\varphi + \\dot{z}\\vec{e}_z$ et $a_\\rho = \\ddot{\\rho} - \\rho\\dot{\\varphi}^2$, $a_\\varphi = 2\\dot{\\rho}\\dot{\\varphi} + \\rho\\ddot{\\varphi}$.",
+                        proof: `Partons du vecteur position $\\vec{OP} = \\rho\\vec{e}_\\rho + z\\vec{e}_z$. Sachant que $\\frac{d\\vec{e}_\\rho}{dt} = \\dot{\\varphi}\\vec{e}_\\varphi$ et $\\frac{d\\vec{e}_\\varphi}{dt} = -\\dot{\\varphi}\\vec{e}_\\rho$ :<br>
+<strong>1. Vitesse :</strong> $\\vec{v} = \\frac{d\\vec{OP}}{dt} = \\dot{\\rho}\\vec{e}_\\rho + \\rho\\frac{d\\vec{e}_\\rho}{dt} + \\dot{z}\\vec{e}_z = \\mathbf{\\dot{\\rho}\\vec{e}_\\rho + \\rho\\dot{\\varphi}\\vec{e}_\\varphi + \\dot{z}\\vec{e}_z}$.<br>
+<strong>2. Accélération :</strong> Dérivons $\\vec{v}$ une seconde fois par rapport au temps :
+$$ \\vec{a} = \\ddot{\\rho}\\vec{e}_\\rho + \\dot{\\rho}(\\dot{\\varphi}\\vec{e}_\\varphi) + (\\dot{\\rho}\\dot{\\varphi} + \\rho\\ddot{\\varphi})\\vec{e}_\\varphi + \\rho\\dot{\\varphi}(-\\dot{\\varphi}\\vec{e}_\\rho) + \\ddot{z}\\vec{e}_z $$
+En regroupant suivant $\\vec{e}_\\rho$ et $\\vec{e}_\\varphi$ :
+$$ \\mathbf{\\vec{a} = (\\ddot{\\rho} - \\rho\\dot{\\varphi}^2)\\vec{e}_\\rho + (2\\dot{\\rho}\\dot{\\varphi} + \\rho\\ddot{\\varphi})\\vec{e}_\\varphi + \\ddot{z}\\vec{e}_z} \\quad \\blacksquare $$`
                     }
                 ];
             } else if (cKey === 'mat206_olasilik') {
@@ -1585,6 +1630,25 @@ $$ A = A \\cap \\Omega = A \\cap \\left(\\bigcup_{i=1}^n B_i\\right) = \\bigcup_
 Par additivité (formule des probabilités totales) :
 $$ P(A) = \\sum_{i=1}^n P(A \\cap B_i) = \\sum_{i=1}^n P(A \\mid B_i)P(B_i) $$
 En reportant dans le numérateur, on obtient le Théorème de Bayes. $\\blacksquare$`
+                    },
+                    {
+                        title: "Théorème 3 : Formule de König-Huygens pour la Variance",
+                        stmt: "Soit $X$ une variable aléatoire admettant un moment d'ordre 2. Alors $V(X) = E[(X - E[X])^2] = E[X^2] - (E[X])^2$.",
+                        proof: `Notons $\\mu = E[X] \\in \\mathbb{R}$. Développons le carré $(X - \\mu)^2 = X^2 - 2\\mu X + \\mu^2$.<br>
+Par linéarité de l'espérance mathématique :
+$$\\begin{aligned}
+V(X) &= E[X^2 - 2\\mu X + \\mu^2] \\\\
+&= E[X^2] - 2\\mu E[X] + \\mu^2 \\\\
+&= E[X^2] - 2\\mu^2 + \\mu^2 = \\mathbf{E[X^2] - (E[X])^2} \\quad \\blacksquare
+\\end{aligned}$$`
+                    },
+                    {
+                        title: "Théorème 4 : Inégalité de Markov & Inégalité de Bienaymé-Tchebychev",
+                        stmt: "Pour toute v.a. $X$ de variance finie et tout $\\epsilon > 0$ : $P(|X - E[X]| \\ge \\epsilon) \\le \\frac{V(X)}{\\epsilon^2}$.",
+                        proof: `<strong>1. Inégalité de Markov :</strong> Soit $Y \\ge 0$ et $a > 0$. Comme $a\\,\\mathbb{I}_{\\{Y \\ge a\\}} \\le Y$, par croissance et linéarité de l'espérance :
+$$ a P(Y \\ge a) = E[a\\,\\mathbb{I}_{\\{Y \\ge a\\}}] \\le E[Y] \\implies P(Y \\ge a) \\le \\frac{E[Y]}{a} $$
+<strong>2. Bienaymé-Tchebychev :</strong> Appliquons l'inégalité de Markov à la variable positive $Y = (X - E[X])^2$ avec $a = \\epsilon^2 > 0$ :
+$$ P(|X - E[X]| \\ge \\epsilon) = P\\big((X - E[X])^2 \\ge \\epsilon^2\\big) \\le \\frac{E[(X - E[X])^2]}{\\epsilon^2} = \\mathbf{\\frac{V(X)}{\\epsilon^2}} \\quad \\blacksquare $$`
                     }
                 ];
             }
@@ -1695,31 +1759,44 @@ Donc $f$ est injectif.<br>
         function getFrenchPhrasesForCourse(cKey) {
             if (cKey === 'mat201_seriler') {
                 return [
-                    { fr: "Montrons que la suite des sommes partielles $(S_n)$ est majorée et croissante...", tr: "Kısmi toplamlar dizisinin üstten sınırlı ve artan olduğunu gösterelim (monoton yakınsaklık için)" },
-                    { fr: "Par le critère de comparaison des séries à termes positifs...", tr: "Pozitif terimli seriler için karşılaştırma testi gereğince" },
-                    { fr: "Effectuons un développement limité (DL) de $u_n$ au voisinage de $+\\infty$...", tr: "un genel teriminin +sonsuz komşuluğunda Taylor (DL) açılımını yapalım" },
-                    { fr: "La série converge absolument, donc elle converge.", tr: "Seri mutlak yakınsaktır, dolayısıyla yakınsar" },
-                    { fr: "La convergence est uniforme sur tout segment compact $[a, b] \\subset ]-1, 1[$...", tr: "Yakınsaklık her tıkız aralık üzerinde düzgündür" },
-                    { fr: "Puisque chaque $f_n$ est continue et la convergence est uniforme, la somme $S$ est continue.", tr: "Her fn fonksiyonu sürekli ve yakınsaklık düzgün olduğundan toplam fonksiyonu süreklidir" },
-                    { fr: "Le terme général ne tend pas vers 0, donc la série diverge grossièrement.", tr: "Genel terim sıfıra gitmediğinden seri aşikar biçimde ıraksar" }
+                    { fr: "Le terme général $u_n$ ne tend pas vers $0$, donc la série $\\sum u_n$ diverge grossièrement.", tr: "Genel terim 0'a gitmediğinden seri aşikar biçimde ıraksar (Condition nécessaire)." },
+                    { fr: "C'est une série alternée de la forme $\\sum (-1)^n a_n$ avec $a_n > 0$. La suite $(a_n)$ est décroissante et tend vers $0$. D'après le critère de Leibniz, la série converge.", tr: "Leibniz alterne seri testi tam puan şablonu (Quiz Özeti)." },
+                    { fr: "Puisque $\\lim_{n \\to +\\infty} \\frac{u_{n+1}}{u_n} = L < 1$, d'après le critère de d'Alembert, la série $\\sum u_n$ converge.", tr: "Faktöriyel ve üstel terimli serilerde D'Alembert oran testi sonuç cümlesi." },
+                    { fr: "Puisque $\\lim_{n \\to +\\infty} \\sqrt[n]{u_n} = L < 1$, d'après le critère de Cauchy, la série $\\sum u_n$ converge.", tr: "n. kuvvet içeren serilerde Cauchy kök testi sonuç cümlesi." },
+                    { fr: "Comme $u_n > 0$ et $u_n \\sim \\frac{1}{n^\\alpha}$ avec $\\alpha > 1$, par comparaison avec une série de Riemann convergente, $\\sum u_n$ converge.", tr: "Pozitif terimli serilerde asimptotik denklik ve Riemann karşılaştırması." },
+                    { fr: "La série $\\sum |u_n|$ converge, donc $\\sum u_n$ est absolument convergente, et par suite convergente.", tr: "Mutlak yakınsaklıktan yakınsaklığa geçiş kalıbı." },
+                    { fr: "La série $\\sum u_n$ converge par Leibniz mais $\\sum |u_n|$ diverge : elle est semi-convergente (conditionnellement convergente).", tr: "Şartlı yakınsaklık (semi-convergence) sonuç cümlesi." },
+                    { fr: "Pour tout $n$, $f_n$ est continue sur $D$, or la limite simple $f$ est discontinue en $x_0$. Par contraposée du théorème de continuité, la convergence n'est pas uniforme sur $D$.", tr: "Süreksizlik üzerinden düzgün yakınsaklığı çürütme kalıbı." },
+                    { fr: "Calculons la norme infinie $\\|f_n - f\\|_{\\infty, D} = \\sup_{x \\in D} |f_n(x) - f(x)|$ en étudiant les variations de $g_n = f_n - f$.", tr: "Türev ile tepe noktası (supremum) bularak düzgün yakınsaklık inceleme." },
+                    { fr: "Il existe une suite $(x_n)$ dans $D$ telle que $|f_n(x_n) - f(x_n)| \\not\\to 0$, donc $(f_n)$ ne converge pas uniformément sur $D$.", tr: "Test dizisi (suite test, örn. x_n = 1/n) ile düzgün yakınsaklığı çürütme." },
+                    { fr: "Pour tout $x \\in D$, $|u_n(x)| \\le M_n$ avec $\\sum M_n$ convergente. D'après le critère de Weierstrass, $\\sum u_n$ converge normalement (donc uniformément) sur $D$.", tr: "Weierstrass M-testi ile normal ve düzgün yakınsaklık ispatı." },
+                    { fr: "La convergence est uniforme sur tout segment compact $[a, b] \\subset D$, bien qu'elle ne soit pas uniforme sur $D$ tout entier.", tr: "Açık aralığın her kompakt alt aralığında düzgün yakınsaklık vurgusu." }
                 ];
             } else if (cKey === 'fiz101_fizik') {
                 return [
-                    { fr: "Le référentiel terrestre $R$ est supposé galiléen dans le cadre de cette étude.", tr: "Bu inceleme kapsamında Dünya'ya bağlı R referans sistemi eylemsiz kabul edilmiştir" },
-                    { fr: "Projetons la relation fondamentale de la dynamique ($\\sum \\vec{F} = m\\vec{a}$) sur les axes...", tr: "Newton'un 2. yasasını (RFD) seçilen tabanın eksenleri üzerine iz düşürelim" },
-                    { fr: "En appliquant la formule de dérivation dans un repère mobile (formule de Poisson)...", tr: "Hareketli referans sisteminde vektörel türev formülünü (Poisson bağıntısını) uygulayarak" },
-                    { fr: "Par intégration successive par rapport au temps $t$ avec les conditions initiales...", tr: "Başlangıç koşulları kullanılarak t zamanına göre ardışık integral alındığında" },
-                    { fr: "Le travail des forces conservatives dérive d'une énergie potentielle : $W = -\\Delta E_p$.", tr: "Korunumlu kuvvetlerin yaptığı iş potansiyel enerjiden türer" },
-                    { fr: "Dans la base de Frenet, l'accélération possède une composante tangentielle et une normale.", tr: "Frenet tabanında ivme teğetsel ve normal (merkezcil) bileşenlere ayrılır" }
+                    { fr: "Le référentiel d'étude $R(O, \\vec{e}_x, \\vec{e}_y, \\vec{e}_z)$ est supposé fixe (et galiléen).", tr: "İnceleme yapılan R referans sistemi sabit (ve eylemsiz) kabul edilmiştir." },
+                    { fr: "Pour obtenir l'équation cartésienne du support de la trajectoire, éliminons le paramètre temporel $t$ entre $x(t)$ et $y(t)$.", tr: "Yörünge denklemini bulmak için x(t) ve y(t) arasında zaman parametresi t'yi yok edelim (DM-2)." },
+                    { fr: "Puisque les vecteurs $\\vec{u}_a, \\vec{u}_b, \\vec{u}_c$ ont un produit mixte (déterminant) non nul, ils sont non coplanaires et forment une base de l'espace.", tr: "Karma çarpım (determinant) sıfırdan farklı olduğundan üç vektör uzayda bir baz oluşturur (DM-1)." },
+                    { fr: "Pour tout vecteur unitaire $\\vec{u}$, on a $\\vec{u} \\cdot \\vec{u} = 1 \\implies 2\\,\\vec{u} \\cdot \\frac{d\\vec{u}}{dt} = 0$, donc sa dérivée lui est orthogonale.", tr: "Birim vektörün türevi daima kendisine diktir (DM-1)." },
+                    { fr: "En appliquant la formule de Bour (Poisson) pour un repère en rotation : $\\left[\\frac{d\\vec{A}}{dt}\\right]_R = \\left[\\frac{d\\vec{A}}{dt}\\right]_{R_{cyl}} + \\vec{\\Omega}_{R_{cyl}/R} \\times \\vec{A}$.", tr: "Dönen silindirik referans sisteminde vektörel türev (Poisson) bağıntısı." },
+                    { fr: "Dans le repère tournant $R_{cyl}$, les vecteurs unitaires $\\vec{e}_\\rho$ et $\\vec{e}_\\varphi$ sont immobiles, donc leurs dérivées relatives sont nulles.", tr: "Dönen sistemdeki gözlemciye göre silindirik birim vektörler sabittir, bağıl türevleri sıfırdır." },
+                    { fr: "Puisque $\\vec{a} \\cdot \\vec{v} > 0$ (soit $\\frac{d\\|\\vec{v}\\|}{dt} > 0$), la norme de la vitesse croît et le mouvement est accéléré.", tr: "Hız ve ivmenin skaler çarpımı pozitif olduğundan hareket hızlanandır (DM-2)." },
+                    { fr: "La norme de la vitesse $\\|\\vec{v}_{P/R}\\|$ étant indépendante du temps, le mouvement est uniforme et l'accélération tangentielle est nulle ($a_t = 0$).", tr: "Sürat zamandan bağımsız (sabit) olduğundan hareket düzgündür ve teğetsel ivme sıfırdır (DM-2)." },
+                    { fr: "Dans la base de Frenet $(\\vec{T}, \\vec{N})$, on a $\\|\\vec{a}\\|^2 = a_t^2 + a_n^2$, d'où $a_n = \\sqrt{\\|\\vec{a}\\|^2 - a_t^2} = \\frac{v^2}{R_c}$.", tr: "Frenet tabanında normal ivme ve eğrilik yarıçapı bağıntısı." },
+                    { fr: "Projetons la relation fondamentale de la dynamique ($\\sum \\vec{F}_{\\text{ext}} = m\\,\\vec{a}_{P/R}$) sur les axes de la base choisie.", tr: "Newton'un 2. yasasını (RFD) seçilen tabanın eksenleri üzerine iz düşürelim." }
                 ];
             } else if (cKey === 'mat206_olasilik') {
                 return [
-                    { fr: "Soit $(\\Omega, \\mathcal{F}, P)$ un espace probabilisé associé à l'expérience aléatoire.", tr: "Rastgele deneye bağlı olasılık uzayı olsun" },
-                    { fr: "Les événements $(A_i)_{i=1}^n$ forment un système complet d'événements (partition de $\\Omega$)...", tr: "Olaylar örneklem uzayının tam bir ayrışımını (bölüntüsünü) oluşturur" },
-                    { fr: "D'après la formule des probabilités totales : $P(B) = \\sum P(A_i) P(B \\mid A_i)$...", tr: "Toplam olasılık formülüne göre" },
-                    { fr: "D'après le théorème de Bayes, la probabilité a posteriori s'écrit...", tr: "Bayes teoremine göre sonsal (a posteriori) olasılık formülü şöyledir" },
-                    { fr: "Puisque $P(A \\cap B) = P(A) \\cdot P(B)$, les événements $A$ et $B$ sont mutuellement indépendants.", tr: "Kesişim olasılığı çarpımlarına eşit olduğundan A ve B bağımsızdır" },
-                    { fr: "On passe par l'événement contraire $\\bar{A}$ : $P(A) = 1 - P(\\bar{A})$.", tr: "Tümleyen olaydan gidersek: P(A) = 1 - P(tümleyen)" }
+                    { fr: "Soit $(\\Omega, \\mathcal{F}, P)$ un espace probabilisé associé à l'expérience aléatoire considérée.", tr: "İncelenen rastgele deneye bağlı olasılık uzayı olsun." },
+                    { fr: "Le tirage étant simultané et les boules indiscernables au toucher, il y a équiprobabilité des issues : $P(A) = \\frac{\\text{Card}(A)}{\\text{Card}(\\Omega)}$.", tr: "Eşzamanlı çekilişte eş-olasılık gerekçelendirmesi (Quiz Özeti)." },
+                    { fr: "Passons par l'événement complémentaire $\\bar{A}$ (« aucun ... ») : $P(A) = 1 - P(\\bar{A})$.", tr: "«En az bir...» sorularında tümleyen olay üzerinden çözüm kalıbı." },
+                    { fr: "La famille $(B_1, \\dots, B_n)$ forme un système complet d'événements de probabilités non nulles. D'après la formule des probabilités totales : $P(A) = \\sum_{i=1}^n P(A \\mid B_i)P(B_i)$.", tr: "Tam olasılık teoremi için tam puanlık resmi sınav kalıbı." },
+                    { fr: "D'après la formule de Bayes, la probabilité a posteriori de $B_k$ sachant $A$ est donnée par $P(B_k \\mid A) = \\frac{P(A \\mid B_k)P(B_k)}{P(A)}$.", tr: "Bayes teoremi (nedenlerin olasılığı) resmi sınav kalıbı." },
+                    { fr: "Puisque $P(A \\cap B) = P(A)P(B)$, les événements $A$ et $B$ sont indépendants (attention à ne pas confondre avec incompatibles $A \\cap B = \\emptyset$).", tr: "Olayların bağımsızlığı ve ayrıklık ile karıştırmama uyarısı." },
+                    { fr: "On répète $n$ épreuves de Bernoulli identiques et indépendantes de paramètre $p$. La v.a. $X$ comptant le nombre de succès suit donc la loi binomiale $\\mathcal{B}(n, p)$.", tr: "Binom dağılımı modelini sınavda gerekçelendirme cümlesi." },
+                    { fr: "D'après la formule de König-Huygens, la variance est donnée par $V(X) = E[X^2] - (E[X])^2$.", tr: "König-Huygens varyans hesaplama kalıbı." },
+                    { fr: "La fonction $f$ est positive, continue par morceaux sur $\\mathbb{R}$ et $\\int_{-\\infty}^{+\\infty} f(x)\\,dx = 1$ : c'est donc bien une densité de probabilité.", tr: "Olasılık yoğunluk fonksiyonu (densité) doğrulama kalıbı." },
+                    { fr: "D'après le Théorème Central Limite, la variable centrée réduite $Z_n = \\frac{S_n - n\\mu}{\\sigma\\sqrt{n}}$ converge en loi vers la loi normale standard $\\mathcal{N}(0, 1)$.", tr: "Merkezi Limit Teoremi (TCL) ile Gauss yaklaşımı kalıbı." }
                 ];
             }
 
@@ -1874,6 +1951,97 @@ Donc $f$ est injectif.<br>
                     <div class="academic-card">
                         <p style="margin-bottom: 16px; color: var(--text-secondary);">Galatasaray Üniversitesi sınavlarında tam puan kazandıran Fransızca matematiksel argüman ve ispat kalıpları (Rédaction):</p>
                         ${phrasesHTML}
+                    </div>
+                `;
+            } else if (viewKey === 'kaynaklar') {
+                const resourcesByCourse = {
+                    'mat204_grup': {
+                        folder: 'dersler/MAT204_Grup_Teorisi',
+                        items: [
+                            { title: 'MAT204 Vize Master Özeti (PDF)', desc: 'Hafta 1–6 tüm teoremler, ispatlar ve çözüm şablonları', type: 'PDF', file: 'dersler/MAT204_Grup_Teorisi/MAT204_Vize_Ozeti.pdf' },
+                            { title: 'MAT204 Vize Master Özeti (Overleaf LaTeX)', desc: 'Overleaf kaynak kodu (.tex)', type: 'TEX', file: 'dersler/MAT204_Grup_Teorisi/MAT204_Vize_Ozeti.tex' },
+                            { title: 'Grup Teorisi Kapsamlı Ders Notları (LaTeX)', desc: 'Tüm bölümler ve TD çözümleri tam LaTeX kitapçığı', type: 'TEX', file: 'dersler/MAT204_Grup_Teorisi/Grup_Teorisi_Ders_Notlari.tex' },
+                            { title: 'Grup Teorisi 1. Hafta Ders Notu (PDF)', desc: 'Temel aritmetik ve grup aksiyomları ders föyü', type: 'PDF', file: 'dersler/MAT204_Grup_Teorisi/Grup_Teorisi_Hafta_1.pdf' },
+                            { title: 'Resmi Ders İzlencesi — Syllabus MAT204 (PDF)', desc: 'GSÜ Matematik Bölümü MAT204 resmi izlencesi', type: 'PDF', file: 'dersler/MAT204_Grup_Teorisi/Syllabus_MAT204.pdf' },
+                            { title: 'TD-1 Orijinal Soru Föyü (PDF)', desc: 'Tam Sayılarda Aritmetik, Bézout, Gauss ve Modüler Aritmetik', type: 'PDF', file: 'dersler/MAT204_Grup_Teorisi/TD-1.pdf' },
+                            { title: 'TD-2 Orijinal Soru Föyü (PDF)', desc: 'Karmaşık Sayılar, Denklik Bağıntıları, Gruplar ve Alt Gruplar (28 Soru)', type: 'PDF', file: 'dersler/MAT204_Grup_Teorisi/TD-2.pdf' },
+                            { title: 'TD-3 Orijinal Soru Föyü (PDF)', desc: 'Devirli Gruplar I & Birimin Kökleri (7 Soru)', type: 'PDF', file: 'dersler/MAT204_Grup_Teorisi/TD-3.pdf' },
+                            { title: 'TD-4 Orijinal Soru Föyü (PDF)', desc: 'Groupes Cycliques II, Üreteçler & Euler (6 Soru)', type: 'PDF', file: 'dersler/MAT204_Grup_Teorisi/TD-4.pdf' },
+                            { title: 'TD-5 Orijinal Soru Föyü (PDF)', desc: 'Simetrik Grup Sₙ, Döngüler ve İmza (6 Soru)', type: 'PDF', file: 'dersler/MAT204_Grup_Teorisi/TD-5.pdf' }
+                        ]
+                    },
+                    'mat201_seriler': {
+                        folder: 'dersler/MAT201_Seriler',
+                        items: [
+                            { title: 'MAT201 Quiz & Vize Master Özeti (Overleaf LaTeX)', desc: 'Sayısal & Fonksiyon Serileri Karar Ağaçları, 8 Arketip Soru ve 8 Vrai/Faux', type: 'TEX', file: 'dersler/MAT201_Seriler/Quiz_Ozeti_MAT201.tex' },
+                            { title: 'Seriler & Analiz II Kapsamlı Ders Notları (LaTeX)', desc: 'Chapitre 1–3 tüm konu anlatımı ve TD 0–6 çözümleri (.tex)', type: 'TEX', file: 'dersler/MAT201_Seriler/Seriler_Ders_Notlari.tex' },
+                            { title: 'Resmi Ders İzlencesi — Syllabus Analyse II (PDF)', desc: 'GSÜ MAT201 Analyse II haftalık ders izlencesi', type: 'PDF', file: 'dersler/MAT201_Seriler/Syllabus_MAT201.pdf' },
+                            { title: 'TD-1 (Sept 16) Orijinal Soru Föyü (PDF)', desc: 'Rappels sur les Suites Numériques', type: 'PDF', file: 'dersler/MAT201_Seriler/TD-1.pdf' },
+                            { title: 'TD-2 (Sept 23) Orijinal Soru Föyü (PDF)', desc: 'Premières Séries Numériques & Sommes Partielles', type: 'PDF', file: 'dersler/MAT201_Seriler/TD-2.pdf' },
+                            { title: 'TD-3 (Sept 30) Orijinal Soru Föyü (PDF)', desc: 'Critères de Convergence (Comparaison, Équivalents, D\'Alembert)', type: 'PDF', file: 'dersler/MAT201_Seriler/TD-3.pdf' },
+                            { title: 'TD-4 (Oct 7) Orijinal Soru Föyü (PDF)', desc: 'Séries à Termes Quelconques, Leibniz & Cauchy', type: 'PDF', file: 'dersler/MAT201_Seriler/TD-4.pdf' },
+                            { title: 'TD-5 (Oct 14) Orijinal Soru Föyü (PDF)', desc: 'Séries Conditionnelles & Suites de Fonctions', type: 'PDF', file: 'dersler/MAT201_Seriler/TD-5.pdf' },
+                            { title: 'TD-6 (Oct 21) Orijinal Soru Föyü (PDF)', desc: 'Suites et Séries de Fonctions, Continuité & Cauchy Uniforme', type: 'PDF', file: 'dersler/MAT201_Seriler/TD-6.pdf' }
+                        ]
+                    },
+                    'fiz101_fizik': {
+                        folder: 'dersler/FIZ101_Fizik_1',
+                        items: [
+                            { title: 'Fizik 1 DM-1 & DM-2 Tam Çözüm Kitapçığı (PDF)', desc: 'Derlenmiş tam LaTeX çözüm kitapçığı (14 sayfa PDF)', type: 'PDF', file: 'dersler/FIZ101_Fizik_1/Fizik_1_Tam_Cozumler.pdf' },
+                            { title: 'DM-1 Orijinal Ödev Föyü (PDF)', desc: 'Produits de Vecteurs, Dérivation des Vecteurs Unitaires & Vitesse', type: 'PDF', file: 'dersler/FIZ101_Fizik_1/DM-1_Sorular.pdf' },
+                            { title: 'DM-2 Orijinal Ödev Föyü (PDF)', desc: 'Cinématique du Point : Trajectoire, Frenet & Coordonnées Polaires', type: 'PDF', file: 'dersler/FIZ101_Fizik_1/DM-2_Sorular.pdf' },
+                            { title: 'DM-1 Çözümleri ve Kavramsal Rehber (Overleaf LaTeX)', desc: 'Exercice 1, 2, 3 tüm alt şıklarıyla LaTeX kaynak dosyası', type: 'TEX', file: 'dersler/FIZ101_Fizik_1/DM1_Cozumler.tex' },
+                            { title: 'DM-2 Çözümleri ve TikZ Diyagramları (Overleaf LaTeX)', desc: 'Exercice 1, 2 ve TikZ parabol/çember çizimleri LaTeX kaynak dosyası', type: 'TEX', file: 'dersler/FIZ101_Fizik_1/DM2_Cozumler.tex' },
+                            { title: 'Fizik 1 Birleştirilmiş Tam Çözümler (Overleaf LaTeX)', desc: 'DM-1 + DM-2 birleştirilmiş ana LaTeX dosyası', type: 'TEX', file: 'dersler/FIZ101_Fizik_1/Fizik_1_Tam_Cozumler.tex' }
+                        ]
+                    },
+                    'mat206_olasilik': {
+                        folder: 'dersler/MAT206_Olasilik',
+                        items: [
+                            { title: 'MAT206 Olasılık Master Özeti (Overleaf LaTeX)', desc: 'Kombinatorik Karar Ağacı, Bayes, Kesikli & Sürekli Dağılımlar', type: 'TEX', file: 'dersler/MAT206_Olasilik/Quiz_Ozeti_MAT206.tex' },
+                            { title: 'MAT206 Kapsamlı Ders Notları (Overleaf LaTeX)', desc: 'Bölüm 1–4 Olasılık Teorisi ders notları (.tex)', type: 'TEX', file: 'dersler/MAT206_Olasilik/Olasilik_Ders_Notlari.tex' },
+                            { title: 'MAT206 Ders İzlencesi — Syllabus (Markdown)', desc: 'Haftalık müfredat ve modül içerikleri', type: 'MD', file: 'dersler/MAT206_Olasilik/Syllabus_MAT206.md' }
+                        ]
+                    }
+                };
+                const resData = resourcesByCourse[activeCourseKey] || resourcesByCourse['mat204_grup'];
+                let cardsHTML = '';
+                resData.items.forEach(item => {
+                    const badgeBg = item.type === 'PDF' ? 'rgba(239, 68, 68, 0.14)' : 'rgba(16, 185, 129, 0.14)';
+                    const badgeCol = item.type === 'PDF' ? '#ef4444' : 'var(--accent-emerald)';
+                    cardsHTML += `
+                        <div class="math-callout" style="padding: 14px 18px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap;">
+                            <div style="flex: 1; min-width: 220px;">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                    <span style="font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 4px; background: ${badgeBg}; color: ${badgeCol};">${item.type}</span>
+                                    <strong style="font-size: 1rem; color: var(--text-main);">${item.title}</strong>
+                                </div>
+                                <div style="font-size: 0.86rem; color: var(--text-secondary);">${item.desc} • <code style="font-size: 0.78rem;">${item.file}</code></div>
+                            </div>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <a href="${item.file}" target="_blank" rel="noopener" class="btn-stepper primary" style="padding: 6px 12px; font-size: 0.8rem; text-decoration: none;">
+                                    ${item.type === 'PDF' ? '📄 PDF Aç' : '📝 Kaynağı Aç'}
+                                </a>
+                                <a href="${item.file}" download class="btn-stepper secondary" style="padding: 6px 12px; font-size: 0.8rem; text-decoration: none;">
+                                    ⬇️ İndir
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                main.innerHTML = `
+                    <div class="content-header">
+                        <div>
+                            <div class="breadcrumbs">${c.code} > Sınav Araçları > Ders Kaynakları &amp; Arşiv</div>
+                            <h1 class="content-title">${window.ICONS ? window.ICONS.fileText : ""} ${c.code} Orijinal PDF Föyleri &amp; Overleaf LaTeX Arşivi</h1>
+                        </div>
+                    </div>
+                    <div class="academic-card">
+                        <div style="margin-bottom: 16px; padding: 12px 16px; border-radius: 8px; background: rgba(59,130,246,0.06); border: 1px solid var(--border-subtle); font-size: 0.9rem; color: var(--text-secondary);">
+                            📂 <strong>Birleştirilmiş Workspace Klasörü:</strong> <code>/${resData.folder}/</code> — Tüm matematik lisans derslerinin (MAT204, MAT201, FIZ101, MAT206) orijinal TD/DM PDF föyleri ve Overleaf <code>.tex</code> notları tek çatı altında toplanmıştır.
+                        </div>
+                        ${cardsHTML}
                     </div>
                 `;
             } else if (viewKey === 'hesaplayici') {
@@ -3982,6 +4150,14 @@ Donc $f$ est injectif.<br>
                         <span>${getCalculatorTitle(activeCourseKey)}</span>
                     </div>
                     <span class="nav-count-badge" style="background: rgba(16, 185, 129, 0.18); color: var(--accent-emerald);">Araç</span>
+                </div>
+
+                <div class="nav-item" id="nav-kaynaklar" onclick="loadSpecialView('kaynaklar')">
+                    <div class="nav-item-left">
+                        ${window.ICONS ? window.ICONS.fileText : ""}
+                        <span>Ders Kaynakları (PDF &amp; LaTeX)</span>
+                    </div>
+                    <span class="nav-count-badge" style="background: rgba(59, 130, 246, 0.18); color: var(--accent-blue);">Arşiv</span>
                 </div>
             `;
 

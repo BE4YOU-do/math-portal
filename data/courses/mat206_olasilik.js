@@ -1,129 +1,329 @@
 window.COURSES_DB = window.COURSES_DB || {};
 window.COURSES_DB["mat206_olasilik"] = {
-    "id": "mat206_olasilik",
-    "code": "MAT206",
-    "title": "Olasılık & İstatistik",
-    "faculty": "Lisans Matematik",
-    "color": "#f59e0b",
-    "icon": "courseOlasilik",
-    "modules": {
-        "olasilik_mod1": {
-            "id": "olasilik_mod1",
-            "title": "Modül 1: Kombinatorik ve Temel Olasılık Aksiyomları",
-            "breadcrumb": "MAT206 > Modül 1 > Temel Olasılık",
-            "theoryPages": [
-                {
-                    "title": "1. Örneklem Uzayı (Ω), Olaylar Cebiri ve Kombinatorik",
-                    "html": "<div class=\"chapter-banner\" style=\"background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(239,68,68,0.08)); border-left: 4px solid var(--accent-amber); border-radius: 6px; padding: 18px 22px; margin-bottom: 20px;\">\n    <span style=\"font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--accent-amber); letter-spacing: 0.05em;\">Bölüm 1 • Olasılığın Temelleri</span>\n    <h2 style=\"font-size: 1.4rem; margin: 4px 0 6px; color: var(--text-main); font-weight: 700;\">Örneklem Uzayı ($\\Omega$), Olaylar ve Eş-Olasılıklı (Laplace) Model</h2>\n</div>\n<div class=\"theory-box defn\">\n    <div class=\"theory-box-title\">Espace Probabilisable $(\\Omega, \\mathcal{A})$ ve Sayma İlkeleri</div>\n    <div class=\"theory-box-body\">\n        <p>Bir rastgele deneyin tüm olası sonuçlarının kümesine <strong>örneklem uzayı (univers $\\Omega$)</strong>, $\\Omega$'nın alt kümelerinden oluşan $\\sigma$-cebire ise <strong>olaylar kümesi ($\\mathcal{A}$)</strong> denir.</p>\n        <ul style=\"margin-left: 20px; margin-top: 8px; line-height: 1.75;\">\n            <li><strong>Eş-olasılık (Équiprobabilité / Loi uniforme) :</strong> Sonlu $\\Omega$ uzayında tüm temel sonuçlar eşit şansa sahipse:\n            $$ P(A) = \frac{\\operatorname{Card}(A)}{\\operatorname{Card}(\\Omega)} = \frac{\text{İstenen durumların sayısı}}{\text{Tüm olası durumların sayısı}} $$</li>\n            <li><strong>Eşzamanlı çekiliş (Tirage simultané) :</strong> Sıra önemsiz, tekrarsız $\\implies$ Kombinasyon $\binom{n}{k} = \frac{n!}{k!(n-k)!}$.</li>\n            <li><strong>Ardışık iadesiz çekiliş (Successif sans remise) :</strong> Sıra önemli, tekrarsız $\\implies$ Aranjman $A_n^k = \frac{n!}{(n-k)!}$.</li>\n            <li><strong>Ardışık iadeli çekiliş (Successif avec remise) :</strong> Sıra önemli, tekrarlı $\\implies n^k$.</li>\n        </ul>\n    </div>\n</div>"
-                },
-                {
-                    "title": "2. Kolmogorov Aksiyomları ve Poincaré (İçerme-Dışlama) Formülü",
-                    "html": "<div class=\"theory-box thm\">\n    <div class=\"theory-box-title\">Axiomes de Kolmogorov & Propriétés Fondamentales</div>\n    <div class=\"theory-box-body\">\n        <p>Bir $(\\Omega, \\mathcal{A})$ uzayı üzerinde tanımlı $P : \\mathcal{A} \to [0, 1]$ fonksiyonunun <strong>olasılık ölçüsü</strong> olması için şu 3 aksiyomu sağlaması gerekir :</p>\n        <ol style=\"margin-left: 20px; margin-top: 8px; line-height: 1.8;\">\n            <li><strong>Pozitiflik :</strong> $\forall A \\in \\mathcal{A}, \\quad 0 \\le P(A) \\le 1$.</li>\n            <li><strong>Normallik (Kesin Olay) :</strong> $P(\\Omega) = 1$ (ve $P(\\emptyset) = 0$).</li>\n            <li><strong>$\\sigma$-Additivité (Sayılabilir Toplamsallık) :</strong> İkişer ikişer ayrık ($A_i \\cap A_j = \\emptyset$) olaylar dizisi için :\n            $$ P\\left(\bigcup_{i=1}^{+\\infty} A_i\right) = \\sum_{i=1}^{+\\infty} P(A_i) $$</li>\n        </ol>\n    </div>\n</div>\n<div class=\"theory-box ex\">\n    <div class=\"theory-box-title\">Formule de Poincaré (Crible de Poincaré) & Tümleyen Kuralı</div>\n    <div class=\"theory-box-body\">\n        <p>Herhangi iki $A, B \\in \\mathcal{A}$ olayı için (ayrık olmaları gerekmez) :</p>\n        $$ \\mathbf{P(A \\cup B) = P(A) + P(B) - P(A \\cap B)} $$\n        <p style=\"margin-top: 8px;\">Üç olay için : $P(A \\cup B \\cup C) = P(A)+P(B)+P(C) - P(A\\cap B) - P(A\\cap C) - P(B\\cap C) + P(A\\cap B\\cap C)$.</p>\n        <p style=\"margin-top: 6px;\"><strong>Fark Kümesi :</strong> $P(B \\setminus A) = P(B \\cap \bar{A}) = P(B) - P(A \\cap B)$.</p>\n    </div>\n</div>"
-                }
-            ],
-            "exercises": [
-                {
-                    "id": "olas_m1_ex1",
-                    "name": "Exercice 1",
-                    "tag": "Kombinatorik",
-                    "enonce": "<p>Une urne contient 5 boules blanches et 7 boules noires. On tire simultanément 3 boules au hasard.<br>(1) Quel est le cardinal de l'espace fondamental $\\Omega$ ?<br>(2) Quelle est la probabilité d'obtenir exactement 2 boules blanches et 1 boule noire ?<br>(3) Quelle est la probabilité d'obtenir au moins une boule blanche ?</p>",
-                    "solTitle": "Solution Détaillée",
-                    "solution": "<p><strong>1. Cardinal de l'univers $\\Omega$ :</strong><br>Puisque le tirage est simultané, l'ordre n'importe pas et il n'y a pas de répétition. Le nombre total d'issues possibles est :<br>$$ |\\Omega| = \\binom{12}{3} = \\frac{12 \\times 11 \\times 10}{3 \\times 2 \\times 1} = 220 $$</p><p><strong>2. Probabilité de l'événement $A$ : \"Exactement 2 blanches et 1 noire\" :</strong><br>On choisit 2 blanches parmi les 5 et 1 noire parmi les 7 :<br>$$ P(A) = \\frac{\\binom{5}{2} \\times \\binom{7}{1}}{\\binom{12}{3}} = \\frac{10 \\times 7}{220} = \\frac{70}{220} = \\frac{7}{22}{ \\approx 0.318 } $$</p><p><strong>3. Probabilité de l'événement $B$ : \"Au moins une blanche\" :</strong><br>Passons par l'événement contraire $\\bar{B}$ : \"Aucune boule blanche (donc 3 boules noires)\" :<br>$$ P(\\bar{B}) = \\frac{\\binom{7}{3}}{\\binom{12}{3}} = \\frac{35}{220} = \\frac{7}{44} $$<br>$$ P(B) = 1 - P(\\bar{B}) = 1 - \\frac{7}{44} = \\frac{37}{44} \\approx 0.841. \\quad \\blacksquare $$</p>",
-                    "steps": [
-                        {
-                            "title": "Étape 1 : Cardinal de l'Univers $\\Omega$ (Tirage Simultané)",
-                            "content": "<p>Puisque le tirage de 3 boules est simultané dans une urne de 12 boules (5 blanches et 7 noires), l'ordre n'importe pas et il n'y a pas de répétition.  \nLe nombre total de tirages possibles est le nombre de combinaisons de 3 parmi 12 :\n$$ |\\Omega| = \\binom{12}{3} = \\frac{12 \\times 11 \\times 10}{3 \\times 2 \\times 1} = \\mathbf{220} $$</p>"
-                        },
-                        {
-                            "title": "Étape 2 : Événement $A$ : \"Exactement 2 blanches et 1 noire\"",
-                            "content": "<p>On choisit simultanément 2 boules blanches parmi les 5 et 1 boule noire parmi les 7 :\n$$ |A| = \\binom{5}{2} \\times \\binom{7}{1} = 10 \\times 7 = 70 $$\nLa probabilité de l'événement $A$ est donc :\n$$ \\mathbf{P(A) = \\frac{|A|}{|\\Omega|} = \\frac{70}{220} = \\frac{7}{22} \\approx 0.318} $$</p>"
-                        },
-                        {
-                            "title": "Étape 3 : Événement $B$ : \"Au moins une blanche\" par l'Événement Contraire",
-                            "content": "<p>Passons par l'événement contraire $\\bar{B}$ : <em>\"Aucune boule blanche (donc 3 boules noires)\"</em> :\n$$ P(\\bar{B}) = \\frac{\\binom{7}{3}}{\\binom{12}{3}} = \\frac{35}{220} = \\frac{7}{44} $$\nPar le principe des probabilités complémentaires :\n$$ \\mathbf{P(B) = 1 - P(\\bar{B}) = 1 - \\frac{7}{44} = \\frac{37}{44} \\approx 0.841} \\quad \\blacksquare $$</p>"
-                        }
-                    ],
-                    "hint": "Simultané (aynı anda) çekimde kombinasyon $\\binom{n}{k}$ kullanılır. 'En az bir' sorularında tümleyen olaydan ($1 - P(\\text{hiçbiri})$) gitmek daima en hızlı yoldur.",
-                    "subtitle": "Tirage Simultané et Modèle Hypergéométrique"
-                },
-                {
-                    "id": "olas_m1_ex2",
-                    "name": "Exercice 2",
-                    "tag": "Aksiyomlar",
-                    "enonce": "<p>Soient $A$ et $B$ deux événements d'un espace probabilisé $(\\Omega, \\mathcal{F}, P)$.<br>(1) Démontrer à partir des axiomes de Kolmogorov que $P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$.<br>(2) Si $P(A) = 0.6$, $P(B) = 0.5$ et $P(A \\cap B) = 0.3$, calculer $P(A \\cup B)$ et $P(A \\setminus B)$.</p>",
-                    "solTitle": "Solution Détaillée",
-                    "solution": "<p><strong>1. Démonstration :</strong><br>Décomposons l'événement $A \\cup B$ en union d'événements disjoints :<br>$$ A \\cup B = A \\cup (B \\setminus (A \\cap B)) $$<br>Puisque $A$ et $B \\setminus (A \\cap B)$ sont disjoints, par le 3ème axiome de Kolmogorov (additivité) :<br>$$ P(A \\cup B) = P(A) + P(B \\setminus (A \\cap B)) $$<br>De même, $B = (B \\setminus (A \\cap B)) \\cup (A \\cap B)$ étant une union disjointe, on a $P(B) = P(B \\setminus (A \\cap B)) + P(A \\cap B)$, d'où :<br>$$ P(B \\setminus (A \\cap B)) = P(B) - P(A \\cap B) $$<br>En substituant, on obtient la formule de Poincaré :<br>$$ P(A \\cup B) = P(A) + P(B) - P(A \\cap B) $$</p><p><strong>2. Application numérique :</strong><br>$$ P(A \\cup B) = 0.6 + 0.5 - 0.3 = 0.8 $$<br>$$ P(A \\setminus B) = P(A) - P(A \\cap B) = 0.6 - 0.3 = 0.3. \\quad \\blacksquare $$</p>",
-                    "steps": [
-                        {
-                            "title": "Étape 1 : Démonstration",
-                            "content": "<p>Décomposons l'événement $A \\cup B$ en union d'événements disjoints :<br>$$ A \\cup B = A \\cup (B \\setminus (A \\cap B)) $$<br>Puisque $A$ et $B \\setminus (A \\cap B)$ sont disjoints, par le 3ème axiome de Kolmogorov (additivité) :<br>$$ P(A \\cup B) = P(A) + P(B \\setminus (A \\cap B)) $$<br>De même, $B = (B \\setminus (A \\cap B)) \\cup (A \\cap B)$ étant une union disjointe, on a $P(B) = P(B \\setminus (A \\cap B)) + P(A \\cap B)$, d'où :<br>$$ P(B \\setminus (A \\cap B)) = P(B) - P(A \\cap B) $$<br>En substituant, on obtient la formule de Poincaré :<br>$$ P(A \\cup B) = P(A) + P(B) - P(A \\cap B) $$</p>"
-                        },
-                        {
-                            "title": "Étape 2 : Application numérique",
-                            "content": "<p>$$ P(A \\cup B) = 0.6 + 0.5 - 0.3 = 0.8 $$<br>$$ P(A \\setminus B) = P(A) - P(A \\cap B) = 0.6 - 0.3 = 0.3. \\quad \\blacksquare $$</p>"
-                        }
-                    ],
-                    "hint": "Ayrık olmayan olaylarda kesişim çift sayıldığı için $P(A \\cap B)$ terimi mutlaka düşülmelidir.",
-                    "subtitle": "Axiomes de Kolmogorov et Formule de Poincaré"
-                }
-            ]
+  "id": "mat206_olasilik",
+  "code": "MAT206",
+  "title": "Olasılık & İstatistik",
+  "faculty": "Lisans Matematik",
+  "color": "#f59e0b",
+  "icon": "courseOlasilik",
+  "modules": {
+    "olasilik_mod1": {
+      "id": "olasilik_mod1",
+      "title": "Modül 1: Kombinatorik ve Temel Olasılık Aksiyomları",
+      "breadcrumb": "MAT206 > Modül 1 > Temel Olasılık",
+      "theoryPages": [
+        {
+          "title": "1. Örneklem Uzayı (Ω), Olaylar Cebiri ve Kombinatorik",
+          "html": "<div class=\"chapter-banner\" style=\"background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(239,68,68,0.08)); border-left: 4px solid var(--accent-amber); border-radius: 6px; padding: 18px 22px; margin-bottom: 20px;\">\n    <span style=\"font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--accent-amber); letter-spacing: 0.05em;\">Bölüm 1 • Olasılığın Temelleri</span>\n    <h2 style=\"font-size: 1.4rem; margin: 4px 0 6px; color: var(--text-main); font-weight: 700;\">Örneklem Uzayı ($\\Omega$), Olaylar ve Eş-Olasılıklı (Laplace) Model</h2>\n</div>\n<div class=\"theory-box defn\">\n    <div class=\"theory-box-title\">Espace Probabilisable $(\\Omega, \\mathcal{A})$ ve Sayma İlkeleri</div>\n    <div class=\"theory-box-body\">\n        <p>Bir rastgele deneyin tüm olası sonuçlarının kümesine <strong>örneklem uzayı (univers $\\Omega$)</strong>, $\\Omega$'nın alt kümelerinden oluşan $\\sigma$-cebire ise <strong>olaylar kümesi ($\\mathcal{A}$)</strong> denir.</p>\n        <ul style=\"margin-left: 20px; margin-top: 8px; line-height: 1.75;\">\n            <li><strong>Eş-olasılık (Équiprobabilité / Loi uniforme) :</strong> Sonlu $\\Omega$ uzayında tüm temel sonuçlar eşit şansa sahipse:\n            $$ P(A) = \frac{\\operatorname{Card}(A)}{\\operatorname{Card}(\\Omega)} = \frac{\text{İstenen durumların sayısı}}{\text{Tüm olası durumların sayısı}} $$</li>\n            <li><strong>Eşzamanlı çekiliş (Tirage simultané) :</strong> Sıra önemsiz, tekrarsız $\\implies$ Kombinasyon $\binom{n}{k} = \frac{n!}{k!(n-k)!}$.</li>\n            <li><strong>Ardışık iadesiz çekiliş (Successif sans remise) :</strong> Sıra önemli, tekrarsız $\\implies$ Aranjman $A_n^k = \frac{n!}{(n-k)!}$.</li>\n            <li><strong>Ardışık iadeli çekiliş (Successif avec remise) :</strong> Sıra önemli, tekrarlı $\\implies n^k$.</li>\n        </ul>\n    </div>\n</div>"
         },
-        "olasilik_mod2": {
-            "id": "olasilik_mod2",
-            "title": "Modül 2: Koşullu Olasılık ve Bayes Teoremi",
-            "breadcrumb": "MAT206 > Modül 2 > Koşullu Olasılık",
-            "theoryPages": [
-                {
-                    "title": "1. Koşullu Olasılık, Bağımsızlık ve Tam Olay Sistemi",
-                    "html": "<div class=\"theory-box defn\">\n    <div class=\"theory-box-title\">Probabilité Conditionnelle & Indépendance Stochastique</div>\n    <div class=\"theory-box-body\">\n        <p>$P(B) > 0$ olmak üzere, $B$ olayının gerçekleştiği bilindiğinde $A$ olayının koşullu olasılığı :</p>\n        $$ \\mathbf{P(A \\mid B) = \frac{P(A \\cap B)}{P(B)}} \\iff P(A \\cap B) = P(B) \\cdot P(A \\mid B) $$\n        <p style=\"margin-top: 10px;\"><strong>Bağımsızlık (Indépendance) :</strong> $A$ ve $B$ olayları bağımsızdır $\\iff \\mathbf{P(A \\cap B) = P(A) \\cdot P(B)}$ (yani $P(A \\mid B) = P(A)$).<br>\n        <em>Dikkat:</em> Ayrıklık ($A \\cap B = \\emptyset$) ile bağımsızlık tamamen farklı kavramlardır!</p>\n    </div>\n</div>\n<div class=\"theory-box thm\">\n    <div class=\"theory-box-title\">Système Complet d'Événements & Formule des Probabilités Totales</div>\n    <div class=\"theory-box-body\">\n        <p>$(B_1, B_2, \\dots, B_n)$ olayları ikişer ikişer ayrık ($B_i \\cap B_j = \\emptyset$) ve birleşimleri $\\Omega$'yı veriyorsa ($\\sum P(B_i) = 1$) bir <strong>tam olay sistemi (partition)</strong> oluşturur. Herhangi bir $A$ olayı için :</p>\n        $$ \\mathbf{P(A) = \\sum_{i=1}^n P(A \\cap B_i) = \\sum_{i=1}^n P(A \\mid B_i) P(B_i)} $$\n    </div>\n</div>"
-                },
-                {
-                    "title": "2. Théorème de Bayes (Nedensel Olasılık ve Tıbbi Tarama Testleri)",
-                    "html": "<div class=\"theory-box thm\">\n    <div class=\"theory-box-title\">Théorème de Bayes (Sebep-Sonuç Ters Çevirme Formülü)</div>\n    <div class=\"theory-box-body\">\n        <p>$(B_i)_{i=1}^n$ bir tam olay sistemi ve $P(A) > 0$ olsun. Sonuç ($A$) gözlemlendiğinde, bunun $k$'ıncı sebepten ($B_k$) kaynaklanmış olma olasılığı (<em>probabilité a posteriori</em>) :</p>\n        $$ \\mathbf{P(B_k \\mid A) = \frac{P(A \\mid B_k) P(B_k)}{P(A)} = \frac{P(A \\mid B_k) P(B_k)}{\\sum_{i=1}^n P(A \\mid B_i) P(B_i)}} $$\n    </div>\n</div>\n<div class=\"theory-box ex\">\n    <div class=\"theory-box-title\">Sınav Klasiği : Tıbbi Tanı Testi (Dépistage Médical)</div>\n    <div class=\"theory-box-body\">\n        <p>$M$: \"Kişi hasta\" ($P(M) = p$ prevalans), $T$: \"Test pozitif\".<br>\n        • <strong>Duyarlılık (Sensibilité) :</strong> $P(T \\mid M)$ (Gerçek hastada testin pozitif çıkma oranı).<br>\n        • <strong>Özgüllük (Spécificité) :</strong> $P(\bar{T} \\mid \bar{M})$ $\\implies$ Yalancı pozitiflik: $P(T \\mid \bar{M}) = 1 - \text{Spécificité}$.<br>\n        Testi pozitif çıkan birinin gerçekten hasta olma olasılığı :<br>\n        $$ P(M \\mid T) = \frac{P(T \\mid M)P(M)}{P(T \\mid M)P(M) + P(T \\mid \bar{M})P(\bar{M})} $$</p>\n    </div>\n</div>"
-                }
-            ],
-            "exercises": [
-                {
-                    "id": "olas_m2_ex1",
-                    "name": "Exercice 1",
-                    "tag": "Koşullu Olasılık",
-                    "enonce": "<p>Une usine fabrique des composants électroniques sur trois lignes de production $M_1, M_2, M_3$.<br>La ligne $M_1$ produit 50% des composants avec un taux de défaut de 2%.<br>La ligne $M_2$ produit 30% des composants avec un taux de défaut de 3%.<br>La ligne $M_3$ produit 20% des composants avec un taux de défaut de 5%.<br>On prélève un composant au hasard dans la production globale.<br>(1) Quelle est la probabilité que ce composant soit défectueux ?</p>",
-                    "solTitle": "Solution Détaillée",
-                    "solution": "<p>Notons $D$ l'événement : \"Le composant est défectueux\".<br>Les événements $M_1, M_2, M_3$ forment un <strong>système complet d'événements (partition)</strong> de l'univers :<br>$$ P(M_1) = 0.50, \\quad P(M_2) = 0.30, \\quad P(M_3) = 0.20 $$<br>Les probabilités conditionnelles données sont :<br>$$ P(D \\mid M_1) = 0.02, \\quad P(D \\mid M_2) = 0.03, \\quad P(D \\mid M_3) = 0.05 $$<br>D'après la <strong>formule des probabilités totales</strong> :<br>$$\\begin{aligned} P(D) &= P(M_1)P(D \\mid M_1) + P(M_2)P(D \\mid M_2) + P(M_3)P(D \\mid M_3) \\\\ &= (0.50 \\times 0.02) + (0.30 \\times 0.03) + (0.20 \\times 0.05) \\\\ &= 0.010 + 0.009 + 0.010 = 0.029 \\end{aligned}$$<br>La probabilité qu'un composant pris au hasard soit défectueux est de <strong>2.9%</strong>. $\\blacksquare$</p>",
-                    "steps": [
-                        {
-                            "title": "Étape 1 : Modélisation & Mise en Équation",
-                            "content": "<p>Notons $D$ l'événement : \"Le composant est défectueux\".<br>Les événements $M_1, M_2, M_3$ forment un <strong>système complet d'événements (partition)</strong> de l'univers :<br>$$ P(M_1) = 0.50, \\quad P(M_2) = 0.30, \\quad P(M_3) = 0.20 $$<br>Les probabilités conditionnelles données sont :</p>"
-                        },
-                        {
-                            "title": "Étape 2 : Calcul & Conclusion",
-                            "content": "<p>$$ P(D \\mid M_1) = 0.02, \\quad P(D \\mid M_2) = 0.03, \\quad P(D \\mid M_3) = 0.05 $$<br>D'après la <strong>formule des probabilités totales</strong> :<br>$$\\begin{aligned} P(D) &= P(M_1)P(D \\mid M_1) + P(M_2)P(D \\mid M_2) + P(M_3)P(D \\mid M_3) \\\\ &= (0.50 \\times 0.02) + (0.30 \\times 0.03) + (0.20 \\times 0.05) \\\\ &= 0.010 + 0.009 + 0.010 = 0.029 \\end{aligned}$$<br>La probabilité qu'un composant pris au hasard soit défectueux est de <strong>2.9%</strong>. $\\blacksquare$</p>"
-                        }
-                    ],
-                    "hint": "Toplam olasılık formülünü kur: $P(D) = \\sum P(A_i)P(D \\mid A_i)$. Tüm dalların ağırlıklı toplamını al.",
-                    "subtitle": "Formule des Probabilités Totales"
-                },
-                {
-                    "id": "olas_m2_ex2",
-                    "name": "Exercice 2",
-                    "tag": "Bayes",
-                    "enonce": "<p>Dans une population, une maladie rare touche 1 personne sur 1000 ($P(M) = 0.001$).<br>Un test de dépistage présente les caractéristiques suivantes :<br>• Si la personne est malade, le test est positif avec une probabilité de 99% (sensibilité).<br>• Si la personne est saine, le test est positif avec une probabilité de 2% (faux positifs).<br>Un individu passe le test et le résultat est <strong>positif</strong>. Quelle est la probabilité réelle qu'il soit malade ?</p>",
-                    "solTitle": "Solution Détaillée",
-                    "solution": "<p>Notons $M$ : \"La personne est malade\" et $T$ : \"Le test est positif\".<br>On a les données suivantes :<br>$$ P(M) = 0.001, \\quad P(\\bar{M}) = 0.999 $$<br>$$ P(T \\mid M) = 0.99, \\quad P(T \\mid \\bar{M}) = 0.02 $$<br>Calculons d'abord la probabilité totale d'un test positif $P(T)$ :<br>$$\\begin{aligned} P(T) &= P(M)P(T \\mid M) + P(\\bar{M})P(T \\mid \\bar{M}) \\\\ &= (0.001 \\times 0.99) + (0.999 \\times 0.02) \\\\ &= 0.00099 + 0.01998 = 0.02097 \\end{aligned}$$<br>D'après le <strong>Théorème de Bayes</strong>, la probabilité a posteriori est :<br>$$ P(M \\mid T) = \\frac{P(M)P(T \\mid M)}{P(T)} = \\frac{0.00099}{0.02097} \\approx 0.0472 $$<br>La probabilité réelle d'être malade malgré un test positif n'est que de <strong>4.72%</strong> !<br><em>Explication intuitive :</em> La rareté de la maladie fait que le nombre absolu de faux positifs ($0.02 \\times 999 \\approx 20$) dépasse largement les vrais positifs ($0.99 \\times 1 \\approx 1$). $\\blacksquare$</p>",
-                    "steps": [
-                        {
-                            "title": "Étape 1 : Modélisation & Mise en Équation",
-                            "content": "<p>Notons $M$ : \"La personne est malade\" et $T$ : \"Le test est positif\".<br>On a les données suivantes :<br>$$ P(M) = 0.001, \\quad P(\\bar{M}) = 0.999 $$<br>$$ P(T \\mid M) = 0.99, \\quad P(T \\mid \\bar{M}) = 0.02 $$<br>Calculons d'abord la probabilité totale d'un test positif $P(T)$ :</p>"
-                        },
-                        {
-                            "title": "Étape 2 : Calcul & Conclusion",
-                            "content": "<p>$$\\begin{aligned} P(T) &= P(M)P(T \\mid M) + P(\\bar{M})P(T \\mid \\bar{M}) \\\\ &= (0.001 \\times 0.99) + (0.999 \\times 0.02) \\\\ &= 0.00099 + 0.01998 = 0.02097 \\end{aligned}$$<br>D'après le <strong>Théorème de Bayes</strong>, la probabilité a posteriori est :<br>$$ P(M \\mid T) = \\frac{P(M)P(T \\mid M)}{P(T)} = \\frac{0.00099}{0.02097} \\approx 0.0472 $$<br>La probabilité réelle d'être malade malgré un test positif n'est que de <strong>4.72%</strong> !<br><em>Explication intuitive :</em> La rareté de la maladie fait que le nombre absolu de faux positifs ($0.02 \\times 999 \\approx 20$) dépasse largement les vrais positifs ($0.99 \\times 1 \\approx 1$). $\\blacksquare$</p>"
-                        }
-                    ],
-                    "hint": "Bayes formülü: $P(M \\mid T) = \\frac{P(M) P(T \\mid M)}{P(T)}$. Nadir hastalıklarda yalancı pozitifler baskın çıkar!",
-                    "subtitle": "Théorème de Bayes (Dépistage Médical)"
-                }
-            ]
+        {
+          "title": "2. Kolmogorov Aksiyomları ve Poincaré (İçerme-Dışlama) Formülü",
+          "html": "<div class=\"theory-box thm\">\n    <div class=\"theory-box-title\">Axiomes de Kolmogorov & Propriétés Fondamentales</div>\n    <div class=\"theory-box-body\">\n        <p>Bir $(\\Omega, \\mathcal{A})$ uzayı üzerinde tanımlı $P : \\mathcal{A} \to [0, 1]$ fonksiyonunun <strong>olasılık ölçüsü</strong> olması için şu 3 aksiyomu sağlaması gerekir :</p>\n        <ol style=\"margin-left: 20px; margin-top: 8px; line-height: 1.8;\">\n            <li><strong>Pozitiflik :</strong> $\forall A \\in \\mathcal{A}, \\quad 0 \\le P(A) \\le 1$.</li>\n            <li><strong>Normallik (Kesin Olay) :</strong> $P(\\Omega) = 1$ (ve $P(\\emptyset) = 0$).</li>\n            <li><strong>$\\sigma$-Additivité (Sayılabilir Toplamsallık) :</strong> İkişer ikişer ayrık ($A_i \\cap A_j = \\emptyset$) olaylar dizisi için :\n            $$ P\\left(\bigcup_{i=1}^{+\\infty} A_i\right) = \\sum_{i=1}^{+\\infty} P(A_i) $$</li>\n        </ol>\n    </div>\n</div>\n<div class=\"theory-box ex\">\n    <div class=\"theory-box-title\">Formule de Poincaré (Crible de Poincaré) & Tümleyen Kuralı</div>\n    <div class=\"theory-box-body\">\n        <p>Herhangi iki $A, B \\in \\mathcal{A}$ olayı için (ayrık olmaları gerekmez) :</p>\n        $$ \\mathbf{P(A \\cup B) = P(A) + P(B) - P(A \\cap B)} $$\n        <p style=\"margin-top: 8px;\">Üç olay için : $P(A \\cup B \\cup C) = P(A)+P(B)+P(C) - P(A\\cap B) - P(A\\cap C) - P(B\\cap C) + P(A\\cap B\\cap C)$.</p>\n        <p style=\"margin-top: 6px;\"><strong>Fark Kümesi :</strong> $P(B \\setminus A) = P(B \\cap \bar{A}) = P(B) - P(A \\cap B)$.</p>\n    </div>\n</div>"
         }
+      ],
+      "exercises": [
+        {
+          "id": "olas_m1_ex1",
+          "name": "Exercice 1",
+          "tag": "Kombinatorik",
+          "enonce": "<p>Une urne contient 5 boules blanches et 7 boules noires. On tire simultanément 3 boules au hasard.<br>(1) Quel est le cardinal de l'espace fondamental $\\Omega$ ?<br>(2) Quelle est la probabilité d'obtenir exactement 2 boules blanches et 1 boule noire ?<br>(3) Quelle est la probabilité d'obtenir au moins une boule blanche ?</p>",
+          "solTitle": "Solution Détaillée",
+          "solution": "<p><strong>1. Cardinal de l'univers $\\Omega$ :</strong><br>Puisque le tirage est simultané, l'ordre n'importe pas et il n'y a pas de répétition. Le nombre total d'issues possibles est :<br>$$ |\\Omega| = \\binom{12}{3} = \\frac{12 \\times 11 \\times 10}{3 \\times 2 \\times 1} = 220 $$</p><p><strong>2. Probabilité de l'événement $A$ : \"Exactement 2 blanches et 1 noire\" :</strong><br>On choisit 2 blanches parmi les 5 et 1 noire parmi les 7 :<br>$$ P(A) = \\frac{\\binom{5}{2} \\times \\binom{7}{1}}{\\binom{12}{3}} = \\frac{10 \\times 7}{220} = \\frac{70}{220} = \\frac{7}{22}{ \\approx 0.318 } $$</p><p><strong>3. Probabilité de l'événement $B$ : \"Au moins une blanche\" :</strong><br>Passons par l'événement contraire $\\bar{B}$ : \"Aucune boule blanche (donc 3 boules noires)\" :<br>$$ P(\\bar{B}) = \\frac{\\binom{7}{3}}{\\binom{12}{3}} = \\frac{35}{220} = \\frac{7}{44} $$<br>$$ P(B) = 1 - P(\\bar{B}) = 1 - \\frac{7}{44} = \\frac{37}{44} \\approx 0.841. \\quad \\blacksquare $$</p>",
+          "steps": [
+            {
+              "title": "Étape 1 : Cardinal de l'Univers $\\Omega$ (Tirage Simultané)",
+              "content": "<p>Puisque le tirage de 3 boules est simultané dans une urne de 12 boules (5 blanches et 7 noires), l'ordre n'importe pas et il n'y a pas de répétition.  \nLe nombre total de tirages possibles est le nombre de combinaisons de 3 parmi 12 :\n$$ |\\Omega| = \\binom{12}{3} = \\frac{12 \\times 11 \\times 10}{3 \\times 2 \\times 1} = \\mathbf{220} $$</p>"
+            },
+            {
+              "title": "Étape 2 : Événement $A$ : \"Exactement 2 blanches et 1 noire\"",
+              "content": "<p>On choisit simultanément 2 boules blanches parmi les 5 et 1 boule noire parmi les 7 :\n$$ |A| = \\binom{5}{2} \\times \\binom{7}{1} = 10 \\times 7 = 70 $$\nLa probabilité de l'événement $A$ est donc :\n$$ \\mathbf{P(A) = \\frac{|A|}{|\\Omega|} = \\frac{70}{220} = \\frac{7}{22} \\approx 0.318} $$</p>"
+            },
+            {
+              "title": "Étape 3 : Événement $B$ : \"Au moins une blanche\" par l'Événement Contraire",
+              "content": "<p>Passons par l'événement contraire $\\bar{B}$ : <em>\"Aucune boule blanche (donc 3 boules noires)\"</em> :\n$$ P(\\bar{B}) = \\frac{\\binom{7}{3}}{\\binom{12}{3}} = \\frac{35}{220} = \\frac{7}{44} $$\nPar le principe des probabilités complémentaires :\n$$ \\mathbf{P(B) = 1 - P(\\bar{B}) = 1 - \\frac{7}{44} = \\frac{37}{44} \\approx 0.841} \\quad \\blacksquare $$</p>"
+            }
+          ],
+          "hint": "Simultané (aynı anda) çekimde kombinasyon $\\binom{n}{k}$ kullanılır. 'En az bir' sorularında tümleyen olaydan ($1 - P(\\text{hiçbiri})$) gitmek daima en hızlı yoldur.",
+          "subtitle": "Tirage Simultané et Modèle Hypergéométrique"
+        },
+        {
+          "id": "olas_m1_ex2",
+          "name": "Exercice 2",
+          "tag": "Aksiyomlar",
+          "enonce": "<p>Soient $A$ et $B$ deux événements d'un espace probabilisé $(\\Omega, \\mathcal{F}, P)$.<br>(1) Démontrer à partir des axiomes de Kolmogorov que $P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$.<br>(2) Si $P(A) = 0.6$, $P(B) = 0.5$ et $P(A \\cap B) = 0.3$, calculer $P(A \\cup B)$ et $P(A \\setminus B)$.</p>",
+          "solTitle": "Solution Détaillée",
+          "solution": "<p><strong>1. Démonstration :</strong><br>Décomposons l'événement $A \\cup B$ en union d'événements disjoints :<br>$$ A \\cup B = A \\cup (B \\setminus (A \\cap B)) $$<br>Puisque $A$ et $B \\setminus (A \\cap B)$ sont disjoints, par le 3ème axiome de Kolmogorov (additivité) :<br>$$ P(A \\cup B) = P(A) + P(B \\setminus (A \\cap B)) $$<br>De même, $B = (B \\setminus (A \\cap B)) \\cup (A \\cap B)$ étant une union disjointe, on a $P(B) = P(B \\setminus (A \\cap B)) + P(A \\cap B)$, d'où :<br>$$ P(B \\setminus (A \\cap B)) = P(B) - P(A \\cap B) $$<br>En substituant, on obtient la formule de Poincaré :<br>$$ P(A \\cup B) = P(A) + P(B) - P(A \\cap B) $$</p><p><strong>2. Application numérique :</strong><br>$$ P(A \\cup B) = 0.6 + 0.5 - 0.3 = 0.8 $$<br>$$ P(A \\setminus B) = P(A) - P(A \\cap B) = 0.6 - 0.3 = 0.3. \\quad \\blacksquare $$</p>",
+          "steps": [
+            {
+              "title": "Étape 1 : Démonstration",
+              "content": "<p>Décomposons l'événement $A \\cup B$ en union d'événements disjoints :<br>$$ A \\cup B = A \\cup (B \\setminus (A \\cap B)) $$<br>Puisque $A$ et $B \\setminus (A \\cap B)$ sont disjoints, par le 3ème axiome de Kolmogorov (additivité) :<br>$$ P(A \\cup B) = P(A) + P(B \\setminus (A \\cap B)) $$<br>De même, $B = (B \\setminus (A \\cap B)) \\cup (A \\cap B)$ étant une union disjointe, on a $P(B) = P(B \\setminus (A \\cap B)) + P(A \\cap B)$, d'où :<br>$$ P(B \\setminus (A \\cap B)) = P(B) - P(A \\cap B) $$<br>En substituant, on obtient la formule de Poincaré :<br>$$ P(A \\cup B) = P(A) + P(B) - P(A \\cap B) $$</p>"
+            },
+            {
+              "title": "Étape 2 : Application numérique",
+              "content": "<p>$$ P(A \\cup B) = 0.6 + 0.5 - 0.3 = 0.8 $$<br>$$ P(A \\setminus B) = P(A) - P(A \\cap B) = 0.6 - 0.3 = 0.3. \\quad \\blacksquare $$</p>"
+            }
+          ],
+          "hint": "Ayrık olmayan olaylarda kesişim çift sayıldığı için $P(A \\cap B)$ terimi mutlaka düşülmelidir.",
+          "subtitle": "Axiomes de Kolmogorov et Formule de Poincaré"
+        },
+        {
+          "id": "olas_m1_ex3",
+          "name": "Exercice 3",
+          "subtitle": "Problème des Anniversaires & Tirages avec/sans Remise",
+          "hint": "Tümleyen olayı ($\\bar{A}$ : herkesin doğum gününün farklı olması) kullanarak $P(A) = 1 - \\frac{A_{365}^n}{365^n}$ formülünü kurun.",
+          "steps": [
+            {
+              "title": "Étape 1 : Modélisation de l'univers Ω et de l'événement complémentaire",
+              "content": "Chaque personne a $365$ dates possibles, soit $\\text{Card}(\\Omega) = 365^n$ ($n$-listes avec répétition). L'événement complémentaire $\\bar{A}$ (« toutes les dates sont deux à deux distinctes ») correspond à un arrangement sans répétition : $\\text{Card}(\\bar{A}) = A_{365}^n = \\frac{365!}{(365-n)!}$."
+            },
+            {
+              "title": "Étape 2 : Calcul numérique pour n = 23",
+              "content": "Par équiprobabilité :\n$$P(A) = 1 - P(\\bar{A}) = 1 - \\frac{365 \\times 364 \\times \\cdots \\times (365 - n + 1)}{365^n}$$\nPour $n = 23$, on obtient $P(\\bar{A}) \\approx 0{,}4927$, d'où $\\mathbf{P(A) \\approx 0{,}5073 > 50\\%}$ !"
+            }
+          ],
+          "enonce": "Dans une salle réunissant $n = 23$ personnes, quelle est la probabilité $p_n$ qu'au moins deux personnes aient la même date d'anniversaire (en supposant l'année de $365$ jours équiprobables) ?",
+          "tag": "Olasılık TD",
+          "solTitle": "Ayrıntılı Sınav Çözümü (Rédaction Complète)",
+          "solution": "<strong>Étape 1 : Modélisation de l'univers Ω et de l'événement complémentaire</strong><br>Chaque personne a $365$ dates possibles, soit $\\text{Card}(\\Omega) = 365^n$ ($n$-listes avec répétition). L'événement complémentaire $\\bar{A}$ (« toutes les dates sont deux à deux distinctes ») correspond à un arrangement sans répétition : $\\text{Card}(\\bar{A}) = A_{365}^n = \\frac{365!}{(365-n)!}$.<br><br><strong>Étape 2 : Calcul numérique pour n = 23</strong><br>Par équiprobabilité :\n$$P(A) = 1 - P(\\bar{A}) = 1 - \\frac{365 \\times 364 \\times \\cdots \\times (365 - n + 1)}{365^n}$$\nPour $n = 23$, on obtient $P(\\bar{A}) \\approx 0{,}4927$, d'où $\\mathbf{P(A) \\approx 0{,}5073 > 50\\%}$ !"
+        }
+      ],
+      "theoryContent": "<div class=\"chapter-banner\" style=\"background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(239,68,68,0.08)); border-left: 4px solid var(--accent-amber); border-radius: 6px; padding: 18px 22px; margin-bottom: 20px;\">\n    <span style=\"font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--accent-amber); letter-spacing: 0.05em;\">Bölüm 1 • Olasılığın Temelleri</span>\n    <h2 style=\"font-size: 1.4rem; margin: 4px 0 6px; color: var(--text-main); font-weight: 700;\">Örneklem Uzayı ($\\Omega$), Olaylar ve Eş-Olasılıklı (Laplace) Model</h2>\n</div>\n<div class=\"theory-box defn\">\n    <div class=\"theory-box-title\">Espace Probabilisable $(\\Omega, \\mathcal{A})$ ve Sayma İlkeleri</div>\n    <div class=\"theory-box-body\">\n        <p>Bir rastgele deneyin tüm olası sonuçlarının kümesine <strong>örneklem uzayı (univers $\\Omega$)</strong>, $\\Omega$'nın alt kümelerinden oluşan $\\sigma$-cebire ise <strong>olaylar kümesi ($\\mathcal{A}$)</strong> denir.</p>\n        <ul style=\"margin-left: 20px; margin-top: 8px; line-height: 1.75;\">\n            <li><strong>Eş-olasılık (Équiprobabilité / Loi uniforme) :</strong> Sonlu $\\Omega$ uzayında tüm temel sonuçlar eşit şansa sahipse:\n            $$ P(A) = \frac{\\operatorname{Card}(A)}{\\operatorname{Card}(\\Omega)} = \frac{\text{İstenen durumların sayısı}}{\text{Tüm olası durumların sayısı}} $$</li>\n            <li><strong>Eşzamanlı çekiliş (Tirage simultané) :</strong> Sıra önemsiz, tekrarsız $\\implies$ Kombinasyon $\binom{n}{k} = \frac{n!}{k!(n-k)!}$.</li>\n            <li><strong>Ardışık iadesiz çekiliş (Successif sans remise) :</strong> Sıra önemli, tekrarsız $\\implies$ Aranjman $A_n^k = \frac{n!}{(n-k)!}$.</li>\n            <li><strong>Ardışık iadeli çekiliş (Successif avec remise) :</strong> Sıra önemli, tekrarlı $\\implies n^k$.</li>\n        </ul>\n    </div>\n</div>\n<div class=\"theory-box thm\">\n    <div class=\"theory-box-title\">Axiomes de Kolmogorov & Propriétés Fondamentales</div>\n    <div class=\"theory-box-body\">\n        <p>Bir $(\\Omega, \\mathcal{A})$ uzayı üzerinde tanımlı $P : \\mathcal{A} \to [0, 1]$ fonksiyonunun <strong>olasılık ölçüsü</strong> olması için şu 3 aksiyomu sağlaması gerekir :</p>\n        <ol style=\"margin-left: 20px; margin-top: 8px; line-height: 1.8;\">\n            <li><strong>Pozitiflik :</strong> $\forall A \\in \\mathcal{A}, \\quad 0 \\le P(A) \\le 1$.</li>\n            <li><strong>Normallik (Kesin Olay) :</strong> $P(\\Omega) = 1$ (ve $P(\\emptyset) = 0$).</li>\n            <li><strong>$\\sigma$-Additivité (Sayılabilir Toplamsallık) :</strong> İkişer ikişer ayrık ($A_i \\cap A_j = \\emptyset$) olaylar dizisi için :\n            $$ P\\left(\bigcup_{i=1}^{+\\infty} A_i\right) = \\sum_{i=1}^{+\\infty} P(A_i) $$</li>\n        </ol>\n    </div>\n</div>\n<div class=\"theory-box ex\">\n    <div class=\"theory-box-title\">Formule de Poincaré (Crible de Poincaré) & Tümleyen Kuralı</div>\n    <div class=\"theory-box-body\">\n        <p>Herhangi iki $A, B \\in \\mathcal{A}$ olayı için (ayrık olmaları gerekmez) :</p>\n        $$ \\mathbf{P(A \\cup B) = P(A) + P(B) - P(A \\cap B)} $$\n        <p style=\"margin-top: 8px;\">Üç olay için : $P(A \\cup B \\cup C) = P(A)+P(B)+P(C) - P(A\\cap B) - P(A\\cap C) - P(B\\cap C) + P(A\\cap B\\cap C)$.</p>\n        <p style=\"margin-top: 6px;\"><strong>Fark Kümesi :</strong> $P(B \\setminus A) = P(B \\cap \bar{A}) = P(B) - P(A \\cap B)$.</p>\n    </div>\n</div>"
+    },
+    "olasilik_mod2": {
+      "id": "olasilik_mod2",
+      "title": "Modül 2: Koşullu Olasılık ve Bayes Teoremi",
+      "breadcrumb": "MAT206 > Modül 2 > Koşullu Olasılık",
+      "theoryPages": [
+        {
+          "title": "1. Koşullu Olasılık, Bağımsızlık ve Tam Olay Sistemi",
+          "html": "<div class=\"theory-box defn\">\n    <div class=\"theory-box-title\">Probabilité Conditionnelle & Indépendance Stochastique</div>\n    <div class=\"theory-box-body\">\n        <p>$P(B) > 0$ olmak üzere, $B$ olayının gerçekleştiği bilindiğinde $A$ olayının koşullu olasılığı :</p>\n        $$ \\mathbf{P(A \\mid B) = \frac{P(A \\cap B)}{P(B)}} \\iff P(A \\cap B) = P(B) \\cdot P(A \\mid B) $$\n        <p style=\"margin-top: 10px;\"><strong>Bağımsızlık (Indépendance) :</strong> $A$ ve $B$ olayları bağımsızdır $\\iff \\mathbf{P(A \\cap B) = P(A) \\cdot P(B)}$ (yani $P(A \\mid B) = P(A)$).<br>\n        <em>Dikkat:</em> Ayrıklık ($A \\cap B = \\emptyset$) ile bağımsızlık tamamen farklı kavramlardır!</p>\n    </div>\n</div>\n<div class=\"theory-box thm\">\n    <div class=\"theory-box-title\">Système Complet d'Événements & Formule des Probabilités Totales</div>\n    <div class=\"theory-box-body\">\n        <p>$(B_1, B_2, \\dots, B_n)$ olayları ikişer ikişer ayrık ($B_i \\cap B_j = \\emptyset$) ve birleşimleri $\\Omega$'yı veriyorsa ($\\sum P(B_i) = 1$) bir <strong>tam olay sistemi (partition)</strong> oluşturur. Herhangi bir $A$ olayı için :</p>\n        $$ \\mathbf{P(A) = \\sum_{i=1}^n P(A \\cap B_i) = \\sum_{i=1}^n P(A \\mid B_i) P(B_i)} $$\n    </div>\n</div>"
+        },
+        {
+          "title": "2. Théorème de Bayes (Nedensel Olasılık ve Tıbbi Tarama Testleri)",
+          "html": "<div class=\"theory-box thm\">\n    <div class=\"theory-box-title\">Théorème de Bayes (Sebep-Sonuç Ters Çevirme Formülü)</div>\n    <div class=\"theory-box-body\">\n        <p>$(B_i)_{i=1}^n$ bir tam olay sistemi ve $P(A) > 0$ olsun. Sonuç ($A$) gözlemlendiğinde, bunun $k$'ıncı sebepten ($B_k$) kaynaklanmış olma olasılığı (<em>probabilité a posteriori</em>) :</p>\n        $$ \\mathbf{P(B_k \\mid A) = \frac{P(A \\mid B_k) P(B_k)}{P(A)} = \frac{P(A \\mid B_k) P(B_k)}{\\sum_{i=1}^n P(A \\mid B_i) P(B_i)}} $$\n    </div>\n</div>\n<div class=\"theory-box ex\">\n    <div class=\"theory-box-title\">Sınav Klasiği : Tıbbi Tanı Testi (Dépistage Médical)</div>\n    <div class=\"theory-box-body\">\n        <p>$M$: \"Kişi hasta\" ($P(M) = p$ prevalans), $T$: \"Test pozitif\".<br>\n        • <strong>Duyarlılık (Sensibilité) :</strong> $P(T \\mid M)$ (Gerçek hastada testin pozitif çıkma oranı).<br>\n        • <strong>Özgüllük (Spécificité) :</strong> $P(\bar{T} \\mid \bar{M})$ $\\implies$ Yalancı pozitiflik: $P(T \\mid \bar{M}) = 1 - \text{Spécificité}$.<br>\n        Testi pozitif çıkan birinin gerçekten hasta olma olasılığı :<br>\n        $$ P(M \\mid T) = \frac{P(T \\mid M)P(M)}{P(T \\mid M)P(M) + P(T \\mid \bar{M})P(\bar{M})} $$</p>\n    </div>\n</div>"
+        }
+      ],
+      "exercises": [
+        {
+          "id": "olas_m2_ex1",
+          "name": "Exercice 1",
+          "tag": "Koşullu Olasılık",
+          "enonce": "<p>Une usine fabrique des composants électroniques sur trois lignes de production $M_1, M_2, M_3$.<br>La ligne $M_1$ produit 50% des composants avec un taux de défaut de 2%.<br>La ligne $M_2$ produit 30% des composants avec un taux de défaut de 3%.<br>La ligne $M_3$ produit 20% des composants avec un taux de défaut de 5%.<br>On prélève un composant au hasard dans la production globale.<br>(1) Quelle est la probabilité que ce composant soit défectueux ?</p>",
+          "solTitle": "Solution Détaillée",
+          "solution": "<p>Notons $D$ l'événement : \"Le composant est défectueux\".<br>Les événements $M_1, M_2, M_3$ forment un <strong>système complet d'événements (partition)</strong> de l'univers :<br>$$ P(M_1) = 0.50, \\quad P(M_2) = 0.30, \\quad P(M_3) = 0.20 $$<br>Les probabilités conditionnelles données sont :<br>$$ P(D \\mid M_1) = 0.02, \\quad P(D \\mid M_2) = 0.03, \\quad P(D \\mid M_3) = 0.05 $$<br>D'après la <strong>formule des probabilités totales</strong> :<br>$$\\begin{aligned} P(D) &= P(M_1)P(D \\mid M_1) + P(M_2)P(D \\mid M_2) + P(M_3)P(D \\mid M_3) \\\\ &= (0.50 \\times 0.02) + (0.30 \\times 0.03) + (0.20 \\times 0.05) \\\\ &= 0.010 + 0.009 + 0.010 = 0.029 \\end{aligned}$$<br>La probabilité qu'un composant pris au hasard soit défectueux est de <strong>2.9%</strong>. $\\blacksquare$</p>",
+          "steps": [
+            {
+              "title": "Étape 1 : Modélisation & Mise en Équation",
+              "content": "<p>Notons $D$ l'événement : \"Le composant est défectueux\".<br>Les événements $M_1, M_2, M_3$ forment un <strong>système complet d'événements (partition)</strong> de l'univers :<br>$$ P(M_1) = 0.50, \\quad P(M_2) = 0.30, \\quad P(M_3) = 0.20 $$<br>Les probabilités conditionnelles données sont :</p>"
+            },
+            {
+              "title": "Étape 2 : Calcul & Conclusion",
+              "content": "<p>$$ P(D \\mid M_1) = 0.02, \\quad P(D \\mid M_2) = 0.03, \\quad P(D \\mid M_3) = 0.05 $$<br>D'après la <strong>formule des probabilités totales</strong> :<br>$$\\begin{aligned} P(D) &= P(M_1)P(D \\mid M_1) + P(M_2)P(D \\mid M_2) + P(M_3)P(D \\mid M_3) \\\\ &= (0.50 \\times 0.02) + (0.30 \\times 0.03) + (0.20 \\times 0.05) \\\\ &= 0.010 + 0.009 + 0.010 = 0.029 \\end{aligned}$$<br>La probabilité qu'un composant pris au hasard soit défectueux est de <strong>2.9%</strong>. $\\blacksquare$</p>"
+            }
+          ],
+          "hint": "Toplam olasılık formülünü kur: $P(D) = \\sum P(A_i)P(D \\mid A_i)$. Tüm dalların ağırlıklı toplamını al.",
+          "subtitle": "Formule des Probabilités Totales"
+        },
+        {
+          "id": "olas_m2_ex2",
+          "name": "Exercice 2",
+          "tag": "Bayes",
+          "enonce": "<p>Dans une population, une maladie rare touche 1 personne sur 1000 ($P(M) = 0.001$).<br>Un test de dépistage présente les caractéristiques suivantes :<br>• Si la personne est malade, le test est positif avec une probabilité de 99% (sensibilité).<br>• Si la personne est saine, le test est positif avec une probabilité de 2% (faux positifs).<br>Un individu passe le test et le résultat est <strong>positif</strong>. Quelle est la probabilité réelle qu'il soit malade ?</p>",
+          "solTitle": "Solution Détaillée",
+          "solution": "<p>Notons $M$ : \"La personne est malade\" et $T$ : \"Le test est positif\".<br>On a les données suivantes :<br>$$ P(M) = 0.001, \\quad P(\\bar{M}) = 0.999 $$<br>$$ P(T \\mid M) = 0.99, \\quad P(T \\mid \\bar{M}) = 0.02 $$<br>Calculons d'abord la probabilité totale d'un test positif $P(T)$ :<br>$$\\begin{aligned} P(T) &= P(M)P(T \\mid M) + P(\\bar{M})P(T \\mid \\bar{M}) \\\\ &= (0.001 \\times 0.99) + (0.999 \\times 0.02) \\\\ &= 0.00099 + 0.01998 = 0.02097 \\end{aligned}$$<br>D'après le <strong>Théorème de Bayes</strong>, la probabilité a posteriori est :<br>$$ P(M \\mid T) = \\frac{P(M)P(T \\mid M)}{P(T)} = \\frac{0.00099}{0.02097} \\approx 0.0472 $$<br>La probabilité réelle d'être malade malgré un test positif n'est que de <strong>4.72%</strong> !<br><em>Explication intuitive :</em> La rareté de la maladie fait que le nombre absolu de faux positifs ($0.02 \\times 999 \\approx 20$) dépasse largement les vrais positifs ($0.99 \\times 1 \\approx 1$). $\\blacksquare$</p>",
+          "steps": [
+            {
+              "title": "Étape 1 : Modélisation & Mise en Équation",
+              "content": "<p>Notons $M$ : \"La personne est malade\" et $T$ : \"Le test est positif\".<br>On a les données suivantes :<br>$$ P(M) = 0.001, \\quad P(\\bar{M}) = 0.999 $$<br>$$ P(T \\mid M) = 0.99, \\quad P(T \\mid \\bar{M}) = 0.02 $$<br>Calculons d'abord la probabilité totale d'un test positif $P(T)$ :</p>"
+            },
+            {
+              "title": "Étape 2 : Calcul & Conclusion",
+              "content": "<p>$$\\begin{aligned} P(T) &= P(M)P(T \\mid M) + P(\\bar{M})P(T \\mid \\bar{M}) \\\\ &= (0.001 \\times 0.99) + (0.999 \\times 0.02) \\\\ &= 0.00099 + 0.01998 = 0.02097 \\end{aligned}$$<br>D'après le <strong>Théorème de Bayes</strong>, la probabilité a posteriori est :<br>$$ P(M \\mid T) = \\frac{P(M)P(T \\mid M)}{P(T)} = \\frac{0.00099}{0.02097} \\approx 0.0472 $$<br>La probabilité réelle d'être malade malgré un test positif n'est que de <strong>4.72%</strong> !<br><em>Explication intuitive :</em> La rareté de la maladie fait que le nombre absolu de faux positifs ($0.02 \\times 999 \\approx 20$) dépasse largement les vrais positifs ($0.99 \\times 1 \\approx 1$). $\\blacksquare$</p>"
+            }
+          ],
+          "hint": "Bayes formülü: $P(M \\mid T) = \\frac{P(M) P(T \\mid M)}{P(T)}$. Nadir hastalıklarda yalancı pozitifler baskın çıkar!",
+          "subtitle": "Théorème de Bayes (Dépistage Médical)"
+        },
+        {
+          "id": "olas_m2_ex3",
+          "name": "Exercice 3",
+          "subtitle": "Indépendance Deux à Deux vs Indépendance Mutuelle (Contre-exemple de Bernstein)",
+          "hint": "$P(A)=P(B)=P(C)=1/2$ ve ikili kesişim olasılıklarını ($1/4$) hesaplayın, ardından $P(A \\cap B \\cap C)$ değerini $P(A)P(B)P(C) = 1/8$ ile karşılaştırın.",
+          "steps": [
+            {
+              "title": "Étape 1 : Vérification de l'indépendance deux à deux",
+              "content": "On a clairement $P(A) = \\frac{1}{2}$, $P(B) = \\frac{1}{2}$ et $P(C) = \\frac{1}{2}$. De plus, $A \\cap B$, $A \\cap C$ et $B \\cap C$ sont tous réalisés exactement lorsque les deux dés sont pairs, soit avec probabilité $\\frac{1}{4} = \\frac{1}{2} \\times \\frac{1}{2}$. Les événements sont donc <strong>deux à deux indépendants</strong>."
+            },
+            {
+              "title": "Étape 2 : Mise en défaut de l'indépendance mutuelle",
+              "content": "Si $A$ et $B$ sont réalisés (les deux dés sont pairs), leur somme est nécessairement paire, donc $A \\cap B \\subset C$. Ainsi :\n$$P(A \\cap B \\cap C) = P(A \\cap B) = \\frac{1}{4} \\neq P(A)P(B)P(C) = \\frac{1}{8}$$\nLes événements $A, B, C$ <strong>ne sont donc pas mutuellement indépendants</strong>."
+            }
+          ],
+          "enonce": "On lance deux dés équilibrés. Soient $A$ : « le 1er dé est pair », $B$ : « le 2e dé est pair », et $C$ : « la somme des deux dés est paire ». Montrer que $A, B, C$ sont deux à deux indépendants mais ne sont pas mutuellement indépendants.",
+          "tag": "Olasılık TD",
+          "solTitle": "Ayrıntılı Sınav Çözümü (Rédaction Complète)",
+          "solution": "<strong>Étape 1 : Vérification de l'indépendance deux à deux</strong><br>On a clairement $P(A) = \\frac{1}{2}$, $P(B) = \\frac{1}{2}$ et $P(C) = \\frac{1}{2}$. De plus, $A \\cap B$, $A \\cap C$ et $B \\cap C$ sont tous réalisés exactement lorsque les deux dés sont pairs, soit avec probabilité $\\frac{1}{4} = \\frac{1}{2} \\times \\frac{1}{2}$. Les événements sont donc <strong>deux à deux indépendants</strong>.<br><br><strong>Étape 2 : Mise en défaut de l'indépendance mutuelle</strong><br>Si $A$ et $B$ sont réalisés (les deux dés sont pairs), leur somme est nécessairement paire, donc $A \\cap B \\subset C$. Ainsi :\n$$P(A \\cap B \\cap C) = P(A \\cap B) = \\frac{1}{4} \\neq P(A)P(B)P(C) = \\frac{1}{8}$$\nLes événements $A, B, C$ <strong>ne sont donc pas mutuellement indépendants</strong>."
+        }
+      ],
+      "theoryContent": "<div class=\"theory-box defn\">\n    <div class=\"theory-box-title\">Probabilité Conditionnelle & Indépendance Stochastique</div>\n    <div class=\"theory-box-body\">\n        <p>$P(B) > 0$ olmak üzere, $B$ olayının gerçekleştiği bilindiğinde $A$ olayının koşullu olasılığı :</p>\n        $$ \\mathbf{P(A \\mid B) = \frac{P(A \\cap B)}{P(B)}} \\iff P(A \\cap B) = P(B) \\cdot P(A \\mid B) $$\n        <p style=\"margin-top: 10px;\"><strong>Bağımsızlık (Indépendance) :</strong> $A$ ve $B$ olayları bağımsızdır $\\iff \\mathbf{P(A \\cap B) = P(A) \\cdot P(B)}$ (yani $P(A \\mid B) = P(A)$).<br>\n        <em>Dikkat:</em> Ayrıklık ($A \\cap B = \\emptyset$) ile bağımsızlık tamamen farklı kavramlardır!</p>\n    </div>\n</div>\n<div class=\"theory-box thm\">\n    <div class=\"theory-box-title\">Système Complet d'Événements & Formule des Probabilités Totales</div>\n    <div class=\"theory-box-body\">\n        <p>$(B_1, B_2, \\dots, B_n)$ olayları ikişer ikişer ayrık ($B_i \\cap B_j = \\emptyset$) ve birleşimleri $\\Omega$'yı veriyorsa ($\\sum P(B_i) = 1$) bir <strong>tam olay sistemi (partition)</strong> oluşturur. Herhangi bir $A$ olayı için :</p>\n        $$ \\mathbf{P(A) = \\sum_{i=1}^n P(A \\cap B_i) = \\sum_{i=1}^n P(A \\mid B_i) P(B_i)} $$\n    </div>\n</div>\n<div class=\"theory-box thm\">\n    <div class=\"theory-box-title\">Théorème de Bayes (Sebep-Sonuç Ters Çevirme Formülü)</div>\n    <div class=\"theory-box-body\">\n        <p>$(B_i)_{i=1}^n$ bir tam olay sistemi ve $P(A) > 0$ olsun. Sonuç ($A$) gözlemlendiğinde, bunun $k$'ıncı sebepten ($B_k$) kaynaklanmış olma olasılığı (<em>probabilité a posteriori</em>) :</p>\n        $$ \\mathbf{P(B_k \\mid A) = \frac{P(A \\mid B_k) P(B_k)}{P(A)} = \frac{P(A \\mid B_k) P(B_k)}{\\sum_{i=1}^n P(A \\mid B_i) P(B_i)}} $$\n    </div>\n</div>\n<div class=\"theory-box ex\">\n    <div class=\"theory-box-title\">Sınav Klasiği : Tıbbi Tanı Testi (Dépistage Médical)</div>\n    <div class=\"theory-box-body\">\n        <p>$M$: \"Kişi hasta\" ($P(M) = p$ prevalans), $T$: \"Test pozitif\".<br>\n        • <strong>Duyarlılık (Sensibilité) :</strong> $P(T \\mid M)$ (Gerçek hastada testin pozitif çıkma oranı).<br>\n        • <strong>Özgüllük (Spécificité) :</strong> $P(\bar{T} \\mid \bar{M})$ $\\implies$ Yalancı pozitiflik: $P(T \\mid \bar{M}) = 1 - \text{Spécificité}$.<br>\n        Testi pozitif çıkan birinin gerçekten hasta olma olasılığı :<br>\n        $$ P(M \\mid T) = \frac{P(T \\mid M)P(M)}{P(T \\mid M)P(M) + P(T \\mid \bar{M})P(\bar{M})} $$</p>\n    </div>\n</div>"
+    },
+    "olasilik_mod3": {
+      "title": "Modül 3: Kesikli Rastgele Değişkenler (Binom, Poisson, Geometrik)",
+      "description": "Kesikli olasılık dağılımları, beklenen değer E[X], König-Huygens varyans teoremi ve klasik kesikli modeller.",
+      "theoryPages": [
+        {
+          "title": "1. Kesikli Rastgele Değişkenler, Beklenen Değer ve Varyans",
+          "html": "<div class=\"theory-box\"><h4>Olasılık Kütle Fonksiyonu (Loi de Probabilité) ve Beklenen Değer</h4>\nKesikli bir $X$ rastgele değişkeninin değer kümesi $X(\\Omega)$ olmak üzere $\\sum_{x \\in X(\\Omega)} P(X=x) = 1$ şartı sağlanır.\n$$E[X] = \\sum_{x \\in X(\\Omega)} x\\,P(X=x), \\qquad E[g(X)] = \\sum_{x \\in X(\\Omega)} g(x)\\,P(X=x) \\text{ (Transfert)}$$</div>\n<div class=\"theorem-box\"><h4>König-Huygens Varyans Teoremi</h4>\n$$V(X) = E[(X - E[X])^2] = E[X^2] - (E[X])^2, \\qquad V(aX + b) = a^2 V(X)$$</div>"
+        },
+        {
+          "title": "2. Klasik Kesikli Dağılımlar (Binom, Poisson ve Geometrik)",
+          "html": "<div class=\"theory-box\"><h4>Standart Kesikli Modeller</h4>\n<ul>\n<li><strong>Binom Dağılımı $X \\sim \\mathcal{B}(n, p)$ :</strong> Bağımsız $n$ Bernoulli denemesindeki başarı sayısı.\n$$P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}, \\qquad E[X] = np, \\quad V(X) = np(1-p)$$</li>\n<li><strong>Poisson Dağılımı $X \\sim \\mathcal{P}(\\lambda)$ :</strong> Nadir olayların birim zamandaki gerçekleşme sayısı ($n \\to \\infty, p \\to 0, np \\to \\lambda$).\n$$P(X = k) = e^{-\\lambda}\\frac{\\lambda^k}{k!}, \\qquad E[X] = \\lambda, \\quad V(X) = \\lambda$$</li>\n<li><strong>Geometrik Dağılım $X \\sim \\mathcal{G}(p)$ :</strong> İlk başarıya kadar yapılan bağımsız deneme sayısı ($k \\ge 1$).\n$$P(X = k) = (1-p)^{k-1}p, \\qquad E[X] = \\frac{1}{p}, \\quad V(X) = \\frac{1-p}{p^2}$$</li>\n</ul></div>"
+        }
+      ],
+      "exercises": [
+        {
+          "id": "olas_m3_ex1",
+          "name": "Exercice 1",
+          "subtitle": "Loi Binomiale : Espérance et Variance par Dérivation",
+          "hint": "$g(x) = (px+q)^n$ fonksiyonunun $x=1$'deki birinci türevi $E[X]$'i, ikinci türevi ise $E[X(X-1)]$'i verir.",
+          "steps": [
+            {
+              "title": "Étape 1 : Dérivée première en x = 1 et calcul de E[X]",
+              "content": "Posons $g(x) = (px + q)^n = \\sum_{k=0}^n \\binom{n}{k} p^k q^{n-k} x^k$. En dérivant par rapport à $x$ :\n$$g'(x) = np(px+q)^{n-1} = \\sum_{k=1}^n k \\binom{n}{k} p^k q^{n-k} x^{k-1}$$\nEn évaluant en $x = 1$ (comme $p+q=1$), on obtient directement $\\mathbf{E[X] = g'(1) = np}$."
+            },
+            {
+              "title": "Étape 2 : Dérivée seconde en x = 1 et formule de König-Huygens",
+              "content": "Dérivons une seconde fois : $g''(x) = n(n-1)p^2(px+q)^{n-2}$. En $x = 1$, $g''(1) = E[X(X-1)] = E[X^2] - E[X] = n(n-1)p^2$. Par König-Huygens :\n$$V(X) = E[X^2] - (E[X])^2 = n(n-1)p^2 + np - n^2 p^2 = np(1-p)$$"
+            }
+          ],
+          "enonce": "Soit $X \\sim \\mathcal{B}(n, p)$. En dérivant deux fois le développement du binôme de Newton $(px + q)^n = \\sum_{k=0}^n \\binom{n}{k} p^k q^{n-k} x^k$ (où $q = 1-p$), démontrer que $E[X] = np$ et $V(X) = np(1-p)$.",
+          "tag": "Olasılık TD",
+          "solTitle": "Ayrıntılı Sınav Çözümü (Rédaction Complète)",
+          "solution": "<strong>Étape 1 : Dérivée première en x = 1 et calcul de E[X]</strong><br>Posons $g(x) = (px + q)^n = \\sum_{k=0}^n \\binom{n}{k} p^k q^{n-k} x^k$. En dérivant par rapport à $x$ :\n$$g'(x) = np(px+q)^{n-1} = \\sum_{k=1}^n k \\binom{n}{k} p^k q^{n-k} x^{k-1}$$\nEn évaluant en $x = 1$ (comme $p+q=1$), on obtient directement $\\mathbf{E[X] = g'(1) = np}$.<br><br><strong>Étape 2 : Dérivée seconde en x = 1 et formule de König-Huygens</strong><br>Dérivons une seconde fois : $g''(x) = n(n-1)p^2(px+q)^{n-2}$. En $x = 1$, $g''(1) = E[X(X-1)] = E[X^2] - E[X] = n(n-1)p^2$. Par König-Huygens :\n$$V(X) = E[X^2] - (E[X])^2 = n(n-1)p^2 + np - n^2 p^2 = np(1-p)$$"
+        },
+        {
+          "id": "olas_m3_ex2",
+          "name": "Exercice 2",
+          "subtitle": "Loi de Poisson et Approximation des Événements Rares",
+          "hint": "$e^\\lambda = \\sum_{k=0}^\\infty \\frac{\\lambda^k}{k!}$ seri açılımını ve $k / k! = 1 / (k-1)!$ sadeleştirmesini kullanın.",
+          "steps": [
+            {
+              "title": "Étape 1 : Normalisation et calcul de l'espérance E[X]",
+              "content": "Par le développement en série entière de l'exponentielle, $\\sum_{k=0}^{+\\infty} e^{-\\lambda}\\frac{\\lambda^k}{k!} = e^{-\\lambda} e^\\lambda = 1$. Pour l'espérance :\n$$E[X] = \\sum_{k=1}^{+\\infty} k\\,e^{-\\lambda}\\frac{\\lambda^k}{k!} = \\lambda e^{-\\lambda} \\sum_{k=1}^{+\\infty} \\frac{\\lambda^{k-1}}{(k-1)!} = \\lambda e^{-\\lambda} e^\\lambda = \\lambda$$"
+            },
+            {
+              "title": "Étape 2 : Moment factoriel E[X(X-1)] et variance V(X)",
+              "content": "De même, $E[X(X-1)] = \\sum_{k=2}^{+\\infty} k(k-1)e^{-\\lambda}\\frac{\\lambda^k}{k!} = \\lambda^2 e^{-\\lambda} \\sum_{j=0}^{+\\infty} \\frac{\\lambda^j}{j!} = \\lambda^2$. D'où :\n$$V(X) = E[X(X-1)] + E[X] - (E[X])^2 = \\lambda^2 + \\lambda - \\lambda^2 = \\lambda$$"
+            }
+          ],
+          "enonce": "Soit $X \\sim \\mathcal{P}(\\lambda)$ de loi $P(X=k) = e^{-\\lambda}\\frac{\\lambda^k}{k!}$ ($k \\in \\mathbb{N}$). Vérifier que $\\sum_{k=0}^{+\\infty} P(X=k) = 1$ et calculer $E[X]$ ainsi que $V(X)$.",
+          "tag": "Olasılık TD",
+          "solTitle": "Ayrıntılı Sınav Çözümü (Rédaction Complète)",
+          "solution": "<strong>Étape 1 : Normalisation et calcul de l'espérance E[X]</strong><br>Par le développement en série entière de l'exponentielle, $\\sum_{k=0}^{+\\infty} e^{-\\lambda}\\frac{\\lambda^k}{k!} = e^{-\\lambda} e^\\lambda = 1$. Pour l'espérance :\n$$E[X] = \\sum_{k=1}^{+\\infty} k\\,e^{-\\lambda}\\frac{\\lambda^k}{k!} = \\lambda e^{-\\lambda} \\sum_{k=1}^{+\\infty} \\frac{\\lambda^{k-1}}{(k-1)!} = \\lambda e^{-\\lambda} e^\\lambda = \\lambda$$<br><br><strong>Étape 2 : Moment factoriel E[X(X-1)] et variance V(X)</strong><br>De même, $E[X(X-1)] = \\sum_{k=2}^{+\\infty} k(k-1)e^{-\\lambda}\\frac{\\lambda^k}{k!} = \\lambda^2 e^{-\\lambda} \\sum_{j=0}^{+\\infty} \\frac{\\lambda^j}{j!} = \\lambda^2$. D'où :\n$$V(X) = E[X(X-1)] + E[X] - (E[X])^2 = \\lambda^2 + \\lambda - \\lambda^2 = \\lambda$$"
+        },
+        {
+          "id": "olas_m3_ex3",
+          "name": "Exercice 3",
+          "subtitle": "Loi Géométrique et Propriété d'Absence de Mémoire",
+          "hint": "İlk $n$ denemenin tamamının başarısız olması olasılığı $(1-p)^n$'dir (veya geometrik seriyi toplayın).",
+          "steps": [
+            {
+              "title": "Étape 1 : Calcul de la queue de distribution P(X > n)",
+              "content": "Notons $q = 1 - p$. Par sommation d'une série géométrique de raison $q \\in ]0, 1[$ :\n$$P(X > n) = \\sum_{k=n+1}^{+\\infty} p q^{k-1} = p q^n \\frac{1}{1-q} = q^n = (1-p)^n$$"
+            },
+            {
+              "title": "Étape 2 : Démonstration de l'absence de mémoire",
+              "content": "Puisque $\\{X > n+k\\} \\subset \\{X > n\\}$, on a :\n$$P(X > n+k \\mid X > n) = \\frac{P(X > n+k)}{P(X > n)} = \\frac{q^{n+k}}{q^n} = q^k = P(X > k)$$"
+            }
+          ],
+          "enonce": "Soit $X \\sim \\mathcal{G}(p)$ ($0 < p < 1$). Calculer $P(X > n)$ pour tout $n \\in \\mathbb{N}$ et démontrer la propriété d'absence de mémoire : $P(X > n + k \\mid X > n) = P(X > k)$.",
+          "tag": "Olasılık TD",
+          "solTitle": "Ayrıntılı Sınav Çözümü (Rédaction Complète)",
+          "solution": "<strong>Étape 1 : Calcul de la queue de distribution P(X > n)</strong><br>Notons $q = 1 - p$. Par sommation d'une série géométrique de raison $q \\in ]0, 1[$ :\n$$P(X > n) = \\sum_{k=n+1}^{+\\infty} p q^{k-1} = p q^n \\frac{1}{1-q} = q^n = (1-p)^n$$<br><br><strong>Étape 2 : Démonstration de l'absence de mémoire</strong><br>Puisque $\\{X > n+k\\} \\subset \\{X > n\\}$, on a :\n$$P(X > n+k \\mid X > n) = \\frac{P(X > n+k)}{P(X > n)} = \\frac{q^{n+k}}{q^n} = q^k = P(X > k)$$"
+        }
+      ],
+      "id": "olasilik_mod3",
+      "breadcrumb": "MAT206 > Modül 3",
+      "theoryContent": "<div class=\"theory-box\"><h4>Olasılık Kütle Fonksiyonu (Loi de Probabilité) ve Beklenen Değer</h4>\nKesikli bir $X$ rastgele değişkeninin değer kümesi $X(\\Omega)$ olmak üzere $\\sum_{x \\in X(\\Omega)} P(X=x) = 1$ şartı sağlanır.\n$$E[X] = \\sum_{x \\in X(\\Omega)} x\\,P(X=x), \\qquad E[g(X)] = \\sum_{x \\in X(\\Omega)} g(x)\\,P(X=x) \\text{ (Transfert)}$$</div>\n<div class=\"theorem-box\"><h4>König-Huygens Varyans Teoremi</h4>\n$$V(X) = E[(X - E[X])^2] = E[X^2] - (E[X])^2, \\qquad V(aX + b) = a^2 V(X)$$</div>\n<div class=\"theory-box\"><h4>Standart Kesikli Modeller</h4>\n<ul>\n<li><strong>Binom Dağılımı $X \\sim \\mathcal{B}(n, p)$ :</strong> Bağımsız $n$ Bernoulli denemesindeki başarı sayısı.\n$$P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}, \\qquad E[X] = np, \\quad V(X) = np(1-p)$$</li>\n<li><strong>Poisson Dağılımı $X \\sim \\mathcal{P}(\\lambda)$ :</strong> Nadir olayların birim zamandaki gerçekleşme sayısı ($n \\to \\infty, p \\to 0, np \\to \\lambda$).\n$$P(X = k) = e^{-\\lambda}\\frac{\\lambda^k}{k!}, \\qquad E[X] = \\lambda, \\quad V(X) = \\lambda$$</li>\n<li><strong>Geometrik Dağılım $X \\sim \\mathcal{G}(p)$ :</strong> İlk başarıya kadar yapılan bağımsız deneme sayısı ($k \\ge 1$).\n$$P(X = k) = (1-p)^{k-1}p, \\qquad E[X] = \\frac{1}{p}, \\quad V(X) = \\frac{1-p}{p^2}$$</li>\n</ul></div>"
+    },
+    "olasilik_mod4": {
+      "title": "Modül 4: Sürekli Dağılımlar, Yoğunluk & Limit Teoremleri",
+      "description": "Olasılık yoğunluk fonksiyonları, birikimli dağılım F(x), üstel ve normal (Gauss) dağılımlar, Tchebychev ve Merkezi Limit Teoremi.",
+      "theoryPages": [
+        {
+          "title": "1. Yoğunluk Fonksiyonu f(x) ve Birikimli Dağılım Fonksiyonu F(x)",
+          "html": "<div class=\"theory-box\"><h4>Olasılık Yoğunluk Fonksiyonu (Densité de Probabilité)</h4>\nBir $f: \\mathbb{R} \\to \\mathbb{R}$ fonksiyonunun olasılık yoğunluk fonksiyonu olması için :\n<ol>\n<li>$\\forall x \\in \\mathbb{R},\\; f(x) \\ge 0$ (pozitiflik)</li>\n<li>$f$ parçalı sürekli (continue par morceaux)</li>\n<li>$\\int_{-\\infty}^{+\\infty} f(x)\\,dx = 1$ (normalizasyon)</li>\n</ol>\nBirikimli dağılım fonksiyonu (Fonction de répartition) : $F_X(x) = P(X \\le x) = \\int_{-\\infty}^x f(t)\\,dt$ olup $f$'nin sürekli olduğu her noktada $F_X'(x) = f(x)$ eşitliğini sağlar.</div>"
+        },
+        {
+          "title": "2. Üstel Dağılım, Gauss Dağılımı ve Merkezi Limit Teoremi (TCL)",
+          "html": "<div class=\"theorem-box\"><h4>Üstel $\\mathcal{E}(\\lambda)$, Normal $\\mathcal{N}(\\mu, \\sigma^2)$ ve Merkezi Limit Teoremi</h4>\n<ul>\n<li><strong>Üstel Dağılım $X \\sim \\mathcal{E}(\\lambda)$ :</strong> $f(x) = \\lambda e^{-\\lambda x}\\,\\mathbb{I}_{[0, +\\infty[}(x)$, $\\quad E[X] = \\frac{1}{\\lambda}, \\quad V(X) = \\frac{1}{\\lambda^2}$.</li>\n<li><strong>Standart Normal Dağılım $Z = \\frac{X-\\mu}{\\sigma} \\sim \\mathcal{N}(0, 1)$ :</strong> $f(z) = \\frac{1}{\\sqrt{2\\pi}}e^{-z^2/2}$, simetri özelliği $\\Phi(-z) = 1 - \\Phi(z)$.</li>\n<li><strong>Bienaymé-Tchebychev Eşitsizliği :</strong> $\\forall \\epsilon > 0,\\; P(|X - E[X]| \\ge \\epsilon) \\le \\frac{V(X)}{\\epsilon^2}$.</li>\n<li><strong>Merkezi Limit Teoremi (Théorème Central Limite) :</strong> Bağımsız ve aynı dağılımlı $(X_i)$ dizisi için $\\frac{S_n - n\\mu}{\\sigma\\sqrt{n}} \\xrightarrow{\\mathcal{L}} \\mathcal{N}(0, 1)$.</li>\n</ul></div>"
+        }
+      ],
+      "exercises": [
+        {
+          "id": "olas_m4_ex1",
+          "name": "Exercice 1",
+          "subtitle": "Détermination de la Constante c, Fonction de Répartition & Espérance",
+          "hint": "$\\int_0^2 c(2x - x^2)dx = 1$ denklemini çözerek $c = 3/4$ değerini bulun.",
+          "steps": [
+            {
+              "title": "Étape 1 : Normalisation et calcul de la constante c",
+              "content": "Pour que $f \\ge 0$ sur $[0, 2]$, il faut $c > 0$. L'intégrale sur $\\mathbb{R}$ vaut :\n$$\\int_0^2 c(2x - x^2)\\,dx = c\\left[x^2 - \\frac{x^3}{3}\\right]_0^2 = c\\left(4 - \\frac{8}{3}\\right) = \\frac{4c}{3} = 1 \\implies \\mathbf{c = \\frac{3}{4}}$$"
+            },
+            {
+              "title": "Étape 2 : Fonction de répartition F_X(x), espérance et variance",
+              "content": "Pour $x \\in [0, 2]$, $F_X(x) = \\int_0^x \\frac{3}{4}(2t - t^2)\\,dt = \\frac{3}{4}\\left(x^2 - \\frac{x^3}{3}\\right)$ (avec $F_X(x)=0$ si $x<0$ et $F_X(x)=1$ si $x>2$). Par symétrie de $f$ par rapport à $x = 1$, $\\mathbf{E[X] = 1}$. De plus, $E[X^2] = \\frac{3}{4}\\int_0^2 (2x^3 - x^4)\\,dx = \\frac{6}{5}$, d'où $\\mathbf{V(X) = \\frac{6}{5} - 1 = \\frac{1}{5}}$."
+            }
+          ],
+          "enonce": "Soit $f(x) = c\\,x(2-x)$ si $x \\in [0, 2]$ et $f(x) = 0$ sinon.<br><strong>1.</strong> Déterminer $c \\in \\mathbb{R}$ pour que $f$ soit une densité de probabilité.<br><strong>2.</strong> Déterminer la fonction de répartition $F_X(x)$ et calculer $E[X]$ ainsi que $V(X)$.",
+          "tag": "Olasılık TD",
+          "solTitle": "Ayrıntılı Sınav Çözümü (Rédaction Complète)",
+          "solution": "<strong>Étape 1 : Normalisation et calcul de la constante c</strong><br>Pour que $f \\ge 0$ sur $[0, 2]$, il faut $c > 0$. L'intégrale sur $\\mathbb{R}$ vaut :\n$$\\int_0^2 c(2x - x^2)\\,dx = c\\left[x^2 - \\frac{x^3}{3}\\right]_0^2 = c\\left(4 - \\frac{8}{3}\\right) = \\frac{4c}{3} = 1 \\implies \\mathbf{c = \\frac{3}{4}}$$<br><br><strong>Étape 2 : Fonction de répartition F_X(x), espérance et variance</strong><br>Pour $x \\in [0, 2]$, $F_X(x) = \\int_0^x \\frac{3}{4}(2t - t^2)\\,dt = \\frac{3}{4}\\left(x^2 - \\frac{x^3}{3}\\right)$ (avec $F_X(x)=0$ si $x<0$ et $F_X(x)=1$ si $x>2$). Par symétrie de $f$ par rapport à $x = 1$, $\\mathbf{E[X] = 1}$. De plus, $E[X^2] = \\frac{3}{4}\\int_0^2 (2x^3 - x^4)\\,dx = \\frac{6}{5}$, d'où $\\mathbf{V(X) = \\frac{6}{5} - 1 = \\frac{1}{5}}$."
+        },
+        {
+          "id": "olas_m4_ex2",
+          "name": "Exercice 2",
+          "subtitle": "Loi Exponentielle : Intégration par Parties et Absence de Mémoire",
+          "hint": "Kuyruk olasılığı $P(X > x) = 1 - F_X(x) = e^{-\\lambda x}$ formülünü elde edin.",
+          "steps": [
+            {
+              "title": "Étape 1 : Fonction de répartition et absence de mémoire",
+              "content": "Pour $x \\ge 0$, $F_X(x) = \\int_0^x \\lambda e^{-\\lambda u}\\,du = 1 - e^{-\\lambda x}$, donc $P(X > x) = e^{-\\lambda x}$. Pour tous $t, s \\ge 0$ :\n$$P(X > t+s \\mid X > t) = \\frac{P(X > t+s)}{P(X > t)} = \\frac{e^{-\\lambda(t+s)}}{e^{-\\lambda t}} = e^{-\\lambda s} = P(X > s)$$"
+            },
+            {
+              "title": "Étape 2 : Calcul de l'espérance E[X] par intégration par parties",
+              "content": "En posant $u = x$ ($du = dx$) et $dv = \\lambda e^{-\\lambda x}dx$ ($v = -e^{-\\lambda x}$) :\n$$E[X] = \\int_0^{+\\infty} x\\lambda e^{-\\lambda x}\\,dx = \\Big[-x e^{-\\lambda x}\\Big]_0^{+\\infty} + \\int_0^{+\\infty} e^{-\\lambda x}\\,dx = 0 + \\frac{1}{\\lambda} = \\frac{1}{\\lambda}$$"
+            }
+          ],
+          "enonce": "Soit $X \\sim \\mathcal{E}(\\lambda)$ de densité $f(x) = \\lambda e^{-\\lambda x}\\,\\mathbb{I}_{[0, +\\infty[}(x)$ ($\\lambda > 0$). Calculer $F_X(x)$, $E[X]$ par intégration par parties, et vérifier que $P(X > t + s \\mid X > t) = P(X > s)$ pour $t, s \\ge 0$.",
+          "tag": "Olasılık TD",
+          "solTitle": "Ayrıntılı Sınav Çözümü (Rédaction Complète)",
+          "solution": "<strong>Étape 1 : Fonction de répartition et absence de mémoire</strong><br>Pour $x \\ge 0$, $F_X(x) = \\int_0^x \\lambda e^{-\\lambda u}\\,du = 1 - e^{-\\lambda x}$, donc $P(X > x) = e^{-\\lambda x}$. Pour tous $t, s \\ge 0$ :\n$$P(X > t+s \\mid X > t) = \\frac{P(X > t+s)}{P(X > t)} = \\frac{e^{-\\lambda(t+s)}}{e^{-\\lambda t}} = e^{-\\lambda s} = P(X > s)$$<br><br><strong>Étape 2 : Calcul de l'espérance E[X] par intégration par parties</strong><br>En posant $u = x$ ($du = dx$) et $dv = \\lambda e^{-\\lambda x}dx$ ($v = -e^{-\\lambda x}$) :\n$$E[X] = \\int_0^{+\\infty} x\\lambda e^{-\\lambda x}\\,dx = \\Big[-x e^{-\\lambda x}\\Big]_0^{+\\infty} + \\int_0^{+\\infty} e^{-\\lambda x}\\,dx = 0 + \\frac{1}{\\lambda} = \\frac{1}{\\lambda}$$"
+        },
+        {
+          "id": "olas_m4_ex3",
+          "name": "Exercice 3",
+          "subtitle": "Inégalité de Bienaymé-Tchebychev vs Théorème Central Limite (TCL)",
+          "hint": "$E[S_n] = np = 200$ ve $V(S_n) = np(1-p) = 100 \\implies \\sigma = 10$ değerlerini kullanın.",
+          "steps": [
+            {
+              "title": "Étape 1 : Majoration par Bienaymé-Tchebychev",
+              "content": "On a $S_n \\sim \\mathcal{B}(400, 1/2)$, donc $E[S_n] = 200$ et $V(S_n) = 400 \\times \\frac{1}{4} = 100$ ($\\sigma = 10$). Par l'inégalité de Bienaymé-Tchebychev :\n$$P(|S_n - 200| \\ge 20) \\le \\frac{V(S_n)}{20^2} = \\frac{100}{400} = 0{,}25 = 25\\%$$"
+            },
+            {
+              "title": "Étape 2 : Approximation fine par le Théorème Central Limite (TCL)",
+              "content": "La variable centrée réduite $Z_n = \\frac{S_n - 200}{10}$ suit approximativement $\\mathcal{N}(0, 1)$. Ainsi :\n$$P(|S_n - 200| \\ge 20) = P(|Z_n| \\ge 2) \\approx 2(1 - \\Phi(2)) \\approx 2(1 - 0{,}9772) = 0{,}0456 \\approx 4{,}56\\%$$"
+            }
+          ],
+          "enonce": "On lance $n = 400$ fois une pièce équilibrée ($p = 1/2$). Soit $S_n$ le nombre de « Pile ».<br><strong>1.</strong> Majorer $P(|S_n - 200| \\ge 20)$ à l'aide de l'inégalité de Bienaymé-Tchebychev.<br><strong>2.</strong> Évaluer cette même probabilité à l'aide du Théorème Central Limite (on donne $\\Phi(2) \\approx 0{,}9772$).",
+          "tag": "Olasılık TD",
+          "solTitle": "Ayrıntılı Sınav Çözümü (Rédaction Complète)",
+          "solution": "<strong>Étape 1 : Majoration par Bienaymé-Tchebychev</strong><br>On a $S_n \\sim \\mathcal{B}(400, 1/2)$, donc $E[S_n] = 200$ et $V(S_n) = 400 \\times \\frac{1}{4} = 100$ ($\\sigma = 10$). Par l'inégalité de Bienaymé-Tchebychev :\n$$P(|S_n - 200| \\ge 20) \\le \\frac{V(S_n)}{20^2} = \\frac{100}{400} = 0{,}25 = 25\\%$$<br><br><strong>Étape 2 : Approximation fine par le Théorème Central Limite (TCL)</strong><br>La variable centrée réduite $Z_n = \\frac{S_n - 200}{10}$ suit approximativement $\\mathcal{N}(0, 1)$. Ainsi :\n$$P(|S_n - 200| \\ge 20) = P(|Z_n| \\ge 2) \\approx 2(1 - \\Phi(2)) \\approx 2(1 - 0{,}9772) = 0{,}0456 \\approx 4{,}56\\%$$"
+        }
+      ],
+      "id": "olasilik_mod4",
+      "breadcrumb": "MAT206 > Modül 4",
+      "theoryContent": "<div class=\"theory-box\"><h4>Olasılık Yoğunluk Fonksiyonu (Densité de Probabilité)</h4>\nBir $f: \\mathbb{R} \\to \\mathbb{R}$ fonksiyonunun olasılık yoğunluk fonksiyonu olması için :\n<ol>\n<li>$\\forall x \\in \\mathbb{R},\\; f(x) \\ge 0$ (pozitiflik)</li>\n<li>$f$ parçalı sürekli (continue par morceaux)</li>\n<li>$\\int_{-\\infty}^{+\\infty} f(x)\\,dx = 1$ (normalizasyon)</li>\n</ol>\nBirikimli dağılım fonksiyonu (Fonction de répartition) : $F_X(x) = P(X \\le x) = \\int_{-\\infty}^x f(t)\\,dt$ olup $f$'nin sürekli olduğu her noktada $F_X'(x) = f(x)$ eşitliğini sağlar.</div>\n<div class=\"theorem-box\"><h4>Üstel $\\mathcal{E}(\\lambda)$, Normal $\\mathcal{N}(\\mu, \\sigma^2)$ ve Merkezi Limit Teoremi</h4>\n<ul>\n<li><strong>Üstel Dağılım $X \\sim \\mathcal{E}(\\lambda)$ :</strong> $f(x) = \\lambda e^{-\\lambda x}\\,\\mathbb{I}_{[0, +\\infty[}(x)$, $\\quad E[X] = \\frac{1}{\\lambda}, \\quad V(X) = \\frac{1}{\\lambda^2}$.</li>\n<li><strong>Standart Normal Dağılım $Z = \\frac{X-\\mu}{\\sigma} \\sim \\mathcal{N}(0, 1)$ :</strong> $f(z) = \\frac{1}{\\sqrt{2\\pi}}e^{-z^2/2}$, simetri özelliği $\\Phi(-z) = 1 - \\Phi(z)$.</li>\n<li><strong>Bienaymé-Tchebychev Eşitsizliği :</strong> $\\forall \\epsilon > 0,\\; P(|X - E[X]| \\ge \\epsilon) \\le \\frac{V(X)}{\\epsilon^2}$.</li>\n<li><strong>Merkezi Limit Teoremi (Théorème Central Limite) :</strong> Bağımsız ve aynı dağılımlı $(X_i)$ dizisi için $\\frac{S_n - n\\mu}{\\sigma\\sqrt{n}} \\xrightarrow{\\mathcal{L}} \\mathcal{N}(0, 1)$.</li>\n</ul></div>"
     }
+  }
 };

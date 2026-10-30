@@ -1,0 +1,73 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[turkish]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=1.8cm}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usepackage{xcolor}
+
+\title{\vspace{-1.2cm}\textbf{\Huge MAT206 - Olasılık Teorisi Master Özeti}\\\Large (Fiche Complète de Révision --- Probabilités Discrètes \& Continues)}
+\author{\textbf{Université Galatasaray} --- Matematik Lisans Programı}
+\date{\small Kombinatorik, Kolmogorov Aksiyomları, Bayes, Kesikli ve Sürekli Dağılımlar}
+
+\begin{document}
+\shorthandoff{=}
+\maketitle
+\vspace{-0.5cm}
+
+\section*{BÖLÜM 1: Sayma Yöntemleri ve Kombinatorik Karar Ağacı (Dénombrement)}
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=\textbf{Seçim Modeli Nasıl Belirlenir? (Tirages dans une Urne)}]
+$n$ elemanlı bir kümeden $p$ eleman seçilirken \textbf{sıra} ve \textbf{tekrar} durumuna göre 3 temel model vardır:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Sıralı ve İadeli Çekiliş (Tirages successifs avec remise --- $p$-listes):}
+    \[ N = n^p \]
+    \item \textbf{Sıralı ve İadesiz Çekiliş (Tirages successifs sans remise --- Arrangements):}
+    \[ A_n^p = \frac{n!}{(n-p)!} \quad (\text{Özel durum } p=n \text{ için Permütasyon: } P_n = n!) \]
+    \item \textbf{Eşzamanlı Çekiliş / Sırasız Seçim (Tirage simultané --- Combinaisons):}
+    \[ C_n^p = \binom{n}{p} = \frac{n!}{p!(n-p)!} \]
+\end{enumerate}
+\end{tcolorbox}
+
+\section*{BÖLÜM 2: Kolmogorov Aksiyomları, Koşullu Olasılık ve Bayes}
+
+\begin{tcolorbox}[colback=purple!5!white,colframe=purple!75!black,title=\textbf{Olasılık Uzayı $(\Omega, \mathcal{F}, P)$ ve Temel Teoremler}]
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Poincaré (İçerme-Dışlama) Formülü:}
+    \[ P(A \cup B) = P(A) + P(B) - P(A \cap B) \]
+    \item \textbf{Koşullu Olasılık (Probabilité Conditionnelle):} $P(B) > 0$ için:
+    \[ P(A \mid B) = \frac{P(A \cap B)}{P(B)} \iff P(A \cap B) = P(A \mid B) P(B) \]
+    \item \textbf{Tam Olasılık Formülü (Formule des Probabilités Totales):} $(B_i)_{i=1}^n$ örneklem uzayının bir parçalanışı ($\Omega = \bigsqcup B_i$) ise:
+    \[ P(A) = \sum_{i=1}^n P(A \cap B_i) = \sum_{i=1}^n P(A \mid B_i) P(B_i) \]
+    \item \textbf{Bayes Teoremi (Nedenlerin Olasılığı):}
+    \[ P(B_k \mid A) = \frac{P(A \mid B_k) P(B_k)}{\sum_{i=1}^n P(A \mid B_i) P(B_i)} \]
+    \item \textbf{Bağımsızlık (Indépendance):} $A$ ve $B$ bağımsızdır $\iff P(A \cap B) = P(A)P(B)$. (\textit{Uyarı:} Ayrıklık $A \cap B = \emptyset$ ile bağımsızlık birbirine karıştırılmamalıdır!)
+\end{itemize}
+\end{tcolorbox}
+
+\section*{BÖLÜM 3: Klasik Kesikli ve Sürekli Dağılımlar Tablosu}
+
+\begin{tcolorbox}[colback=teal!5!white,colframe=teal!75!black,title=\textbf{Standart Dağılımlar, Beklenen Değer $E[X]$ ve Varyans $V(X)$}]
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Bernoulli $\mathcal{B}(p)$:} $P(X=1)=p, P(X=0)=1-p$. $\quad E[X] = p, \quad V(X) = p(1-p)$.
+    \item \textbf{Binom $\mathcal{B}(n, p)$:} $P(X=k) = \binom{n}{k} p^k (1-p)^{n-k}$. $\quad E[X] = np, \quad V(X) = np(1-p)$.
+    \item \textbf{Poisson $\mathcal{P}(\lambda)$:} $P(X=k) = e^{-\lambda} \frac{\lambda^k}{k!}$ ($k \in \mathbb{N}$). $\quad E[X] = \lambda, \quad V(X) = \lambda$.
+    \item \textbf{Geometrik $\mathcal{G}(p)$:} $P(X=k) = (1-p)^{k-1} p$ ($k \ge 1$). $\quad E[X] = \frac{1}{p}, \quad V(X) = \frac{1-p}{p^2}$.
+    \item \textbf{Üstel (Exponentielle) $\mathcal{E}(\lambda)$:} $f(x) = \lambda e^{-\lambda x} \mathbb{I}_{[0, +\infty[}(x)$. $\quad E[X] = \frac{1}{\lambda}, \quad V(X) = \frac{1}{\lambda^2}$.
+    \item \textbf{Normal (Gauss) $\mathcal{N}(\mu, \sigma^2)$:} $Z = \frac{X-\mu}{\sigma} \sim \mathcal{N}(0, 1)$, $\quad \Phi(-z) = 1 - \Phi(z)$.
+\end{enumerate}
+\end{tcolorbox}
+
+\section*{BÖLÜM 4: Fransızca Sınav Jeton Cümleleri (Tam Puan Kalıpları)}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Eş-olasılık İçin:} \textit{"Le tirage étant simultané et les boules indiscernables au toucher, il y a équiprobabilité des tirages. Pour tout événement $A$, $P(A) = \frac{\text{Card}(A)}{\text{Card}(\Omega)}$."}
+    \item \textbf{Tam Olasılık İçin:} \textit{"La famille $(B_1, \dots, B_n)$ forme un système complet d'événements de probabilités non nulles. D'après la formule des probabilités totales : $P(A) = \sum_{i=1}^n P(A \mid B_i)P(B_i)$."}
+    \item \textbf{Bayes İçin:} \textit{"D'après la formule de Bayes, la probabilité a posteriori de $B_k$ sachant $A$ est donnée par $P(B_k \mid A) = \frac{P(A \mid B_k)P(B_k)}{P(A)}$."}
+    \item \textbf{Binom Modelini Gerekçelendirme:} \textit{"On répète $n$ épreuves de Bernoulli identiques et indépendantes, de paramètre de succès $p$. La variable aléatoire $X$ comptant le nombre de succès suit donc la loi binomiale $\mathcal{B}(n, p)$."}
+    \item \textbf{Yoğunluk Fonksiyonu Doğrulama:} \textit{"La fonction $f$ est positive et continue par morceaux sur $\mathbb{R}$, et $\int_{-\infty}^{+\infty} f(x)\,dx = 1$. C'est donc bien une densité de probabilité."}
+\end{itemize}
+
+\end{document}
+
