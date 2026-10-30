@@ -56,7 +56,7 @@ async function ensureCourseLoaded(courseKey) {
     loadedCoursePromises[courseKey] = (async () => {
         try {
             if (window.location.protocol !== 'file:') {
-                const res = await fetch(`data/courses/${courseKey}.json?v=20`);
+                const res = await fetch(`data/courses/${courseKey}.json?v=21`);
                 if (res.ok) {
                     const data = await res.json();
                     window.COURSES_DB[courseKey] = data;
@@ -68,7 +68,7 @@ async function ensureCourseLoaded(courseKey) {
         }
         
         try {
-            await loadScriptAsync(`data/courses/${courseKey}.js?v=20`);
+            await loadScriptAsync(`data/courses/${courseKey}.js?v=21`);
             if (window.COURSES_DB[courseKey]) {
                 return window.COURSES_DB[courseKey];
             }
@@ -1099,7 +1099,7 @@ function triggerManualSync() {
                 const isCurrent = (activeFilter === cKey);
                 tabsHTML += `
                     <button class="btn-stepper ${isCurrent ? 'primary' : 'secondary'}" style="padding: 6px 14px; font-size: 0.82rem;" onclick="openUnresolvedPool('${cKey}')">
-                        ${c.icon} ${c.code} (${countsPerCourse[cKey] || 0})
+                        ${window.getIcon ? (window.getIcon(c.icon) || c.icon) : c.icon} ${c.code} (${countsPerCourse[cKey] || 0})
                     </button>
                 `;
             });
@@ -1118,11 +1118,12 @@ function triggerManualSync() {
             const headerTitle = activeFilter === 'all' ? 'Tüm Derslerde Çözülecek Sorular' : `${COURSES_DB[activeFilter]?.code} Çözülecek Sorular Listesi`;
 
             main.innerHTML = `
-                <div class="content-header">
+                <div class="content-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
                     <div>
                         <div class="breadcrumbs">${COURSES_DB[activeCourseKey]?.code || 'Portal'} > Sınav Araçları > Çözülecek Sorular</div>
                         <h1 class="content-title">${window.ICONS ? window.ICONS.compass : ""} ${headerTitle} (${displayedCount} Soru Kaldı)</h1>
                     </div>
+                    ${displayedCount > 0 ? `<button class="btn-stepper primary" onclick="jumpToRandomUnresolved('${activeFilter}')">${window.ICONS ? window.ICONS.dice : "🎲"} Rastgele Bir Soruya Git</button>` : ''}
                 </div>
 
                 <div class="academic-card">
@@ -1137,7 +1138,32 @@ function triggerManualSync() {
             renderMath();
         }
 
-        
+        function jumpToRandomUnresolved(filterKey = null) {
+            const courseKeys = Object.keys(COURSES_DB);
+            const activeFilter = filterKey === 'all' ? 'all' : (filterKey || activeCourseKey);
+            const coursesToScan = activeFilter === 'all' ? courseKeys : [activeFilter];
+            const candidates = [];
+            coursesToScan.forEach(cKey => {
+                const c = COURSES_DB[cKey];
+                if (!c) return;
+                let solved = [];
+                try {
+                    const raw = localStorage.getItem(cKey + '_solved_ex') || (cKey === 'mat204_grup' ? localStorage.getItem('mat204_solved_ex') : null);
+                    solved = raw ? JSON.parse(raw) : [];
+                } catch(e) {}
+                Object.keys(c.modules).forEach(modKey => {
+                    c.modules[modKey].exercises.forEach((ex, idx) => {
+                        if (!solved.includes(ex.id)) {
+                            candidates.push({ cKey, modKey, idx });
+                        }
+                    });
+                });
+            });
+            if (candidates.length === 0) return;
+            const pick = candidates[Math.floor(Math.random() * candidates.length)];
+            switchCourseAndJump(pick.cKey, pick.modKey, pick.idx);
+        }
+
 // ================= FLOATING TOAST & CLIPBOARD SYSTEM =================
 function showPortalToast(msg, duration = 2400) {
     let toast = document.getElementById('portal-toast');
@@ -1563,47 +1589,105 @@ En reportant dans le numérateur, on obtient le Théorème de Bayes. $\\blacksqu
                 ];
             }
 
-            // Default: mat204_grup
+            // Default: mat204_grup — 8 Essential GSU Exam Theorem Proofs
             return [
                 {
-                    title: "Théorème 1 : $g^n = e \\iff m \\mid n$ (où $m = o(g)$)",
+                    title: "Théorème 1 : Lemme Fondamental de Divisibilité ($g^n = e \\iff m \\mid n$)",
                     stmt: "Soit $g \\in G$ d'ordre $m = o(g)$. Alors $g^n = e$ si et seulement si $m$ divise $n$.",
-                    proof: `<strong>(⇐)</strong> Si $m \\mid n$, alors $n = m \\cdot k$. D'où $g^n = (g^m)^k = e^k = e$.<br><br>
+                    proof: `<strong>(⇐)</strong> Si $m \\mid n$, alors il existe $k \\in \\mathbb{Z}$ tel que $n = m \\cdot k$. D'où $g^n = (g^m)^k = e^k = e$.<br><br>
 <strong>(⇒)</strong> Supposons $g^n = e$. Effectuons la division euclidienne de $n$ par $m$ :
 <div class="math-callout">$$n = m \\cdot q + r \\quad \\text{avec} \\quad 0 \\leq r < m$$</div>
 Alors $e = g^n = g^{mq+r} = (g^m)^q g^r = e^q g^r = g^r$.<br>
-Si $r > 0$, cela contredit la minimalité de $m = o(g)$ (qui est le plus petit entier strictement positif annulant la puissance de $g$).  
-Donc nécessairement $\\mathbf{r = 0} \\implies \\mathbf{m \\mid n}$. $\\blacksquare$`
+Si $r > 0$, cela contredit la minimalité de $m = o(g)$ (qui est le plus petit entier strictement positif tel que $g^m = e$).  
+Donc nécessairement $\\mathbf{r = 0} \\implies n = mq \\implies \\mathbf{m \\mid n}$. $\\blacksquare$`
                 },
                 {
-                    title: "Théorème 2 : Tout sous-groupe d'un groupe cyclique est cyclique",
+                    title: "Théorème 2 : Tout Sous-groupe d'un Groupe Cyclique est Cyclique",
                     stmt: "Soit $G = \\langle a \\rangle$ un groupe cyclique et $H \\leq G$ un sous-groupe. Alors $H$ est lui-même cyclique.",
                     proof: `Si $H = \\{e\\}$, $H = \\langle e \\rangle$ est trivialement cyclique.<br>
-Supposons $H \\neq \\{e\\}$. L'ensemble $S = \\{ k \\in \\mathbb{N}^* \\mid a^k \\in H \\}$ est non vide.  
-Par le principe du bon ordre, posons $\\mathbf{m = \\min(S)}$.  
-Montrons que $\\mathbf{H = \\langle a^m \\rangle}$ :<br>
-L'inclusion $\\langle a^m \\rangle \\subseteq H$ est évidente car $a^m \\in H$ et $H$ est stable par puissance.<br>
-Réciproquement, soit $h \\in H$. Comme $h \\in G$, il existe $k \\in \\mathbb{Z}$ tel que $h = a^k$.  
+Supposons $H \\neq \\{e\\}$. L'ensemble $S = \\{ k \\in \\mathbb{N}^* \\mid a^k \\in H \\}$ est une partie non vide de $\\mathbb{N}^*$.  
+Par le principe du bon ordre, posons $\\mathbf{m = \\min(S)}$. Montrons par double inclusion que $\\mathbf{H = \\langle a^m \\rangle}$ :<br>
+1) L'inclusion $\\langle a^m \\rangle \\subseteq H$ est immédiate car $a^m \\in H$ et $H$ est un sous-groupe.<br>
+2) Réciproquement, soit $h \\in H$. Comme $h \\in G = \\langle a \\rangle$, il existe $k \\in \\mathbb{Z}$ tel que $h = a^k$.  
 Effectuons la division euclidienne de $k$ par $m$ :
 $$ k = m \\cdot q + r \\quad \\text{avec} \\quad 0 \\leq r < m $$
 On a alors : $a^r = a^{k - mq} = a^k \\cdot (a^m)^{-q} = h \\cdot (a^m)^{-q} \\in H$.  
-Si $r > 0$, $r \\in S$ et $r < m$, ce qui contredit la définition de $m$ comme le minimum de $S$.  
-Donc $\\mathbf{r = 0}$, ce qui prouve que $k = mq$ et $h = (a^m)^q \\in \\langle a^m \\rangle$.  
-<div class="exam-conclusion"><strong>Conclusion :</strong> $H = \\langle a^m \\rangle$ est donc cyclique et engendré par la plus petite puissance positive présente dans $H$. $\\blacksquare$</div>`
+Si $r > 0$, alors $r \\in S$ avec $r < m$, ce qui contredit la définition de $m = \\min(S)$.  
+Donc $\\mathbf{r = 0}$, d'où $k = mq$ et $h = (a^m)^q \\in \\langle a^m \\rangle$.  
+<div class="exam-conclusion"><strong>Conclusion :</strong> $H = \\langle a^m \\rangle$ est cyclique, engendré par la plus petite puissance strictement positive présente dans $H$. $\\blacksquare$</div>`
                 },
                 {
-                    title: "Théorème 3 : Théorème de Lagrange (L'ordre divise l'ordre du groupe)",
-                    stmt: "Soit $G$ un groupe fini et $H \\leq G$ un sous-groupe. Alors l'ordre de $H$ divise l'ordre de $G$ : $|G| = |H| \\cdot [G:H]$.",
+                    title: "Théorème 3 : Théorème de Lagrange ($|G| = [G:H] \\cdot |H|$) & Corollaires",
+                    stmt: "Soit $G$ un groupe fini et $H \\leq G$ un sous-groupe. Alors $|H|$ divise $|G|$. En particulier, pour tout $x \\in G$, $o(x) \\mid |G|$ et $x^{|G|} = e$.",
                     proof: `Définissons sur $G$ la relation binaire : $x \\sim y \\iff x^{-1}y \\in H$.  
 C'est une relation d'équivalence :
-1) Réflexive : $x^{-1}x = e \\in H$.  
-2) Symétrique : $x^{-1}y \\in H \\implies (x^{-1}y)^{-1} = y^{-1}x \\in H$.  
-3) Transitive : $x^{-1}y \\in H$ et $y^{-1}z \\in H \\implies (x^{-1}y)(y^{-1}z) = x^{-1}z \\in H$.  
+1) <strong>Réflexive :</strong> $x^{-1}x = e \\in H$.  
+2) <strong>Symétrique :</strong> $x^{-1}y \\in H \\implies (x^{-1}y)^{-1} = y^{-1}x \\in H$.  
+3) <strong>Transitive :</strong> $x^{-1}y \\in H$ et $y^{-1}z \\in H \\implies (x^{-1}y)(y^{-1}z) = x^{-1}z \\in H$.  
 La classe d'équivalence de $x$ est la classe à gauche $\\bar{x} = xH = \\{ xh \\mid h \\in H \\}$.  
-L'application $h \\mapsto xh$ est une bijection de $H$ sur $xH$, donc chaque classe possède exactement $|H|$ éléments.  
-Puisque les classes d'équivalence forment une partition de l'ensemble fini $G$, la réunion disjointe des $k$ classes donne :
+L'application $\\phi_x : H \\to xH, \\; h \\mapsto xh$ est bijective (d'inverse $y \\mapsto x^{-1}y$), donc $|xH| = |H|$.  
+Puisque les classes d'équivalence forment une partition de $G$ en $k = [G:H]$ classes disjointes de même cardinal $|H|$ :
 $$ |G| = \\sum_{i=1}^k |x_i H| = k \\cdot |H| = [G:H] \\cdot |H| $$
-D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
+<strong>Corollaire :</strong> Pour $x \\in G$, le sous-groupe cyclique $H = \\langle x \\rangle$ est d'ordre $|H| = o(x)$, donc $o(x) \\mid |G|$, et $x^{|G|} = (x^{o(x)})^{|G|/o(x)} = e$. $\\blacksquare$`
+                },
+                {
+                    title: "Théorème 4 : Produit de Deux Sous-groupes ($HK \\le G \\iff HK = KH$)",
+                    stmt: "Soient $H, K \\le G$ deux sous-groupes d'un groupe $G$. Alors $HK = \\{hk \\mid h \\in H, k \\in K\\}$ est un sous-groupe de $G$ si et seulement si $HK = KH$.",
+                    proof: `<strong>(⇒)</strong> Supposons $HK \\le G$.<br>
+• Soit $kh \\in KH$. Son inverse est $(kh)^{-1} = h^{-1}k^{-1} \\in HK$. Comme $HK$ est un sous-groupe, il est stable par passage à l'inverse, donc $kh = ((kh)^{-1})^{-1} \\in HK$. D'où $KH \\subseteq HK$.<br>
+• Réciproquement, soit $x \\in HK$. Comme $HK \\le G$, son inverse $x^{-1} \\in HK$, donc $x^{-1} = hk \\implies x = (hk)^{-1} = k^{-1}h^{-1} \\in KH$. D'où $HK \\subseteq KH$, et finalement $\\mathbf{HK = KH}$.<br><br>
+<strong>(⇐)</strong> Supposons $HK = KH$. Vérifions le critère de sous-groupe :<br>
+1) $e = e \\cdot e \\in HK$, donc $HK \\neq \\emptyset$.<br>
+2) Soient $x = h_1 k_1 \\in HK$ et $y = h_2 k_2 \\in HK$. Alors :
+$$ xy^{-1} = h_1 k_1 (h_2 k_2)^{-1} = h_1 (k_1 k_2^{-1}) h_2^{-1} $$
+Or $(k_1 k_2^{-1}) h_2^{-1} \\in KH = HK$, donc il existe $h_3 \\in H, k_3 \\in K$ tels que $(k_1 k_2^{-1}) h_2^{-1} = h_3 k_3$.  
+Alors $xy^{-1} = (h_1 h_3) k_3 \\in HK$. Par conséquent, $\\mathbf{HK \\le G}$. $\\blacksquare$`
+                },
+                {
+                    title: "Théorème 5 : Tout Groupe Cyclique d'Ordre Premier $p$ est Simple",
+                    stmt: "Soit $G$ un groupe d'ordre premier $p$ ($|G| = p$). Alors $G$ est cyclique et simple (ses seuls sous-groupes normaux sont $\\{e\\}$ et $G$).",
+                    proof: `Soit $H \\le G$ un sous-groupe quelconque de $G$.  
+D'après le Théorème de Lagrange, l'ordre $|H|$ divise l'ordre du groupe $|G| = p$.  
+Puisque $p$ est un nombre premier, ses seuls diviseurs positifs sont $1$ et $p$ :
+$$ |H| = 1 \\implies H = \\{e\\}, \\qquad |H| = p \\implies H = G $$
+En particulier, pour tout élément $a \\in G \\setminus \\{e\\}$, on a $|\\langle a \\rangle| > 1$, donc $|\\langle a \\rangle| = p$ et $G = \\langle a \\rangle$ est cyclique (engendré par n'importe lequel de ses $p-1$ éléments non neutres).  
+Comme $G$ ne possède aucun sous-groupe propre non trivial, ses seuls sous-groupes normaux sont $\\{e\\}$ et $G$ : $G$ est donc un <strong>groupe simple</strong>. $\\blacksquare$`
+                },
+                {
+                    title: "Théorème 6 : Le Centre $Z(G)$ est un Sous-groupe Normal ($Z(G) \\triangleleft G$)",
+                    stmt: "Pour tout groupe $G$, le centre $Z(G) = \\{ z \\in G \\mid \\forall x \\in G, \\; zx = xz \\}$ est un sous-groupe normal de $G$.",
+                    proof: `1) <strong>Non-vacuité :</strong> Pour tout $x \\in G$, $ex = xe = x$, donc $e \\in Z(G)$ et $Z(G) \\neq \\emptyset$.<br>
+2) <strong>Stabilité par produit et inverse :</strong> Soient $a, b \\in Z(G)$ et $x \\in G$ quelconque.<br>
+Puisque $b \\in Z(G)$, on a $bx = xb$. En multipliant à gauche et à droite par $b^{-1}$, on obtient $\\mathbf{xb^{-1} = b^{-1}x}$.<br>
+Calculons alors $(ab^{-1})x$ :
+$$ (ab^{-1})x = a(b^{-1}x) = a(xb^{-1}) = (ax)b^{-1} = (xa)b^{-1} = x(ab^{-1}) $$
+Ainsi $ab^{-1} \\in Z(G)$, ce qui prouve que $Z(G) \\le G$.<br>
+3) <strong>Normalité :</strong> Pour tout $g \\in G$ et tout $z \\in Z(G)$, $gzg^{-1} = zgg^{-1} = z \\in Z(G)$, donc $\\mathbf{Z(G) \\triangleleft G}$. $\\blacksquare$`
+                },
+                {
+                    title: "Théorème 7 : Tout Sous-groupe d'Indice 2 est Normal ($[G:H]=2 \\implies H \\triangleleft G$)",
+                    stmt: "Soit $G$ un groupe et $H \\le G$ un sous-groupe d'indice $[G : H] = 2$. Alors $H$ est un sous-groupe normal de $G$ ($H \\triangleleft G$).",
+                    proof: `Puisque $[G : H] = 2$, il existe exactement $2$ classes à gauche disjointes et $2$ classes à droite disjointes qui partitionnent $G$.<br>
+La classe de l'élément neutre $e$ est $eH = He = H$.<br>
+Soit $g \\in G$ quelconque :<br>
+• <strong>Cas 1 ($g \\in H$) :</strong> Alors $gH = H = Hg$.<br>
+• <strong>Cas 2 ($g \\notin H$) :</strong> La classe à gauche $gH$ est disjointe de $H$, et comme il n'y a que 2 classes formant une partition de $G$, la seconde classe est nécessairement le complémentaire de $H$ dans $G$ :
+$$ gH = G \\setminus H $$
+Par le même raisonnement sur la partition en classes à droite, $Hg$ est disjointe de $H$, donc :
+$$ Hg = G \\setminus H $$
+On en déduit que $\\mathbf{\\forall g \\in G, \\; gH = Hg}$, ce qui démontre que $\\mathbf{H \\triangleleft G}$. $\\blacksquare$`
+                },
+                {
+                    title: "Théorème 8 : Injectivité par le Noyau ($\\ker f = \\{e_G\\}$) & 1er Théorème d'Isomorphisme",
+                    stmt: "Soit $f : G \\to G'$ un morphisme de groupes. Alors $\\ker f \\triangleleft G$, et $f$ est injectif si et seulement si $\\ker f = \\{e_G\\}$. De plus, $G/\\ker f \\cong \\operatorname{Im} f$.",
+                    proof: `<strong>1. Normalité du noyau :</strong> Pour tout $g \\in G$ et $x \\in \\ker f$, on a :
+$$ f(gxg^{-1}) = f(g)f(x)f(g)^{-1} = f(g) e_{G'} f(g)^{-1} = e_{G'} \\implies gxg^{-1} \\in \\ker f \\implies \\mathbf{\\ker f \\triangleleft G} $$
+<strong>2. Critère d'injectivité :</strong><br>
+• <strong>(⇒)</strong> Si $f$ est injectif et $x \\in \\ker f$, alors $f(x) = e_{G'} = f(e_G) \\implies x = e_G$, d'où $\\ker f = \\{e_G\\}$.<br>
+• <strong>(⇐)</strong> Supposons $\\ker f = \\{e_G\\}$. Soient $x, y \\in G$ tels que $f(x) = f(y)$. Alors :
+$$ f(xy^{-1}) = f(x)f(y)^{-1} = e_{G'} \\implies xy^{-1} \\in \\ker f = \\{e_G\\} \\implies xy^{-1} = e_G \\implies x = y $$
+Donc $f$ est injectif.<br>
+<strong>3. Premier Théorème d'Isomorphisme :</strong> L'application quotient $\\bar{f} : G/\\ker f \\to \\operatorname{Im} f$ définie par $\\bar{f}(x\\ker f) = f(x)$ est un morphisme bien défini, surjectif par construction et injectif car $\\bar{f}(x\\ker f) = e_{G'} \\iff x \\in \\ker f \\iff x\\ker f = \\ker f$. D'où $\\mathbf{G/\\ker f \\cong \\operatorname{Im} f}$. $\\blacksquare$`
                 }
             ];
         }
@@ -1639,14 +1723,24 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 ];
             }
 
-            // Default: mat204_grup
+            // Default: mat204_grup — 16 High-Yield French Exam Redaction Sentences
             return [
-                { fr: "Soient $a, b \\in G$ deux éléments arbitraires...", tr: "İspata başlarken: G'den rastgele alınan iki eleman olsun" },
-                { fr: "Procédons par double implication ($\\implies$ et $\\impliedby$)...", tr: "Çift yönlü gerektirmeyle ilerleyelim" },
-                { fr: "Effectuons la division euclidienne de $n$ par $m$...", tr: "n'in m'ye kalanlı bölmesini yapalım" },
-                { fr: "Puisque les supports sont disjoints, ces cycles commutent.", tr: "Destekleri ayrık olduğundan bu döngüler değişmelidir" },
-                { fr: "Ce qui contredit la minimalité de $m$. Absurde.", tr: "m'in minimalitesiyle çelişir. Çelişki!" },
-                { fr: "Par conséquent / On en conclut que...", tr: "Dolayısıyla / Sonuç olarak..." }
+                { fr: "Soient $a, b \\in G$ deux éléments quelconques du groupe $G$.", tr: "İspata başlarken: G grubundan alınan rastgele iki eleman olsun." },
+                { fr: "Procédons par double implication ($\\implies$ et $\\impliedby$) / par double inclusion.", tr: "Çift yönlü gerektirme (⟺) veya çift yönlü kapsama (⊆ ve ⊇) ile ilerleyelim." },
+                { fr: "Vérifions que $H$ est un sous-groupe de $G$ à l'aide du critère en une étape :", tr: "Tek adımlı alt grup testiyle H'nin G'nin alt grubu olduğunu doğrulayalım:" },
+                { fr: "Puisque $e_G \\in H$, l'ensemble $H$ est non vide ($H \\neq \\emptyset$).", tr: "Birim eleman H'de olduğundan H kümesi boş küme değildir (Alt grup ispatının zorunlu 1. adımı!)." },
+                { fr: "Soient $x, y \\in H$. Montrons que $xy^{-1} \\in H$ (ou $x - y \\in H$ en notation additive).", tr: "H'den alınan x, y için xy⁻¹ ∈ H (toplamsal grupta x - y ∈ H) olduğunu gösterelim." },
+                { fr: "Effectuons la division euclidienne de $n$ par $m$ : $n = mq + r$ avec $0 \\le r < m$.", tr: "n'in m'ye Öklid kalanlı bölmesini yapalım: 0 ≤ r < m olmak üzere n = mq + r." },
+                { fr: "Si $r > 0$, cela contredit la minimalité de $m = o(g)$ (ou $m = \\min S$). Donc $r = 0$.", tr: "Eğer r > 0 olsaydı m'in en küçük pozitif tam sayı olmasıyla çelişirdi. O halde r = 0'dır." },
+                { fr: "D'après le théorème de Bézout, puisque $\\gcd(a, n) = 1$, il existe $u, v \\in \\mathbb{Z}$ tels que $au + nv = 1$.", tr: "Bézout teoremine göre gcd(a,n)=1 olduğundan au + nv = 1 sağlayan u, v ∈ Z tam sayıları vardır." },
+                { fr: "D'après le théorème de Lagrange, l'ordre de tout sous-groupe (et de tout élément) divise $|G|$.", tr: "Lagrange teoremine göre her alt grubun (ve her elemanın) mertebesi grup mertebesi |G|'yi tam böler." },
+                { fr: "Puisque $p$ est un nombre premier, ses seuls diviseurs positifs sont $1$ et $p$.", tr: "p asal bir sayı olduğundan pozitif bölenleri yalnızca 1 ve p'dir." },
+                { fr: "Décomposons la permutation $\\sigma$ en produit de cycles à supports deux à deux disjoints.", tr: "σ permütasyonunu ikişer ikişer ayrık destekli döngülerin çarpımına ayıralım." },
+                { fr: "Puisque les supports des cycles sont disjoints, ces cycles commutent et $o(\\sigma) = \\operatorname{ppcm}(\\ell_1, \\dots, \\ell_r)$.", tr: "Döngülerin destekleri ayrık olduğundan birbirleriyle değişmelidirler ve mertebe uzunlukların EKOK'udur." },
+                { fr: "Montrons que $f : G \\to G'$ est un morphisme de groupes : pour tous $x, y \\in G$, calculons $f(xy)$.", tr: "f fonksiyonunun grup morfizması olduğunu gösterelim: her x, y ∈ G için f(xy)'yi hesaplayalım." },
+                { fr: "Le morphisme $f$ est injectif si et seulement si son noyau est réduit au neutre : $\\ker(f) = \\{e_G\\}$.", tr: "f morfizması birebirdir (injektiftir) ancak ve ancak çekirdeği sadece birim elemandan oluşuyorsa." },
+                { fr: "Puisque $[G : H] = 2$, les classes à gauche et à droite coïncident ($gH = G \\setminus H = Hg$), donc $H \\triangleleft G$.", tr: "İndeks [G:H]=2 olduğundan sol ve sağ yan kümeler çakışır, dolayısıyla H normal alt gruptur." },
+                { fr: "D'après le premier théorème d'isomorphisme, on en conclut que $G / \\ker(f) \\cong \\operatorname{Im}(f)$.", tr: "Birinci İzomorfizma Teoremi gereğince G / ker(f) ≅ Im(f) olduğu sonucuna varılır." }
             ];
         }
 
@@ -1690,6 +1784,22 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             } catch (e) {}
         }
 
+        function toggleSingleProofBody(idx) {
+            const el = document.getElementById('proof-box-' + idx);
+            if (!el) return;
+            el.style.display = (el.style.display === 'none') ? 'block' : 'none';
+        }
+
+        function toggleAllProofBodies() {
+            const boxes = document.querySelectorAll('.proof-toggle-box');
+            if (!boxes.length) return;
+            const anyVisible = Array.from(boxes).some(b => b.style.display !== 'none');
+            boxes.forEach(b => {
+                b.style.display = anyVisible ? 'none' : 'block';
+            });
+            showPortalToast(anyVisible ? "🎯 Kendini Test Et Modu: İspatlar gizlendi" : "👁️ Tüm model ispatlar gösterildi");
+        }
+
         // ================= SPECIAL VIEWS =================
         function loadSpecialView(viewKey) {
             currentViewMode = 'special';
@@ -1707,10 +1817,15 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 proofs.forEach((p, idx) => {
                     proofsHTML += `
                         <div class="academic-card">
-                            <div class="question-statement">${p.title}</div>
-                            <div style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 14px;"><strong>Teorem Önermesi:</strong> ${p.stmt}</div>
-                            <div class="exam-sheet">
-                                <div class="exam-sheet-header"><span class="exam-sheet-title">${window.ICONS ? window.ICONS.listTodo : ""} Model İspat ve Puan Baremi</span></div>
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap;">
+                                <div class="question-statement" style="margin-bottom: 6px;">${p.title}</div>
+                                <button class="btn-stepper secondary" style="padding: 4px 10px; font-size: 0.78rem;" onclick="toggleSingleProofBody(${idx})">
+                                    İspatı Gizle / Göster
+                                </button>
+                            </div>
+                            <div style="font-size: 0.96rem; color: var(--text-secondary); margin-bottom: 14px; padding: 10px 14px; background: rgba(37,99,235,0.05); border-left: 3px solid var(--accent-blue); border-radius: 0 8px 8px 0;"><strong>Énoncé du Théorème :</strong> ${p.stmt}</div>
+                            <div class="exam-sheet proof-toggle-box" id="proof-box-${idx}">
+                                <div class="exam-sheet-header"><span class="exam-sheet-title">${window.ICONS ? window.ICONS.listTodo : ""} Resmi Sınav İspatı (Rédaction Complète)</span></div>
                                 <div class="exam-sheet-body" style="font-family: 'Newsreader', serif; font-size: 1.14rem; line-height: 1.8;">
                                     ${p.proof}
                                 </div>
@@ -1720,22 +1835,31 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 });
 
                 main.innerHTML = `
-                    <div class="content-header">
+                    <div class="content-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
                         <div>
-                            <div class="breadcrumbs">${c.code} > Sınav Araçları > Kritik İspatlar</div>
+                            <div class="breadcrumbs">${c.code} > Sınav Araçları > Kritik İspatlar (${proofs.length} Teorem)</div>
                             <h1 class="content-title">${window.ICONS ? window.ICONS.book : ""} ${c.code} Sınavında Çıkabilecek Kritik Teorem İspatları</h1>
                         </div>
+                        <button class="btn-stepper primary" onclick="toggleAllProofBodies()">
+                            ${window.ICONS ? window.ICONS.eye : "👁️"} Kendini Test Et: Tüm İspatları Gizle / Aç
+                        </button>
                     </div>
                     ${proofsHTML}
                 `;
             } else if (viewKey === 'fransizca') {
                 const phrases = getFrenchPhrasesForCourse(activeCourseKey);
                 let phrasesHTML = '';
-                phrases.forEach(item => {
+                phrases.forEach((item, idx) => {
+                    const safeCopy = item.fr.replace(/'/g, "\'");
                     phrasesHTML += `
-                        <div class="math-callout" style="padding: 14px 18px; margin-bottom: 10px;">
-                            <div style="font-size: 1.05rem; color: var(--accent-blue); font-weight: 600; margin-bottom: 4px;">• "${item.fr}"</div>
-                            <div style="font-size: 0.88rem; color: var(--text-secondary);"><span style="color: var(--accent-emerald); font-weight: 700;">Türkçe Mantığı:</span> ${item.tr}</div>
+                        <div class="math-callout" style="padding: 14px 18px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
+                            <div style="flex: 1; min-width: 220px;">
+                                <div style="font-size: 1.02rem; color: var(--accent-blue); font-weight: 600; margin-bottom: 4px;">${idx + 1}. "${item.fr}"</div>
+                                <div style="font-size: 0.88rem; color: var(--text-secondary);"><span style="color: var(--accent-emerald); font-weight: 700;">Türkçe Sınav Mantığı:</span> ${item.tr}</div>
+                            </div>
+                            <button class="btn-stepper secondary" style="padding: 4px 10px; font-size: 0.76rem; white-space: nowrap;" onclick="copyTextToClipboard('${safeCopy}', 'Fransızca ispat kalıbı kopyalandı ✓')">
+                                ${window.ICONS ? window.ICONS.copy : ""} Kalıbı Kopyala
+                            </button>
                         </div>
                     `;
                 });
@@ -2705,38 +2829,49 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
                 }
             });
 
-            const activeFilter = filterCourseKey === 'all' ? 'all' : (filterCourseKey || activeCourseKey);
+            const activeFilter = (filterCourseKey === 'all' || filterCourseKey === 'notes') ? filterCourseKey : (filterCourseKey || activeCourseKey);
 
             let poolHTML = '';
             let displayedCount = 0;
 
-            const coursesToScan = activeFilter === 'all' ? courseKeys : [activeFilter];
+            const coursesToScan = (activeFilter === 'all' || activeFilter === 'notes') ? courseKeys : [activeFilter];
 
             coursesToScan.forEach(cKey => {
                 const c = COURSES_DB[cKey];
                 if (!c) return;
                 let starredForThis = [];
+                let notesForThis = {};
                 try {
                     const raw = localStorage.getItem(cKey + '_starred_ex') || (cKey === 'mat204_grup' ? localStorage.getItem('mat204_starred_ex') : null);
                     starredForThis = raw ? JSON.parse(raw) : [];
+                } catch(e) {}
+                try {
+                    const nRaw = localStorage.getItem(cKey + '_user_notes');
+                    notesForThis = nRaw ? JSON.parse(nRaw) : {};
                 } catch(e) {}
 
                 Object.keys(c.modules).forEach(modKey => {
                     const mod = c.modules[modKey];
                     mod.exercises.forEach((ex, idx) => {
-                        if (starredForThis.includes(ex.id)) {
+                        const isStar = starredForThis.includes(ex.id);
+                        const userNote = notesForThis[ex.id] || '';
+                        const shouldShow = (activeFilter === 'notes') ? Boolean(userNote) : isStar;
+                        if (shouldShow) {
                             displayedCount++;
                             const cleanPreview = ex.enonce ? ex.enonce.replace(/<[^>]+>/g, '').slice(0, 140) + '...' : '';
+                            const subTitleText = ex.subtitle ? ` — <span style="color: var(--accent-indigo); font-weight: 600;">${ex.subtitle}</span>` : '';
+                            const noteCallout = userNote ? `<div style="margin-top: 8px; padding: 6px 10px; background: rgba(16, 185, 129, 0.08); border-left: 3px solid var(--accent-emerald); border-radius: 4px; font-size: 0.84rem; color: var(--text-main);"><strong>📝 Kişisel Notunuz:</strong> ${userNote}</div>` : '';
                             poolHTML += `
                                 <div class="pool-item" onclick="switchCourseAndJump('${cKey}', '${modKey}', ${idx})">
                                     <div>
                                         <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                                             <span style="font-size: 0.72rem; font-weight: 700; color: ${c.color}; border: 1px solid ${c.color}; padding: 1px 6px; border-radius: 4px;">${c.code}</span>
-                                            <span style="font-size: 0.76rem; font-weight: 700; color: var(--accent-amber); text-transform: uppercase;">⭐ ${mod.title.split(':')[0]}</span>
+                                            <span style="font-size: 0.76rem; font-weight: 700; color: var(--accent-amber); text-transform: uppercase;">${isStar ? '⭐ ' : ''}${mod.title.split(':')[0]}</span>
                                             <span style="font-size: 0.75rem; color: var(--text-muted);">${ex.tag || ''}</span>
                                         </div>
-                                        <h4 style="color: var(--text-main); margin-top: 6px;">${ex.name}</h4>
+                                        <h4 style="color: var(--text-main); margin-top: 6px;">${ex.name}${subTitleText}</h4>
                                         <p style="font-size: 0.86rem; color: var(--text-secondary); margin-top: 4px;">${cleanPreview}</p>
+                                        ${noteCallout}
                                     </div>
                                     <div style="display: flex; gap: 8px; align-items: center;">
                                         <button class="btn-stepper primary" style="padding: 6px 14px; font-size: 0.82rem; white-space: nowrap;">Çöz &amp; İncele ${window.ICONS ? window.ICONS.arrowRight : ""}</button>
@@ -2749,10 +2884,21 @@ D'où $|H|$ divise rigoureusement $|G|$. $\\blacksquare$`
             });
 
             // Generate tabs
+            let totalNotesCount = 0;
+            courseKeys.forEach(ck => {
+                try {
+                    const nr = localStorage.getItem(ck + '_user_notes');
+                    if (nr) totalNotesCount += Object.keys(JSON.parse(nr)).length;
+                } catch(e) {}
+            });
+
             let tabsHTML = `
                 <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 12px; margin-bottom: 16px; border-bottom: 1px solid var(--border-color);">
                     <button class="btn-stepper ${activeFilter === 'all' ? 'primary' : 'secondary'}" style="padding: 6px 14px; font-size: 0.82rem;" onclick="openStarredPool('all')">
-                        Tüm Dersler (${totalStarredAcrossAll})
+                        ⭐ Tüm Yıldızlılar (${totalStarredAcrossAll})
+                    </button>
+                    <button class="btn-stepper ${activeFilter === 'notes' ? 'primary' : 'secondary'}" style="padding: 6px 14px; font-size: 0.82rem;" onclick="openStarredPool('notes')">
+                        📝 Not Aldıklarım (${totalNotesCount})
                     </button>
             `;
             courseKeys.forEach(cKey => {
