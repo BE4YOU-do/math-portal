@@ -34,7 +34,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>Posons $A = 2n + 1$ et $B = 3n + 2$. \nCherchons à éliminer la variable $n$. Puisque le PPCM de $2$ et $3$ est $6$, choisissons $x = -3$ et $y = 2$ :\n$$\\begin{aligned}\n-3 \\cdot A + 2 \\cdot B &= -3(2n + 1) + 2(3n + 2) \\\\\n&= -6n - 3 + 6n + 4 \\\\\n&= 1\n\\end{aligned}$$\nPuisque $d \\mid A$ et $d \\mid B$, on en déduit que $d \\mid (-3A + 2B)$, ce qui implique rigoureusement que :\n$$ d \\mid 1 $$\nDans l'anneau des entiers $\\mathbb{Z}$, les seuls diviseurs de $1$ sont ses éléments inversibles, à savoir $1$ et $-1$. \nPar conséquent, on conclut que :\n$$ d \\in \\{-1, 1\\} \\implies d = \\pm 1 $$\n<em>Ce qu'il fallait démontrer (Q.E.D.).</em></p>"
                         }
                     ],
-                    "hint": "Doğrusal kombinasyon kurup $n$'yi yok etmeyi hedefle: $d \\mid A$ ve $d \\mid B \\implies d \\mid (xA + yB)$. Katsayılar $-3(2n+1) + 2(3n+2) = 1$ şeklinde belirlenmelidir."
+                    "hint": "Doğrusal kombinasyon kurup $n$'yi yok etmeyi hedefle: $d \\mid A$ ve $d \\mid B \\implies d \\mid (xA + yB)$. Katsayılar $-3(2n+1) + 2(3n+2) = 1$ şeklinde belirlenmelidir.",
+                    "subtitle": "Divisibilité et Combinaisons Linéaires ($2n+1, 3n+2$)"
                 },
                 {
                     "id": "m1_ex2",
@@ -57,7 +58,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p><strong>Conclusion:</strong> L'hypothèse initiale menant à une contradiction logique, il n'existe aucun entier $n \\in \\mathbb{Z}$ tel que $5 \\mid (n^2+2)$ et $5 \\mid (n+1)$.<br>\n<em>Ce qu'il fallait démontrer (Q.E.D.).</em></p>"
                         }
                     ],
-                    "hint": "Eğer $5 \\mid (n+1)$ ise $n \\equiv -1 \\pmod 5$. Bu değeri $n^2+2$'de yerine koy: $(-1)^2 + 2 = 3 \\not\\equiv 0 \\pmod 5$. Çelişki (contradiction) açıkça ifade edilmelidir."
+                    "hint": "Eğer $5 \\mid (n+1)$ ise $n \\equiv -1 \\pmod 5$. Bu değeri $n^2+2$'de yerine koy: $(-1)^2 + 2 = 3 \\not\\equiv 0 \\pmod 5$. Çelişki (contradiction) açıkça ifade edilmelidir.",
+                    "subtitle": "Divisibilité Simultanée ($5 \\mid n^2+2$ et $5 \\mid n+1$)"
                 },
                 {
                     "id": "m1_ex3",
@@ -76,7 +78,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "$$ n = 2m + r \\quad \\text{avec} \\quad 0 \\leq r < 2 $$<p>\nPuisque $r$ est un entier, les seules valeurs possibles pour $r$ sont $0$ et $1$.\n<ul style=\"margin-left: 22px; margin-bottom: 14px; line-height: 1.7;\">\n    <li>Si $r = 0$, alors $n = 2m$ (dans ce cas, $n$ est dit pair).\n    <li>Si $r = 1$, alors $n = 2m + 1$ (dans ce cas, $n$ est dit impair).\n</ul>\nPar conséquent, tout entier $n$ s'écrit formellement sous l'une de ces deux formes.</p>"
                         }
                     ],
-                    "hint": "Öklid bölmesinde kalan $0 \\le r < 2$ olmak zorundadır. O halde olası tek kalanlar $r=0$ ($n=2k$, çift) veya $r=1$ ($n=2k+1$, tek) dir."
+                    "hint": "Öklid bölmesinde kalan $0 \\le r < 2$ olmak zorundadır. O halde olası tek kalanlar $r=0$ ($n=2k$, çift) veya $r=1$ ($n=2k+1$, tek) dir.",
+                    "subtitle": "Division Euclidienne par 2 et Parité ($2m, 2m+1$)"
                 },
                 {
                     "id": "m1_ex4",
@@ -99,7 +102,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>Puisque $\\mathbb{Z}$ est stable par addition et multiplication, et que $k \\in \\mathbb{Z}$, le nombre :\n$$ m = 2k^2 + 5k + 4 $$\nest bien un <strong>entier relatif ($m \\in \\mathbb{Z}$)</strong>.  \nAinsi, $n^2 + 3n + 5 = 2m + 1$, ce qui prouve formellement que pour tout entier impair $n$, le nombre $n^2 + 3n + 5$ est toujours un <strong>entier impair</strong>. $\\blacksquare$</p>"
                         }
                     ],
-                    "hint": "$n = 2k+1$ yazarak aç: $(2k+1)^2 + 3(2k+1) + 5 = 4k^2 + 10k + 9 = 2(2k^2 + 5k + 4) + 1 = 2K + 1$ formuna getir ve tek olduğunu göster."
+                    "hint": "$n = 2k+1$ yazarak aç: $(2k+1)^2 + 3(2k+1) + 5 = 4k^2 + 10k + 9 = 2(2k^2 + 5k + 4) + 1 = 2K + 1$ formuna getir ve tek olduğunu göster.",
+                    "subtitle": "Parité d'un Polynôme ($n^2 + 3n + 5$)"
                 },
                 {
                     "id": "m1_ex5",
@@ -118,7 +122,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<ul style=\"margin-left: 22px; line-height: 1.7;\">\n<li><strong>Cas 1 ($n$ est pair) :</strong> Il existe $k \\in \\mathbb{Z}$ tel que $n = 2k$. Alors :<br>$$P = 2k(2k + 1) = 2 \\cdot [k(2k + 1)]$$<br>Comme $k(2k+1) \\in \\mathbb{Z}$, $P$ est un multiple de 2, donc <strong>pair</strong>.</li>\n<li><strong>Cas 2 ($n$ est impair) :</strong> Il existe $k \\in \\mathbb{Z}$ tel que $n = 2k + 1$. Alors $n + 1 = 2k + 2 = 2(k + 1)$, d'où :<br>$$P = (2k + 1) \\cdot 2(k + 1) = 2 \\cdot [(2k + 1)(k + 1)]$$<br>Comme $(2k+1)(k+1) \\in \\mathbb{Z}$, $P$ est également <strong>pair</strong>.</li>\n</ul>\n<p><strong>Conclusion :</strong> Dans tous les cas, le produit de deux entiers consécutifs est toujours pair.</p>"
                         }
                     ],
-                    "hint": "İki ardışık tam sayıdan biri mutlaka çifttir. $n(n+1)$ çarpımında $n$ çift ise $2k(2k+1)$, tek ise $(2k+1)(2k+2) = 2(2k+1)(k+1)$ olup her durumda $2$'ye bölünür."
+                    "hint": "İki ardışık tam sayıdan biri mutlaka çifttir. $n(n+1)$ çarpımında $n$ çift ise $2k(2k+1)$, tek ise $(2k+1)(2k+2) = 2(2k+1)(k+1)$ olup her durumda $2$'ye bölünür.",
+                    "subtitle": "Produit de Deux Entiers Consécutifs ($n(n+1)$)"
                 },
                 {
                     "id": "m1_ex6",
@@ -137,7 +142,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>En appliquant l'invariance du PGCD à chaque étape de la descente :</p>$$\\gcd(525, 231) = \\gcd(231, 63) = \\gcd(63, 42) = \\gcd(42, 21) = \\gcd(21, 0) = 21$$<p>Le PGCD est le <strong>dernier reste non nul</strong> de l'algorithme d'Euclide :</p>$$\\mathbf{\\gcd(525, 231) = 21} \\quad \\blacksquare$$"
                         }
                     ],
-                    "hint": "Kalan 0 olana kadar ardışık Öklid bölmeleri yap: $a = bq_1 + r_1, b = r_1 q_2 + r_2 \\dots$ Sıfırdan farklı son kalan tam olarak $\\gcd(a, b)$'dir."
+                    "hint": "Kalan 0 olana kadar ardışık Öklid bölmeleri yap: $a = bq_1 + r_1, b = r_1 q_2 + r_2 \\dots$ Sıfırdan farklı son kalan tam olarak $\\gcd(a, b)$'dir.",
+                    "subtitle": "Algorithme d'Euclide ($\\gcd(525, 231)$)"
                 },
                 {
                     "id": "m1_ex7",
@@ -156,7 +162,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>Substituons maintenant $63 = 525 - 231 \\times 2$ :\n$$\\begin{aligned}\n21 &= (525 - 231 \\times 2) \\times 4 - 231 \\times 1 \\\\\n21 &= 525 \\times 4 - 231 \\times 8 - 231 \\times 1 \\\\\n21 &= 525 \\times (4) + 231 \\times (-9)\n\\end{aligned}$$\nAinsi, l'identité de Bézout $525s + 231t = 21$ est vérifiée par le couple d'entiers :\n$$ \\mathbf{(s, t) = (4, -9)} \\quad \\blacksquare $$</p>"
                         }
                     ],
-                    "hint": "Bézout katsayıları için Öklid adımlarını sondan başa sararak kalanı önceki bölen ve bölünen cinsinden paranteze al: $au + bv = \\gcd(a,b)$."
+                    "hint": "Bézout katsayıları için Öklid adımlarını sondan başa sararak kalanı önceki bölen ve bölünen cinsinden paranteze al: $au + bv = \\gcd(a,b)$.",
+                    "subtitle": "Coefficients de Bézout ($525s + 231t = 21$)"
                 },
                 {
                     "id": "m1_ex8",
@@ -179,7 +186,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>Puisque le plus grand diviseur commun de $1$ et de n'importe quel entier est obligatoirement $1$ :\n$$ \\mathbf{d = \\gcd(1, n+2) = 1} $$\nNous concluons rigoureusement que les deux expressions polynomiales sont <strong>premières entre elles</strong> pour tout entier $n \\in \\mathbb{Z}$. $\\blacksquare$</p>"
                         }
                     ],
-                    "hint": "Doğrusal kombinasyonla yüksek dereceli terimleri yok et: $(3n^2+7n+5) - 3(n^2+2n+1) = n+2$. Ardından $(n^2+2n+1) - (n)(n+2) = 1$ ile kalanın $1$ olduğunu göster!"
+                    "hint": "Doğrusal kombinasyonla yüksek dereceli terimleri yok et: $(3n^2+7n+5) - 3(n^2+2n+1) = n+2$. Ardından $(n^2+2n+1) - (n)(n+2) = 1$ ile kalanın $1$ olduğunu göster!",
+                    "subtitle": "PGCD d'Expressions Algébriques ($3n^2+7n+5, n^2+2n+1$)"
                 },
                 {
                     "id": "m1_ex9",
@@ -198,7 +206,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<ul style=\"margin-left: 22px; line-height: 1.7;\">\n<li><strong>Sens direct ($\\implies$) :</strong> Le sous-groupe additif $a\\mathbb{Z} + b\\mathbb{Z} = \\{au + bv \\mid u, v \\in \\mathbb{Z}\\}$ est égal à $d\\mathbb{Z}$ où $d = \\gcd(a, b)$. Si $d = 1$, alors $1 \\in a\\mathbb{Z} + b\\mathbb{Z}$, donc il existe $s, t \\in \\mathbb{Z}$ tels que $as + bt = 1$.</li>\n<li><strong>Sens réciproque ($\\Longleftarrow$) :</strong> Supposons qu'il existe $s, t \\in \\mathbb{Z}$ tels que $as + bt = 1$. Soit $d = \\gcd(a, b) \\ge 1$. Puisque $d \\mid a$ et $d \\mid b$, $d$ divise toute combinaison linéaire $as + bt = 1$. Comme $d > 0$ et $d \\mid 1$, on a nécessairement $d = 1$.</li>\n</ul>"
                         }
                     ],
-                    "hint": "Bézout Teoremi gereği $\\gcd(a, b) = 1 \\iff \\exists u, v \\in \\mathbb{Z}, au + bv = 1$. İki yönü de (gereklilik ve yeterlilik) sınav kağıdında ayrı ayrı vurgula."
+                    "hint": "Bézout Teoremi gereği $\\gcd(a, b) = 1 \\iff \\exists u, v \\in \\mathbb{Z}, au + bv = 1$. İki yönü de (gereklilik ve yeterlilik) sınav kağıdında ayrı ayrı vurgula.",
+                    "subtitle": "Théorème de Bézout ($as + bt = 1 \\iff \\gcd(a,b)=1$)"
                 },
                 {
                     "id": "m1_ex10",
@@ -217,7 +226,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>Par définition du PGCD, $d \\mid 14$ et $d \\mid 25$.<br>Par stabilité de la divisibilité par combinaison linéaire entière :<br>$$d \\mid (14s + 25t) \\implies d \\mid 1$$<br>Comme $d$ est un entier strictement positif, l'unique diviseur positif de $1$ est $d = 1$.<br>Ainsi, $\\mathbf{\\gcd(14, 25) = 1}$ (application directe du sens réciproque du théorème de Bézout).</p>"
                         }
                     ],
-                    "hint": "$d = \\gcd(14, 25)$ olsun. $d \\mid 14$ ve $d \\mid 25 \\implies d \\mid (14s + 25t) = 1$. $1$'in tek pozitif böleni $1$ olduğundan $d=1$'dir."
+                    "hint": "$d = \\gcd(14, 25)$ olsun. $d \\mid 14$ ve $d \\mid 25 \\implies d \\mid (14s + 25t) = 1$. $1$'in tek pozitif böleni $1$ olduğundan $d=1$'dir.",
+                    "subtitle": "Application Directe de Bézout ($14s + 25t = 1$)"
                 },
                 {
                     "id": "m1_ex11",
@@ -237,10 +247,11 @@ window.COURSES_DB["mat204_grup"] = {
                         },
                         {
                             "title": "Étape 3 : Généralisation Rigoureuse",
-                            "content": "<p>En divisant $as + bt = d$ (avec $d > 0$ diviseur commun de $a$ et $b$) par $d$, on obtient :<br>$$\\left(\\frac{a}{d}\\right)s + \\left(\\frac{b}{d}\\right)t = 1$$<br>On a donc l'équivalence exacte :<br>$$\\gcd(a, b) = d \\iff \\exists s, t \\in \\mathbb{Z}, \\; as + bt = d \\; \\textbf{ ET } \\; d \\text{ est un diviseur commun de } a \\text{ et } b.$$</p>"
+                            "content": "<p>En divisant $as + bt = d$ (avec $d > 0$ diviseur commun de $a$ et $b$) par $d$, on obtient :<br>$$\\left(\\frac{a}{d}\\right)s + \\left(\\frac{b}{d}\\right)t = 1$$<br>On a donc l'équivalence exacte :<br>$$\\gcd(a, b) = d \\iff \\exists s, t \\in \\mathbb{Z}, \\; as + bt = d \\; <strong> ET </strong> \\; d \\text{ est un diviseur commun de } a \\text{ et } b.$$</p>"
                         }
                     ],
-                    "hint": "Eşitliğin her iki tarafını $7$'ye böl: $7s + 5t = 1 \\implies \\gcd(7, 5) = 1$. Ortak çarpan kuralından $\\gcd(7 \\cdot 7, 7 \\cdot 5) = 7 \\cdot 1 = 7$ çıkar."
+                    "hint": "Eşitliğin her iki tarafını $7$'ye böl: $7s + 5t = 1 \\implies \\gcd(7, 5) = 1$. Ortak çarpan kuralından $\\gcd(7 \\cdot 7, 7 \\cdot 5) = 7 \\cdot 1 = 7$ çıkar.",
+                    "subtitle": "Prudence sur la Réciproque de Bézout ($49s + 35t = 7$)"
                 },
                 {
                     "id": "m1_ex12",
@@ -259,7 +270,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>En multipliant membre à membre ces trois congruences modulo $200$ :</p>$$198 \\cdot 199 \\cdot 201 \\equiv (-2) \\cdot (-1) \\cdot 1 = 2 \\pmod{200}$$<p>Comme $2 \\in \\{0, 1, \\dots, 199\\}$, le reste canonique de la division euclidienne de $198 \\cdot 199 \\cdot 201$ par $200$ est $\\mathbf{2}$.</p>"
                         }
                     ],
-                    "hint": "Modüle göre negatif kalanları tercih et: $198 \\equiv -2$, $199 \\equiv -1$, $201 \\equiv 1 \\pmod{200}$. Çarpım: $(-2)(-1)(1) = 2 \\pmod{200}$ çok hızlı bulunur."
+                    "hint": "Modüle göre negatif kalanları tercih et: $198 \\equiv -2$, $199 \\equiv -1$, $201 \\equiv 1 \\pmod{200}$. Çarpım: $(-2)(-1)(1) = 2 \\pmod{200}$ çok hızlı bulunur.",
+                    "subtitle": "Réduction Modulaire d'un Produit ($\\pmod{200}$)"
                 },
                 {
                     "id": "m1_ex13",
@@ -278,7 +290,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>Par compatibilité de la congruence modulo $13$ avec l'élévation à une puissance entière $k \\in \\mathbb{N}$ ($a \\equiv b \\pmod n \\implies a^k \\equiv b^k \\pmod n$) :</p>$$12^{10} \\equiv (-1)^{10} = 1 \\pmod{13}$$<p>Puisque $10$ est un exposant pair, $(-1)^{10} = +1$. Comme $1 \\in \\{0, 1, \\dots, 12\\}$, le représentant canonique est $\\mathbf{1}$.</p>"
                         }
                     ],
-                    "hint": "$12 \\equiv -1 \\pmod{13}$ denkliğini kullan. O halde $12^{10} \\equiv (-1)^{10} = 1 \\pmod{13}$. Küçük Fermat Teoremi ($a^{p-1} \\equiv 1$) de teyit eder."
+                    "hint": "$12 \\equiv -1 \\pmod{13}$ denkliğini kullan. O halde $12^{10} \\equiv (-1)^{10} = 1 \\pmod{13}$. Küçük Fermat Teoremi ($a^{p-1} \\equiv 1$) de teyit eder.",
+                    "subtitle": "Puissance Modulaire ($12^{10} \\pmod{13}$)"
                 },
                 {
                     "id": "m1_ex14",
@@ -297,7 +310,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>En substituant ces réductions dans l'expression initiale :</p>$$7^3 + 15 \\cdot 3 - 2 \\equiv 3 + 0 - 2 = 1 \\pmod 5$$<p><em>(Ou de manière équivalente : $3 + 0 + 3 = 6 \\equiv 1 \\pmod 5$).</em><br>Comme $1 \\in \\{0, 1, 2, 3, 4\\}$, la forme réduite canonique modulo $5$ est $\\mathbf{1}$.</p>"
                         }
                     ],
-                    "hint": "Mod 5 altında sadeleştir: $7 \\equiv 2$, $15 \\equiv 0$. İfade: $2^3 + 0 \\cdot 3 - 2 = 8 - 2 = 6 \\equiv 1 \\pmod 5$."
+                    "hint": "Mod 5 altında sadeleştir: $7 \\equiv 2$, $15 \\equiv 0$. İfade: $2^3 + 0 \\cdot 3 - 2 = 8 - 2 = 6 \\equiv 1 \\pmod 5$.",
+                    "subtitle": "Calcul Modulaire Combiné ($7^3 + 15\\cdot 3 - 2 \\pmod 5$)"
                 },
                 {
                     "id": "m1_ex15",
@@ -320,7 +334,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>En isolant $x$ :\n$$ \\mathbf{x \\equiv 3 \\pmod{7}} $$\nL'ensemble complet des solutions dans $\\mathbb{Z}$ est donc :\n$$ \\mathbf{S = \\{ 7k + 3 \\mid k \\in \\mathbb{Z} \\} = 3 + 7\\mathbb{Z}} \\quad \\blacksquare $$</p>"
                         }
                     ],
-                    "hint": "Bilinmeyenleri bir tarafa topla: $2x \\equiv 6 \\pmod 7$. $\\gcd(2, 7) = 1$ olduğu için $2$'nin mod 7'deki tersi olan $4$ ile çarp: $x \\equiv 24 \\equiv 3 \\pmod 7$."
+                    "hint": "Bilinmeyenleri bir tarafa topla: $2x \\equiv 6 \\pmod 7$. $\\gcd(2, 7) = 1$ olduğu için $2$'nin mod 7'deki tersi olan $4$ ile çarp: $x \\equiv 24 \\equiv 3 \\pmod 7$.",
+                    "subtitle": "Équation Congruentielle ($4x + 7 \\equiv 2x + 13 \\pmod 7$)"
                 },
                 {
                     "id": "m1_ex16",
@@ -339,7 +354,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>Ajoutons le module $9$ pour obtenir le représentant dans $\\{0, 1, \\dots, 8\\}$ :<br>$$x \\equiv -3 + 9 = 6 \\pmod 9$$<br>L'ensemble des solutions dans $\\mathbb{Z}$ est :<br>$$\\mathbf{S = \\{9k + 6 \\mid k \\in \\mathbb{Z}\\}}$$</p>"
                         }
                     ],
-                    "hint": "Her iki taraftan $5$ çıkar: $x \\equiv 2 - 5 = -3 \\pmod 9$. Pozitif kalana geçmek için modülü ekle: $-3 + 9 = 6 \\pmod 9$."
+                    "hint": "Her iki taraftan $5$ çıkar: $x \\equiv 2 - 5 = -3 \\pmod 9$. Pozitif kalana geçmek için modülü ekle: $-3 + 9 = 6 \\pmod 9$.",
+                    "subtitle": "Équation Congruentielle Simple ($x + 5 \\equiv 2 \\pmod 9$)"
                 },
                 {
                     "id": "m1_ex17",
@@ -358,7 +374,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>Factorisons par $n$ dans la différence $ac - bd$ :\n$$ ac - bd = n(b k_2 + d k_1 + n k_1 k_2) $$\nPuisque $(b k_2 + d k_1 + n k_1 k_2) \\in \\mathbb{Z}$, la différence $ac - bd$ est un multiple entier de $n$.  \nCe qui prouve rigoureusement la compatibilité du produit :\n$$ \\mathbf{ac \\equiv bd \\pmod{n}} \\quad \\blacksquare $$</p>"
                         }
                     ],
-                    "hint": "$a = b + kn$ ve $c = d + ln$ şeklinde yaz. Taraf tarafa çarpıp $n$ parantezine al: $ac = bd + n(kd + lb + kln) \\equiv bd \\pmod n$."
+                    "hint": "$a = b + kn$ ve $c = d + ln$ şeklinde yaz. Taraf tarafa çarpıp $n$ parantezine al: $ac = bd + n(kd + lb + kln) \\equiv bd \\pmod n$.",
+                    "subtitle": "Compatibilité des Congruences avec la Multiplication"
                 },
                 {
                     "id": "m1_ex18",
@@ -381,7 +398,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>Par le principe de récurrence, pour tout entier naturel $k \\in \\mathbb{N}$ :<br>$$a \\equiv b \\pmod n \\implies \\mathbf{a^k \\equiv b^k \\pmod n}$$</p>"
                         }
                     ],
-                    "hint": "Tümevarım (récurrence) kur: $k=1$ için hipotezden doğru. $a^k \\equiv b^k$ iken önceki sorudaki çarpım kuralıyla $a \\cdot a^k \\equiv b \\cdot b^k \\implies a^{k+1} \\equiv b^{k+1}$ elde et."
+                    "hint": "Tümevarım (récurrence) kur: $k=1$ için hipotezden doğru. $a^k \\equiv b^k$ iken önceki sorudaki çarpım kuralıyla $a \\cdot a^k \\equiv b \\cdot b^k \\implies a^{k+1} \\equiv b^{k+1}$ elde et.",
+                    "subtitle": "Compatibilité des Congruences avec les Puissances ($a^k \\equiv b^k$)"
                 },
                 {
                     "id": "m1_ex19",
@@ -400,7 +418,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>D'après la propriété de la question 8.2 ($a \\equiv b \\pmod n \\implies a^k \\equiv b^k \\pmod n$) avec $k = 100$ :<br>$$4^{100} \\equiv 1^{100} = 1 \\pmod 3$$<br>Comme $0 \\le 1 < 3$, par unicité du reste de la division euclidienne par $3$, le reste cherché est $\\mathbf{1}$.</p>"
                         }
                     ],
-                    "hint": "$4 \\equiv 1 \\pmod 3$ olduğu için $4^{100} \\equiv 1^{100} = 1 \\pmod 3$. Kalan doğrudan $1$'dir."
+                    "hint": "$4 \\equiv 1 \\pmod 3$ olduğu için $4^{100} \\equiv 1^{100} = 1 \\pmod 3$. Kalan doğrudan $1$'dir.",
+                    "subtitle": "Reste de $4^{100}$ par $3$"
                 },
                 {
                     "id": "m1_ex20",
@@ -419,7 +438,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>On peut également factoriser l'expression :<br>$$n^3 - n = n(n^2 - 1) = (n - 1)n(n + 1)$$<br>Il s'agit du produit de trois entiers consécutifs : l'un d'entre eux est nécessairement un multiple de $3$.<br>Donc $\\mathbf{3 \\mid (n^3 - n)}$ pour tout $n \\in \\mathbb{Z}$.</p>"
                         }
                     ],
-                    "hint": "$n^3 - n = (n-1)n(n+1)$ şeklinde çarpanlara ayır. Üç ardışık tam sayıdan en az biri mutlaka $3$'ün katıdır!"
+                    "hint": "$n^3 - n = (n-1)n(n+1)$ şeklinde çarpanlara ayır. Üç ardışık tam sayıdan en az biri mutlaka $3$'ün katıdır!",
+                    "subtitle": "Divisibilité de $n^3 - n$ par $3$"
                 },
                 {
                     "id": "m1_ex21",
@@ -438,7 +458,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>Dans les 5 cas exhaustifs, $n^5 - n \\equiv 0 \\pmod 5$, donc $5$ divise toujours $n^5 - n$.<br><em>Remarque théorique :</em> C'est le cas $p = 5$ du <strong>Petit Théorème de Fermat</strong>, qui stipule que pour tout nombre premier $p$ et tout entier $n \\in \\mathbb{Z}$, $n^p \\equiv n \\pmod p$.</p>"
                         }
                     ],
-                    "hint": "Küçük Fermat Teoremi gereği her asal $p$ için $n^p \\equiv n \\pmod p$'dir. Burada $p=5$ olduğundan doğrudan $n^5 - n \\equiv 0 \\pmod 5$ çıkar."
+                    "hint": "Küçük Fermat Teoremi gereği her asal $p$ için $n^p \\equiv n \\pmod p$'dir. Burada $p=5$ olduğundan doğrudan $n^5 - n \\equiv 0 \\pmod 5$ çıkar.",
+                    "subtitle": "Petit Théorème de Fermat pour $p=5$ ($n^5 - n \\equiv 0 \\pmod 5$)"
                 },
                 {
                     "id": "m1_ex22",
@@ -461,7 +482,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>Puisque $au + bv = d$, on obtient directement par transitivité :\n$$ \\mathbf{c \\mid d} $$\nNous avons ainsi formellement prouvé que <strong>tout diviseur commun à $a$ et $b$ divise obligatoirement leur PGCD</strong>. $\\blacksquare$</p>"
                         }
                     ],
-                    "hint": "Bézout gereği $d = \\gcd(a, b) = au + bv$. Eğer $c \\mid a$ ve $c \\mid b$ ise doğrusal kombinasyonu böler: $c \\mid (au + bv) \\implies c \\mid d$."
+                    "hint": "Bézout gereği $d = \\gcd(a, b) = au + bv$. Eğer $c \\mid a$ ve $c \\mid b$ ise doğrusal kombinasyonu böler: $c \\mid (au + bv) \\implies c \\mid d$.",
+                    "subtitle": "Propriété Universelle du PGCD ($c \\mid a, c \\mid b \\implies c \\mid \\gcd(a,b)$)"
                 }
             ],
             "theoryPages": [
@@ -515,7 +537,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>Les 4 axiomes étant rigoureusement satisfaits, $(\\mathbb{R}, \\star)$ est un <strong>groupe</strong>.  \nDe plus, puisque $x^3 + y^3 = y^3 + x^3$, on a $x \\star y = y \\star x$, ce qui fait de $(\\mathbb{R}, \\star)$ un <strong>groupe abélien (commutatif)</strong>. $\\blacksquare$</p>"
                         }
                     ],
-                    "hint": "Grup aksiyomlarını sırasıyla göster: 1) Kapalılık: $x^3+y^3 \\in \\mathbb{R}$, 2) Birleşme: $((A^3+z^3)^{1/3}$ açılımında $A = (x^3+y^3)^{1/3}$ yerine yazıldığında küpün $\\frac{1}{3}$ kuvveti götürdüğünü göster), 3) Birim eleman: $x \\star e = x \\implies e=0$, 4) Ters eleman: $x \\star x' = 0 \\implies x' = -x$."
+                    "hint": "Grup aksiyomlarını sırasıyla göster: 1) Kapalılık: $x^3+y^3 \\in \\mathbb{R}$, 2) Birleşme: $((A^3+z^3)^{1/3}$ açılımında $A = (x^3+y^3)^{1/3}$ yerine yazıldığında küpün $\\frac{1}{3}$ kuvveti götürdüğünü göster), 3) Birim eleman: $x \\star e = x \\implies e=0$, 4) Ters eleman: $x \\star x' = 0 \\implies x' = -x$.",
+                    "subtitle": "Relation $x - y$ Pair sur $\\mathbb{Z}$ (Classes de Parité)"
                 },
                 {
                     "id": "m2_ex2",
@@ -542,7 +565,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>Soit $(a, b) \\in A$. Cherchons $(x, y) \\in A$ tel que $(a, b) \\star (x, y) = (1, 0)$ :<br>\n$$\\begin{cases} a x - b y = 1 \\\\ b x + a y = 0 \\end{cases} \\iff \\begin{pmatrix} a & -b \\\\ b & a \\end{pmatrix} \\begin{pmatrix} x \\\\ y \\end{pmatrix} = \\begin{pmatrix} 1 \\\\ 0 \\end{pmatrix}$$\nLe déterminant de ce système linéaire est $\\Delta = a^2 - (-b^2) = a^2 + b^2 > 0$ (car $(a,b) \\neq (0,0)$).<br>\nLe système admet donc une unique solution dans $\\mathbb{R}^2$ :\n$$\\mathbf{x = \\frac{a}{a^2+b^2}, \\quad y = \\frac{-b}{a^2+b^2}}$$\nDe plus, $x^2 + y^2 = \\frac{a^2+b^2}{(a^2+b^2)^2} = \\frac{1}{a^2+b^2} > 0$, donc $(x, y) \\in A$.<br>\n<strong>Conclusion :</strong> $(A, \\star)$ est un groupe abélien (isomorphe à $(\\mathbb{C}^*, \\times)$ via $(a,b) \\mapsto a+ib$). $\\blacksquare$</p>"
                         }
                     ],
-                    "hint": "Birim eleman $e=(e_1, e_2)$ için $(x, y) * (e_1, e_2) = (x, y)$ denklemini kur. Ters eleman için $x, y \\neq 0$ koşulunu unutma!"
+                    "hint": "Birim eleman $e=(e_1, e_2)$ için $(x, y) * (e_1, e_2) = (x, y)$ denklemini kur. Ters eleman için $x, y \\neq 0$ koşulunu unutma!",
+                    "subtitle": "Relation $(2x+5y)/7 \\in \\mathbb{Z}$ et Modulo 7"
                 },
                 {
                     "id": "m2_ex3",
@@ -565,7 +589,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>Puisque $BA = -AB$, tout produit de puissances de $A$ et $B$ se réduit à l'un des 8 éléments suivants :<br>$$\\langle A, B \\rangle = \\{\\pm I, \\pm A, \\pm B, \\pm AB\\}$$<br>Cet ensemble de 8 matrices distinctes est stable par multiplication et par passage à l'inverse ($A^{-1} = -A$, $B^{-1} = -B$, $(AB)^{-1} = -AB$). C'est donc un groupe non-abélien d'ordre 8, isomorphe au groupe des quaternions $Q_8$.</p>"
                         }
                     ],
-                    "hint": "Asallık ve tersinirlik kuralı: $U(n) = (\\mathbb{Z}_n)^*$ kümesinin eleman sayısı Euler $\\varphi(n)$ fonksiyonu ile hesaplanır."
+                    "hint": "Asallık ve tersinirlik kuralı: $U(n) = (\\mathbb{Z}_n)^*$ kümesinin eleman sayısı Euler $\\varphi(n)$ fonksiyonu ile hesaplanır.",
+                    "subtitle": "Relation $3 \\mid (x+2y)$ et Classes d'Équivalence"
                 },
                 {
                     "id": "m2_ex4",
@@ -592,7 +617,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p><strong>Close (Oui).</strong> Le produit de deux matrices $2 \\times 2$ à coefficients dans $\\mathbb{Z}$ a pour coefficients des sommes de produits d'entiers ($c_{ij} = a_{i1}b_{1j} + a_{i2}b_{2j} \\in \\mathbb{Z}$). La matrice résultante appartient donc toujours à $\\mathcal{M}_2(\\mathbb{Z})$.</p>"
                         }
                     ],
-                    "hint": "Kapalılık (clôture) için seçilen kümenin keyfi iki elemanı $a, b$ için $a * b$ sonucunun yine kümenin tanımını sağlayıp sağlamadığını test et; taşma varsa tek bir somut karşıt örnek yeterlidir."
+                    "hint": "Kapalılık (clôture) için seçilen kümenin keyfi iki elemanı $a, b$ için $a * b$ sonucunun yine kümenin tanımını sağlayıp sağlamadığını test et; taşma varsa tek bir somut karşıt örnek yeterlidir.",
+                    "subtitle": "Relation $x^2 - y^2 = 3(x - y)$ sur $\\mathbb{R}$"
                 },
                 {
                     "id": "m2_ex5",
@@ -623,7 +649,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>Soient $A = (a_{ij}), B = (b_{jk}), C = (c_{kl}) \\in \\mathcal{M}_2(\\mathbb{Z})$.<br>Le terme $(i, l)$ de la matrice $(AB)C$ s'écrit :<br>$$[ (AB)C ]_{il} = \\sum_{k=1}^2 (AB)_{ik} c_{kl} = \\sum_{k=1}^2 \\left(\\sum_{j=1}^2 a_{ij} b_{jk}\\right) c_{kl} = \\sum_{k=1}^2 \\sum_{j=1}^2 a_{ij} b_{jk} c_{kl}$$<br>Par distributivité et associativité dans l'anneau $\\mathbb{Z}$, cette somme est exactement égale à $[A(BC)]_{il}$.<br>Alternativement, chaque matrice représente un endomorphisme linéaire de $\\mathbb{Z}^2$, et la composition d'endomorphismes linéaires est associative.<br><strong>Conclusion :</strong> L'opération est <strong>associative</strong>.</p>"
                         }
                     ],
-                    "hint": "Birleşme (associativité) için $(a \\star b) \\star c = a \\star (b \\star c)$ eşitliği aranır. Bir işlem birleşmeli değilse tek bir somut karşıt örnek ($1/2/2$ gibi) göstermek yeterlidir; birleşmeli ise cebirsel genel tanım veya fonksiyon bileşkesi teoreminden yararlanılır."
+                    "hint": "Birleşme (associativité) için $(a \\star b) \\star c = a \\star (b \\star c)$ eşitliği aranır. Bir işlem birleşmeli değilse tek bir somut karşıt örnek ($1/2/2$ gibi) göstermek yeterlidir; birleşmeli ise cebirsel genel tanım veya fonksiyon bileşkesi teoreminden yararlanılır.",
+                    "subtitle": "Relation $|x - 3| = |y - 3|$ et Géométrie des Classes"
                 },
                 {
                     "id": "m2_td2_ex6",
@@ -681,7 +708,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p><strong>Non (Non fermé).</strong> Contre-exemple : prenons $4$ et $5$ dans l'ensemble.<br>$$4 \\times 5 = 20 = 9 \\times 2 + 2 \\equiv 2 \\pmod 9$$<br>Or $2 \\notin \\{1, 4, 5, 7\\}$.</p>"
                         }
                     ],
-                    "hint": "Örneğin tek sayılar kümesi çarpma altında kapalıdır ($(2k+1)(2m+1)$ tektir) fakat toplama altında kapalı değildir (toplamları çift çıkar)."
+                    "hint": "Örneğin tek sayılar kümesi çarpma altında kapalıdır ($(2k+1)(2m+1)$ tektir) fakat toplama altında kapalı değildir (toplamları çift çıkar).",
+                    "subtitle": "Équation Complexe $z^4 = -16$ (Racines 4-ièmes)"
                 },
                 {
                     "id": "m2_ex7",
@@ -708,7 +736,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>Pour $z = 3 - 2i \\in \\mathbb{C}^*$, on multiplie numérateur et dénominateur par le conjugué $\\bar{z} = 3 + 2i$ :<br>$$\\frac{1}{3 - 2i} = \\frac{3 + 2i}{(3 - 2i)(3 + 2i)} = \\frac{3 + 2i}{3^2 + (-2)^2} = \\mathbf{\\frac{3}{13} + \\frac{2}{13}i}$$</p>"
                         }
                     ],
-                    "hint": "Birim eleman ($e$) tanımı: her $x$ için $x * e = e * x = x$ olmalıdır. Ters eleman ($x^{-1}$) için $x * x^{-1} = e$ denklemini çöz."
+                    "hint": "Birim eleman ($e$) tanımı: her $x$ için $x * e = e * x = x$ olmalıdır. Ters eleman ($x^{-1}$) için $x * x^{-1} = e$ denklemini çöz.",
+                    "subtitle": "Équation Complexe $(z+1)^n = (z-1)^n$ et Cotangente"
                 },
                 {
                     "id": "m2_ex8",
@@ -735,7 +764,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>Modulo 13, le déterminant vaut :<br>$$\\det(A) = -12 \\equiv 1 \\pmod{13}$$<br>L'inverse de $\\det(A)$ dans $\\mathbb{Z}_{13}^*$ est donc $1^{-1} = 1$.<br>Ainsi :<br>$$A^{-1} \\equiv 1 \\cdot \\begin{bmatrix} 2 & -3 \\\\ -8 & 6 \\end{bmatrix} \\equiv \\mathbf{\\begin{bmatrix} 2 & 10 \\\\ 5 & 6 \\end{bmatrix} \\pmod{13}}$$</p>"
                         }
                     ],
-                    "hint": "Modüler matris çarpımında her çarpma ve toplama adımını ilgili modüle göre indirgeyerek matris elemanlarını hesapla."
+                    "hint": "Modüler matris çarpımında her çarpma ve toplama adımını ilgili modüle göre indirgeyerek matris elemanlarını hesapla.",
+                    "subtitle": "Somme des Racines $n$-ièmes de l'Unité ($\\sum \\omega^k = 0$)"
                 },
                 {
                     "id": "m2_ex9",
@@ -754,7 +784,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>Pour l'addition usuelle sur $\\mathbb{Z}$, l'unique élément neutre vérifiant $x + e = e + x = x$ est $e = 0$.</p><p>Or $0 = 2 \\times 0$ est un entier <strong>pair</strong>, ce qui implique formellement :</p>$$0 \\notin I$$<p>En conclusion, $(I, +)$ viole à la fois l'axiome de fermeture (clôture) et l'axiome d'existence de l'élément neutre : ce n'est pas un groupe.</p>"
                         }
                     ],
-                    "hint": "Matris grubunda kapalılık için determinant kuralı: $\\det(AB) = \\det(A)\\det(B) \\neq 0$ olduğundan tersinir matrislerin çarpımı yine tersinirdir."
+                    "hint": "Matris grubunda kapalılık için determinant kuralı: $\\det(AB) = \\det(A)\\det(B) \\neq 0$ olduğundan tersinir matrislerin çarpımı yine tersinirdir.",
+                    "subtitle": "Inverses dans $\\mathbb{Z}_n$ ($U(n)$) et Équations Modulaires"
                 },
                 {
                     "id": "m2_ex10",
@@ -777,7 +808,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>On sait que $U(8) = \\{1, 3, 5, 7\\}$ sous la multiplication modulo 8 est d'ordre 4 et que chaque élément vérifie $x^2 \\equiv 1 \\pmod 8$.<br>Dans $G$ comme dans $U(8)$, tous les éléments non triviaux sont d'ordre 2.<br>Les deux groupes sont donc <strong>isomorphes au groupe de Klein</strong> :<br>$$G \\cong U(8) \\cong \\mathbb{Z}_2 \\times \\mathbb{Z}_2$$<br>(Un isomorphisme explicite est donné par $\\phi : G \\to U(8), \\; x \\mapsto x \\pmod 8$ : $25 \\mapsto 1, 5 \\mapsto 5, 15 \\mapsto 7, 35 \\mapsto 3$).</p>"
                         }
                     ],
-                    "hint": "$G = \\{5, 15, 25, 35\\}$ mod 40 altında birim eleman alışılageldik $1$ değildir! $5e \\equiv 5 \\pmod{40}$ denendiğinde $e=25$ çıkar ($25 \\times 25 = 625 \\equiv 25$)."
+                    "hint": "$G = \\{5, 15, 25, 35\\}$ mod 40 altında birim eleman alışılageldik $1$ değildir! $5e \\equiv 5 \\pmod{40}$ denendiğinde $e=25$ çıkar ($25 \\times 25 = 625 \\equiv 25$).",
+                    "subtitle": "Table de Cayley et Structure de $U(8), U(10), U(12)$"
                 },
                 {
                     "id": "m2_ex11",
@@ -796,7 +828,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p style=\"margin-bottom: 12px; line-height: 1.7;\">Réciproquement, supposons que pour tous $a, b \\in G$, on ait :\n    $$(ab)^{-1} = a^{-1}b^{-1}$$</p>\n    <p style=\"margin-bottom: 12px; line-height: 1.7;\">Puisque la règle générale dans tout groupe donne toujours $(ab)^{-1} = b^{-1}a^{-1}$, nous en déduisons l'égalité :\n    $$b^{-1}a^{-1} = a^{-1}b^{-1}$$</p>\n    <p style=\"margin-bottom: 12px; line-height: 1.7;\">Prenons l'inverse des deux membres de cette égalité :\n    $$(b^{-1}a^{-1})^{-1} = (a^{-1}b^{-1})^{-1}$$</p>\n    <p style=\"margin-bottom: 12px; line-height: 1.7;\">En appliquant la formule de l'inverse d'un produit à chacun des deux côtés :\n    $$(a^{-1})^{-1}(b^{-1})^{-1} = (b^{-1})^{-1}(a^{-1})^{-1} \\iff \\mathbf{ab = ba}$$</p>\n    <p style=\"margin-bottom: 12px; line-height: 1.7;\">Puisque $ab = ba$ pour tous $a, b \\in G$, le groupe $(G, \\cdot)$ est <strong>abélien</strong>. $\\blacksquare$</p>"
                         }
                     ],
-                    "hint": "Genel kural $(ab)^{-1} = b^{-1}a^{-1}$'dir. Dolayısıyla $(ab)^{-1} = a^{-1}b^{-1} \\iff b^{-1}a^{-1} = a^{-1}b^{-1} \\iff ab = ba$ (değişmelilik)."
+                    "hint": "Genel kural $(ab)^{-1} = b^{-1}a^{-1}$'dir. Dolayısıyla $(ab)^{-1} = a^{-1}b^{-1} \\iff b^{-1}a^{-1} = a^{-1}b^{-1} \\iff ab = ba$ (değişmelilik).",
+                    "subtitle": "Sous-groupes de $(\\mathbb{Z}, +)$ et de $\\mathbb{R}^*$"
                 },
                 {
                     "id": "m2_ex12",
@@ -815,7 +848,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p style=\"margin-bottom: 12px; line-height: 1.7;\">Effectuons les produits modulo 12 entre les éléments $\\{\\bar{1}, \\bar{5}, \\bar{7}, \\bar{11}\\}$ :\n    <ul style=\"margin-left: 22px; margin-bottom: 14px; line-height: 1.7;\">\n      <li>$5 \\times 5 = 25 = 2 \\times 12 + 1 \\equiv \\mathbf{1} \\pmod{12}$</li>\n      <li>$7 \\times 7 = 49 = 4 \\times 12 + 1 \\equiv \\mathbf{1} \\pmod{12}$</li>\n      <li>$11 \\times 11 = 121 = 10 \\times 12 + 1 \\equiv \\mathbf{1} \\pmod{12}$</li>\n      <li>$5 \\times 7 = 35 = 2 \\times 12 + 11 \\equiv \\mathbf{11} \\pmod{12}$</li>\n      <li>$5 \\times 11 = 55 = 4 \\times 12 + 7 \\equiv \\mathbf{7} \\pmod{12}$</li>\n      <li>$7 \\times 11 = 77 = 6 \\times 12 + 5 \\equiv \\mathbf{5} \\pmod{12}$</li>\n    </ul></p>\n    <div style=\"overflow-x: auto; margin: 18px 0;\">\n      <table class=\"academic-table\" style=\"width: 100%; max-width: 440px; margin: 0 auto; text-align: center; border-collapse: collapse; border: 1px solid var(--border-subtle);\">\n        <thead>\n          <tr style=\"background: rgba(37,99,235,0.12); color: var(--accent-blue); font-weight: 700;\">\n            <th style=\"padding: 10px; border: 1px solid var(--border-subtle);\">$\\times_{12}$</th>\n            <th style=\"padding: 10px; border: 1px solid var(--border-subtle);\">$\\mathbf{1}$</th>\n            <th style=\"padding: 10px; border: 1px solid var(--border-subtle);\">$\\mathbf{5}$</th>\n            <th style=\"padding: 10px; border: 1px solid var(--border-subtle);\">$\\mathbf{7}$</th>\n            <th style=\"padding: 10px; border: 1px solid var(--border-subtle);\">$\\mathbf{11}$</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td style=\"padding: 10px; border: 1px solid var(--border-subtle); font-weight: 700; background: rgba(37,99,235,0.06);\">$\\mathbf{1}$</td>\n            <td style=\"padding: 10px; border: 1px solid var(--border-subtle); color: var(--accent-emerald); font-weight: 700;\">$1$</td>\n            <td style=\"padding: 10px; border: 1px solid var(--border-subtle);\">$5$</td>\n            <td style=\"padding: 10px; border: 1px solid var(--border-subtle);\">$7$</td>\n            <td style=\"padding: 10px; border: 1px solid var(--border-subtle);\">$11$</td>\n          </tr>\n          <tr>\n            <td style=\"padding: 10px; border: 1px solid var(--border-subtle); font-weight: 700; background: rgba(37,99,235,0.06);\">$\\mathbf{5}$</td>\n            <td style=\"padding: 10px; border: 1px solid var(--border-subtle);\">$5$</td>\n            <td style=\"padding: 10px; border: 1px solid var(--border-subtle); color: var(--accent-emerald); font-weight: 700;\">$1$</td>\n            <td style=\"padding: 10px; border: 1px solid var(--border-subtle);\">$11$</td>\n            <td style=\"padding: 10px; border: 1px solid var(--border-subtle);\">$7$</td>\n          </tr>\n          <tr>\n            <td style=\"padding: 10px; border: 1px solid var(--border-subtle); font-weight: 700; background: rgba(37,99,235,0.06);\">$\\mathbf{7}$</td>\n            <td style=\"padding: 10px; border: 1px solid var(--border-subtle);\">$7$</td>\n            <td style=\"padding: 10px; border: 1px solid var(--border-subtle);\">$11$</td>\n            <td style=\"padding: 10px; border: 1px solid var(--border-subtle); color: var(--accent-emerald); font-weight: 700;\">$1$</td>\n            <td style=\"padding: 10px; border: 1px solid var(--border-subtle);\">$5$</td>\n          </tr>\n          <tr>\n            <td style=\"padding: 10px; border: 1px solid var(--border-subtle); font-weight: 700; background: rgba(37,99,235,0.06);\">$\\mathbf{11}$</td>\n            <td style=\"padding: 10px; border: 1px solid var(--border-subtle);\">$11$</td>\n            <td style=\"padding: 10px; border: 1px solid var(--border-subtle);\">$7$</td>\n            <td style=\"padding: 10px; border: 1px solid var(--border-subtle);\">$5$</td>\n            <td style=\"padding: 10px; border: 1px solid var(--border-subtle); color: var(--accent-emerald); font-weight: 700;\">$1$</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n    <p style=\"margin-top: 14px; line-height: 1.7;\"><strong>Structure du groupe :</strong> Tous les éléments vérifient $x^2 = 1$, ils sont donc tous d'ordre 2 (sauf le neutre qui est d'ordre 1). Il n'existe aucun élément d'ordre 4, le groupe $U(12)$ <strong>n'est donc pas cyclique</strong>. Il est isomorphe au <strong>groupe de Klein</strong> :\n    $$U(12) \\simeq \\mathbb{Z}_2 \\times \\mathbb{Z}_2 \\simeq V_4$$</p>"
                         }
                     ],
-                    "hint": "$U(12) = \\{1, 5, 7, 11\\}$ elemanlarının her birinin karesi mod 12'de $1$'e denktir ($5^2 = 25 \\equiv 1$). Bu grup Klein 4-grubuna ($V_4$) izomorftur."
+                    "hint": "$U(12) = \\{1, 5, 7, 11\\}$ elemanlarının her birinin karesi mod 12'de $1$'e denktir ($5^2 = 25 \\equiv 1$). Bu grup Klein 4-grubuna ($V_4$) izomorftur.",
+                    "subtitle": "Loi $x \\star y = x + y - xy$ sur $\\mathbb{R} \\setminus \\{1\\}$"
                 },
                 {
                     "id": "m2_td2_ex14",
@@ -892,7 +926,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>Soit $x = 3^m 6^n \\in G$ ($m, n \\in \\mathbb{Z}$). Son inverse dans $\\mathbb{Q}^*$ est :<br>$$x^{-1} = (3^m 6^n)^{-1} = 3^{-m} 6^{-n}$$<br>Puisque $-m \\in \\mathbb{Z}$ et $-n \\in \\mathbb{Z}$, on a $x^{-1} \\in G$.<br><strong>Conclusion :</strong> $G$ est un sous-groupe de $(\\mathbb{Q}^*, \\times)$, c'est donc un groupe multiplicatif.</p>"
                         }
                     ],
-                    "hint": "$x = 3^m 6^n$ ve $y = 3^p 6^q$ al. $xy^{-1} = 3^{m-p} 6^{n-q}$ yine aynı kümede kalır; 1 adımlı alt grup kriteri ile gösterilir."
+                    "hint": "$x = 3^m 6^n$ ve $y = 3^p 6^q$ al. $xy^{-1} = 3^{m-p} 6^{n-q}$ yine aynı kümede kalır; 1 adımlı alt grup kriteri ile gösterilir.",
+                    "subtitle": "Loi Relativiste $x \\star y = \\frac{x+y}{1+xy}$ sur $]-1, 1[$"
                 },
                 {
                     "id": "m2_ex14",
@@ -919,7 +954,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p style=\"margin-bottom: 12px; line-height: 1.7;\">Soit $M(a, b, c) \\in G$. Cherchons une matrice $M(a', b', c') \\in G$ telle que :\n$$M(a, b, c) \\cdot M(a', b', c') = I_3$$</p>\n<p style=\"margin-bottom: 12px; line-height: 1.7;\">D'après la formule du produit matriciel établie à l'Étape 1 :\n$$\\begin{pmatrix} 1 & a + a' & b' + a c' + b \\\\ 0 & 1 & c + c' \\\\ 0 & 0 & 1 \\end{pmatrix} = \\begin{pmatrix} 1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1 \\end{pmatrix}$$</p>\n<p style=\"margin-bottom: 12px; line-height: 1.7;\">Par identification coefficient par coefficient, nous obtenons le système linéaire :\n$$\\begin{cases}\na + a' = 0 &\\implies \\mathbf{a' = -a} \\\\\nc + c' = 0 &\\implies \\mathbf{c' = -c} \\\\\nb' + a c' + b = 0 &\\implies b' + a(-c) + b = 0 \\implies \\mathbf{b' = ac - b}\n\\end{cases}$$</p>\n<p style=\"margin-bottom: 12px; line-height: 1.7;\">Puisque $a, b, c \\in \\mathbb{R}$, on a évidemment $-a \\in \\mathbb{R}$, $-c \\in \\mathbb{R}$ et $ac - b \\in \\mathbb{R}$.  \nPar conséquent, la matrice inverse existe et s'écrit explicitement :\n$$\\mathbf{M(a, b, c)^{-1} = \\begin{pmatrix} 1 & -a & ac - b \\\\ 0 & 1 & -c \\\\ 0 & 0 & 1 \\end{pmatrix} \\in G}$$</p>\n<p style=\"margin-bottom: 12px; line-height: 1.7;\">On vérifie immédiatement que $M^{-1} \\cdot M = I_3$. Tout élément de $G$ admet donc un inverse dans $G$.</p>\n<p style=\"margin-bottom: 12px; line-height: 1.7;\"><strong>Conclusion Générale :</strong>  \n1. La loi est interne sur $G$.  \n2. La loi est associative.  \n3. $I_3 \\in G$ est l'élément neutre.  \n4. Tout élément admet un symétrique (inverse) dans $G$.  \nOn en conclut rigoureusement que <strong>$(G, \\cdot)$ est un groupe</strong>. $\\blacksquare$</p>\n\n<p style=\"line-height: 1.7; font-size: 0.95rem; color: var(--text-muted);\">\n<em>Remarque supplémentaire :</em> Ce groupe n'est <strong>pas abélien</strong> (non-commutatif), car $b_2 + a_1 c_2 + b_1 \\neq b_1 + a_2 c_1 + b_2$ dès que $a_1 c_2 \\neq a_2 c_1$.\n</p>"
                         }
                     ],
-                    "hint": "Grup ispatı için 4 temel aksiyomu sırasıyla kontrol et: (1) Kapalılık (satır × sütun çarpımının yine aynı yapıda kalması), (2) Birleşme özelliği (matris çarpımının M_3(R)'deki genel özelliğinden miras alınması), (3) Birim eleman (a=b=c=0 için elde edilen birim matris I_3), (4) Ters eleman (çarpımı I_3 yapan parametrelerin sistem çözümü)."
+                    "hint": "Grup ispatı için 4 temel aksiyomu sırasıyla kontrol et: (1) Kapalılık (satır × sütun çarpımının yine aynı yapıda kalması), (2) Birleşme özelliği (matris çarpımının M_3(R)'deki genel özelliğinden miras alınması), (3) Birim eleman (a=b=c=0 için elde edilen birim matris I_3), (4) Ters eleman (çarpımı I_3 yapan parametrelerin sistem çözümü).",
+                    "subtitle": "Groupe de Heisenberg $H_3(\\mathbb{R})$ (Matrices Triangulaires)"
                 },
                 {
                     "id": "m2_ex15",
@@ -946,7 +982,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>Pourquoi $M_a$ a-t-elle un inverse alors que $\\det(M_a) = a^2 - a^2 = 0$ ?<br>Le théorème « $A$ inversible $\\iff \\det(A) \\neq 0$ » concerne l'inversibilité par rapport à la matrice identité $I_2 = \\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix}$ dans $GL(2, \\mathbb{R})$.<br>Ici, $G$ n'est <strong>pas</strong> un sous-groupe de $GL(2, \\mathbb{R})$ : son élément neutre n'est pas $I_2$, mais $E = M_{1/2}$ (qui est un projecteur de rang 1). L'application $a \\mapsto M_{a/2}$ réalise d'ailleurs un isomorphisme de $(\\mathbb{R}^*, \\times)$ sur $(G, \\times)$.</p>"
                         }
                     ],
-                    "hint": "Matrislerin toplamı değil çarpımı incelenirken sıfır bölenlerine ve birim matrisin standart $I_2$ değil $\\begin{bmatrix} 1/2 & 1/2 \\\\ 1/2 & 1/2 \\end{bmatrix}$ olduğu dikkate alınmalıdır."
+                    "hint": "Matrislerin toplamı değil çarpımı incelenirken sıfır bölenlerine ve birim matrisin standart $I_2$ değil $\\begin{bmatrix} 1/2 & 1/2 \\\\ 1/2 & 1/2 \\end{bmatrix}$ olduğu dikkate alınmalıdır.",
+                    "subtitle": "Matrices Orthogonales / Spéciales dans $GL_2(\\mathbb{R})$"
                 },
                 {
                     "id": "m2_ex16",
@@ -969,7 +1006,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>Remplaçons les coefficients négatifs par leurs représentants canoniques modulo 13 ($-3 \\equiv 10$ et $-8 \\equiv 5$) :<br>$$\\mathbf{A^{-1} = \\begin{pmatrix} 2 & 10 \\\\ 5 & 6 \\end{pmatrix}}$$<br><em>Vérification :</em> $\\begin{pmatrix} 6 & 3 \\\\ 8 & 2 \\end{pmatrix} \\begin{pmatrix} 2 & 10 \\\\ 5 & 6 \\end{pmatrix} = \\begin{pmatrix} 27 & 78 \\\\ 26 & 92 \\end{pmatrix} \\equiv \\begin{pmatrix} 1 & 0 \\\\ 0 & 1 \\end{pmatrix} \\pmod{13}$.</p>"
                         }
                     ],
-                    "hint": "$\\det(A) = (6 \\cdot 2 - 3 \\cdot 8) = 12 - 24 = -12 \\equiv 1 \\pmod{13}$. $\\det(A) = 1$ olduğu için $A^{-1} = \\begin{pmatrix} 2 & -3 \\\\ -8 & 6 \\end{pmatrix} \\equiv \\begin{pmatrix} 2 & 10 \\\\ 5 & 6 \\end{pmatrix} \\pmod{13}$."
+                    "hint": "$\\det(A) = (6 \\cdot 2 - 3 \\cdot 8) = 12 - 24 = -12 \\equiv 1 \\pmod{13}$. $\\det(A) = 1$ olduğu için $A^{-1} = \\begin{pmatrix} 2 & -3 \\\\ -8 & 6 \\end{pmatrix} \\equiv \\begin{pmatrix} 2 & 10 \\\\ 5 & 6 \\end{pmatrix} \\pmod{13}$.",
+                    "subtitle": "Groupe d'Homographies $\\{f_1, \\dots, f_6\\} \\cong \\mathcal{S}_3$"
                 },
                 {
                     "id": "m2_ex17",
@@ -1004,7 +1042,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p><strong>Relation universelle observée :</strong> Dans les 5 groupes finis étudiés ci-dessus, l'ordre $o(x)$ de n'importe quel élément $x \\in G$ <strong>divise toujours l'ordre $|G|$ du groupe</strong> :</p>\n<div style=\"text-align: center; margin: 12px 0; font-size: 1.2rem; font-weight: 800; color: var(--accent-blue);\">\n$$\\forall x \\in G, \\quad \\mathbf{o(x) \\mid |G|}$$\n</div>\n<p><strong>Démonstration rigoureuse (Conséquence du Théorème de Lagrange) :</strong></p>\n<ol style=\"margin-left: 22px; line-height: 1.8;\">\n    <li>Soit $G$ un groupe fini de cardinal $|G| = n$ et soit $x \\in G$ un élément d'ordre $k = o(x)$.</li>\n    <li>Considérons le sous-groupe cyclique engendré par $x$ :\n    $$H = \\langle x \\rangle = \\{e, x, x^2, \\dots, x^{k-1}\\}$$\n    Par minimalité de $k = o(x)$, ces $k$ puissances sont deux à deux distinctes (si $x^i = x^j$ avec $0 \\le i < j < k$, alors $x^{j-i} = e$ avec $0 < j - i < k$, contradiction). Donc le cardinal du sous-groupe $H$ est exactement $|H| = |\\langle x \\rangle| = k = o(x)$.</li>\n    <li>Or, d'après le <strong>Théorème de Lagrange</strong>, dans tout groupe fini $G$, le cardinal de tout sous-groupe $H \\le G$ divise le cardinal de $G$ ($|H| \\mid |G|$).</li>\n    <li>En remplaçant $|H|$ par $o(x)$, on obtient immédiatement :\n    $$\\mathbf{o(x) \\mid |G|}$$</li>\n</ol>\n<p style=\"margin-top: 10px;\"><strong>Corollaire immédiat :</strong> Puisque $o(x) \\mid |G|$, il existe $m \\in \\mathbb{N}^*$ tel que $|G| = o(x) \\cdot m$, d'où $x^{|G|} = (x^{o(x)})^m = e^m = \\mathbf{e}$. $\\blacksquare$</p>"
                         }
                     ],
-                    "hint": "Mertebe teoremine dikkat et: $g^n = e \\iff o(g) \\mid n$. Sonlu bir grupta her elemanın mertebesi Lagrange Teoremi gereği grup mertebesini bölmek zorundadır ($o(g) \\mid |G|$). Buradan $x^{|G|} = e$ corollaire'i çıkar."
+                    "hint": "Mertebe teoremine dikkat et: $g^n = e \\iff o(g) \\mid n$. Sonlu bir grupta her elemanın mertebesi Lagrange Teoremi gereği grup mertebesini bölmek zorundadır ($o(g) \\mid |G|$). Buradan $x^{|G|} = e$ corollaire'i çıkar.",
+                    "subtitle": "Ordres des Éléments dans $\\mathbb{Z}_{12}, U(10), U(12), U(20), D_4$ & Lagrange"
                 },
                 {
                     "id": "m2_ex18",
@@ -1027,7 +1066,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p>Par la combinaison des Inégalités (1) et (2), on obtient par antisymétrie de l'ordre sur $\\mathbb{N}^*$ :</p>\n<div style=\"text-align: center; margin: 14px 0; font-size: 1.25rem; font-weight: 800; color: var(--accent-blue);\">\n$$\\mathbf{o(x) = o(x^{-1})}$$\n</div>\n<div class=\"method-callout-box\" style=\"margin-top: 14px;\">\n    <strong>Extension au cas infini :</strong><br>\n    Si $o(x) = \\infty$, alors $o(x^{-1})$ ne peut pas être fini. En effet, si $o(x^{-1}) = m < \\infty$, l'étape 1 entraînerait $o(x) \\le m < \\infty$, ce qui contredirait l'hypothèse. Par conséquent :\n    $$o(x) = \\infty \\iff o(x^{-1}) = \\infty \\quad \\blacksquare$$\n</div>"
                         }
                     ],
-                    "hint": "Kilit kural: $(x^{-1})^n = (x^n)^{-1} = e^{-1} = e$. Bir elemanın kuvveti birim ise mertebesi o kuvveti böler. Çift yönlü eşitsizlik ($o(x^{-1}) \\le o(x)$ ve $o(x) \\le o(x^{-1})$) kurularak eşitlik ispatlanır."
+                    "hint": "Kilit kural: $(x^{-1})^n = (x^n)^{-1} = e^{-1} = e$. Bir elemanın kuvveti birim ise mertebesi o kuvveti böler. Çift yönlü eşitsizlik ($o(x^{-1}) \\le o(x)$ ve $o(x) \\le o(x^{-1})$) kurularak eşitlik ispatlanır.",
+                    "subtitle": "Tout Groupe d'Exposant 2 ($x^2 = e$) est Abélien"
                 },
                 {
                     "id": "m2_ex23",
@@ -1050,7 +1090,8 @@ window.COURSES_DB["mat204_grup"] = {
                             "content": "<p><strong>2. Sous-groupe $K$ contenant deux réflexions distinctes ($F_1$ et $F_2$) :</strong>\n<ul style=\"margin-left: 22px; margin-bottom: 14px; line-height: 1.7;\">\n    <li>Le produit de deux réflexions distinctes dans un groupe diédral produit toujours une rotation non triviale. Dans $D_3$, $F_1 \\star F_2$ donnera obligatoirement soit $R_{120}$ soit $R_{240}$.\n    <li>$K$ contient donc au moins une rotation non triviale (ex: $R_{120}$) et une réflexion (ex: $F_1$).\n    <li>D'après la démonstration précédente, dès qu'un sous-groupe possède une rotation non-triviale (qui génère toutes les rotations) et une réflexion, il génère tout $D_3$.\n    <li><strong>Conclusion :</strong> Tout sous-groupe de $D_3$ contenant deux réflexions est <strong>le groupe $D_3$ lui-même</strong>.\n</ul>\n<em>Note pour le cours :</em> C'est pour cette raison que $D_3$ peut être <strong>engendré</strong> par seulement deux réflexions !</p>"
                         }
                     ],
-                    "hint": "$R_{240^\\circ}$ dönmesi $120^\\circ$ dönmesini de üretir. Bir dönme ve bir yansıma tüm $D_3$ dihedral grubunu üretir, dolayısıyla alt grup $D_3$'ün kendisidir."
+                    "hint": "$R_{240^\\circ}$ dönmesi $120^\\circ$ dönmesini de üretir. Bir dönme ve bir yansıma tüm $D_3$ dihedral grubunu üretir, dolayısıyla alt grup $D_3$'ün kendisidir.",
+                    "subtitle": "Centre d'un Groupe $Z(G) \\le G$ et Calcul de $Z(D_4)$"
                 },
                 {
                     "id": "m2_ex24",

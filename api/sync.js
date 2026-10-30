@@ -66,7 +66,7 @@ module.exports = async (req, res) => {
             if (type === 'toggle_star') {
                 const { courseKey, exerciseId, starred } = body;
                 if (courseKey && exerciseId) {
-                    if (!currentData.courses[courseKey]) currentData.courses[courseKey] = { starred: [], completed: [], completedTheory: [] };
+                    if (!currentData.courses[courseKey]) currentData.courses[courseKey] = { starred: [], completed: [], completedTheory: [], notes: {} };
                     let st = currentData.courses[courseKey].starred || [];
                     if (starred) {
                         if (!st.includes(exerciseId)) st.push(exerciseId);
@@ -78,7 +78,7 @@ module.exports = async (req, res) => {
             } else if (type === 'toggle_complete') {
                 const { courseKey, exerciseId, completed } = body;
                 if (courseKey && exerciseId) {
-                    if (!currentData.courses[courseKey]) currentData.courses[courseKey] = { starred: [], completed: [], completedTheory: [] };
+                    if (!currentData.courses[courseKey]) currentData.courses[courseKey] = { starred: [], completed: [], completedTheory: [], notes: {} };
                     let comp = currentData.courses[courseKey].completed || [];
                     if (completed) {
                         if (!comp.includes(exerciseId)) comp.push(exerciseId);
@@ -90,7 +90,7 @@ module.exports = async (req, res) => {
             } else if (type === 'set_theory_done') {
                 const { courseKey, moduleKey, done } = body;
                 if (courseKey && moduleKey) {
-                    if (!currentData.courses[courseKey]) currentData.courses[courseKey] = { starred: [], completed: [], completedTheory: [] };
+                    if (!currentData.courses[courseKey]) currentData.courses[courseKey] = { starred: [], completed: [], completedTheory: [], notes: {} };
                     let th = currentData.courses[courseKey].completedTheory || [];
                     if (done) {
                         if (!th.includes(moduleKey)) th.push(moduleKey);
@@ -99,11 +99,22 @@ module.exports = async (req, res) => {
                     }
                     currentData.courses[courseKey].completedTheory = th;
                 }
+            } else if (type === 'set_note') {
+                const { courseKey, exerciseId, note } = body;
+                if (courseKey && exerciseId) {
+                    if (!currentData.courses[courseKey]) currentData.courses[courseKey] = { starred: [], completed: [], completedTheory: [], notes: {} };
+                    if (!currentData.courses[courseKey].notes) currentData.courses[courseKey].notes = {};
+                    if (note && note.trim()) {
+                        currentData.courses[courseKey].notes[exerciseId] = note.trim();
+                    } else {
+                        delete currentData.courses[courseKey].notes[exerciseId];
+                    }
+                }
             } else {
                 // General state merge
                 const incomingCourses = (body.state && body.state.courses) || body.courses || {};
                 for (const cKey in incomingCourses) {
-                    if (!currentData.courses[cKey]) currentData.courses[cKey] = { starred: [], completed: [], completedTheory: [] };
+                    if (!currentData.courses[cKey]) currentData.courses[cKey] = { starred: [], completed: [], completedTheory: [], notes: {} };
                     const inc = incomingCourses[cKey];
 
                     // Merge starred
@@ -125,6 +136,12 @@ module.exports = async (req, res) => {
                         const existing = new Set(currentData.courses[cKey].completedTheory || []);
                         inc.completedTheory.forEach(id => existing.add(id));
                         currentData.courses[cKey].completedTheory = Array.from(existing);
+                    }
+
+                    // Merge notes
+                    if (inc.notes && typeof inc.notes === 'object') {
+                        if (!currentData.courses[cKey].notes) currentData.courses[cKey].notes = {};
+                        Object.assign(currentData.courses[cKey].notes, inc.notes);
                     }
                 }
 
