@@ -56,7 +56,7 @@ async function ensureCourseLoaded(courseKey) {
     loadedCoursePromises[courseKey] = (async () => {
         try {
             if (window.location.protocol !== 'file:') {
-                const res = await fetch(`data/courses/${courseKey}.json?v=22`);
+                const res = await fetch(`data/courses/${courseKey}.json?v=25`);
                 if (res.ok) {
                     const data = await res.json();
                     window.COURSES_DB[courseKey] = data;
@@ -68,7 +68,7 @@ async function ensureCourseLoaded(courseKey) {
         }
         
         try {
-            await loadScriptAsync(`data/courses/${courseKey}.js?v=22`);
+            await loadScriptAsync(`data/courses/${courseKey}.js?v=25`);
             if (window.COURSES_DB[courseKey]) {
                 return window.COURSES_DB[courseKey];
             }
@@ -791,6 +791,7 @@ function triggerManualSync() {
                     ${pagesNavHTML}
 
                     <div class="academic-card">
+                        ${renderConceptChipsBar(mod.concepts || [], "Bu Bölümdeki Kritik Teorem & Kavramlar (Tıkla & Hatırla):")}
                         ${currentContentHTML}
 
                         ${paginationBottomBar}
@@ -954,6 +955,8 @@ function triggerManualSync() {
                         <div id="question-hint-box" class="hint-callout-box" style="display: ${isHintVisible ? 'block' : 'none'};">
                             <strong>${window.ICONS ? window.ICONS.compass : ""} Sınav Taktik İpucu:</strong> ${ex.hint}
                         </div>
+
+                        ${renderConceptChipsBar(ex.concepts || [], "Bu Soruda Kullanılan Teorem & Hatırlatmalar (Tıkla & Hatırla):")}
 
                         <div class="exam-sheet">
                             <div class="exam-sheet-header">
@@ -1251,7 +1254,33 @@ function printMockExam(withSolutions = false) {
             saveAppState();
         }
 
-        // ================= CONCEPT MODAL =================
+        // ================= CONCEPT MODAL & INLINE REMINDER HELPERS =================
+        function formatConceptMarkdown(str) {
+            if (!str) return "";
+            return str
+                .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+                .replace(/\n/g, "<br>");
+        }
+
+        function renderConceptChipsBar(conceptKeys, labelText = "Bu Soruda Kullanılan Teorem & Hatırlatmalar (Tıkla & İncele):") {
+            if (!conceptKeys || !conceptKeys.length || typeof conceptsDB === "undefined") return "";
+            const valid = conceptKeys.filter(k => conceptsDB[k]);
+            if (!valid.length) return "";
+            const chips = valid.map(k => {
+                const c = conceptsDB[k];
+                const shortName = c.title.split("(")[0].trim();
+                return `<span class="term-link" onclick="openConceptModal('${k}')" title="${c.title.replace(/"/g, '&quot;')}" style="font-size: 0.82rem; padding: 4px 10px;">💡 ${shortName}</span>`;
+            }).join("");
+            return `
+                <div class="concept-reminder-bar" style="margin: 14px 0 18px 0; padding: 12px 16px; background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.2); border-left: 3px solid var(--term-link-color); border-radius: 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+                    <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-secondary); margin-right: 4px; display: inline-flex; align-items: center; gap: 4px;">
+                        📌 ${labelText}
+                    </span>
+                    ${chips}
+                </div>
+            `;
+        }
+
         function openConceptModal(conceptKey) {
             const c = conceptsDB[conceptKey];
             if (!c) return;
@@ -1260,13 +1289,26 @@ function printMockExam(withSolutions = false) {
             const modalBodyEl = document.getElementById('modal-concept-body');
             const modalEl = document.getElementById('concept-modal');
 
-            modalTitleEl.innerHTML = c.title;
-            modalBodyEl.innerHTML = `
-                <div style="margin-bottom: 14px; font-family: 'Newsreader', serif; font-size: 1.15rem; color: var(--text-main); line-height: 1.8;">${c.definition}</div>
-                <div style="background: rgba(125,125,125,0.06); padding: 14px 16px; border-radius: 8px; border-left: 3px solid var(--accent-indigo); font-family: 'Inter', sans-serif;">
-                    <strong style="color: var(--accent-indigo); display: block; margin-bottom: 4px;">Türkçe Sınav Mantığı:</strong>
-                    ${c.intuition}
+            const badgeHTML = c.badge ? `<span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; background: var(--term-link-bg); color: var(--term-link-color); padding: 3px 8px; border-radius: 4px; margin-bottom: 6px; display: inline-block;">${c.badge}</span><br>` : "";
+            modalTitleEl.innerHTML = `${badgeHTML}${c.title}`;
+
+            const redactionBlock = c.redaction ? `
+                <div style="margin-top: 12px; background: rgba(16, 185, 129, 0.06); padding: 12px 16px; border-radius: 8px; border-left: 3px solid var(--accent-emerald); font-family: 'Inter', sans-serif;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
+                        <strong style="color: var(--accent-emerald); font-size: 0.86rem;">🇫🇷 Sınav Kağıdına Yazılacak Hazır Cümle (Rédaction):</strong>
+                        <button class="btn-stepper secondary" style="padding: 3px 9px; font-size: 0.75rem;" onclick="copyTextToClipboard(conceptsDB['${conceptKey}'].redaction, '✓ Fransızca sınav cümlesi kopyalandı!')">📋 Cümleyi Kopyala</button>
+                    </div>
+                    <div style="font-family: 'Newsreader', serif; font-style: italic; font-size: 1.02rem; color: var(--text-main); line-height: 1.6;">"${c.redaction}"</div>
                 </div>
+            ` : "";
+
+            modalBodyEl.innerHTML = `
+                <div style="margin-bottom: 14px; font-family: 'Newsreader', serif; font-size: 1.12rem; color: var(--text-main); line-height: 1.75; background: var(--bg-paper); padding: 14px 16px; border-radius: 8px; border: 1px solid var(--border-subtle);">${formatConceptMarkdown(c.definition)}</div>
+                <div style="background: rgba(129, 140, 248, 0.08); padding: 14px 16px; border-radius: 8px; border-left: 3px solid var(--accent-indigo); font-family: 'Inter', sans-serif; line-height: 1.65;">
+                    <strong style="color: var(--accent-indigo); display: block; margin-bottom: 5px;">💡 Türkçe Sınav Mantığı &amp; Taktik:</strong>
+                    ${formatConceptMarkdown(c.intuition)}
+                </div>
+                ${redactionBlock}
             `;
             modalEl.style.display = 'flex';
 
@@ -3511,25 +3553,39 @@ Donc $f$ est injectif.<br>
             } else if (activeCourseKey === 'mat206_olasilik') {
                 traps = [
                     {
-                        title: "1. Bağımsızlık ile Ayrıklığı Karıştırmak",
+                        title: "1. Bağımsızlık (Indépendance) ile Ayrıklığı (Incompatibilité) Karıştırmak",
                         wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-10 Puan):</span>`,
-                        wrongDesc: "İki olay bağımsız olduğunda $A \\cap B = \\emptyset$ sanmak.",
+                        wrongDesc: "İki olay bağımsız olduğunda $A \cap B = \emptyset$ sanmak veya $A \cap B = \emptyset$ olunca 'bağımsızdır' demek.",
                         rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
-                        rightDesc: "Ayrıklık (disjoints) kesişimin boş olması demektir ($P(A \\cap B) = 0$). Bağımsızlık ise $P(A \\cap B) = P(A)P(B)$ demektir. Pozitif olasılıklı iki olay hem ayrık hem bağımsız OLAMAZ!"
+                        rightDesc: "$A \cap B = \emptyset$ olması olayların **ayrık (incompatible)** olduğu anlamına gelir. Eğer $P(A)>0$ ve $P(B)>0$ ise, ayrık iki olay **ASLA bağımsız olamaz**! Çünkü bağımsızlık $P(A \cap B) = P(A)P(B) > 0$ gerektirir, oysa ayrık olaylarda kesişim sıfırdır."
                     },
                     {
-                        title: "2. Bayes Formülünün Paydasını Eksik Açmak",
+                        title: "2. Bayes Teoreminde Önsel Olasılığı (P(M)) Hesaba Katmamak",
+                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-10 Puan):</span>`,
+                        wrongDesc: "Kanser testi %99 güvenilir çıktığında, testi pozitif olan birinin hasta olma olasılığına doğrudan %99 demek.",
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
+                        rightDesc: "Hastalık toplumda çok nadirse ($P(M) = 0.0001$), yalancı pozitifler hasta olanlardan kat kat fazla çıkar! Kağıda mutlaka tam olaylar sistemi $\{M, M^c\}$ üzerinden Bayes formülünü yazın: $P(M \mid T) = \frac{P(T \mid M)P(M)}{P(T \mid M)P(M) + P(T \mid M^c)P(M^c)} \approx 0.98\%$."
+                    },
+                    {
+                        title: "3. Süreklilik Belirtmeden Y = -X için 1 - F(-y) Yazmak",
                         wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-8 Puan):</span>`,
-                        wrongDesc: "Bayes formülünde paydadaki $P(B)$'yi açarken tümleyen durumu ($P(\\bar{A})P(B \\mid \\bar{A})$) unutmak.",
+                        wrongDesc: "$F_Y(y) = P(-X \le y) = P(X \ge -y) = 1 - F(-y)$ yazıp geçmek.",
                         rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
-                        rightDesc: "Payda toplam olasılık formülüdür: $P(B) = P(A)P(B \\mid A) + P(\\bar{A})P(B \\mid \\bar{A})$. Özellikle tıbbi test sorularında sağlam popülasyon terimi sonucu belirler."
+                        rightDesc: "Genel durumda $P(X \ge -y) = 1 - P(X < -y) = 1 - F((-y)^-)$'dir! $1 - F(-y)$ eşitliğinin geçerli olması için kağıda açıkça **« Comme X est une variable aléatoire continue, $P(X = -y) = 0$, d'où $P(X < -y) = P(X \le -y) = F(-y)$ »** gerekçesi yazılmalıdır (2024 DS Soru 6)."
                     },
                     {
-                        title: "3. İadesiz Çekilişte Olasılıkları Sabit Tutmak",
-                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-5 Puan):</span>`,
-                        wrongDesc: "Tirage sans remise (iadesiz çekiliş) yaparken ikinci çekiliş için paydayı $n$ olarak bırakmak.",
+                        title: "4. Çift Sayımda (Double Comptage) Cebirsel Açılım Yapmak",
+                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-10 Puan):</span>`,
+                        wrongDesc: "$\sum \binom{n}{k} k^2$ veya $\binom{2n}{n}$ eşitliğini türev alarak veya binom katsayılarını cebirsel çarparak çözmeye çalışmak.",
                         rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
-                        rightDesc: "Her çekilişte torbadaki bilye sayısı 1 azalır (payda $n-1$). İadeli ise bağımsızdır ve payda sabit kalır."
+                        rightDesc: "Hoca açıkça **« par argument combinatoire »** ister. Eşitliğin sol tarafının önce komiteyi seçip sonra liderleri atadığını, sağ tarafının ise önce liderleri (aynı kişi mi farklı mı?) seçip sonra komiteyi tamamladığını iki ayrı paragrafta anlatın (2024 DS Soru 9)."
+                    },
+                    {
+                        title: "5. İkişerli Bağımsızlığı (Deux à Deux) Mutlak Bağımsız Sanmak",
+                        wrongText: `<span class="badge-pitfall-wrong">${window.ICONS ? window.ICONS.x : ""} Hatalı Yaklaşım (-10 Puan):</span>`,
+                        wrongDesc: "$P(A \cap B) = P(A)P(B)$, $P(A \cap C) = P(A)P(C)$ ve $P(B \cap C) = P(B)P(C)$ bulunca 'O halde A, B, C bağımsızdır' demek.",
+                        rightText: `<span class="badge-pitfall-right">${window.ICONS ? window.ICONS.check : ""} Doğru Matematiksel İfade (Tam Puan):</span>`,
+                        rightDesc: "İkişerli bağımsızlık (indépendance deux à deux) **mutlak bağımsızlığı gerektirmez**! Mutlak bağımsızlık için 4. şart olan $P(A \cap B \cap C) = P(A)P(B)P(C)$ mutlaka ayrıca gösterilmelidir (Bernstein karşı-örneği)."
                     }
                 ];
             } else {
@@ -3652,11 +3708,25 @@ Donc $f$ est injectif.<br>
                     { num: 4, points: 25, topic: 'Kutupsal Koordinatlarda Dairesel Hareket', ex: mods['fizik_mod2'].exercises[2] || mods['fizik_mod2'].exercises[0], rubric: '+8 Puan: Radyal ve teğetsel hız, +10 Puan: Merkezcil ivme, +7 Puan: Dinamik hareket denklemi.' }
                 ];
             } else if (activeCourseKey === 'mat206_olasilik') {
+                const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+                const m1 = mods['olasilik_mod1']?.exercises || [];
+                const m2 = mods['olasilik_mod2']?.exercises || [];
+                const m3 = mods['olasilik_mod3']?.exercises || [];
+                const m4 = mods['olasilik_mod4']?.exercises || [];
+                const m5 = mods['olasilik_mod5']?.exercises || [];
+
+                const q1 = pick(m1) || m1[0];
+                const q2 = pick(m2) || m2[0];
+                const q3 = pick(m3) || m3[0];
+                const q4 = pick(m4) || m4[0];
+                const q5 = pick(m5) || m5[0];
+
                 return [
-                    { num: 1, points: 25, topic: 'Kombinatorik & Laplace Modeli', ex: mods['olasilik_mod1'].exercises[0], rubric: '+8 Puan: Örneklem uzayı $|\Omega| = \binom{12}{3}$, +10 Puan: İstenen olay kombinasyonu, +7 Puan: Sonuç olasılığı.' },
-                    { num: 2, points: 25, topic: 'Kolmogorov Aksiyomları & Poincaré', ex: mods['olasilik_mod1'].exercises[1], rubric: '+10 Puan: Ayrık ayrışım ispatı, +10 Puan: Additivite aksiyomu, +5 Puan: Kesişim hesabı.' },
-                    { num: 3, points: 25, topic: 'Toplam Olasılık Formülü', ex: mods['olasilik_mod2'].exercises[0], rubric: '+8 Puan: Tam olay sistemi tanımı, +10 Puan: Ağırlıklı toplam hesabı, +7 Puan: Nihai oran.' },
-                    { num: 4, points: 25, topic: 'Bayes Teoremi & Tıbbi Dépistage', ex: mods['olasilik_mod2'].exercises[1], rubric: '+8 Puan: Koşullu olasılık ters çevirme, +10 Puan: Payda hesabı, +7 Puan: Gerçek hasta olasılığı.' }
+                    { num: 1, points: 20, topic: 'Kombinatorik Sayma & Özdeşlikler (Double Comptage)', ex: q1, rubric: '+6 Puan: Örneklem uzayı ve modellerin doğru tanımı, +8 Puan: İki yönlü sayım/bölme adımları, +6 Puan: Özdeşliğin ispatı.' },
+                    { num: 2, points: 20, topic: 'Olaylar Cebri, Aksiyomlar & Küme Olasılığı', ex: q2, rubric: '+6 Puan: Ayrık ayrışım ve Kolmogorov aksiyomları, +8 Puan: Koşullu olasılık / bağımsızlık analizi, +6 Puan: Nihai oran.' },
+                    { num: 3, points: 20, topic: 'Tam Olasılık & Bayes Teoremi (Dépistage & Usine)', ex: q3, rubric: '+6 Puan: Système complet d\'événements tanımı, +8 Puan: Payda toplam olasılık hesabı, +6 Puan: Bayes a posteriori sonucu.' },
+                    { num: 4, points: 20, topic: 'Bağımsız Denemeler, Pascal & Ruine du Joueur', ex: q4, rubric: '+6 Puan: İlk atışa göre koşullandırma ve rekürans, +8 Puan: İndüksiyon veya fark denklemi çözümü, +6 Puan: Tam çözüm.' },
+                    { num: 5, points: 20, topic: 'Rastgele Değişkenler, Dağılım Fonksiyonu & Gauss', ex: q5, rubric: '+6 Puan: Dağılım fonksiyonu $F(x)$ tanımı ve integrali, +8 Puan: Değişken dönüşümü ara adımları, +6 Puan: Yoğunluk/olasılık hesabı.' }
                 ];
             }
 

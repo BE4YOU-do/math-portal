@@ -57,10 +57,18 @@ const FLASHCARDS_BY_COURSE = {
         { category: 'Sürtünme Yasası', prompt: 'Statik sürtünme kuvveti $f_s$ yüzey tepkisi $N$ ile nasıl sınırlıdır?', answer: '$$f_s \\le \\mu_s N$$ (Kayma sınırında $f_{s,\\max} = \\mu_s N$).' }
     ],
     'mat206_olasilik': [
-        { category: 'Laplace Modeli', prompt: 'Sonlu ve eş olası bir örneklem uzayında bir olayın olasılığı nasıl tanımlanır?', answer: '$$P(A) = \\frac{|A|}{|\\Omega|} = \\frac{\\text{İstenen Durum Sayısı}}{\\text{Tüm Olası Durum Sayısı}}$$' },
-        { category: 'Poincaré Formülü', prompt: 'İki olay $A$ ve $B$ için $P(A \\cup B)$ ve $P(B \\setminus A)$ nedir?', answer: '$$P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$$ $$P(B \\setminus A) = P(B) - P(A \\cap B)$$' },
-        { category: 'Koşullu Olasılık', prompt: '$P(B) > 0$ iken $B$ verildiğinde $A$\'nın koşullu olasılığı $P(A \\mid B)$ ve bağımsızlık şartı nedir?', answer: '$$P(A \\mid B) = \\frac{P(A \\cap B)}{P(B)}$$ **Bağımsızlık:** $P(A \\cap B) = P(A)P(B) \\iff P(A \\mid B) = P(A)$.' },
-        { category: 'Toplam Olasılık', prompt: '$(B_i)_{i=1}^n$ olaylar ailesi örneklem uzayının bir tam olay sistemi (partition) ise $P(A)$ formülü nedir?', answer: '$$P(A) = \\sum_{i=1}^n P(A \\cap B_i) = \\sum_{i=1}^n P(B_i) P(A \\mid B_i)$$' },
-        { category: 'Bayes Teoremi', prompt: 'Bayes Teoremi formülü nedir?', answer: '$$P(B_k \\mid A) = \\frac{P(B_k) P(A \\mid B_k)}{\\sum_{i=1}^n P(B_i) P(A \\mid B_i)}$$' }
+        { category: 'Kombinatorik & Sayma', prompt: 'Vandermonde özdeşliği nedir ve n=m, r=n için neye dönüşür?', answer: '$$\\binom{n+m}{r} = \\sum_{k=0}^r \\binom{n}{k}\\binom{m}{r-k}$$ Özel durumda: $$\binom{2n}{n} = \sum_{k=0}^n \binom{n}{k}^2$$' },
+        { category: 'Kombinatorik & Sayma', prompt: 'n kişilik gruptan başkan ve sekreteri olan komite seçme özdeşliği ($k^2$) nedir?', answer: '$$\\sum_{k=1}^n \\binom{n}{k} k^2 = 2^{n-2} n(n+1)$$ (Başkan = Sekreter için $n \\cdot 2^{n-1}$, Başkan $\\neq$ Sekreter için $n(n-1) 2^{n-2}$).' },
+        { category: 'Kombinatorik & Sayma', prompt: 'n elemanlı kümenin parçalanış sayısı $T_n$ (Bell sayıları) reküransı nedir?', answer: '$$T_{n+1} = 1 + \\sum_{k=1}^n \\binom{n}{k} T_k$$' },
+        { category: 'Olaylar & Kümeler', prompt: 'İki olayın kesişimi $E \\cap F = \\emptyset$ ise bağımsız olabilirler mi?', answer: '**HAYIR!** Pozitif olasılıklı iki olay asla hem ayrık (incompatible) hem bağımsız (indépendant) olamaz. Çünkü ayrık ise $P(E \\cap F) = 0$, bağımsız ise $P(E \\cap F) = P(E)P(F) > 0$ çelişkisi doğar.' },
+        { category: 'Olaylar & Kümeler', prompt: 'İki bağımsız rastgele alt küme için $P(X \\subseteq Y)$ olasılığı nedir?', answer: '$$P(X \\subseteq Y) = \\left(\\frac{3}{4}\\right)^n$$ Her eleman için 4 durumdan 3 tanesi kapsamayı sağlar.' },
+        { category: 'Koşullu Olasılık & Bayes', prompt: 'Tam Olasılık Formülü (Probabilités Totales) ne zaman ve nasıl yazılır?', answer: '$(B_1, \\dots, B_n)$ bir tam olaylar sistemi ise: $$P(A) = \\sum_{i=1}^n P(A \\mid B_i) P(B_i)$$' },
+        { category: 'Koşullu Olasılık & Bayes', prompt: 'Bayes Teoremi (Formule de Bayes) formülü nedir?', answer: '$$P(B_k \\mid A) = \\frac{P(A \\mid B_k) P(B_k)}{\\sum_{i=1}^n P(A \\mid B_i) P(B_i)}$$' },
+        { category: 'Bağımsız Denemeler', prompt: 'Ayrık $E$ ve $F$ olaylarında $E$\'nin $F$\'den önce çıkma olasılığı nedir?', answer: '$$P(E \\text{ avant } F) = \\frac{P(E)}{P(E) + P(F)}$$ (Örn: 5 gelme 4/36, 7 gelme 6/36 $\\implies 4/(4+6) = 2/5$).' },
+        { category: 'Bağımsız Denemeler', prompt: 'n bağımsız Bernoulli denemesinde çift sayıda başarı gelme olasılığı $P_n$ nedir?', answer: '$$P_n = p(1 - P_{n-1}) + (1-p)P_{n-1} = \\frac{1 + (1-2p)^n}{2}$$' },
+        { category: 'Pascal & Ruine', prompt: 'A oyuncusu $n+1$ para, B oyuncusu $n$ para atıyor. $P(A > B)$ nedir?', answer: '$$P(A > B) = \\frac{1}{2}$$ İlk $n$ atışta $P(A_n > B_n) = P(A_n < B_n)$ simetrisinden gelir.' },
+        { category: 'Pascal & Ruine', prompt: 'Kumarbazın İflası (Ruine du Joueur) fark denklemi ve çözümü nedir?', answer: '$$P_i = p P_{i+1} + q P_{i-1}, \\quad P_0 = 0, \\; P_N = 1$$ Adil oyunda ($p=1/2$): $P_i = i/N$. Genel oyunda ($p \\neq 1/2$): $$P_i = \\frac{1 - (q/p)^i}{1 - (q/p)^N}$$' },
+        { category: 'Rastgele Değişkenler', prompt: 'X sürekli rastgele değişken iken $Y = -X$ için dağılım fonksiyonu $F_Y(y)$ nedir?', answer: '$$F_Y(y) = P(-X \\le y) = 1 - F_X(-y)$$ (Sürekli değişkende nokta olasılığı 0 olduğundan).' },
+        { category: 'Rastgele Değişkenler', prompt: 'Loi Normale $\\mathcal{N}(\\mu, \\sigma^2)$ yoğunluk fonksiyonu formülü nedir?', answer: '$$f(x) = \\frac{1}{\\sigma \\sqrt{2\\pi}} \\exp\\left(-\\frac{(x - \\mu)^2}{2\\sigma^2}\\right)$$' }
     ]
 };
