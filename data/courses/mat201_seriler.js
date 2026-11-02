@@ -1,4 +1,5 @@
-window.COURSE_DATA_mat201_seriler = {
+window.coursesData = window.coursesData || {};
+window.coursesData.mat201_seriler = {
   "id": "mat201_seriler",
   "code": "MAT201",
   "title": "Seriler & Analiz",
@@ -301,6 +302,33 @@ window.COURSE_DATA_mat201_seriler = {
               "content": "<p><strong>Théorème 1.31 (Critère de Cauchy dans $\\mathbb{R}$) :</strong>\nDans le corps des réels $\\mathbb{R}$, une suite converge si et seulement si elle est de Cauchy.\n<p><strong>Rôle crucial pour les séries numériques :</strong>\nUne série $\\sum u_n$ converge si et seulement si sa suite des sommes partielles $S_n = \\sum_{k=0}^n u_k$ est de Cauchy.\nOr :\n$$ |S_m - S_n| = \\left| \\sum_{k=n+1}^m u_k \\right| \\le \\sum_{k=n+1}^m |u_k| $$\nSi la série des valeurs absolues $\\sum |u_k|$ converge, alors la suite de ses sommes partielles est de Cauchy, ce qui force $(S_n)$ à être de Cauchy dans $\\mathbb{R}$, et donc à converger !\nC'est la clé de voûte de la démonstration du grand théorème : <strong>« Toute série absolument convergente est convergente »</strong>. ■r"
             }
           ]
+        },
+        {
+          "id": "s1_ex13",
+          "name": "TD 0 • Ex 13 : Suite Récurrente & Théorème du Point Fixe",
+          "subtitle": "Özyinelemeli Dizi ve Sabit Nokta Teoremi (u_{n+1} = √(2+u_n))",
+          "tag": "Diziler (TD 0)",
+          "concepts": [
+            "theoreme_point_fixe",
+            "theoreme_gendarmes"
+          ],
+          "enonce": "<p>Soit la suite $(u_n)_{n \\in \\mathbb{N}}$ définie par $u_0 = 0$ et pour tout $n \\ge 0$ :<br>$$ u_{n+1} = \\sqrt{2 + u_n} $$<br><strong>(1)</strong> Montrer par récurrence que pour tout $n \\in \\mathbb{N}$, $0 \\le u_n \\le 2$.<br><strong>(2)</strong> Montrer que $(u_n)$ est croissante.<br><strong>(3)</strong> En déduire que $(u_n)$ converge et déterminer sa limite $L$.</p>",
+          "solTitle": "Solution Détaillée (Rédaction Examen)",
+          "steps": [
+            {
+              "title": "Étape 1 : Encadrement par Récurrence (0 ≤ u_n ≤ 2)",
+              "content": "<p>Démontrons par récurrence que pour tout $n \\in \\mathbb{N}$, $0 \\le u_n \\le 2$ :</p><ul style=\"margin-left: 22px; margin-bottom: 12px; line-height: 1.7;\"><li><strong>Initialisation :</strong> Pour $n=0$, $u_0 = 0 \\in [0, 2]$. L'initialisation est vérifiée.</li><li><strong>Hérédité :</strong> Supposons que $0 \\le u_n \\le 2$ pour un certain rang $n$. Alors $2 \\le 2 + u_n \\le 4$. Par stricte croissance de la fonction racine carrée sur $[0, +\\infty[$ :<br>$$\\sqrt{2} \\le \\sqrt{2 + u_n} \\le \\sqrt{4} = 2 \\implies 0 \\le u_{n+1} \\le 2$$</li></ul><p>La propriété est donc établie pour tout $n \\in \\mathbb{N}$. La suite $(u_n)$ est donc <strong>bornée</strong>.</p>"
+            },
+            {
+              "title": "Étape 2 : Monotonie de la Suite (u_{n+1} - u_n ≥ 0)",
+              "content": "<p>Étudions le signe de la différence $u_{n+1} - u_n$ en multipliant par la quantité conjuguée :<br>$$u_{n+1} - u_n = \\sqrt{2 + u_n} - u_n = \\frac{(\\sqrt{2 + u_n} - u_n)(\\sqrt{2 + u_n} + u_n)}{\\sqrt{2 + u_n} + u_n} = \\frac{2 + u_n - u_n^2}{\\sqrt{2 + u_n} + u_n}$$</p><p>Factorisons le numérateur du second degré : $-u_n^2 + u_n + 2 = (2 - u_n)(1 + u_n)$.<br>D'où :<br>$$u_{n+1} - u_n = \\frac{(2 - u_n)(1 + u_n)}{\\sqrt{2 + u_n} + u_n}$$</p><p>Puisque d'après l'Étape 1 on a $u_n \\in [0, 2]$, tous les facteurs sont positifs : $(2 - u_n) \\ge 0$, $(1 + u_n) > 0$ et le dénominateur est strictement positif. Par conséquent, $u_{n+1} - u_n \\ge 0$. La suite $(u_n)$ est donc <strong>croissante</strong>.</p>"
+            },
+            {
+              "title": "Étape 3 : Convergence & Équation du Point Fixe (L = 2)",
+              "content": "<p>Puisque $(u_n)$ est croissante et majorée par 2, d'après le théorème de la limite monotone, elle converge vers une limite finie notée $L \\in [0, 2]$.</p><p>Par continuité de la fonction $f(x) = \\sqrt{2 + x}$ sur $[0, 2]$, la limite satisfait nécessairement l'équation de <span class=\"term-link\" onclick=\"openConceptModal('theoreme_point_fixe')\">point fixe</span> :<br>$$L = \\sqrt{2 + L} \\iff L^2 - L - 2 = 0 \\iff (L - 2)(L + 1) = 0$$</p><p>Les solutions algébriques sont $L = 2$ et $L = -1$. Puisque tous les termes de la suite sont positifs ($u_n \\ge 0$), la limite vérifie $L \\ge 0$, ce qui élimine la solution négative $L = -1$.</p><p><strong>Conclusion finale :</strong> La suite $(u_n)$ converge vers $\\mathbf{L = 2}$. ■</p>"
+            }
+          ],
+          "hint": "Tümevarımla u_n ≤ 2 göster. Eşlenikle u_{n+1} - u_n farkını çarpanlarına ayır ((2-u_n)(1+u_n)). Artan ve üstten sınırlı dizi yakınsar; limiti L = √(2+L) sabit nokta denkleminin pozitif kökü olan 2'dir."
         }
       ]
     },

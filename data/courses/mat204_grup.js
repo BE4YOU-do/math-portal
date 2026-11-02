@@ -1,5 +1,5 @@
-window.COURSES_DB = window.COURSES_DB || {};
-window.COURSES_DB['mat204_grup'] = {
+window.coursesData = window.coursesData || {};
+window.coursesData.mat204_grup = {
   "id": "mat204_grup",
   "code": "MAT204",
   "title": "Grup Teorisi",
@@ -486,7 +486,6 @@ window.COURSES_DB['mat204_grup'] = {
           "hint": "Tümevarım (récurrence) kur: $k=1$ için hipotezden doğru. $a^k \\equiv b^k$ iken önceki sorudaki çarpım kuralıyla $a \\cdot a^k \\equiv b \\cdot b^k \\implies a^{k+1} \\equiv b^{k+1}$ elde et.",
           "subtitle": "Compatibilité des Congruences avec les Puissances ($a^k \\equiv b^k$)",
           "concepts": [
-            "produit_matriciel",
             "division_euclidienne_congruence",
             "identite_bezout"
           ]
@@ -2026,8 +2025,7 @@ window.COURSES_DB['mat204_grup'] = {
           "subtitle": "$\\mathcal{S}_n$ Engendré par un 2-cycle et un $n$-cycle",
           "concepts": [
             "signature_permutation",
-            "critere_sous_groupe",
-            "produit_matriciel"
+            "critere_sous_groupe"
           ]
         },
         {

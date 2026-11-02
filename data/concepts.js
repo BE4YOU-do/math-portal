@@ -249,6 +249,22 @@ const conceptsDB = {
         intuition: "Dizilerde $\\lfloor nx \\rfloor / n$, $(-1)^n/n$ veya toplam sınırlandırma sorularında ilk işin alt ve üst sınır kurup Gendarmes uygulamaktır ($x - 1 < \\lfloor x \\rfloor \\le x$). Özyinelemeli ($u_{n+1}=f(u_n)$) dizilerde ise **Monotonluk + Sınırlılık** ikilisi kullanılır.",
         redaction: "Par encadrement et d'après le théorème des gendarmes, la suite $(u_n)$ converge vers $\\ell$."
     },
+    'theoreme_point_fixe': {
+        title: "Théorème du Point Fixe & Suites Récurrentes (Sabit Nokta ve Özyinelemeli Diziler)",
+        course: "mat201_seriler",
+        badge: "Teorem • MAT201",
+        definition: "Soit $f : I \\to I$ une fonction continue définie sur un intervalle fermé $I \\subset \\mathbb{R}$. Si une suite récurrente définie par $u_0 \\in I$ et $u_{n+1} = f(u_n)$ converge vers une limite finie $\\ell \\in I$, alors $\\ell$ vérifie nécessairement l'équation de point fixe :\n$$f(\\ell) = \\ell$$\nDe plus, si $f$ est contractante sur $I$ ($|f'(x)| \\le k < 1$), le point fixe $\\ell$ est unique et la suite converge quel que soit $u_0 \\in I$.",
+        intuition: "Özyinelemeli $u_{n+1} = f(u_n)$ dizilerinin sınav çözüm algoritması 3 temel adımdan oluşur:\n1. **Kararlılık ve Sınırlılık (Stabilité & Bornitude) :** $f(I) \\subset I$ olduğu gösterilir ve tümevarımla (par récurrence) $\\forall n \\in \\mathbb{N},\\; u_n \\in I$ ispatlanır.\n2. **Monotonluk (Monotonie) :** Ya $u_{n+1} - u_n = f(u_n) - u_n$ farkının işareti $u_n \\in I$ bilgisi kullanılarak incelenir, ya da $f$ artan ise $u_1 - u_0$ işaretine göre tümevarımla $(u_n)$ dizisinin artan/azalan olduğu gösterilir.\n3. **Yakınsaklık ve Sabit Nokta :** Monoton ve sınırlı dizi yakınsar ($u_n \\to \\ell$). $f$ sürekli olduğundan $f(u_n) \\to f(\\ell)$ ve dolayısıyla $\\ell = f(\\ell)$ sabit nokta denklemi çözülür. $I$ aralığı dışındaki yabancı kökler elenir.",
+        redaction: "Puisque $(u_n)$ converge vers une limite $\\ell \\in I$ et que la fonction $f$ est continue sur $I$, la limite $\\ell$ satisfait nécessairement l'équation de point fixe $f(\\ell) = \\ell$."
+    },
+    'equivalence_series_positives': {
+        title: "Principe d'Équivalence & Comparaison des Séries à Termes Positifs (Eşdeğerlik Kriteri)",
+        course: "mat201_seriler",
+        badge: "Kriter • MAT201",
+        definition: "Soient $\\sum u_n$ et $\\sum v_n$ deux séries à **termes strictement positifs** à partir d'un certain rang.\n• Si $u_n \\sim v_n$ ($n \\to +\\infty$), alors les deux séries $\\sum u_n$ et $\\sum v_n$ sont de **même nature** (toutes deux convergentes ou toutes deux divergentes).\n• De plus, si $\\sum u_n$ converge, les restes d'ordre $n$ sont équivalents : $R_n \\sim R_n'$. Si $\\sum u_n$ diverge, les sommes partielles sont équivalentes : $S_n \\sim S_n'$.",
+        intuition: "Pozitif terimli serilerde en hızlı çözüm yoludur! $\\sin(x) \\sim x$, $\\ln(1+x) \\sim x$, $e^x - 1 \\sim x$ ($x \\to 0$) gibi temel Taylor/DL eşdeğerlikleri kullanılarak genel terim $u_n \\sim \\frac{1}{n^\\alpha}$ Riemann formuna indirgenir.",
+        redaction: "Les séries $\\sum u_n$ et $\\sum v_n$ étant à termes strictement positifs avec $u_n \\sim_{n\\to+\\infty} v_n$, elles ont la même nature d'après le critère d'équivalence."
+    },
     'suites_adjacentes_cauchy': {
         title: "Suites Adjacentes & Critère de Cauchy (Bitişik Diziler ve Cauchy Kriteri)",
         course: "mat201_seriler",

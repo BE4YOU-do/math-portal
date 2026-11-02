@@ -1,4 +1,4 @@
-window.COURSES_MANIFEST = {
+window.coursesManifest = {
   "mat204_grup": {
     "code": "MAT204",
     "title": "Grup Teorisi",
@@ -59,7 +59,7 @@ window.COURSES_MANIFEST = {
         "id": "seriler_mod1",
         "title": "Modül 1: TD 0 - Rappels sur les Suites (Diziler ve Yakınsaklık)",
         "shortTitle": "TD-0: Diziler & Yakınsaklık",
-        "exerciseCount": 12
+        "exerciseCount": 13
       },
       {
         "id": "seriler_mod2",
