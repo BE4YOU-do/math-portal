@@ -1,6 +1,6 @@
 # TÜRK MÜZİĞİNİN DÖNÜŞÜMÜNDE TANBURİ CEMİL BEY VE MÜNİR NURETTİN SELÇUK’UN MÜZİKAL KATKILARININ ANALİZİ
 
-**Galatasaray Üniversitesi • Fen-Edebiyat Fakültesi**  
+**Galatasaray Üniversitesi**  
 **Ders:** Etnomüzikoloji  
 **Öğretim Görevlisi:** Binnaz ÇELİK  
 **Hazırlayan:** Hamza DOĞAN  
