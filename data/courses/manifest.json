@@ -59,7 +59,7 @@
         "id": "seriler_mod1",
         "title": "Modül 1: Diziler ve Yakınsaklık (Suites Numériques)",
         "shortTitle": "Modül 1: Diziler ve Yakınsaklık (Suites Numériques)",
-        "exerciseCount": 5
+        "exerciseCount": 7
       },
       {
         "id": "seriler_mod2",
@@ -85,7 +85,8 @@
         "shortTitle": "Modül 5: Quiz & Vize Master Özeti (Karar Ağaçları & 8 Arketip)",
         "exerciseCount": 8
       }
-    ]
+    ],
+    "totalExercises": 48
   },
   "fiz101_fizik": {
     "code": "FIZ101",

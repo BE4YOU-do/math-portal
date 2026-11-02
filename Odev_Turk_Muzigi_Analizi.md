@@ -84,11 +84,13 @@ Münir Nurettin Selçuk’un bestecilik dehası, özellikle dönemin büyük şa
 ---
 
 ## 5. SONUÇ VE DEĞERLENDİRME
-Tanburi Cemil Bey ve Münir Nurettin Selçuk; Osmanlı’dan Cumhuriyet’e geçişin fırtınalı kültürel ikliminde, Türk Musikisi'nin köklerinden kopmadan nasıl çağdaşlaşabileceğinin en somut ve asil modellerini ortaya koymuşlardır.
+Tanburi Cemil Bey ve Münir Nurettin Selçuk; Osmanlı’dan Cumhuriyet’e geçişin fırtınalı kültürel ikliminde, Türk Musikisi'nin köklerinden kopmadan nasıl çağdaşlaşabileceğinin en somut ve asil modellerini ortaya koymuşlardır. Geleneksel sanatların Batı modernleşmesi karşısında bocaladığı, alaturka-alafranga kutuplaşmasının keskinleştiği bir evrede, her iki usta da geleneği dondurulmuş bir müze nesnesi gibi korumak yerine, onu yaşayan, üreten ve çağın estetik gereksinimlerine yanıt veren dinamik bir form olarak yeniden tanımlamışlardır.
 
-Cemil Bey, mızrabıyla çalgısal musikiyi söze bağımlı olmaktan kurtarmış, virtüözite ve ses kayıt teknolojisi sayesinde geleneksel icrayı dogmatik kalıplardan azat etmiştir. Münir Nurettin Selçuk ise Cemil Bey’in açtığı bu estetik kanaldan yürüyerek vokal icrayı ayağa kaldırmış; sahne terbiyesi, Batı şan disiplini, prozodi titizliği ve çağdaş Türk şiiriyle kurduğu bestecilik bağıyla Cumhuriyet kentlisinin yüksek müzik beğenisini şekillendirmiştir.
+Cemil Bey, mızrabıyla çalgısal musikiyi söze bağımlı olmaktan kurtarmış, virtüözite ve ses kayıt teknolojisi sayesinde geleneksel icrayı dogmatik kalıplardan azat etmiştir. Yaylı tanbur icadı ve taş plak kayıtları, müziği yalnızca meşkhanelerden kamusal alana taşımakla kalmamış; Türk müziğinde bireysel üslup ve yorumculuk kavramının meşrulaşmasını sağlamıştır. Münir Nurettin Selçuk ise Cemil Bey’in açtığı bu estetik kanaldan yürüyerek vokal icrayı ayağa kaldırmış; sahne terbiyesi, Batı şan disiplini, prozodi titizliği ve çağdaş Türk şiiriyle kurduğu bestecilik bağıyla Cumhuriyet kentlisinin yüksek müzik beğenisini şekillendirmiştir.
 
-Bugün konservatuvarlarımızda öğretilen tanbur icrasının nirengi noktası Tanburi Cemil Bey üslubu; Türk sanat musikisi vokal icrasının ve şarkı formunun estetik ölçütü ise Münir Nurettin Selçuk tavrıdır. İki ustanın bıraktığı miras, Doğu ile Batı arasında sıkışan Türk modernleşmesine müzik alanından verilmiş en yetkin ve özgün cevaptır.
+Etnomüzikolojik açıdan bakıldığında bu dönüşüm, salt bir teknik yenilik değil; epistemolojik bir mekân ve algı kırılmasıdır. Meşk odalarının yüz yüze, kapalı ve şifahi atmosferinden; binlerce kişilik Batılı konser salonlarına, taş plak sanayisine ve radyo yayıncılığına uzanan bu hat, Türk müziğinin modern kitle iletişim araçlarıyla kurduğu ilk sağlıklı temas alanıdır. İki ustanın geliştirdiği icra disiplini, daha sonra İstanbul Belediye Konservatuvarı İcra Heyeti'nden İstanbul Teknik Üniversitesi Türk Musikisi Devlet Konservatuvarı'na (İTÜ TMDK) uzanan kurumsal müzik eğitimi omurgasının da estetik ve pedagojik temelini oluşturmuştur.
+
+Bugün konservatuvarlarımızda öğretilen tanbur icrasının nirengi noktası Tanburi Cemil Bey üslubu; Türk sanat musikisi vokal icrasının ve şarkı formunun estetik ölçütü ise Münir Nurettin Selçuk tavrıdır. İki ustanın bıraktığı miras, Doğu ile Batı arasında sıkışan Türk modernleşmesine müzik alanından verilmiş en yetkin, onurlu ve özgün cevaptır.
 
 ---
 

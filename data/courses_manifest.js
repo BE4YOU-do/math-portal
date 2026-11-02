@@ -59,7 +59,7 @@ window.COURSES_MANIFEST = {
         "id": "seriler_mod1",
         "title": "Modül 1: Diziler ve Yakınsaklık (Suites Numériques)",
         "shortTitle": "Modül 1: Diziler ve Yakınsaklık (Suites Numériques)",
-        "exerciseCount": 5
+        "exerciseCount": 7
       },
       {
         "id": "seriler_mod2",
@@ -85,7 +85,8 @@ window.COURSES_MANIFEST = {
         "shortTitle": "Modül 5: Quiz & Vize Master Özeti (Karar Ağaçları & 8 Arketip)",
         "exerciseCount": 8
       }
-    ]
+    ],
+    "totalExercises": 48
   },
   "fiz101_fizik": {
     "code": "FIZ101",
@@ -166,7 +167,7 @@ window.COURSES_MANIFEST = {
   },
   "esp101_ispanyolca": {
     "code": "ESP101",
-    "title": "İspanyolca (Aula Plus 1)",
+    "title": "İspanyolca (Aula Plus 1 - pp. 1-46 & Workbook)",
     "faculty": "Yabancı Diller & Seçmeli",
     "icon": "courseIspanyolca",
     "color": "#f43f5e",
@@ -204,6 +205,7 @@ window.COURSES_MANIFEST = {
         "exerciseCount": 2
       }
     ],
-    "totalExercises": 9
+    "totalExercises": 9,
+    "instructor": "Aula Internacional Plus 1 (Sayfa 1-46 & Workbook)"
   }
 };
