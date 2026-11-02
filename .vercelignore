@@ -1,0 +1,12 @@
+.git
+.gitignore
+*.pdf
+dersler/
+MAT204_Grup_Teorisi/
+Fizik-1/
+Olasılık/
+Seriler/
+scratch/
+node_modules
+*.bak
+

@@ -163,5 +163,35 @@ window.COURSES_MANIFEST = {
       }
     ],
     "totalExercises": 26
+  },
+  "esp101_ispanyolca": {
+    "code": "ESP101",
+    "title": "İspanyolca (Aula Plus 1)",
+    "faculty": "Yabancı Diller & Seçmeli",
+    "icon": "courseIspanyolca",
+    "color": "#f43f5e",
+    "dataUrl": "data/courses/esp101_ispanyolca.json",
+    "jsUrl": "data/courses/esp101_ispanyolca.js",
+    "moduleList": [
+      {
+        "id": "ispanyolca_mod1",
+        "title": "Unidad 1: Nosotros (Kimlik, Tanışma & Fiil Çekimleri)",
+        "shortTitle": "1. Nosotros & Tanışma",
+        "exerciseCount": 4
+      },
+      {
+        "id": "ispanyolca_mod2",
+        "title": "Unidad 2: Quiero aprender español (Amaçlar, Düzenli Fiiller & Querer)",
+        "shortTitle": "2. Fiiller & Para/Porque",
+        "exerciseCount": 4
+      },
+      {
+        "id": "ispanyolca_mod3",
+        "title": "Unidad 3: ¿Dónde está? (HAY vs ESTÁ, Şehir & Kompozisyon)",
+        "shortTitle": "3. Hay vs Está & Kompozisyon",
+        "exerciseCount": 4
+      }
+    ],
+    "totalExercises": 12
   }
 };

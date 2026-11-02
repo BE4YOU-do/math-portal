@@ -5,7 +5,7 @@
  * Network-only for /api/ sync calls.
  */
 
-const CACHE_NAME = 'mathportal-v25';
+const CACHE_NAME = 'mathportal-v26';
 
 const PRECACHE_ASSETS = [
     './',
@@ -14,6 +14,7 @@ const PRECACHE_ASSETS = [
     './icon.svg',
     './css/style.css',
     './js/icons.js',
+    './js/spanish_interactive.js',
     './js/app.js',
     './data/courses_manifest.js',
     './data/concepts.js',
