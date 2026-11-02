@@ -166,7 +166,7 @@
   },
   "esp101_ispanyolca": {
     "code": "ESP101",
-    "title": "İspanyolca (Aula Plus 1)",
+    "title": "İspanyolca (Aula Plus 1 - pp. 1-46 & Workbook)",
     "faculty": "Yabancı Diller & Seçmeli",
     "icon": "courseIspanyolca",
     "color": "#f43f5e",
@@ -175,23 +175,36 @@
     "moduleList": [
       {
         "id": "ispanyolca_mod1",
-        "title": "Unidad 1: Nosotros (Kimlik, Tanışma & Fiil Çekimleri)",
+        "title": "Modül 1: En el Aula & Nosotros (pp. 10-27 & Workbook pp. 141-147)",
         "shortTitle": "1. Nosotros & Tanışma",
-        "exerciseCount": 4
+        "exerciseCount": 2
       },
       {
         "id": "ispanyolca_mod2",
-        "title": "Unidad 2: Quiero aprender español (Amaçlar, Düzenli Fiiller & Querer)",
-        "shortTitle": "2. Fiiller & Para/Porque",
-        "exerciseCount": 4
+        "title": "Modül 2: Quiero aprender español (pp. 28-41 & Workbook pp. 148-154)",
+        "shortTitle": "2. Düzenli Fiiller & Por/Para/Porque",
+        "exerciseCount": 2
       },
       {
         "id": "ispanyolca_mod3",
-        "title": "Unidad 3: ¿Dónde está? (HAY vs ESTÁ, Şehir & Kompozisyon)",
-        "shortTitle": "3. Hay vs Está & Kompozisyon",
-        "exerciseCount": 4
+        "title": "Modül 3: ¿Dónde está Santiago? Varlık vs Konum (pp. 42-46 & Workbook pp. 155-158)",
+        "shortTitle": "3. Hay vs Está(n) & Şehir",
+        "exerciseCount": 1
+      },
+      {
+        "id": "ispanyolca_mod4",
+        "title": "Modül 4: Soru Tipleri, Miktarlar & Hava Durumu (pp. 44-46 & Workbook pp. 159-161)",
+        "shortTitle": "4. Qué vs Cuál, Muy/Mucho & Clima",
+        "exerciseCount": 2
+      },
+      {
+        "id": "ispanyolca_mod5",
+        "title": "Modül 5: Vize Sınavı Master Simülasyonu & 100 Puanlık Kompozisyon Laboratuvarı",
+        "shortTitle": "5. Vize Master & Kompozisyon",
+        "exerciseCount": 2
       }
     ],
-    "totalExercises": 12
+    "totalExercises": 9,
+    "instructor": "Aula Internacional Plus 1 (Sayfa 1-46 & Workbook)"
   }
 }
