@@ -1,12 +1,15 @@
 {
   "git.autofetch": false,
-  "git.autorefresh": true,
+  "git.autorefresh": false,
   "git.detectSubmodules": false,
+  "git.autoStash": false,
+  "git.showProgress": false,
+  "git.untrackedChanges": "separate",
   "files.watcherExclude": {
     "**/.git/**": true,
     "**/.vercel/**": true,
-    "**/node_modules/**": true
+    "**/node_modules/**": true,
+    "**/.user_uploaded/**": true
   },
   "git.openRepositoryInParentFolders": "never"
 }
-

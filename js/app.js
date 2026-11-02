@@ -575,6 +575,7 @@ function triggerManualSync() {
                 else if (currentSpecialView === 'flashcards') openFlashcardArena();
                 else if (currentSpecialView === 'pitfalls') loadPitfallsView();
                 else if (currentSpecialView === 'mock-exam') loadMockExamView();
+                else if (currentSpecialView === 'roadmap') loadStudyRoadmapView();
                 else if (currentSpecialView) loadSpecialView(currentSpecialView);
                 else {
                     currentViewMode = 'module';
@@ -631,6 +632,29 @@ function triggerManualSync() {
             renderModuleView();
             saveAppState();
         }
+
+        function jumpToExercise(modKey, exId) {
+            if (modulesDB[modKey]) {
+                currentViewMode = 'module';
+                currentSpecialView = null;
+                currentModuleKey = modKey;
+                currentTrack = 'exercises';
+                const exIdx = modulesDB[modKey].exercises.findIndex(e => e.id === exId);
+                if (exIdx !== -1) {
+                    currentExerciseIdx = exIdx;
+                    currentStepIdx = 1;
+                    showAllStepsMode = false;
+                } else {
+                    currentExerciseIdx = 0;
+                }
+                setActiveNav('nav-' + modKey);
+                renderNav();
+                renderModuleView();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                saveAppState();
+            }
+        }
+        window.jumpToExercise = jumpToExercise;
 
         function nextStep() {
             const mod = modulesDB[currentModuleKey];
@@ -3765,6 +3789,222 @@ Donc $f$ est injectif.<br>
             ];
         }
 
+        function loadStudyRoadmapView() {
+            currentViewMode = 'special';
+            currentSpecialView = 'roadmap';
+            setActiveNav('nav-roadmap');
+            saveAppState();
+            const main = document.getElementById('main-content');
+            if (!main) return;
+
+            const solvedList = getSolvedExercises();
+            const c = COURSES_DB[activeCourseKey] || {};
+
+            const roadmapSteps = [
+                {
+                    stage: "1. Aşama",
+                    tdName: "TD 0 — Rappels sur les Suites (Diziler)",
+                    modKey: "seriler_mod1",
+                    goal: "Sadece 2 soru! Vizede dizi çıkarsa %90 sandviç veya sabit nokta özyinelemesi gelir. Diğer 11 soruyu doğrudan atla.",
+                    badge: "2 Soru (Kalan 11'i atla)",
+                    questions: [
+                        {
+                            idKey: "s1_ex7",
+                            title: "TD 0 • Soru 7 : Théorème des Deux Gendarmes (Sıkıştırma Teoremi)",
+                            desc: "Sandviç yöntemiyle limit bulma. Negatif veya trigonometrik terimleri iki taraftan bilinen dizilere hapsetme refleksi.",
+                            tip: "Rédaction kuralı: 'Par encadrement et d\\'après le théorème des gendarmes, la suite converge vers 0.'"
+                        },
+                        {
+                            idKey: "s1_ex13",
+                            title: "TD 0 • Soru 13 : Suite Récurrente & Théorème du Point Fixe (u_{n+1} = √(2+u_n))",
+                            desc: "Fransız ekolünün vazgeçilmez 3 adımı: 1) Sınırlılık (tümevarım), 2) Monotonluk (fark işareti), 3) Sabit nokta denklemi L = f(L).",
+                            tip: "Monotonluk için u_{n+1} - u_n farkında payı eşlenikle çarpmayı unutma!"
+                        }
+                    ]
+                },
+                {
+                    stage: "2. Aşama",
+                    tdName: "TD 1 — Premières Séries Numériques (Seriler & Kısmi Toplam)",
+                    modKey: "seriler_mod2",
+                    goal: "Sadece 2 soru! Seri toplamı hesaplama mantığını ve genel terim refleksini kavra, TD 3'e geç.",
+                    badge: "2 Soru (Kalan 7'yi atla)",
+                    questions: [
+                        {
+                            idKey: "s2_ex3",
+                            title: "TD 1 • Soru 3 : Condition Nécessaire de Convergence (Zorunlu Şart: u_n → 0)",
+                            desc: "0. REFLEKS: Sınavda herhangi bir seride lim u_n ≠ 0 ise doğrudan 'La série diverge grossièrement' yazıp tam puan alırsın.",
+                            tip: "Tuzak: lim u_n = 0 olması serinin yakınsak olduğunu KANITLAMAZ! Harmonik seriyi hatırla."
+                        },
+                        {
+                            idKey: "s2_ex6",
+                            title: "TD 1 • Soru 6 : Série Télescopique (Teleskopik Seri Toplamı)",
+                            desc: "Kısmi toplamlar dizisi S_N yazıp terimlerin birbirini götürmesiyle net toplamı sonlu bir limit olarak bulma.",
+                            tip: "Basit kesirlere ayır: 1/(n(n+1)) = 1/n - 1/(n+1) veya köklü ifadede eşlenikle çarp."
+                        }
+                    ]
+                },
+                {
+                    stage: "3. Aşama",
+                    tdName: "TD 3 — Séries à Termes Positifs (Pozitif Terimli Seriler)",
+                    modKey: "seriler_mod3",
+                    goal: "Sadece 2 soru! Asimptotik eşdeğerlik ve D'Alembert testlerini cebe koyduysan pozitif seriler tamamdır.",
+                    badge: "2 Soru (Kalan 5'i atla)",
+                    questions: [
+                        {
+                            idKey: "s3_ex2",
+                            title: "TD 3 • Soru 2 : Comparaison par Équivalents (sin(1/n) & Asimptotik Eşdeğerlik)",
+                            desc: "Vizede en çok puan getiren test: sin(1/n) ~ 1/n yazıp Riemann serisiyle kıyaslama yöntemi.",
+                            tip: "Eşdeğerlik ancak ve ancak genel terimler pozitifken seriler için geçerlidir!"
+                        },
+                        {
+                            idKey: "s3_ex5",
+                            title: "TD 3 • Soru 5 : Critère de d'Alembert (Faktöriyel n! ve Üstel Terimler)",
+                            desc: "Pay veya paydada n! ya da a^n varsa hiç düşünmeden D'Alembert lim (u_{n+1}/u_n) oran testini uygula.",
+                            tip: "Limit < 1 ise CV, > 1 ise DV, = 1 ise d'Alembert iflas eder!"
+                        }
+                    ]
+                },
+                {
+                    stage: "4. Aşama",
+                    tdName: "TD 4 — Séries Alternées & Critère de Cauchy (Alterne Seriler)",
+                    modKey: "seriler_mod4",
+                    goal: "Sadece 2 soru! Leibniz kriterinin 3 şartını ve mutlak/şartlı yakınsaklık ayrımını öğren.",
+                    badge: "2 Soru (Kalan 3'ü atla)",
+                    questions: [
+                        {
+                            idKey: "s4_ex2",
+                            title: "TD 4 • Soru 2 : Critère de Leibniz (CSSA - Alterne Seri Testi)",
+                            desc: "(-1)^n içeren serilerde: 1) a_n ≥ 0, 2) a_n monoton azalan, 3) lim a_n = 0 şartlarını eksiksiz yaz.",
+                            tip: "Bu 3 şart sağlanırsa seri doğrudan yakınsaktır ve |R_N| ≤ a_{N+1} hatasıyla yaklaşılır."
+                        },
+                        {
+                            idKey: "s4_ex1",
+                            title: "TD 4 • Soru 1 : Convergence Absolue vs Semi-convergence",
+                            desc: "∑ |u_n| ıraksıyor ama ∑ u_n yakınsıyorsa buna şartlı yakınsaklık (semi-convergente) denir.",
+                            tip: "Klasik örnek: Alterne harmonik seri ∑ (-1)^{n-1}/n ln(2)'ye şartlı yakınsar."
+                        }
+                    ]
+                },
+                {
+                    stage: "5. Aşama",
+                    tdName: "TD 5 — Suites de Fonctions (Fonksiyon Dizileri)",
+                    modKey: "seriler_mod5",
+                    goal: "Sadece 2 soru! Süreksizlik tezatıyla düzgün yakınsaklığı çürütme ve suite testi.",
+                    badge: "2 Soru (Kalan 4'ü atla)",
+                    questions: [
+                        {
+                            idKey: "s5_ex3",
+                            title: "TD 5 • Soru 3 : f_n(x) = xⁿ (Süreksizlik ile CVU Çürütme)",
+                            desc: "Tüm f_n'ler sürekli, ancak noktasal limit f(x) süreksiz ise düzgün yakınsaklık (CVU) KESİNLİKLE YOKTUR.",
+                            tip: "Théorème de Continuité sınav kağıdında tam olarak bu gerekçeyle referans verilir."
+                        },
+                        {
+                            idKey: "s5_ex5",
+                            title: "TD 5 • Soru 5 : Suites Tests pour la Non-Convergence Uniforme (x_n = 1 - 1/n)",
+                            desc: "Limit sürekli olsa bile tepe noktasını yakalayan bir x_n dizisiyle ||f_n - f||_∞ ↛ 0 olduğunu kanıtlama.",
+                            tip: "Tepe noktasını türev alarak f_n'(x) = 0 kökünden bulursun."
+                        }
+                    ]
+                },
+                {
+                    stage: "6. Aşama",
+                    tdName: "TD 6 — Suites et Séries de Fonctions (Fonksiyon Serileri)",
+                    modKey: "seriler_mod6",
+                    goal: "Sadece 2 soru! Weierstrass M-testi ile normal yakınsaklık ve terim terime işlemler.",
+                    badge: "2 Soru (Kalan 4'ü atla)",
+                    questions: [
+                        {
+                            idKey: "s6_ex5",
+                            title: "TD 6 • Soru 5 : Séries de Fonctions (Weierstrass M-Testi / Normal Yakınsaklık)",
+                            desc: "Fonksiyon serilerinde 1 numaralı hedef: |f_n(x)| ≤ M_n bulup ∑ M_n < ∞ göstermek. CVN ⇒ CVU ⇒ CVS!",
+                            tip: "Normal yakınsak her fonksiyon serisinin toplam fonksiyonu S(x) süreklidir."
+                        },
+                        {
+                            idKey: "s6_ex2",
+                            title: "TD 6 • Soru 2 : Convergence Uniforme & Continuité / Terim Terime İşlem",
+                            desc: "Limit ile toplam sembolünün veya türevin yer değiştirebilmesi için düzgün yakınsaklık şartı.",
+                            tip: "Türevler serisi ∑ f_n'(x) düzgün yakınsaksa (∑ f_n)' = ∑ f_n' yazılabilir."
+                        }
+                    ]
+                }
+            ];
+
+            let cardsHTML = '';
+            roadmapSteps.forEach((stg) => {
+                let qListHTML = '';
+                stg.questions.forEach((q) => {
+                    const qId = q.idKey;
+                    const isDone = solvedList.includes(qId);
+                    qListHTML += `
+                        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px 16px; margin-top: 12px; display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; flex-wrap: wrap;">
+                            <div style="flex: 1; min-width: 260px;">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                    ${isDone ? '<span style="color: var(--accent-emerald); font-weight: 700; font-size: 0.85rem; background: rgba(16,185,129,0.15); padding: 2px 8px; border-radius: 4px;">✓ Çözüldü</span>' : '<span style="color: var(--accent-amber); font-weight: 700; font-size: 0.85rem; background: rgba(245,158,11,0.15); padding: 2px 8px; border-radius: 4px;">Hedef Soru</span>'}
+                                    <strong style="color: var(--text-main); font-size: 0.98rem;">${q.title}</strong>
+                                </div>
+                                <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 4px 0 8px; line-height: 1.5;">${q.desc}</p>
+                                <div style="font-size: 0.82rem; color: var(--accent-blue); background: var(--accent-blue-subtle); padding: 6px 10px; border-radius: 6px; display: inline-block;">
+                                    💡 <em>${q.tip}</em>
+                                </div>
+                            </div>
+                            <div style="align-self: center;">
+                                <button class="btn-stepper primary" onclick="jumpToExercise('${stg.modKey}', '${qId}')" style="white-space: nowrap; font-size: 0.88rem; padding: 8px 16px;">
+                                    Bu Soruya Git ➔
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                cardsHTML += `
+                    <div class="academic-card" style="margin-bottom: 24px; border-left: 4px solid var(--accent-emerald);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
+                            <div>
+                                <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--accent-emerald); letter-spacing: 0.05em;">${stg.stage}</span>
+                                <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin: 2px 0 0;">${stg.tdName}</h3>
+                            </div>
+                            <span class="nav-count-badge" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); font-weight: 600; padding: 4px 10px; border-radius: 6px;">${stg.badge}</span>
+                        </div>
+                        <p style="font-size: 0.92rem; color: var(--text-secondary); margin: 6px 0 10px;">${stg.goal}</p>
+                        ${qListHTML}
+                    </div>
+                `;
+            });
+
+            main.innerHTML = `
+                <div class="content-header">
+                    <div>
+                        <div class="breadcrumbs">${c.code || "MAT201"} > Sınav ve Çalışma Araçları > Vize Hızlı Çalışma Rotası</div>
+                        <h1 class="content-title">🚀 Vize Hızlı Çalışma Rotası (Speed-Run)</h1>
+                    </div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(37,99,235,0.08)); border: 1px solid var(--accent-emerald); border-radius: 12px; padding: 20px 24px; margin-bottom: 26px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                        <span style="font-size: 1.5rem;">⏱️</span>
+                        <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-main); margin: 0;">Sınavlara Az Vakti Olanlar İçin Hızlı Geçiş Stratejisi</h2>
+                    </div>
+                    <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6; margin: 0;">
+                        Başka sınavların da varken 60 soruyu tek tek çözmek imkansızdır ve buna gerek de yoktur. Aşağıdaki <strong>12 soru</strong>, MAT201 vizesinde sorulan soruların <strong>%90'ını</strong> temsil eden temel soru kalıplarıdır (arketip). 
+                        Her föyden sadece bu 2 soruya bak, yanındaki yeşil butona basarak çözüm adımlarını ve Fransızca rédaction cümlelerini incele, ardından hiç vakit kaybetmeden bir sonraki aşamaya geç!
+                    </p>
+                </div>
+
+                ${cardsHTML}
+            `;
+
+            if (window.renderMathInElement) {
+                renderMathInElement(main, {
+                    delimiters: [
+                        { left: "$$", right: "$$", display: true },
+                        { left: "$", right: "$", display: false }
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+        window.loadStudyRoadmapView = loadStudyRoadmapView;
+
         function loadMockExamView() {
             currentViewMode = 'special';
             currentSpecialView = 'mock-exam';
@@ -4169,6 +4409,14 @@ Donc $f$ est injectif.<br>
             // Keep exam tools
             const toolsSection = `
                 <div class="nav-section-title" style="margin-top: 14px;">Sınav ve Çalışma Araçları</div>
+
+                <div class="nav-item" id="nav-roadmap" onclick="loadStudyRoadmapView()" style="background: linear-gradient(90deg, rgba(16, 185, 129, 0.12), transparent); border-left: 3px solid var(--accent-emerald);">
+                    <div class="nav-item-left">
+                        <span style="font-size: 1.05rem; line-height: 1;">🚀</span>
+                        <strong style="color: var(--accent-emerald);">Vize Hızlı Çalışma Rotası</strong>
+                    </div>
+                    <span class="nav-count-badge" style="background: rgba(16, 185, 129, 0.25); color: var(--accent-emerald); font-weight: 700;">Hızlı</span>
+                </div>
 
                 <div class="nav-item" id="nav-starred" onclick="openStarredPool()">
                     <div class="nav-item-left">

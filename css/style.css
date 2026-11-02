@@ -22,8 +22,8 @@
     --term-link-bg: rgba(37, 99, 235, 0.1);
     --progress-bar-bg: #e2dcd0;
     --progress-fill: linear-gradient(90deg, #2563eb, #059669);
-    --theory-def-bg: #eff6ff;
-    --theory-thm-bg: #faf5ff;
+    --theory-def-bg: var(--bg-surface, #ffffff);
+    --theory-thm-bg: var(--bg-surface, #ffffff);
 }
 
 :root[data-theme="dark"] {
@@ -48,8 +48,8 @@
     --term-link-bg: rgba(96, 165, 250, 0.12);
     --progress-bar-bg: #1e293b;
     --progress-fill: linear-gradient(90deg, #3b82f6, #34d399);
-    --theory-def-bg: rgba(56, 189, 248, 0.08);
-    --theory-thm-bg: rgba(167, 139, 250, 0.08);
+    --theory-def-bg: var(--bg-card, #141c2e);
+    --theory-thm-bg: var(--bg-card, #141c2e);
 }
 
         * {
@@ -493,31 +493,76 @@
             font-style: italic;
         }
 
-        /* THEORY BOXES (Definitions, Theorems, Propositions) */
+        /* THEORY EDITORIAL / TEXTBOOK LAYOUT */
+        .theory-chapter-header {
+            padding-bottom: 12px;
+            margin-bottom: 22px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .theory-kicker {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent-blue);
+            margin-bottom: 4px;
+        }
+
+        .theory-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0;
+            line-height: 1.35;
+        }
+
+        .theory-prose {
+            font-family: inherit;
+            font-size: 1.02rem;
+            line-height: 1.75;
+            color: var(--text-main);
+            margin-bottom: 18px;
+        }
+
+        /* Clean academic theory cards (no loud background fills) */
         .theory-box {
-            border-radius: 10px;
-            padding: 18px 22px;
-            margin-bottom: 20px;
-            border-left: 4px solid var(--accent-blue);
-            background: var(--theory-def-bg);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 18px 0;
+            border: 1px solid var(--border-subtle);
+            border-left: 3.5px solid var(--accent-blue);
+            background: var(--bg-surface);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
         }
 
         .theory-box.thm {
             border-left-color: var(--accent-indigo);
-            background: var(--theory-thm-bg);
+            background: var(--bg-surface);
         }
 
         .theory-box.prop {
             border-left-color: var(--accent-teal);
-            background: rgba(45, 212, 191, 0.08);
+            background: var(--bg-surface);
+        }
+
+        .theory-box.alert {
+            border-left-color: var(--accent-amber);
+            background: var(--bg-surface);
+        }
+
+        .theory-box.tip {
+            border-left-color: var(--accent-emerald);
+            background: var(--bg-surface);
         }
 
         .theory-box-title {
-            font-size: 0.9rem;
+            font-size: 0.92rem;
             font-weight: 700;
-            letter-spacing: 0.02em;
+            letter-spacing: 0.01em;
             color: var(--accent-blue);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -543,19 +588,26 @@
             color: var(--accent-teal);
         }
 
+        .theory-box.alert .theory-box-title {
+            color: var(--accent-amber);
+        }
+
+        .theory-box.tip .theory-box-title {
+            color: var(--accent-emerald);
+        }
+
         .theory-box-body {
-            font-family: 'Newsreader', serif;
-            font-size: 1.14rem;
-            line-height: 1.8;
+            font-size: 1.02rem;
+            line-height: 1.75;
             color: var(--text-main);
         }
 
         .theory-intuition {
             margin-top: 10px;
-            background: rgba(0, 0, 0, 0.15);
+            background: rgba(0, 0, 0, 0.04);
             padding: 10px 14px;
             border-radius: 6px;
-            font-family: 'Inter', sans-serif;
+            font-family: inherit;
             font-size: 0.9rem;
             color: var(--text-secondary);
         }

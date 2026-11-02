@@ -157,6 +157,14 @@
 
             <div class="nav-section-title" style="margin-top: 14px;">Sınav ve Çalışma Araçları</div>
 
+            <div class="nav-item" id="nav-roadmap" onclick="loadStudyRoadmapView()" style="background: linear-gradient(90deg, rgba(16, 185, 129, 0.12), transparent); border-left: 3px solid var(--accent-emerald);">
+                <div class="nav-item-left">
+                    <span style="font-size: 1.05rem; line-height: 1;">🚀</span>
+                    <strong style="color: var(--accent-emerald);">Vize Hızlı Çalışma Rotası</strong>
+                </div>
+                <span class="nav-count-badge" style="background: rgba(16, 185, 129, 0.25); color: var(--accent-emerald); font-weight: 700;">Hızlı</span>
+            </div>
+
             <div class="nav-item" id="nav-starred" onclick="openStarredPool()">
                 <div class="nav-item-left">
                     <svg class="ui-icon star-active" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
@@ -336,7 +344,7 @@
                 }
             });
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js?v=31').catch(err => {
+                navigator.serviceWorker.register('./sw.js?v=32').catch(err => {
                     console.log('SW registration note:', err);
                 });
             });
