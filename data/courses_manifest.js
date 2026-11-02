@@ -166,7 +166,7 @@ window.COURSES_MANIFEST = {
   },
   "esp101_ispanyolca": {
     "code": "ESP101",
-    "title": "İspanyolca (Aula Plus 1 - pp. 1-46 & Workbook)",
+    "title": "İspanyolca (Aula Plus 1)",
     "faculty": "Yabancı Diller & Seçmeli",
     "icon": "courseIspanyolca",
     "color": "#f43f5e",
@@ -204,7 +204,6 @@ window.COURSES_MANIFEST = {
         "exerciseCount": 2
       }
     ],
-    "totalExercises": 9,
-    "instructor": "Aula Internacional Plus 1 (Sayfa 1-46 & Workbook)"
+    "totalExercises": 9
   }
 };
