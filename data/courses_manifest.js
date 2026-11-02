@@ -57,36 +57,48 @@ window.COURSES_MANIFEST = {
     "moduleList": [
       {
         "id": "seriler_mod1",
-        "title": "Modül 1: Diziler ve Yakınsaklık (Suites Numériques)",
-        "shortTitle": "Modül 1: Diziler ve Yakınsaklık (Suites Numériques)",
-        "exerciseCount": 7
+        "title": "Modül 1: TD 0 - Rappels sur les Suites (Diziler ve Yakınsaklık)",
+        "shortTitle": "TD-0: Diziler & Yakınsaklık",
+        "exerciseCount": 12
       },
       {
         "id": "seriler_mod2",
-        "title": "Modül 2: Seriler ve Kısmi Toplamlar (Séries Numériques)",
-        "shortTitle": "Modül 2: Seriler ve Kısmi Toplamlar (Séries Numériques)",
+        "title": "Modül 2: TD 1 - Premières Séries Numériques (Seriler ve Kısmi Toplamlar)",
+        "shortTitle": "TD-1: Temel Seriler & Toplam",
         "exerciseCount": 9
       },
       {
         "id": "seriler_mod3",
-        "title": "Modül 3: Yakınsaklık Kriterleri (Critères de Convergence)",
-        "shortTitle": "Modül 3: Yakınsaklık Kriterleri (Critères de Convergence)",
-        "exerciseCount": 12
+        "title": "Modül 3: TD 3 - Séries à Termes Positifs (Pozitif Terimli Seriler)",
+        "shortTitle": "TD-3: Pozitif Terimli Seriler",
+        "exerciseCount": 7
       },
       {
         "id": "seriler_mod4",
-        "title": "Modül 4: Fonksiyon Dizileri ve Serileri (Suites de Fonctions)",
-        "shortTitle": "Modül 4: Fonksiyon Dizileri ve Serileri (Suites de Fonctions)",
-        "exerciseCount": 12
+        "title": "Modül 4: TD 4 - Séries Alternées & Critère de Cauchy (Alterne Seriler)",
+        "shortTitle": "TD-4: Alterne Seriler & Cauchy",
+        "exerciseCount": 5
       },
       {
         "id": "seriler_mod5",
-        "title": "Modül 5: Quiz & Vize Master Özeti (Karar Ağaçları & 8 Arketip)",
-        "shortTitle": "Modül 5: Quiz & Vize Master Özeti (Karar Ağaçları & 8 Arketip)",
+        "title": "Modül 5: TD 5 - Sommes de Séries & Suites de Fonctions (Fonksiyon Dizileri I)",
+        "shortTitle": "TD-5: Fonksiyon Dizileri I",
+        "exerciseCount": 6
+      },
+      {
+        "id": "seriler_mod6",
+        "title": "Modül 6: TD 6 - Suites et Séries de Fonctions (Fonksiyon Serileri & İleri Düzey)",
+        "shortTitle": "TD-6: Fonksiyon Serileri",
+        "exerciseCount": 6
+      },
+      {
+        "id": "seriler_mod7",
+        "title": "Modül 7: Quiz & Vize Master Özeti (Karar Ağaçları & 8 Arketip)",
+        "shortTitle": "Vize Master & Karar Ağaçları",
         "exerciseCount": 8
       }
     ],
-    "totalExercises": 48
+    "totalExercises": 53
   },
   "fiz101_fizik": {
     "code": "FIZ101",

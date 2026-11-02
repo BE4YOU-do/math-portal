@@ -3697,8 +3697,8 @@ Donc $f$ est injectif.<br>
                     { num: 1, points: 20, topic: 'Sayı Dizileri & Monotonluk', ex: mods['seriler_mod1'].exercises[0], rubric: '+6 Puan: Fark formülü $u_{n+1}-u_n$, +8 Puan: Pozitiflik analizi, +6 Puan: Artanlık sonucu.' },
                     { num: 2, points: 20, topic: 'Geometrik & Teleskopik Seriler', ex: mods['seriler_mod2'].exercises[3], rubric: '+6 Puan: Genel terimin parçalanışı, +8 Puan: Kısmi toplam sadeleşmesi, +6 Puan: Seri toplamı.' },
                     { num: 3, points: 20, topic: 'İntegral Testi & Bertrand Serileri', ex: mods['seriler_mod2'].exercises[7], rubric: '+6 Puan: Asimptotik hız kıyaslaması, +8 Puan: İntegral hesabı, +6 Puan: Yakınsaklık kararı.' },
-                    { num: 4, points: 20, topic: 'Alterne Seriler & Leibniz Kriteri', ex: mods['seriler_mod3'].exercises[9] || mods['seriler_mod3'].exercises[0], rubric: '+6 Puan: Terim pozitifliği ve azalanlık, +8 Puan: Limit sıfır koşulu, +6 Puan: Leibniz sonucu.' },
-                    { num: 5, points: 20, topic: 'Fonksiyon Dizileri & Düzgün Yakınsaklık', ex: mods['seriler_mod4'].exercises[7] || mods['seriler_mod4'].exercises[0], rubric: '+6 Puan: Noktasal limit hesabı, +8 Puan: Süreklilik aktarımı çelişkisi, +6 Puan: Supremum normu.' }
+                    { num: 4, points: 20, topic: 'Alterne Seriler & Leibniz Kriteri', ex: (mods['seriler_mod4'] ? mods['seriler_mod4'].exercises[1] : (mods['seriler_mod3'] ? mods['seriler_mod3'].exercises[0] : null)), rubric: '+6 Puan: Terim pozitifliği ve azalanlık, +8 Puan: Limit sıfır koşulu, +6 Puan: Leibniz sonucu.' },
+                    { num: 5, points: 20, topic: 'Fonksiyon Dizileri & Düzgün Yakınsaklık', ex: (mods['seriler_mod6'] ? mods['seriler_mod6'].exercises[1] : (mods['seriler_mod5'] ? mods['seriler_mod5'].exercises[0] : null)), rubric: '+6 Puan: Noktasal limit hesabı, +8 Puan: Süreklilik aktarımı çelişkisi, +6 Puan: Supremum normu.' }
                 ];
             } else if (activeCourseKey === 'fiz101_fizik') {
                 return [
