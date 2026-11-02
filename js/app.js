@@ -728,9 +728,16 @@ function triggerManualSync() {
 
             if (currentTrack === 'theory') {
                 // RENDER PAGINATED THEORY BOOK
-                const pages = mod.theoryPages || [{ title: 'Tam Konu Anlatımı', html: mod.theoryContent }];
+                let pages = mod.theoryPages;
+                if (!pages || !pages.length) {
+                    if (mod.theoryContent) {
+                        pages = [{ title: 'Tam Konu Anlatımı', html: mod.theoryContent }];
+                    } else {
+                        pages = [];
+                    }
+                }
+
                 let pagesNavHTML = '';
-                
                 if (pages.length > 1) {
                     pagesNavHTML = '<div class="theory-pages-nav">';
                     pages.forEach((p, idx) => {
@@ -742,10 +749,13 @@ function triggerManualSync() {
                 }
 
                 let currentContentHTML = '';
-                if (showAllTheoryPages || pages.length <= 1) {
-                    currentContentHTML = mod.theoryContent;
+                if (showAllTheoryPages) {
+                    currentContentHTML = mod.theoryContent || pages.map(p => `<div class="theory-page-block"><h2 class="book-sec-title" style="color: var(--accent-blue); margin-top: 24px; margin-bottom: 12px;">${p.title}</h2>${p.html}</div>`).join('<hr style="margin: 30px 0; border: none; border-top: 1px dashed var(--border-subtle);">');
+                } else if (pages.length > 0) {
+                    const currentPage = pages[currentTheoryPageIdx] || pages[0];
+                    currentContentHTML = currentPage ? (currentPage.html || '') : (mod.theoryContent || '');
                 } else {
-                    currentContentHTML = pages[currentTheoryPageIdx].html;
+                    currentContentHTML = mod.theoryContent || '<div style="padding: 28px; text-align: center; color: var(--text-muted); background: var(--bg-surface); border-radius: 8px;">📖 Bu modül için konu anlatımı hazırlanmaktadır. Doğrudan <strong>İnteraktif TD Soru Bankası</strong> sekmesine geçebilirsiniz.</div>';
                 }
 
                 // Add pagination bottom bar if paginated
@@ -770,7 +780,7 @@ function triggerManualSync() {
                                     </button>
                                 ` : `
                                     <button class="btn-stepper primary" onclick="switchTrack('exercises')">
-                                        Bu Modülün TD Sorularına Geç (${mod.exercises.length} Soru) ${window.ICONS ? window.ICONS.arrowRight : ""}
+                                        Bu Modülün TD Sorularına Geç (${mod.exercises ? mod.exercises.length : 0} Soru) ${window.ICONS ? window.ICONS.arrowRight : ""}
                                     </button>
                                 `}
                             </div>
@@ -778,10 +788,12 @@ function triggerManualSync() {
                     `;
                 }
 
+                const breadcrumbText = mod.breadcrumb || (currentCourse ? `${currentCourse.code} > ${mod.shortTitle || mod.title}` : (mod.shortTitle || mod.title));
+
                 main.innerHTML = `
                     <div class="content-header">
                         <div>
-                            <div class="breadcrumbs">${mod.breadcrumb} > Kapsamlı Ders Kitabı &amp; Teori</div>
+                            <div class="breadcrumbs">${breadcrumbText} > Kapsamlı Ders Kitabı &amp; Teori</div>
                             <h1 class="content-title">${mod.title}</h1>
                         </div>
                     </div>

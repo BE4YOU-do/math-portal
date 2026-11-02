@@ -1,0 +1,11 @@
+{
+  "git.autofetch": false,
+  "git.autorefresh": true,
+  "git.detectSubmodules": false,
+  "files.watcherExclude": {
+    "**/.git/**": true,
+    "**/.vercel/**": true,
+    "**/node_modules/**": true
+  },
+  "git.openRepositoryInParentFolders": "never"
+}
