@@ -612,6 +612,67 @@
             color: var(--text-secondary);
         }
 
+        /* VERB CONJUGATION & ACADEMIC TABLES */
+        .verb-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 16px 0 22px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-surface);
+            font-size: 0.95rem;
+        }
+
+        .verb-table th {
+            background: var(--bg-card);
+            color: var(--accent-blue);
+            font-weight: 700;
+            text-align: left;
+            padding: 10px 14px;
+            border-bottom: 2px solid var(--border-subtle);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .verb-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        .verb-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .verb-table tr:hover td {
+            background: rgba(37, 99, 235, 0.03);
+        }
+
+        .verb-root {
+            color: var(--text-secondary);
+        }
+
+        .verb-ending {
+            color: #f43f5e;
+            font-weight: 700;
+        }
+
+        .verb-tag {
+            display: inline-block;
+            background: rgba(244, 63, 94, 0.12);
+            color: #f43f5e;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 4px;
+            margin-right: 6px;
+            text-transform: uppercase;
+        }
+
         /* OFFICIAL EXAM ANSWER (Copie d'examen) */
         .exam-sheet {
             background: var(--bg-paper);
