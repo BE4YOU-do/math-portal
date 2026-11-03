@@ -5,7 +5,7 @@
  * Network-only for /api/ sync calls.
  */
 
-const CACHE_NAME = 'mathportal-v34';
+const CACHE_NAME = 'mathportal-v35';
 
 const PRECACHE_ASSETS = [
     './',
@@ -23,9 +23,13 @@ const PRECACHE_ASSETS = [
     './data/courses/esp101_ispanyolca.json',
     './data/courses/manifest.json',
     './data/courses/mat204_grup.js',
+    './data/courses/mat204_grup.json',
     './data/courses/mat201_seriler.js',
     './data/courses/mat201_seriler.json',
-    './data/courses/mat204_grup.json',
+    './data/courses/fiz101_fizik.js',
+    './data/courses/fiz101_fizik.json',
+    './data/courses/mat206_olasilik.js',
+    './data/courses/mat206_olasilik.json',
     'https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css',
     'https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js',
     'https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js'

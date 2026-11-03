@@ -1,5 +1,6 @@
 window.coursesData = window.coursesData || {};
-window.coursesData.mat201_seriler = {
+window.COURSES_DB = window.COURSES_DB || {};
+window.COURSES_DB['mat201_seriler'] = window.coursesData.mat201_seriler = {
   "id": "mat201_seriler",
   "code": "MAT201",
   "title": "Seriler & Analiz",

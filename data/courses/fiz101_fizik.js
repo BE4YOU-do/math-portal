@@ -1,5 +1,6 @@
 window.coursesData = window.coursesData || {};
-window.coursesData.fiz101_fizik = {
+window.COURSES_DB = window.COURSES_DB || {};
+window.COURSES_DB['fiz101_fizik'] = window.coursesData.fiz101_fizik = {
   "id": "fiz101_fizik",
   "code": "FIZ101",
   "title": "Fizik 1 (Genel Mekanik)",

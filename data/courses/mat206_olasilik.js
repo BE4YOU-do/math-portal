@@ -1,5 +1,6 @@
+window.coursesData = window.coursesData || {};
 window.COURSES_DB = window.COURSES_DB || {};
-window.COURSES_DB['mat206_olasilik'] = {
+window.COURSES_DB['mat206_olasilik'] = window.coursesData.mat206_olasilik = {
   "id": "mat206_olasilik",
   "code": "MAT206",
   "title": "Olasılık (Probabilités & Statistique)",

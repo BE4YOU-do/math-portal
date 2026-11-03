@@ -1,5 +1,6 @@
 window.coursesData = window.coursesData || {};
-window.coursesData.mat204_grup = {
+window.COURSES_DB = window.COURSES_DB || {};
+window.COURSES_DB['mat204_grup'] = window.coursesData.mat204_grup = {
   "id": "mat204_grup",
   "code": "MAT204",
   "title": "Grup Teorisi",

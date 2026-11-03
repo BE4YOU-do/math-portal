@@ -1,5 +1,6 @@
 window.coursesData = window.coursesData || {};
-window.coursesData.esp101_ispanyolca = {
+window.COURSES_DB = window.COURSES_DB || {};
+window.COURSES_DB['esp101_ispanyolca'] = window.coursesData.esp101_ispanyolca = {
   "id": "esp101_ispanyolca",
   "code": "ESP101",
   "title": "İspanyolca (A1.1 - Aula Plus 1)",

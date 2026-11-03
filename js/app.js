@@ -1,4 +1,15 @@
 window.COURSES_DB = window.COURSES_DB || {};
+const COURSES_DB = window.COURSES_DB;
+window.COURSES_MANIFEST = window.COURSES_MANIFEST || window.coursesManifest || {};
+const COURSES_MANIFEST = window.COURSES_MANIFEST;
+
+// Auto-sync any preloaded coursesData to COURSES_DB
+if (typeof window !== 'undefined' && window.coursesData) {
+    Object.keys(window.coursesData).forEach(k => {
+        if (!window.COURSES_DB[k]) window.COURSES_DB[k] = window.coursesData[k];
+    });
+}
+
 let activeCourseKey = localStorage.getItem('gs_active_course') || 'mat204_grup';
 let modulesDB = (window.COURSES_DB && window.COURSES_DB[activeCourseKey]) ? window.COURSES_DB[activeCourseKey].modules : {};
 
@@ -41,6 +52,11 @@ async function ensureCourseLoaded(courseKey) {
     if (!courseKey) courseKey = 'mat204_grup';
     window.COURSES_DB = window.COURSES_DB || {};
     
+    // Check if in-memory coursesData already exists
+    if (window.coursesData && window.coursesData[courseKey]) {
+        window.COURSES_DB[courseKey] = window.coursesData[courseKey];
+    }
+    
     if (window.COURSES_DB[courseKey] && window.COURSES_DB[courseKey].modules) {
         return window.COURSES_DB[courseKey];
     }
@@ -49,14 +65,14 @@ async function ensureCourseLoaded(courseKey) {
         return loadedCoursePromises[courseKey];
     }
     
-    const manifest = (typeof COURSES_MANIFEST !== 'undefined') ? COURSES_MANIFEST[courseKey] : null;
+    const manifest = (window.COURSES_MANIFEST && window.COURSES_MANIFEST[courseKey]) || (window.coursesManifest && window.coursesManifest[courseKey]) || null;
     const courseTitle = manifest ? `${manifest.code} (${manifest.title})` : courseKey;
     showLoadingToast(`${courseTitle} yükleniyor...`);
     
     loadedCoursePromises[courseKey] = (async () => {
         try {
             if (window.location.protocol !== 'file:') {
-                const res = await fetch(`data/courses/${courseKey}.json?v=25`);
+                const res = await fetch(`data/courses/${courseKey}.json?v=35`);
                 if (res.ok) {
                     const data = await res.json();
                     window.COURSES_DB[courseKey] = data;
@@ -68,7 +84,10 @@ async function ensureCourseLoaded(courseKey) {
         }
         
         try {
-            await loadScriptAsync(`data/courses/${courseKey}.js?v=25`);
+            await loadScriptAsync(`data/courses/${courseKey}.js?v=35`);
+            if (window.coursesData && window.coursesData[courseKey]) {
+                window.COURSES_DB[courseKey] = window.coursesData[courseKey];
+            }
             if (window.COURSES_DB[courseKey]) {
                 return window.COURSES_DB[courseKey];
             }
@@ -501,8 +520,8 @@ function triggerManualSync() {
                 const part3 = parts[2];
                 const part4 = parts[3];
 
-                const manifest = (typeof COURSES_MANIFEST !== 'undefined') ? COURSES_MANIFEST[cKey] : null;
-                if (cKey && (manifest || (window.COURSES_DB && window.COURSES_DB[cKey]))) {
+                const manifest = (typeof COURSES_MANIFEST !== 'undefined' && COURSES_MANIFEST) ? COURSES_MANIFEST[cKey] : ((typeof coursesManifest !== 'undefined') ? coursesManifest[cKey] : null);
+                if (cKey && (manifest || (window.COURSES_DB && window.COURSES_DB[cKey]) || (window.coursesData && window.coursesData[cKey]))) {
                     activeCourseKey = cKey;
                     await ensureCourseLoaded(activeCourseKey);
                     modulesDB = COURSES_DB[activeCourseKey].modules;
@@ -530,8 +549,8 @@ function triggerManualSync() {
             // 2. Try LocalStorage
             try {
                 const savedCourse = localStorage.getItem('gs_active_course') || 'mat204_grup';
-                const manifest = (typeof COURSES_MANIFEST !== 'undefined') ? COURSES_MANIFEST[savedCourse] : null;
-                if (manifest || (window.COURSES_DB && window.COURSES_DB[savedCourse])) {
+                const manifest = (typeof COURSES_MANIFEST !== 'undefined' && COURSES_MANIFEST) ? COURSES_MANIFEST[savedCourse] : ((typeof coursesManifest !== 'undefined') ? coursesManifest[savedCourse] : null);
+                if (manifest || (window.COURSES_DB && window.COURSES_DB[savedCourse]) || (window.coursesData && window.coursesData[savedCourse])) {
                     activeCourseKey = savedCourse;
                     await ensureCourseLoaded(activeCourseKey);
                     modulesDB = COURSES_DB[activeCourseKey].modules;
@@ -3201,7 +3220,7 @@ Donc $f$ est injectif.<br>
             const tabsContainer = document.getElementById('spotlight-course-tabs');
             if (!tabsContainer) return;
 
-            const fullList = window.COURSES_MANIFEST || COURSES_DB;
+            const fullList = window.COURSES_MANIFEST || window.coursesManifest || COURSES_DB;
             const activeC = COURSES_DB[activeCourseKey] || (fullList ? fullList[activeCourseKey] : null);
             const activeCode = activeC ? activeC.code : 'Aktif';
 
@@ -3268,7 +3287,7 @@ Donc $f$ est injectif.<br>
         }
 
         async function preloadAllCourses() {
-            const fullList = window.COURSES_MANIFEST || COURSES_DB;
+            const fullList = window.COURSES_MANIFEST || window.coursesManifest || COURSES_DB;
             for (const key of Object.keys(fullList)) {
                 if (!window.COURSES_DB[key] || !window.COURSES_DB[key].modules) {
                     await ensureCourseLoaded(key);
@@ -4273,8 +4292,8 @@ Donc $f$ est injectif.<br>
         });
 
         async function switchActiveCourse(courseKey) {
-            const manifest = (typeof COURSES_MANIFEST !== 'undefined') ? COURSES_MANIFEST[courseKey] : null;
-            if (!manifest && (!window.COURSES_DB || !window.COURSES_DB[courseKey])) return;
+            const manifest = (typeof COURSES_MANIFEST !== 'undefined' && COURSES_MANIFEST) ? COURSES_MANIFEST[courseKey] : ((typeof coursesManifest !== 'undefined') ? coursesManifest[courseKey] : null);
+            if (!manifest && (!window.COURSES_DB || !window.COURSES_DB[courseKey]) && (!window.coursesData || !window.coursesData[courseKey])) return;
 
             await ensureCourseLoaded(courseKey);
             activeCourseKey = courseKey;
@@ -4337,8 +4356,8 @@ Donc $f$ est injectif.<br>
         }
 
         function updateCourseHeaderUI() {
-            const manifest = (typeof COURSES_MANIFEST !== 'undefined') ? COURSES_MANIFEST[activeCourseKey] : null;
-            const c = (window.COURSES_DB && window.COURSES_DB[activeCourseKey]) || manifest;
+            const manifest = (typeof COURSES_MANIFEST !== 'undefined' && COURSES_MANIFEST) ? COURSES_MANIFEST[activeCourseKey] : ((typeof coursesManifest !== 'undefined') ? coursesManifest[activeCourseKey] : null);
+            const c = (window.COURSES_DB && window.COURSES_DB[activeCourseKey]) || (window.coursesData && window.coursesData[activeCourseKey]) || manifest;
             if (!c) return;
             const dot = document.getElementById('header-course-dot');
             const code = document.getElementById('header-course-code');
@@ -4350,6 +4369,11 @@ Donc $f$ est injectif.<br>
                 code.style.color = c.color;
             }
             if (title) title.textContent = c.title;
+
+            const courseTag = document.querySelector('.course-tag');
+            if (courseTag && c.faculty) {
+                courseTag.textContent = c.faculty;
+            }
 
             // Also update mobile topbar
             const mobCode = document.querySelector('.mobile-course-badge');
@@ -4364,7 +4388,7 @@ Donc $f$ est injectif.<br>
             const menu = document.getElementById('course-dropdown-menu');
             if (menu) {
                 let optsHTML = '';
-                const fullList = window.COURSES_MANIFEST || COURSES_DB;
+                const fullList = window.COURSES_MANIFEST || window.coursesManifest || COURSES_DB;
                 Object.keys(fullList).forEach(key => {
                     const item = fullList[key];
                     const isActive = key === activeCourseKey;

@@ -1,4 +1,4 @@
-window.coursesManifest = {
+window.COURSES_MANIFEST = window.coursesManifest = {
   "mat204_grup": {
     "code": "MAT204",
     "title": "Grup Teorisi",
