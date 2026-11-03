@@ -179,7 +179,7 @@ window.coursesManifest = {
   },
   "esp101_ispanyolca": {
     "code": "ESP101",
-    "title": "İspanyolca (Aula Plus 1 - pp. 1-46 & Workbook)",
+    "title": "İspanyolca (A1.1 - Aula Plus 1)",
     "faculty": "Yabancı Diller & Seçmeli",
     "icon": "courseIspanyolca",
     "color": "#f43f5e",
@@ -188,36 +188,36 @@ window.coursesManifest = {
     "moduleList": [
       {
         "id": "ispanyolca_mod1",
-        "title": "Modül 1: En el Aula & Nosotros (pp. 10-27 & Workbook pp. 141-147)",
-        "shortTitle": "1. Nosotros & Tanışma",
+        "title": "Modül 1: Clase 1 • Kendini Tanıtma, Fonetik, Sayılar & Uyruklar",
+        "shortTitle": "1. Tanıtma & Fonetik",
         "exerciseCount": 2
       },
       {
         "id": "ispanyolca_mod2",
-        "title": "Modül 2: Quiero aprender español (pp. 28-41 & Workbook pp. 148-154)",
-        "shortTitle": "2. Düzenli Fiiller & Por/Para/Porque",
+        "title": "Modül 2: Clase 2 • Soru Kalıpları, Verbo ESTAR & Durum/Konum",
+        "shortTitle": "2. Sorular & Verbo ESTAR",
         "exerciseCount": 2
       },
       {
         "id": "ispanyolca_mod3",
-        "title": "Modül 3: ¿Dónde está Santiago? Varlık vs Konum (pp. 42-46 & Workbook pp. 155-158)",
-        "shortTitle": "3. Hay vs Está(n) & Şehir",
+        "title": "Modül 3: Clase 3 • Geniş Zaman Fiil Çekimleri (-AR, -ER, -IR) & 17 Cümle",
+        "shortTitle": "3. Düzenli Fiil Çekimleri",
         "exerciseCount": 1
       },
       {
         "id": "ispanyolca_mod4",
-        "title": "Modül 4: Soru Tipleri, Miktarlar & Hava Durumu (pp. 44-46 & Workbook pp. 159-161)",
-        "shortTitle": "4. Qué vs Cuál, Muy/Mucho & Clima",
-        "exerciseCount": 2
+        "title": "Modül 4: Clase 4 • ¿Por qué estudias español? (POR vs PARA vs PORQUE)",
+        "shortTitle": "4. Por, Para & Porque",
+        "exerciseCount": 1
       },
       {
         "id": "ispanyolca_mod5",
-        "title": "Modül 5: Vize Sınavı Master Simülasyonu & 100 Puanlık Kompozisyon Laboratuvarı",
-        "shortTitle": "5. Vize Master & Kompozisyon",
+        "title": "Modül 5: Clase 5 • Unidad 3: Coğrafya, Hay/Está, Muy/Mucho & Süperlatif",
+        "shortTitle": "5. Coğrafya, Hay/Está & Muy/Mucho",
         "exerciseCount": 2
       }
     ],
-    "totalExercises": 9,
+    "totalExercises": 8,
     "instructor": "Aula Internacional Plus 1 (Sayfa 1-46 & Workbook)"
   }
 };
