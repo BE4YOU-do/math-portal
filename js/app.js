@@ -72,10 +72,13 @@ async function ensureCourseLoaded(courseKey) {
     loadedCoursePromises[courseKey] = (async () => {
         try {
             if (window.location.protocol !== 'file:') {
-                const res = await fetch(`data/courses/${courseKey}.json?v=35`);
+                const res = await fetch(`data/courses/${courseKey}.json?v=40`);
                 if (res.ok) {
                     const data = await res.json();
                     window.COURSES_DB[courseKey] = data;
+                    if (courseKey === activeCourseKey) {
+                        modulesDB = data.modules;
+                    }
                     return data;
                 }
             }
@@ -84,11 +87,14 @@ async function ensureCourseLoaded(courseKey) {
         }
         
         try {
-            await loadScriptAsync(`data/courses/${courseKey}.js?v=35`);
+            await loadScriptAsync(`data/courses/${courseKey}.js?v=40`);
             if (window.coursesData && window.coursesData[courseKey]) {
                 window.COURSES_DB[courseKey] = window.coursesData[courseKey];
             }
             if (window.COURSES_DB[courseKey]) {
+                if (courseKey === activeCourseKey) {
+                    modulesDB = window.COURSES_DB[courseKey].modules;
+                }
                 return window.COURSES_DB[courseKey];
             }
         } catch(err) {
@@ -659,14 +665,57 @@ function triggerManualSync() {
         }
         window.renderNav = renderNav;
 
-        function jumpToExercise(modKey, exParam) {
-            if (!modulesDB || Object.keys(modulesDB).length === 0) {
-                if (window.COURSES_DB && window.COURSES_DB[activeCourseKey] && window.COURSES_DB[activeCourseKey].modules) {
-                    modulesDB = window.COURSES_DB[activeCourseKey].modules;
+        function getCourseKeyForModule(modKey) {
+            if (window.COURSES_DB) {
+                for (const [cKey, cData] of Object.entries(window.COURSES_DB)) {
+                    if (cData && cData.modules && cData.modules[modKey]) {
+                        return cKey;
+                    }
                 }
             }
+            const manifest = window.COURSES_MANIFEST || window.coursesManifest || {};
+            for (const [cKey, cData] of Object.entries(manifest)) {
+                if (cData && cData.moduleList && cData.moduleList.some(m => m.id === modKey)) {
+                    return cKey;
+                }
+            }
+            if (modKey.startsWith('seriler_')) return 'mat201_seriler';
+            if (modKey.startsWith('fizik_')) return 'fiz101_fizik';
+            if (modKey.startsWith('modul')) return 'mat204_grup';
+            if (modKey.startsWith('olasilik_')) return 'mat206_olasilik';
+            if (modKey.startsWith('ispanyolca_')) return 'esp101_ispanyolca';
+            return activeCourseKey;
+        }
+        window.getCourseKeyForModule = getCourseKeyForModule;
 
-            if (modulesDB && modulesDB[modKey]) {
+        async function jumpToExercise(modKey, exParam) {
+            try {
+                const targetCourse = getCourseKeyForModule(modKey);
+
+                if (!window.COURSES_DB || !window.COURSES_DB[targetCourse] || !window.COURSES_DB[targetCourse].modules) {
+                    await ensureCourseLoaded(targetCourse);
+                }
+
+                if (window.COURSES_DB && window.COURSES_DB[targetCourse] && window.COURSES_DB[targetCourse].modules) {
+                    modulesDB = window.COURSES_DB[targetCourse].modules;
+                }
+
+                if (activeCourseKey !== targetCourse) {
+                    activeCourseKey = targetCourse;
+                    try {
+                        localStorage.setItem('gs_active_course', targetCourse);
+                    } catch(e) {}
+                    if (typeof updateCourseHeaderUI === 'function') {
+                        updateCourseHeaderUI();
+                    }
+                }
+
+                const mod = modulesDB ? modulesDB[modKey] : null;
+                if (!mod) {
+                    console.error('[MathPortal] jumpToExercise: module not found in modulesDB', modKey, exParam);
+                    return;
+                }
+
                 currentViewMode = 'module';
                 currentSpecialView = null;
                 currentModuleKey = modKey;
@@ -676,7 +725,7 @@ function triggerManualSync() {
                 if (typeof exParam === 'number') {
                     exIdx = exParam;
                 } else if (typeof exParam === 'string') {
-                    const found = modulesDB[modKey].exercises.findIndex(e => e.id === exParam);
+                    const found = mod.exercises.findIndex(e => e.id === exParam);
                     exIdx = found !== -1 ? found : 0;
                 }
 
@@ -691,10 +740,13 @@ function triggerManualSync() {
                 if (typeof syncMobileNavTabs === 'function') {
                     syncMobileNavTabs('exercises');
                 }
+                if (window.innerWidth <= 900 && typeof closeMobileSidebar === 'function') {
+                    closeMobileSidebar();
+                }
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 saveAppState();
-            } else {
-                console.warn('jumpToExercise: module not found', modKey, exParam);
+            } catch (err) {
+                console.error('[MathPortal] Error inside jumpToExercise:', err);
             }
         }
         window.jumpToExercise = jumpToExercise;
@@ -4826,6 +4878,9 @@ Donc $f$ est injectif.<br>
         window.onload = async function() {
             initTheme();
             await ensureCourseLoaded(activeCourseKey);
+            if (window.COURSES_DB && window.COURSES_DB[activeCourseKey] && window.COURSES_DB[activeCourseKey].modules) {
+                modulesDB = window.COURSES_DB[activeCourseKey].modules;
+            }
             await restoreAppState();
             updateCourseHeaderUI();
             renderSidebarNav();
