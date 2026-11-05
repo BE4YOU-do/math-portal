@@ -1,6 +1,5 @@
-window.coursesData = window.coursesData || {};
 window.COURSES_DB = window.COURSES_DB || {};
-window.COURSES_DB["mat201_seriler"] = window.coursesData.mat201_seriler = {
+window.COURSES_DB["mat201_seriler"] = {
   "id": "mat201_seriler",
   "code": "MAT201",
   "title": "Seriler & Analiz",
@@ -1636,6 +1635,34 @@ window.COURSES_DB["mat201_seriler"] = window.coursesData.mat201_seriler = {
               "content": "<p>• <strong>Sur un segment $[a, b]$</strong>, l'intégration est une opération linéaire continue par rapport à la norme uniforme (car $\\|\\int f\\| \\le (b-a)\\|f\\|_\\infty$). Donc la convergence uniforme suffit pour échanger $\\int$ et $\\sum$.<br>• <strong>La dérivation</strong> n'est pas continue pour la norme uniforme (une fonction peut être arbitrairement proche de 0 tout en oscillant à très grande vitesse avec une dérivée énorme, ex: $\\frac{\\sin(n^2 x)}{n}$). C'est pourquoi il faut la CVU des DÉRIVÉES.<br>• <strong>Sur un intervalle non borné $[a, +\\infty[$</strong>, la longueur du domaine est infinie : la convergence uniforme ne garantit plus la convergence des intégrales (problème d'intégrabilité à l'infini). Il faut le théorème de convergence dominée ou l'intégration des séries à termes positifs.</p>"
             }
           ]
+        },
+        {
+          "id": "s7_ex8",
+          "name": "TD 7 • Ex 8 : Séries de Taylor & Asymptotique",
+          "title": "TD 7 • Ex 8 : Séries de Taylor, Formule de Taylor-Lagrange & Asymptotique",
+          "subtitle": "Fonksiyonların Taylor Serisine Açılımı, Kalan Tahmini ve Vizedeki Asimptotik Yaklaşım",
+          "tag": "Vize Kilit Arketipi",
+          "enonce": "<p>Soit $f : I \\to \\mathbb{R}$ une fonction indéfiniment dérivable ($C^\\infty$) sur un intervalle $I$ contenant 0.<br>\n(1) Rappeler la <strong>formule de Taylor avec reste de Lagrange</strong> à l'ordre $n$ en 0 : exprimer $f(x) = \\sum_{k=0}^n \\frac{f^{(k)}(0)}{k!} x^k + R_n(x)$ et préciser la forme exacte du reste $R_n(x)$.<br>\n(2) Montrer que pour tout $x \\in \\mathbb{R}$, la fonction exponentielle $x \\mapsto e^x$ est égale à la somme de sa série de Taylor $\\sum_{n=0}^{+\\infty} \\frac{x^n}{n!}$. Justifier que la convergence est <strong>uniforme sur tout segment compact $[-A, A]$</strong> avec $A > 0$.<br>\n(3) Écrire le développement en série de Taylor en 0 des fonctions usuelles : $\\cos(x)$, $\\sin(x)$, $\\frac{1}{1-x}$ sur $]-1, 1[$, et $\\ln(1+x)$ sur $]-1, 1]$.<br>\n(4) <strong>Application directe au Quiz / Examen :</strong> À l'aide du développement asymptotique issu de Taylor $\\frac{1}{1+u} = 1 - u + O(u^2)$, étudier la nature et la convergence absolue de la série :\n$$ \\sum_{n=2}^{+\\infty} \\frac{(-1)^n n}{n^2 + (-1)^n} $$</p>",
+          "hint": "1) Reste de Lagrange: $R_n(x) = \\frac{f^{(n+1)}(c)}{(n+1)!} x^{n+1}$. 2) Exponentielle pour $x \\in [-A, A]$ : majorer $|f^{(n+1)}(c)| = e^c \\le e^A$ et utiliser $\\lim \\frac{A^{n+1}}{(n+1)!} = 0$. 4) Factoriser par $n^2$ au dénominateur et poser $u = \\frac{(-1)^n}{n^2}$.",
+          "solution": "Voir les 4 étapes détaillées.",
+          "steps": [
+            {
+              "title": "Étape 1 : Formule de Taylor-Lagrange et Reste",
+              "content": "<p>Pour toute fonction $f \\in C^{n+1}(I)$ et pour tout $x \\in I$, il existe un réel $c$ strictement compris entre 0 et $x$ tel que :\n$$ f(x) = \\sum_{k=0}^n \\frac{f^{(k)}(0)}{k!} x^k + R_n(x) \\quad \\text{avec} \\quad R_n(x) = \\frac{f^{(n+1)}(c)}{(n+1)!} x^{n+1} $$\n<p>Le polynôme $T_n(x) = \\sum_{k=0}^n \\frac{f^{(k)}(0)}{k!} x^k$ est le polynôme de Taylor d'ordre $n$ de $f$ en 0.<br>\nSi pour tout $x \\in I$, on a $\\lim_{n \\to +\\infty} R_n(x) = 0$, la suite des sommes partielles $(T_n(x))$ converge vers $f(x)$, ce qui signifie que $f$ est développable en <strong>série de Taylor</strong> sur $I$ :\n$$ f(x) = \\sum_{n=0}^{+\\infty} \\frac{f^{(n)}(0)}{n!} x^n $$"
+            },
+            {
+              "title": "Étape 2 : Série de Taylor de l'Exponentielle et CVU sur tout Compact",
+              "content": "<p>Considérons $f(x) = e^x$. Pour tout entier $k \\ge 0$, on a $f^{(k)}(x) = e^x$, donc $f^{(k)}(0) = 1$.<br>\nD'après la formule de Taylor-Lagrange à l'ordre $n$, pour tout $x \\in \\mathbb{R}$, il existe $c$ entre 0 et $x$ tel que :\n$$ e^x = \\sum_{k=0}^n \\frac{x^k}{k!} + \\frac{e^c}{(n+1)!} x^{n+1} $$\nSoit $A > 0$ un réel fixé et soit $x \\in [-A, A]$. Comme $c$ est compris entre 0 et $x$, on a $c \\le |x| \\le A$, donc $e^c \\le e^A$.<br>\nPar conséquent, on a la majoration uniforme sur $[-A, A]$ :\n$$ \\left| e^x - \\sum_{k=0}^n \\frac{x^k}{k!} \\right| = \\frac{e^c}{(n+1)!} |x|^{n+1} \\le \\frac{e^A}{(n+1)!} A^{n+1} $$\nOr, par croissance comparée (terme général d'une série convergente d'Alembert), on sait que :\n$$ \\lim_{n \\to +\\infty} \\frac{A^{n+1}}{(n+1)!} = 0 $$\nAinsi, $\\sup_{x \\in [-A, A]} \\left| e^x - \\sum_{k=0}^n \\frac{x^k}{k!} \\right| \\xrightarrow[n \\to +\\infty]{} 0$.<br>\n<strong>Conclusion :</strong> La série de Taylor $\\sum_{n=0}^{+\\infty} \\frac{x^n}{n!}$ converge simplement vers $e^x$ sur $\\mathbb{R}$, et la convergence est <strong>uniforme sur tout segment compact $[-A, A]$</strong>."
+            },
+            {
+              "title": "Étape 3 : Tableau des Séries de Taylor Usuelles",
+              "content": "<p>Les séries de Taylor usuelles à connaître par cœur pour l'examen sont :\n<ul>\n    <li><strong>Exponentielle :</strong> $e^x = \\sum_{n=0}^{+\\infty} \\frac{x^n}{n!} = 1 + x + \\frac{x^2}{2} + \\frac{x^3}{6} + \\cdots$ sur $\\mathbb{R}$ (CVU sur tout compact).</li>\n    <li><strong>Cosinus :</strong> $\\cos(x) = \\sum_{n=0}^{+\\infty} (-1)^n \\frac{x^{2n}}{(2n)!} = 1 - \\frac{x^2}{2} + \\frac{x^4}{24} - \\cdots$ sur $\\mathbb{R}$.</li>\n    <li><strong>Sinus :</strong> $\\sin(x) = \\sum_{n=0}^{+\\infty} (-1)^n \\frac{x^{2n+1}}{(2n+1)!} = x - \\frac{x^3}{6} + \\frac{x^5}{120} - \\cdots$ sur $\\mathbb{R}$.</li>\n    <li><strong>Série géométrique :</strong> $\\frac{1}{1-x} = \\sum_{n=0}^{+\\infty} x^n = 1 + x + x^2 + x^3 + \\cdots$ sur $]-1, 1[$.</li>\n    <li><strong>Logarithme :</strong> $\\ln(1+x) = \\sum_{n=1}^{+\\infty} (-1)^{n-1} \\frac{x^n}{n} = x - \\frac{x^2}{2} + \\frac{x^3}{3} - \\cdots$ sur $]-1, 1]$.</li>\n</ul>"
+            },
+            {
+              "title": "Étape 4 : Application Quiz / Vize — Décomposition Asymptotique",
+              "content": "<p>Étudions la convergence de la série $\\sum_{n \\ge 2} u_n$ avec $u_n = \\frac{(-1)^n n}{n^2 + (-1)^n}$ :<br>\n1) <strong>Factorisation :</strong>\n$$ u_n = \\frac{(-1)^n n}{n^2 \\left(1 + \\frac{(-1)^n}{n^2}\\right)} = \\frac{(-1)^n}{n} \\cdot \\frac{1}{1 + \\frac{(-1)^n}{n^2}} $$\n2) <strong>Développement de Taylor :</strong> Posons $v_n = \\frac{(-1)^n}{n^2}$. Comme $v_n \\xrightarrow[n \\to +\\infty]{} 0$, on utilise le développement de Taylor de $\\frac{1}{1+v} = 1 - v + O(v^2)$ :\n$$ \\frac{1}{1 + \\frac{(-1)^n}{n^2}} = 1 - \\frac{(-1)^n}{n^2} + O\\left(\\frac{1}{n^4}\\right) $$\n3) <strong>Décomposition de $u_n$ :</strong>\n$$ u_n = \\frac{(-1)^n}{n} \\left(1 - \\frac{(-1)^n}{n^2} + O\\left(\\frac{1}{n^4}\\right)\\right) = \\frac{(-1)^n}{n} - \\frac{(-1)^{2n}}{n^3} + O\\left(\\frac{1}{n^5}\\right) = \\frac{(-1)^n}{n} - \\frac{1}{n^3} + O\\left(\\frac{1}{n^5}\\right) $$\n4) <strong>Analyse des termes :</strong>\n<ul>\n    <li>$\\sum_{n \\ge 2} \\frac{(-1)^n}{n}$ converge d'après le critère spécial des séries alternées (Leibniz : $\\frac{1}{n} \\ge 0$, décroissante, tend vers 0).</li>\n    <li>$\\sum_{n \\ge 2} \\frac{1}{n^3}$ converge absolument (série de Riemann avec exposant $\\alpha = 3 > 1$).</li>\n    <li>Le reste $O(1/n^5)$ est absolument convergent par comparaison avec $\\sum 1/n^5$.</li>\n</ul>\nPar linéarité de la somme, la série $\\sum u_n$ est la somme de séries convergentes, donc elle <strong>converge</strong>.<br>\n5) <strong>Convergence absolue :</strong>\n$$ |u_n| = \\frac{n}{n^2 + (-1)^n} \\sim \\frac{1}{n} $$\nComme $\\sum \\frac{1}{n}$ est la série harmonique divergente, la série $\\sum |u_n|$ diverge.<br>\n<strong>Conclusion Finale :</strong> La série $\\sum_{n=2}^{+\\infty} \\frac{(-1)^n n}{n^2 + (-1)^n}$ est <strong>conditionnellement convergente (semi-convergente)</strong>."
+            }
+          ]
         }
       ],
       "theoryPages": [
@@ -1650,6 +1677,10 @@ window.COURSES_DB["mat201_seriler"] = window.coursesData.mat201_seriler = {
         {
           "title": "3. Terim Terime İntegral Alma (Intégration Terme à Terme)",
           "html": "\n<div class=\"theory-chapter-header\">\n  <span class=\"theory-kicker\">TD 7 • İNTEGRAL</span>\n  <h2 class=\"theory-title\">Segment Üzerinde İntegral ve Serinin Yer Değiştirmesi</h2>\n</div>\n\n<div class=\"theory-box thm\">\n  <div class=\"theory-box-title\">Théorème d'Intégration sur un Segment Compact [a, b]</div>\n  <div class=\"theory-box-body\">\n    Si les $u_n$ sont continues sur $[a, b]$ et si la série $\\sum u_n$ <strong>converge uniformément</strong> sur $[a, b]$, alors :\n    $$ \\int_a^b \\left(\\sum_{n=0}^{+\\infty} u_n(x)\\right) dx = \\sum_{n=0}^{+\\infty} \\left(\\int_a^b u_n(x) dx\\right) $$\n    <p><em>Not :</em> Bu teorem $[a, +\\infty[$ gibi sınırlandırılmamış aralıklarda doğrudan uygulanamaz!</p>\n  </div>\n</div>\n"
+        },
+        {
+          "title": "4. Séries de Taylor & Formule de Taylor-Lagrange (Vize Sınırı)",
+          "html": "\n        <div class=\"theory-article\">\n            <h3>4. Séries de Taylor & Formule de Taylor-Lagrange</h3>\n            <p>Galatasaray Üniversitesi MAT201 vize sınavının bittiği kesin sınır <strong>Séries de Taylor</strong> konusudur. (<em>Dikkat:</em> Bir sonraki konu olan <em>Séries Entières / Kuvvet Serileri</em> vizeye <u>dahil değildir</u>).</p>\n            \n            <div class=\"callout-box info\" style=\"margin: 16px 0; padding: 14px 18px; background: rgba(59, 130, 246, 0.08); border-left: 4px solid var(--accent-blue); border-radius: 8px;\">\n                <strong>📌 Théorème de Taylor-Lagrange :</strong><br>\n                Soit $f : I \\to \\mathbb{R}$ une fonction de classe $C^{n+1}$ sur un intervalle $I$ contenant $a$. Pour tout $x \\in I$, il existe un réel $c$ strictement compris entre $a$ et $x$ tel que :\n                $$ f(x) = \\sum_{k=0}^n \\frac{f^{(k)}(a)}{k!} (x-a)^k + \\frac{f^{(n+1)}(c)}{(n+1)!} (x-a)^{n+1} $$\n                Le terme $R_n(x) = \\frac{f^{(n+1)}(c)}{(n+1)!} (x-a)^{n+1}$ est le <strong>reste de Lagrange</strong>.\n            </div>\n\n            <h4>Série de Taylor & Convergence Vers la Fonction</h4>\n            <p>Si la fonction $f$ est de classe $C^\\infty$ et si pour tout $x$ dans un intervalle $I$, le reste vérifie $\\lim_{n \\to +\\infty} R_n(x) = 0$, alors la fonction est somme de sa <strong>série de Taylor</strong> :</p>\n            $$ f(x) = \\sum_{n=0}^{+\\infty} \\frac{f^{(n)}(a)}{n!} (x-a)^n $$\n\n            <div class=\"callout-box warning\" style=\"margin: 16px 0; padding: 14px 18px; background: rgba(245, 158, 11, 0.08); border-left: 4px solid var(--accent-amber); border-radius: 8px;\">\n                <strong>⚡ Sınavda En Çok Kullanılan Temel Taylor Açılımları ($a = 0$) :</strong>\n                <ul>\n                    <li>$e^x = \\sum_{n=0}^{+\\infty} \\frac{x^n}{n!} = 1 + x + \\frac{x^2}{2!} + \\frac{x^3}{3!} + \\cdots$ &nbsp; $(\\forall x \\in \\mathbb{R})$</li>\n                    <li>$\\cos(x) = \\sum_{n=0}^{+\\infty} (-1)^n \\frac{x^{2n}}{(2n)!} = 1 - \\frac{x^2}{2!} + \\frac{x^4}{4!} - \\cdots$ &nbsp; $(\\forall x \\in \\mathbb{R})$</li>\n                    <li>$\\sin(x) = \\sum_{n=0}^{+\\infty} (-1)^n \\frac{x^{2n+1}}{(2n+1)!} = x - \\frac{x^3}{3!} + \\frac{x^5}{5!} - \\cdots$ &nbsp; $(\\forall x \\in \\mathbb{R})$</li>\n                    <li>$\\frac{1}{1-x} = \\sum_{n=0}^{+\\infty} x^n = 1 + x + x^2 + \\cdots$ &nbsp; $(|x| < 1)$</li>\n                    <li>$\\ln(1+x) = \\sum_{n=1}^{+\\infty} (-1)^{n-1} \\frac{x^n}{n} = x - \\frac{x^2}{2} + \\frac{x^3}{3} - \\cdots$ &nbsp; $(x \\in ]-1, 1])$</li>\n                </ul>\n            </div>\n\n            <h4>Taylor Formülünün Seriler Sınavındaki 1 Numaralı Rolü: Asimptotik Ayrıştırma</h4>\n            <p>Vize ve quizlerde genel teriminde $(-1)^n$ bulunan rasyonel serilerde Leibniz kriteri doğrudan uygulanamaz çünkü terimler kesin monoton azalmaz (Quiz Soru 2). Bu durumlarda $\\frac{1}{1+u} = 1 - u + O(u^2)$ Taylor açılımı yapılarak seri iki parçaya ayrılır: 1) Leibniz ile yakınsayan alterne kısım, 2) Riemann ile mutlak yakınsayan $O(1/n^2)$ veya $1/n^3$ kısmı!</p>\n        </div>\n    "
         }
       ],
       "theoryContent": "\n<div class=\"theory-chapter-header\">\n  <span class=\"theory-kicker\">TD 7 • FONKSİYON SERİLERİNİN ÖZELLİKLERİ</span>\n  <h2 class=\"theory-title\">Toplam Fonksiyonunun Sürekliliği &amp; Çift Limit Teoremi</h2>\n</div>\n\n<p class=\"theory-prose\">\n  Bir fonksiyon serisi $\\sum u_n(x)$ verildiğinde her terim $u_n$ sürekli bir fonksiyon olsa bile, serinin toplamı olan $S(x)$ noktasal yakınsaklık altında süreksiz olabilir! Toplamın sürekli olmasını garanti eden altın kural <strong>Düzgün Yakınsaklıktır (Convergence Uniforme)</strong>.\n</p>\n\n<div class=\"theory-box thm\">\n  <div class=\"theory-box-title\">Théorème de Continuité de la Somme</div>\n  <div class=\"theory-box-body\">\n    Soit $\\sum u_n$ une série de fonctions définies sur un intervalle $I$. Si :\n    <ol>\n      <li>Pour tout $n \\ge 0$, la fonction $u_n$ est continue sur $I$.</li>\n      <li>La série $\\sum u_n$ <strong>converge uniformément</strong> (ou localement uniformément) sur $I$.</li>\n    </ol>\n    Alors la somme $S(x) = \\sum_{n=0}^{+\\infty} u_n(x)$ est <strong>continue sur $I$</strong>.\n  </div>\n</div>\n\n<div class=\"theory-box prop\">\n  <div class=\"theory-box-title\">Théorème de la Double Limite (Interversion Limite-Somme)</div>\n  <div class=\"theory-box-body\">\n    Si $\\sum u_n$ converge uniformément sur $I$ et si pour chaque $n$, $\\lim_{x \\to x_0} u_n(x) = \\ell_n$, alors :\n    $$ \\lim_{x \\to x_0} \\sum_{n=0}^{+\\infty} u_n(x) = \\sum_{n=0}^{+\\infty} \\lim_{x \\to x_0} u_n(x) = \\sum_{n=0}^{+\\infty} \\ell_n $$\n  </div>\n</div>\n\n<div class=\"theory-chapter-header\">\n  <span class=\"theory-kicker\">TD 7 • REGÜLERLİK &amp; TÜREV</span>\n  <h2 class=\"theory-title\">Terim Terime Türev ve C¹ Sınıfı Fonksiyonlar</h2>\n</div>\n\n<p class=\"theory-prose\">\n  Sınavlarda yapılan en büyük hata, serinin kendisi düzgün yakınsadığı için doğrudan türevini almaktır. <strong>Türev alma işlemi düzgün yakınsaklığı korumaz!</strong>\n</p>\n\n<div class=\"theory-box alert\">\n  <div class=\"theory-box-title\">⚠️ Büyük Sınav Kuralı: Türev İçin Türev Serisi Düzgün Yakınsamalıdır!</div>\n  <div class=\"theory-box-body\">\n    Soit $I$ un intervalle de $\\mathbb{R}$. Pour pouvoir affirmer que $S(x) = \\sum u_n(x)$ est dérivable et que $S'(x) = \\sum u_n'(x)$, il faut vérifier les 3 conditions :\n    <ol>\n      <li>Chaque fonction $u_n$ est de classe $C^1$ sur $I$.</li>\n      <li>Il existe $x_0 \\in I$ tel que la série numérique $\\sum u_n(x_0)$ converge.</li>\n      <li>La série des dérivées $\\sum u_n'$ <strong>converge uniformément</strong> sur tout segment compact de $I$.</li>\n    </ol>\n  </div>\n</div>\n\n<div class=\"theory-chapter-header\">\n  <span class=\"theory-kicker\">TD 7 • İNTEGRAL</span>\n  <h2 class=\"theory-title\">Segment Üzerinde İntegral ve Serinin Yer Değiştirmesi</h2>\n</div>\n\n<div class=\"theory-box thm\">\n  <div class=\"theory-box-title\">Théorème d'Intégration sur un Segment Compact [a, b]</div>\n  <div class=\"theory-box-body\">\n    Si les $u_n$ sont continues sur $[a, b]$ et si la série $\\sum u_n$ <strong>converge uniformément</strong> sur $[a, b]$, alors :\n    $$ \\int_a^b \\left(\\sum_{n=0}^{+\\infty} u_n(x)\\right) dx = \\sum_{n=0}^{+\\infty} \\left(\\int_a^b u_n(x) dx\\right) $$\n    <p><em>Not :</em> Bu teorem $[a, +\\infty[$ gibi sınırlandırılmamış aralıklarda doğrudan uygulanamaz!</p>\n  </div>\n</div>\n"
@@ -1662,7 +1693,7 @@ window.COURSES_DB["mat201_seriler"] = window.coursesData.mat201_seriler = {
       "description": "Galatasaray Üniversitesi MAT201 Seriler & Analiz vize sınavında çıkabilecek 8 temel soru arketipi, adım adım karar ağaçları ve garanti puan kazandıran sınav çözümleri.",
       "exercises": [
         {
-          "id": "s7_ex1",
+          "id": "s8_ex1",
           "name": "Arketip Tip 1",
           "subtitle": "Alterne Seri ve Şartlı Yakınsaklık (Leibniz Testi)",
           "hint": "Önce $|u_n| = 1/n^{1/2}$ Riemann serisiyle mutlak yakınsaklığı inceleyin, ardından <span class=\"term-link\" onclick=\"openConceptModal('critere_leibniz_series')\">Leibniz</span> kriterinin iki şartını doğrulayın.",
@@ -1688,7 +1719,7 @@ window.COURSES_DB["mat201_seriler"] = window.coursesData.mat201_seriler = {
           ]
         },
         {
-          "id": "s7_ex2",
+          "id": "s8_ex2",
           "name": "Arketip Tip 2",
           "subtitle": "D'Alembert Oran Testi (Faktöriyel ve Üstel İfadeler)",
           "hint": "$u_{n+1}/u_n$ oranını sadeleştirip $\\lim (1 + 1/n)^n = e$ limitini kullanın.",
@@ -1713,7 +1744,7 @@ window.COURSES_DB["mat201_seriler"] = window.coursesData.mat201_seriler = {
           ]
         },
         {
-          "id": "s7_ex3",
+          "id": "s8_ex3",
           "name": "Arketip Tip 3",
           "subtitle": "Cauchy Kök Testi (n. Kuvvet İfadeleri)",
           "hint": "$n^2$ kuvvetinden kurtulmak için $\\sqrt[n]{u_n}$ kök testini uygulayın.",
@@ -1738,7 +1769,7 @@ window.COURSES_DB["mat201_seriler"] = window.coursesData.mat201_seriler = {
           ]
         },
         {
-          "id": "s7_ex4",
+          "id": "s8_ex4",
           "name": "Arketip Tip 4",
           "subtitle": "Dizilerde Cauchy Tanımı (ε - N İspatı)",
           "hint": "Üçgen eşitsizliği ile $|1/n - 1/m| \\le 1/n + 1/m \\le 2/N$ üst sınırını kurun.",
@@ -1763,7 +1794,7 @@ window.COURSES_DB["mat201_seriler"] = window.coursesData.mat201_seriler = {
           ]
         },
         {
-          "id": "s7_ex5",
+          "id": "s8_ex5",
           "name": "Arketip Tip 5",
           "subtitle": "Süreksizlik ile Düzgün Yakınsaklığı Çürütme",
           "hint": "$x=0$ ve $x \\in ]0, 1]$ için noktasal limiti ayrı ayrı hesaplayın, ardından $x=0$ noktasındaki süreksizliği kullanın.",
@@ -1788,7 +1819,7 @@ window.COURSES_DB["mat201_seriler"] = window.coursesData.mat201_seriler = {
           ]
         },
         {
-          "id": "s7_ex6",
+          "id": "s8_ex6",
           "name": "Arketip Tip 6",
           "subtitle": "Türevle Tepe Noktası (Supremum) ve Suite Test Bulma",
           "hint": "Noktasal limit $f(x)=0$ sürekli olduğu için $f_n'(x)=0$ denklemini çözerek maksimum noktasını ($x_n = 1/n$) bulun.",
@@ -1813,7 +1844,7 @@ window.COURSES_DB["mat201_seriler"] = window.coursesData.mat201_seriler = {
           ]
         },
         {
-          "id": "s7_ex7",
+          "id": "s8_ex7",
           "name": "Arketip Tip 7",
           "subtitle": "Weierstrass M-Testi ve Normal Yakınsaklık",
           "hint": "$|\\sin(nx)| \\le 1$ eşitsizliği ile $x$'ten bağımsız $M_n = 1/n^2$ üst sınırını kurun.",
@@ -1838,7 +1869,7 @@ window.COURSES_DB["mat201_seriler"] = window.coursesData.mat201_seriler = {
           ]
         },
         {
-          "id": "s7_ex8",
+          "id": "s8_ex8",
           "name": "Arketip Tip 8",
           "subtitle": "Teleskopik Fonksiyon Serisi ve Toplam Sürekliliği",
           "hint": "Genel terimi $\\frac{1}{1+nx} - \\frac{1}{1+(n+1)x}$ şeklinde basit kesirlere ayırarak kısmi toplam $S_N(x)$'i hesaplayın.",
