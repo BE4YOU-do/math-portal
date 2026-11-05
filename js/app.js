@@ -652,25 +652,49 @@ function triggerManualSync() {
             saveAppState();
         }
 
-        function jumpToExercise(modKey, exId) {
-            if (modulesDB[modKey]) {
+        function renderNav() {
+            if (typeof renderSidebarNav === 'function') {
+                renderSidebarNav();
+            }
+        }
+        window.renderNav = renderNav;
+
+        function jumpToExercise(modKey, exParam) {
+            if (!modulesDB || Object.keys(modulesDB).length === 0) {
+                if (window.COURSES_DB && window.COURSES_DB[activeCourseKey] && window.COURSES_DB[activeCourseKey].modules) {
+                    modulesDB = window.COURSES_DB[activeCourseKey].modules;
+                }
+            }
+
+            if (modulesDB && modulesDB[modKey]) {
                 currentViewMode = 'module';
                 currentSpecialView = null;
                 currentModuleKey = modKey;
                 currentTrack = 'exercises';
-                const exIdx = modulesDB[modKey].exercises.findIndex(e => e.id === exId);
-                if (exIdx !== -1) {
-                    currentExerciseIdx = exIdx;
-                    currentStepIdx = 1;
-                    showAllStepsMode = false;
-                } else {
-                    currentExerciseIdx = 0;
+
+                let exIdx = 0;
+                if (typeof exParam === 'number') {
+                    exIdx = exParam;
+                } else if (typeof exParam === 'string') {
+                    const found = modulesDB[modKey].exercises.findIndex(e => e.id === exParam);
+                    exIdx = found !== -1 ? found : 0;
                 }
+
+                currentExerciseIdx = exIdx;
+                currentStepIdx = 1;
+                showAllStepsMode = false;
+                isHintVisible = false;
+
                 setActiveNav('nav-' + modKey);
                 renderNav();
                 renderModuleView();
+                if (typeof syncMobileNavTabs === 'function') {
+                    syncMobileNavTabs('exercises');
+                }
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 saveAppState();
+            } else {
+                console.warn('jumpToExercise: module not found', modKey, exParam);
             }
         }
         window.jumpToExercise = jumpToExercise;
@@ -1295,35 +1319,6 @@ function printMockExam(withSolutions = false) {
             }
             jumpToExercise(modKey, exIdx);
         }
-
-        function jumpToExercise(modKey, exParam) {
-            if (modulesDB[modKey]) {
-                currentViewMode = 'module';
-                currentSpecialView = null;
-                currentModuleKey = modKey;
-                currentTrack = 'exercises';
-
-                let exIdx = 0;
-                if (typeof exParam === 'number') {
-                    exIdx = exParam;
-                } else if (typeof exParam === 'string') {
-                    const found = modulesDB[modKey].exercises.findIndex(e => e.id === exParam);
-                    exIdx = found !== -1 ? found : 0;
-                }
-
-                currentExerciseIdx = exIdx;
-                currentStepIdx = 1;
-                showAllStepsMode = false;
-                isHintVisible = false;
-
-                setActiveNav('nav-' + modKey);
-                renderNav();
-                renderModuleView();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                saveAppState();
-            }
-        }
-        window.jumpToExercise = jumpToExercise;
 
         // ================= CONCEPT MODAL & INLINE REMINDER HELPERS =================
         function formatConceptMarkdown(str) {
@@ -4536,12 +4531,13 @@ Donc $f$ est injectif.<br>
 
         // Also close when jumpToExercise or switchExercise is called on mobile
         const origJumpToExercise = jumpToExercise;
-        jumpToExercise = function(modKey, exIdx) {
-            origJumpToExercise(modKey, exIdx);
+        jumpToExercise = function(modKey, exParam) {
+            origJumpToExercise(modKey, exParam);
             if (window.innerWidth <= 900) {
                 closeMobileSidebar();
             }
         };
+        window.jumpToExercise = jumpToExercise;
 
         // ================= MOBILE BOTTOM NAVIGATION HANDLERS =================
         function handleMobileTab(tabKey) {
