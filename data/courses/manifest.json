@@ -69,36 +69,42 @@
       },
       {
         "id": "seriler_mod3",
-        "title": "Modül 3: TD 3 - Séries à Termes Positifs (Pozitif Terimli Seriler)",
+        "title": "Modül 3: TD 3 - Séries à Termes Positifs & Quiz 1 Soru 1",
         "shortTitle": "TD-3: Pozitif Terimli Seriler",
-        "exerciseCount": 7
+        "exerciseCount": 8
       },
       {
         "id": "seriler_mod4",
-        "title": "Modül 4: TD 4 - Séries Alternées & Critère de Cauchy (Alterne Seriler)",
+        "title": "Modül 4: TD 4 - Séries Alternées, Cauchy & Quiz 1 Soru 2",
         "shortTitle": "TD-4: Alterne Seriler & Cauchy",
-        "exerciseCount": 5
+        "exerciseCount": 6
       },
       {
         "id": "seriler_mod5",
-        "title": "Modül 5: TD 5 - Sommes de Séries & Suites de Fonctions (Fonksiyon Dizileri I)",
+        "title": "Modül 5: TD 5 - Suites de Fonctions (Fonksiyon Dizileri I)",
         "shortTitle": "TD-5: Fonksiyon Dizileri I",
         "exerciseCount": 6
       },
       {
         "id": "seriler_mod6",
-        "title": "Modül 6: TD 6 - Suites et Séries de Fonctions (Fonksiyon Serileri & İleri Düzey)",
+        "title": "Modül 6: TD 6 - Séries de Fonctions (Fonksiyon Serileri: CVU & CVN)",
         "shortTitle": "TD-6: Fonksiyon Serileri",
         "exerciseCount": 6
       },
       {
         "id": "seriler_mod7",
-        "title": "Modül 7: Quiz & Vize Master Özeti (Karar Ağaçları & 8 Arketip)",
+        "title": "Modül 7: TD 7 - Propriétés des Séries (Süreklilik, Türev & İntegral)",
+        "shortTitle": "TD-7: Seri Özellikleri & Türev",
+        "exerciseCount": 7
+      },
+      {
+        "id": "seriler_mod8",
+        "title": "Modül 8: Vize Master, Karar Ağaçları & Quiz Arşivi",
         "shortTitle": "Vize Master & Karar Ağaçları",
         "exerciseCount": 8
       }
     ],
-    "totalExercises": 53
+    "totalExercises": 63
   },
   "fiz101_fizik": {
     "code": "FIZ101",
@@ -112,25 +118,31 @@
       {
         "id": "fizik_mod1",
         "title": "Modül 1: Vektörler ve Koordinat Sistemleri",
-        "shortTitle": "Modül 1: Vektörler ve Koordinat Sistemleri",
+        "shortTitle": "Modül 1: Vektörler & Koordinat",
         "exerciseCount": 2
       },
       {
         "id": "fizik_mod2",
         "title": "Modül 2: Noktasal Cismin Kinematiği (Cinématique)",
-        "shortTitle": "Modül 2: Noktasal Cismin Kinematiği (Cinématique)",
+        "shortTitle": "Modül 2: Kinematik & Hız/İvme",
         "exerciseCount": 3
       },
       {
         "id": "fizik_mod3",
         "title": "Modül 3: DM-1 Ödev Çözümleri (Cinématique & Forces)",
-        "shortTitle": "Modül 3: DM-1 Ödev Çözümleri (Cinématique & Forces)",
+        "shortTitle": "Modül 3: DM-1 Tam Çözümleri",
         "exerciseCount": 3
       },
       {
         "id": "fizik_mod4",
         "title": "Modül 4: DM-2 Ödev Çözümleri (Dynamique & Énergie)",
-        "shortTitle": "Modül 4: DM-2 Ödev Çözümleri (Dynamique & Énergie)",
+        "shortTitle": "Modül 4: DM-2 Tam Çözümleri",
+        "exerciseCount": 2
+      },
+      {
+        "id": "fizik_mod5",
+        "title": "Modül 5: Vize Master, Karar Ağaçları & Sentez Sınav Soruları",
+        "shortTitle": "Vize Master & Karar Ağaçları",
         "exerciseCount": 2
       }
     ]
