@@ -1296,18 +1296,34 @@ function printMockExam(withSolutions = false) {
             jumpToExercise(modKey, exIdx);
         }
 
-        function jumpToExercise(modKey, exIdx) {
-            currentViewMode = 'module';
-            currentSpecialView = null;
-            currentModuleKey = modKey;
-            currentTrack = 'exercises';
-            currentExerciseIdx = exIdx;
-            currentStepIdx = 1;
+        function jumpToExercise(modKey, exParam) {
+            if (modulesDB[modKey]) {
+                currentViewMode = 'module';
+                currentSpecialView = null;
+                currentModuleKey = modKey;
+                currentTrack = 'exercises';
 
-            setActiveNav('nav-' + modKey);
-            renderModuleView();
-            saveAppState();
+                let exIdx = 0;
+                if (typeof exParam === 'number') {
+                    exIdx = exParam;
+                } else if (typeof exParam === 'string') {
+                    const found = modulesDB[modKey].exercises.findIndex(e => e.id === exParam);
+                    exIdx = found !== -1 ? found : 0;
+                }
+
+                currentExerciseIdx = exIdx;
+                currentStepIdx = 1;
+                showAllStepsMode = false;
+                isHintVisible = false;
+
+                setActiveNav('nav-' + modKey);
+                renderNav();
+                renderModuleView();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                saveAppState();
+            }
         }
+        window.jumpToExercise = jumpToExercise;
 
         // ================= CONCEPT MODAL & INLINE REMINDER HELPERS =================
         function formatConceptMarkdown(str) {
@@ -3809,6 +3825,426 @@ Donc $f$ est injectif.<br>
             ];
         }
 
+        function getRoadmapConfig(courseKey) {
+            const c = COURSES_DB[courseKey] || {};
+
+            if (courseKey === 'fiz101_fizik') {
+                return {
+                    courseCode: "FIZ101",
+                    title: "🚀 FIZ101 Vize Hızlı Çalışma Rotası (Speed-Run • 2 Saat)",
+                    accentColor: "var(--accent-purple, #8b5cf6)",
+                    introTitle: "FIZ101 Genel Mekanik: Sınava Az Vakti Olanlar İçin Hızlı Geçiş Stratejisi",
+                    introDesc: "Sınava saatler kala tüm konuları baştan sona çözmek imkansızdır ve buna gerek de yoktur. Aşağıdaki <strong>7 kilit soru</strong>, Yorgo Şenikoğlu'nun FIZ101 vize sınavında sorulacak soruların <strong>%95'ini</strong> doğrudan temsil eder (DM-1, DM-2, DM-3 ödevleri ve Modül 6 Sentez sınav soruları). Sırayla her aşamadaki hedef soruların çözümlerini ve Fransızca rédaction şablonlarını inceleyin, ardından hiç vakit kaybetmeden sınava hazır olun!",
+                    steps: [
+                        {
+                            stage: "1. Aşama",
+                            tdName: "DM 1 — Vektörler, Çarpımlar & Poisson Bağıntısı (Dönen Taban)",
+                            modKey: "fizik_mod3",
+                            goal: "Vizenin garanti 25 puanı! Skaler çarpımla açı bulma, vektörel çarpım ile dik taban oluşturma ve Poisson türev kuralını kavra.",
+                            badge: "2 Soru (Kalanı atla)",
+                            questions: [
+                                {
+                                    idKey: "fdm1_ex1",
+                                    title: "DM 1 • Soru 1 : Vektör Çarpımları, Açı Hesabı & Birim Taban",
+                                    desc: "Skaler çarpım ile kosinüs, vektörel çarpım ile sinüs bulma ve üçüncü dik birim vektörün türetimi.",
+                                    tip: "Rédaction kuralı: $\\cos\\theta = \\frac{\\vec{u}\\cdot\\vec{v}}{\\|\\vec{u}\\|\\|\\vec{v}\\|}$ ve $\\vec{e}_3 = \\frac{\\vec{e}_1\\wedge\\vec{e}_2}{\\|\\vec{e}_1\\wedge\\vec{e}_2\\|}$."
+                                },
+                                {
+                                    idKey: "fdm1_ex2",
+                                    title: "DM 1 • Soru 2 : Birim Vektör Türevi & Poisson Bağıntısı",
+                                    desc: "Birim vektörün normu sabit olduğu için türevi daima kendisine diktir. Poisson formülü $\\left[\\frac{d\\vec{u}}{dt}\\right]_{R_0} = \\vec{\\Omega} \\wedge \\vec{u}$ ispatı.",
+                                    tip: "İspat refleksi: $\\|\\vec{u}\\|^2 = \\vec{u}\\cdot\\vec{u} = 1 \\implies 2\\vec{u}\\cdot\\frac{d\\vec{u}}{dt} = 0 \\implies$ türev vektörü $\\vec{u}$'ya diktir!"
+                                }
+                            ]
+                        },
+                        {
+                            stage: "2. Aşama",
+                            tdName: "DM 2 — Parabolik Yörünge, Frenet Tabanı ($a_t, a_n$) & Eğrilik Yarıçapı",
+                            modKey: "fizik_mod4",
+                            goal: "Kinematik ve yörünge analizi. Teğetsel ivme $a_t = dv/dt$, normal ivme $a_n = v^2/R_c$, ivme açısı $\\cos\\alpha$ ve tepe noktasında eğrilik yarıçapı.",
+                            badge: "2 Soru (Kalanı atla)",
+                            questions: [
+                                {
+                                    idKey: "fdm2_ex1",
+                                    title: "DM 2 • Soru 1 : Parabolik Trajektuar, Frenet İvmesi & Rayon de Courbure",
+                                    desc: "Hız normu $v(t)$, teğetsel ivme $a_t = \\frac{\\vec{v}\\cdot\\vec{a}}{v}$, normal ivme $a_n = \\sqrt{a^2 - a_t^2}$ ve $R_c = \\frac{v^2}{a_n}$ hesabı.",
+                                    tip: "Tepe noktasında ($S$) $v_z = 0 \\implies a_t = 0, a_n = g \\implies R_c(S) = \\frac{(v_0\\cos\\alpha)^2}{g}$."
+                                },
+                                {
+                                    idKey: "fdm2_ex2",
+                                    title: "DM 2 • Soru 2 : Kutupsal Koordinatlarda Dairesel Hareket & Dinamik",
+                                    desc: "Kutupsal koordinatlarda radyal ve orthoradyal hız/ivme ifadeleri, merkezcil ivme $-r\\dot{\\theta}^2\\vec{u}_r$ ve dinamik hareket denklemi.",
+                                    tip: "Düzgün dairesel harekette $\\ddot{\\theta} = 0$, dolayısıyla ivme tamamen merkeze doğrudur."
+                                }
+                            ]
+                        },
+                        {
+                            stage: "3. Aşama",
+                            tdName: "DM 3 — Akışkan Sürtünmeli Atış ($-k\\vec{v}$), Karakteristik Süre, Limit Hız & Asimptot",
+                            modKey: "fizik_mod5",
+                            goal: "Dinamik ve 1. derece diferansiyel denklemler. Karakteristik süre $\\tau = m/k$, limit hız ve düşey asimptot.",
+                            badge: "1 Soru (Garanti Sınav Sorusu)",
+                            questions: [
+                                {
+                                    idKey: "fdm3_ex1",
+                                    title: "DM 3 • Soru 1 : Pesanteur et Frottement Fluide (Limit Hız & Asimptot)",
+                                    desc: "PFD ile diferansiyel denklemler: $\\tau = m/k$, $v_x(t) = v_{0x} e^{-t/\\tau}$, $v_z(t) \\to -g\\tau = -\\frac{mg}{k}$.",
+                                    tip: "$t \\to +\\infty$ iken $x(t) \\to x_\\infty = v_{0x}\\tau$ düşey asimptottur; $k \\to 0$ Taylor açılımıyla vakum balistiğine dönülür."
+                                }
+                            ]
+                        },
+                        {
+                            stage: "4. Aşama",
+                            tdName: "DM 3 — Açısal Momentum Teoremi (TMC) & Silindirde Dekolman",
+                            modKey: "fizik_mod5",
+                            goal: "TMC ile hareket denklemi, ilk integral (intégrale première) ve silindirde ayrılma (décollement) şartı $\\cos\\theta = 2/3$.",
+                            badge: "1 Soru (Klasik Sınav Sorusu)",
+                            questions: [
+                                {
+                                    idKey: "fdm3_ex2",
+                                    title: "DM 3 • Soru 2 : Silindirde Kayan Cisim, TMC & Dekolman Şartı",
+                                    desc: "TMC ile $\\ddot{\\theta} = \\frac{g}{R}\\sin\\theta$. İlk integral $\\dot{\\theta}^2 = \\frac{2g}{R}(1 - \\cos\\theta)$. PFD radyal izdüşümü $R_N = mg(3\\cos\\theta - 2) = 0 \\implies \\cos\\theta_d = \\frac{2}{3}$.",
+                                    tip: "TMC yazarken normal reaksiyon $\\vec{R}_N$ merkeze yönelmiş olduğundan momenti sıfırdır: $\\vec{\\mathcal{M}}_O(\\vec{R}_N) = \\vec{0}$!"
+                                }
+                            ]
+                        },
+                        {
+                            stage: "5. Aşama",
+                            tdName: "Modül 6 — Vize Prova Sınavı (Examen Blanc 4 Soru Sentez)",
+                            modKey: "fizik_mod6",
+                            goal: "Kendini gerçek sınav şartlarında sına! 4 soruluk tam prova sınavını süre tutarak veya çözümlerine bakarak tamamla.",
+                            badge: "Vizeye %100 Hazır",
+                            questions: [
+                                {
+                                    idKey: "f6_ex1",
+                                    title: "Examen Blanc • Soru 1 : Poisson Bağıntısı, Karma Çarpım & Bour Teoremi",
+                                    desc: "25 Puanlık tam sınav sorusu. Dönen taban, bağıl türev ve silindirik ivme bileşenlerinin eksiksiz rédactionu.",
+                                    tip: "Poisson kuralı $\\left[\\frac{d\\vec{u}}{dt}\\right]_{R_0} = \\vec{\\Omega} \\wedge \\vec{u}$ ve diklik ispatı olmadan tam puan alınamaz."
+                                },
+                                {
+                                    idKey: "f6_ex2",
+                                    title: "Examen Blanc • Soru 2 : Parabolik Yörüngede Frenet Tabanı & Eğrilik Yarıçapı",
+                                    desc: "25 Puanlık tam sınav sorusu. Hız ve ivme arasındaki açı $\\cos\\beta(t)$, tepe ve anlık eğrilik yarıçapı $R_c$.",
+                                    tip: "$\\cos\\beta = \\frac{\\vec{v}\\cdot\\vec{a}}{v a}$ ve $R_c = \\frac{v^2}{a_n}$ formüllerini adım adım göster."
+                                }
+                            ]
+                        }
+                    ]
+                };
+            }
+
+            if (courseKey === 'mat204_grup') {
+                return {
+                    courseCode: "MAT204",
+                    title: "🚀 MAT204 Vize Hızlı Çalışma Rotası (Speed-Run)",
+                    accentColor: "var(--accent-blue, #3b82f6)",
+                    introTitle: "Grup Teorisi Vizesine Az Vakti Olanlar İçin Hızlı Geçiş Stratejisi",
+                    introDesc: "Vize öncesi zaman kısıtlıysa 80 sorunun tamamını çözmek yerine sınavın omurgasını oluşturan temel soru kalıplarına odaklanın. Aşağıdaki sorular Bézout algoritması, alt grup kriteri, devirli gruplar, simetrik grup $S_n$ ayrışımı ve grup morfizmlerinin sınavda %90 çıkan kalıplarıdır.",
+                    steps: [
+                        {
+                            stage: "1. Aşama",
+                            tdName: "TD 1 — Aritmetik & Modüler Hesap",
+                            modKey: "modul1",
+                            goal: "Bézout özdeşliği ve modüler denklik temellerini kavra.",
+                            badge: "2 Soru",
+                            questions: [
+                                { idKey: "m1_ex1", title: "TD 1 • Soru 1 : Bölünebilme & Asal Çarpanlara Ayrışım", desc: "Tam sayılarda bölünebilme bağıntısı ve asal çarpanlar.", tip: "Asal çarpanların üslerini karşılaştır." },
+                                { idKey: "m1_ex3", title: "TD 1 • Soru 3 : Bézout Algoritması & EBOB", desc: "Öklid algoritması ile au + bv = pgcd(a,b) katsayılarını bulma.", tip: "Geriye doğru yerine koyma adımını temiz yaz." }
+                            ]
+                        },
+                        {
+                            stage: "2. Aşama",
+                            tdName: "TD 2 — Gruplar, Alt Gruplar & Mertebe",
+                            modKey: "modul2",
+                            goal: "Alt grup kriteri (sous-groupe) ve Lagrange teoremi.",
+                            badge: "2 Soru",
+                            questions: [
+                                { idKey: "m2_ex1", title: "TD 2 • Soru 1 : Grup Aksiyomları & Birim Eleman", desc: "Grup tanımının 4 temel aksiyomunun kontrolü.", tip: "Birim eleman e ve ters eleman x⁻¹ varlığını göster." },
+                                { idKey: "m2_ex2", title: "TD 2 • Soru 2 : Alt Grup Kriteri (xy⁻¹ ∈ H)", desc: "Boş olmama ve xy⁻¹ ∈ H tek adımlı alt grup testi.", tip: "e ∈ H olduğunu mutlaka başta belirt!" }
+                            ]
+                        },
+                        {
+                            stage: "3. Aşama",
+                            tdName: "TD 3 & 4 — Devirli Gruplar (Groupes Cycliques) & Üreteçler",
+                            modKey: "modul3",
+                            goal: "Devirli grup üreteçleri ve Euler phi fonksiyonu.",
+                            badge: "2 Soru",
+                            questions: [
+                                { idKey: "m3_td3_ex1", title: "TD 3 • Soru 1 : Devirli Grup Üreteçleri & Mertebe", desc: "G = <a> sonlu devirli grubunun alt grupları ve üreteçleri.", tip: "Üreteç sayısı φ(n) ile belirlenir." },
+                                { idKey: "m4_td4_ex1", title: "TD 4 • Soru 1 : Euler Fonksiyonu φ(n) & Modüler Ters", desc: "U(n) çarpımsal grubu ve eleman mertebeleri.", tip: "a^{φ(n)} ≡ 1 (mod n) Euler teoremidir." }
+                            ]
+                        },
+                        {
+                            stage: "4. Aşama",
+                            tdName: "TD 5 — Simetrik Grup S_n, Ayrık Döngüler & İmza",
+                            modKey: "modul5",
+                            goal: "Ayrık döngülere ayrışım, mertebe (ppcm) ve permütasyon imzası ε(σ).",
+                            badge: "2 Soru",
+                            questions: [
+                                { idKey: "m5_ex1", title: "TD 5 • Soru 1 : Ayrık Döngülere Ayrışım & Mertebe", desc: "Permütasyonları ayrık döngülerin çarpımı olarak yazma ve mertebesini ekok ile hesaplama.", tip: "Mertebe ayrık döngülerin uzunluklarının EBOB/EKOK'udur: o(σ) = ppcm(L₁, L₂, ...)." },
+                                { idKey: "m5_ex2", title: "TD 5 • Soru 2 : Permütasyon İmzası & Transpozisyonlar", desc: "İmza ε(σ) = (-1)^{n-c} ve çift/tek permütasyon analizi.", tip: "Her döngü c = (1 2 ... k) için ε(c) = (-1)^{k-1}." }
+                            ]
+                        },
+                        {
+                            stage: "5. Aşama",
+                            tdName: "Modül 6 — Grup Morfizmleri & İzomorfizma",
+                            modKey: "modul6",
+                            goal: "Çekirdek ker(f), görüntü Im(f) ve 1. İzomorfizma Teoremi.",
+                            badge: "2 Soru",
+                            questions: [
+                                { idKey: "m6_ex1", title: "Modül 6 • Soru 1 : Grup Morfizmi Tanımı & Çekirdek (ker f)", desc: "f(xy) = f(x)f(y) korunumu ve ker(f) = {x | f(x) = e} alt grup ispatı.", tip: "f birebirdir ⇔ ker(f) = {e}." },
+                                { idKey: "m6_ex2", title: "Modül 6 • Soru 2 : G/ker(f) ≅ Im(f) İzomorfizma Teoremi", desc: "Bölüm grubu ve 1. İzomorfizma Teoremi uygulaması.", tip: "Kanıt için bijeksiyon olduğunu göster." }
+                            ]
+                        }
+                    ]
+                };
+            }
+
+            if (courseKey === 'mat206_olasilik') {
+                return {
+                    courseCode: "MAT206",
+                    title: "🚀 MAT206 Vize Hızlı Çalışma Rotası (Speed-Run)",
+                    accentColor: "var(--accent-amber, #f59e0b)",
+                    introTitle: "Olasılık ve İstatistik: Az Vakti Olanlar İçin Hızlı Geçiş Stratejisi",
+                    introDesc: "Kombinatorik sayma, Bayes teoremi, bağımsız denemeler ve kesikli rastgele değişkenlerin sınavda garanti puan getiren soru arketipleri. Her föyden bu soruları inceleyerek vizeye hızla hazırlanın.",
+                    steps: [
+                        {
+                            stage: "1. Aşama",
+                            tdName: "Modül 1 — Kombinatorik & Sayma Özdeşlikleri",
+                            modKey: "olasilik_mod1",
+                            goal: "Double comptage yöntemi ve kombinatorik modeller.",
+                            badge: "2 Soru",
+                            questions: [
+                                { idKey: "olas_2024_ex3", title: "Soru 1 : Kombinatorik Özdeşlik İspatı (Double Comptage)", desc: "İki farklı yolla sayım yaparak k C(n,k) = n C(n-1, k-1) gibi özdeşliklerin ispatı.", tip: "Bir heyet ve heyet başkanı seçme hikayesini kur!" },
+                                { idKey: "olas_2022_ex5", title: "Soru 2 : Güvercin Yuvası İlkesi (Principe des Tiroirs)", desc: "En az bir grupta birden fazla eleman bulunmasının kombinatorik ispatı.", tip: "n+1 güvercin n yuvaya yerleşirse en az birinde ≥2 güvercin vardır." }
+                            ]
+                        },
+                        {
+                            stage: "2. Aşama",
+                            tdName: "Modül 2 — Kolmogorov Aksiyomları & Olaylar Cebri",
+                            modKey: "olasilik_mod2",
+                            goal: "Olaylar cebri ve temel olasılık aksiyomları.",
+                            badge: "1 Soru",
+                            questions: [
+                                { idKey: "olas_2024_ex2", title: "Soru : P(A ∪ B) Birleşim Olasılığı & Aksiyomlar", desc: "P(A ∪ B) = P(A) + P(B) - P(A ∩ B) Poincaré formülü.", tip: "Kümelerin ayrık parçalanışını yaz." }
+                            ]
+                        },
+                        {
+                            stage: "3. Aşama",
+                            tdName: "Modül 3 — Tam Olasılık & Bayes Teoremi",
+                            modKey: "olasilik_mod3",
+                            goal: "Koşullu olasılık ve ters olasılık (Bayes formülü).",
+                            badge: "2 Soru",
+                            questions: [
+                                { idKey: "olas_2024_ex4", title: "Soru 1 : Bayes Formülü & Tıbbi Teşhis Problemi", desc: "P(Hastalık | Pozitif Test) ters olasılık hesabı.", tip: "P(B) için paydada tam olasılık formülünü ∑ P(B|A_i)P(A_i) aç!" },
+                                { idKey: "olas_2022_ex7", title: "Soru 2 : Bağımsız Olaylar & Çarpım Kuralı", desc: "P(A ∩ B) = P(A)P(B) bağımsızlık tanımı.", tip: "P(A|B) = P(A) olduğunu göster." }
+                            ]
+                        },
+                        {
+                            stage: "4. Aşama",
+                            tdName: "Modül 4 — Bağımsız Denemeler, Geometrik & Pascal",
+                            modKey: "olasilik_mod4",
+                            goal: "Bernoulli denemeleri ve hafızasızlık özelliği.",
+                            badge: "1 Soru",
+                            questions: [
+                                { idKey: "olas_2022_ex3", title: "Soru : Ruine du Joueur (Oyuncunun İflası Problemi)", desc: "Fark denklemi kurarak iflas olasılığını hesaplama.", tip: "p_k = p · p_{k+1} + q · p_{k-1} reküransını kur!" }
+                            ]
+                        },
+                        {
+                            stage: "5. Aşama",
+                            tdName: "Modül 5 — Kesikli Rastgele Değişkenler & Dağılımlar",
+                            modKey: "olasilik_mod5",
+                            goal: "Beklenen değer E(X), varyans Var(X) ve momentler.",
+                            badge: "1 Soru",
+                            questions: [
+                                { idKey: "olas_2024_ex1", title: "Soru : Olasılık Kütle Fonksiyonu & Beklenen Değer", desc: "E(X) = ∑ x P(X=x) ve Var(X) = E(X²) - [E(X)]² hesabı.", tip: "Toplam olasılık ∑ P(X=x) = 1 şartını kontrol et." }
+                            ]
+                        }
+                    ]
+                };
+            }
+
+            if (courseKey === 'esp101_ispanyolca') {
+                return {
+                    courseCode: "ESP101",
+                    title: "🚀 ESP101 Vize Hızlı Çalışma Rotası (Speed-Run)",
+                    accentColor: "var(--accent-rose, #f43f5e)",
+                    introTitle: "İspanyolca (A1.1): Vizeye Az Vakti Olanlar İçin Hızlı Geçiş Stratejisi",
+                    introDesc: "Aula Internacional Plus 1 (Unidad 1 - 3) vize sınavı için en kritik gramer konuları ve pratik diyalog kalıpları.",
+                    steps: [
+                        {
+                            stage: "1. Aşama",
+                            tdName: "Clase 1 & 2 — Tanıtma, Ser/Estar, Fonetik & Hay",
+                            modKey: "ispanyolca_mod1",
+                            goal: "SER fiili ile meslek/uyruk, ESTAR ile konum/durum.",
+                            badge: "2 Soru",
+                            questions: [
+                                { idKey: "esp101_c1_ex1", title: "Soru 1 : Llamarse, Ser, Tener & Kendini Tanıtma", desc: "¿Cómo te llamas? Yo soy..., Tengo ... años.", tip: "Tener yaş belirtirken kullanılır!" },
+                                { idKey: "esp101_c1_ex2", title: "Soru 2 : Sayılar, Fonetik & Alfabe Kuralları", desc: "C/Z ve G/J telaffuz kuralları ve sayılar.", tip: "ce/ci peltek, ca/co/cu sert okunur." }
+                            ]
+                        },
+                        {
+                            stage: "2. Aşama",
+                            tdName: "Clase 3 — Düzenli Fiil Çekimleri (-AR, -ER, -IR)",
+                            modKey: "ispanyolca_mod3",
+                            goal: "Geniş zaman düzenli fiil çekimleri.",
+                            badge: "1 Soru",
+                            questions: [
+                                { idKey: "esp101_c3_ex1", title: "Soru : Hablar, Comer, Vivir Çekimleri", desc: "Yo hablo, tú hablas, él habla; Yo como, vivo...", tip: "-AR fiillerinde nosotros -amos, -ER'de -emos, -IR'de -imos!" }
+                            ]
+                        },
+                        {
+                            stage: "3. Aşama",
+                            tdName: "Clase 4 & 5 — Por vs Para & Unidad 3 Coğrafya / Hay / Está",
+                            modKey: "ispanyolca_mod4",
+                            goal: "Por (neden) vs Para (amaç) ve Hay (varlık) vs Está (konum).",
+                            badge: "1 Soru",
+                            questions: [
+                                { idKey: "esp101_c4_ex1", title: "Soru : ¿Por qué estudias español? (Por vs Para)", desc: "Estudio español por mi trabajo / para viajar.", tip: "Para + mastar fiil amaç belirtir!" }
+                            ]
+                        }
+                    ]
+                };
+            }
+
+            // Default: MAT201 Seriler
+            return {
+                courseCode: "MAT201",
+                title: "🚀 MAT201 Vize Hızlı Çalışma Rotası (Speed-Run)",
+                accentColor: "var(--accent-emerald, #10b981)",
+                introTitle: "Sınavlara Az Vakti Olanlar İçin Hızlı Geçiş Stratejisi",
+                introDesc: "Başka sınavların da varken 60 soruyu tek tek çözmek imkansızdır ve buna gerek de yoktur. Aşağıdaki <strong>12 soru</strong>, MAT201 vizesinde sorulan soruların <strong>%90'ını</strong> temsil eden temel soru kalıplarıdır (arketip). Her föyden sadece bu 2 soruya bak, yanındaki butona basarak çözüm adımlarını ve Fransızca rédaction cümlelerini incele, ardından hiç vakit kaybetmeden bir sonraki aşamaya geç!",
+                steps: [
+                    {
+                        stage: "1. Aşama",
+                        tdName: "TD 0 — Rappels sur les Suites (Diziler)",
+                        modKey: "seriler_mod1",
+                        goal: "Sadece 2 soru! Vizede dizi çıkarsa %90 sandviç veya sabit nokta özyinelemesi gelir. Diğer 11 soruyu doğrudan atla.",
+                        badge: "2 Soru (Kalan 11'i atla)",
+                        questions: [
+                            {
+                                idKey: "s1_ex7",
+                                title: "TD 0 • Soru 7 : Théorème des Deux Gendarmes (Sıkıştırma Teoremi)",
+                                desc: "Sandviç yöntemiyle limit bulma. Negatif veya trigonometrik terimleri iki taraftan bilinen dizilere hapsetme refleksi.",
+                                tip: "Rédaction kuralı: 'Par encadrement et d\'après le théorème des gendarmes, la suite converge vers 0.'"
+                            },
+                            {
+                                idKey: "s1_ex13",
+                                title: "TD 0 • Soru 13 : Suite Récurrente & Théorème du Point Fixe (u_{n+1} = √(2+u_n))",
+                                desc: "Fransız ekolünün vazgeçilmez 3 adımı: 1) Sınırlılık (tümevarım), 2) Monotonluk (fark işareti), 3) Sabit nokta denklemi L = f(L).",
+                                tip: "Monotonluk için u_{n+1} - u_n farkında payı eşlenikle çarpmayı unutma!"
+                            }
+                        ]
+                    },
+                    {
+                        stage: "2. Aşama",
+                        tdName: "TD 1 — Premières Séries Numériques (Seriler & Kısmi Toplam)",
+                        modKey: "seriler_mod2",
+                        goal: "Sadece 2 soru! Seri toplamı hesaplama mantığını ve genel terim refleksini kavra, TD 3'e geç.",
+                        badge: "2 Soru (Kalan 7'yi atla)",
+                        questions: [
+                            {
+                                idKey: "s2_ex3",
+                                title: "TD 1 • Soru 3 : Condition Nécessaire de Convergence (Zorunlu Şart: u_n → 0)",
+                                desc: "0. REFLEKS: Sınavda herhangi bir seride lim u_n ≠ 0 ise doğrudan 'La série diverge grossièrement' yazıp tam puan alırsın.",
+                                tip: "Tuzak: lim u_n = 0 olması serinin yakınsak olduğunu KANITLAMAZ! Harmonik seriyi hatırla."
+                            },
+                            {
+                                idKey: "s2_ex6",
+                                title: "TD 1 • Soru 6 : Série Télescopique (Teleskopik Seri Toplamı)",
+                                desc: "Kısmi toplamlar dizisi S_N yazıp terimlerin birbirini götürmesiyle net toplamı sonlu bir limit olarak bulma.",
+                                tip: "Basit kesirlere ayır: 1/(n(n+1)) = 1/n - 1/(n+1) veya köklü ifadede eşlenikle çarp."
+                            }
+                        ]
+                    },
+                    {
+                        stage: "3. Aşama",
+                        tdName: "TD 3 — Séries à Termes Positifs (Pozitif Terimli Seriler)",
+                        modKey: "seriler_mod3",
+                        goal: "Sadece 2 soru! Asimptotik eşdeğerlik ve D'Alembert testlerini cebe koyduysan pozitif seriler tamamdır.",
+                        badge: "2 Soru (Kalan 5'i atla)",
+                        questions: [
+                            {
+                                idKey: "s3_ex2",
+                                title: "TD 3 • Soru 2 : Comparaison par Équivalents (sin(1/n) & Asimptotik Eşdeğerlik)",
+                                desc: "Vizede en çok puan getiren test: sin(1/n) ~ 1/n yazıp Riemann serisiyle kıyaslama yöntemi.",
+                                tip: "Eşdeğerlik ancak ve ancak genel terimler pozitifken seriler için geçerlidir!"
+                            },
+                            {
+                                idKey: "s3_ex5",
+                                title: "TD 3 • Soru 5 : Critère de d'Alembert (Faktöriyel n! ve Üstel Terimler)",
+                                desc: "Pay veya paydada n! ya da a^n varsa hiç düşünmeden D'Alembert lim (u_{n+1}/u_n) oran testini uygula.",
+                                tip: "Limit < 1 ise CV, > 1 ise DV, = 1 ise d'Alembert iflas eder!"
+                            }
+                        ]
+                    },
+                    {
+                        stage: "4. Aşama",
+                        tdName: "TD 4 — Séries Alternées & Critère de Cauchy (Alterne Seriler)",
+                        modKey: "seriler_mod4",
+                        goal: "Sadece 2 soru! Leibniz kriterinin 3 şartını ve mutlak/şartlı yakınsaklık ayrımını öğren.",
+                        badge: "2 Soru (Kalan 3'ü atla)",
+                        questions: [
+                            {
+                                idKey: "s4_ex2",
+                                title: "TD 4 • Soru 2 : Critère de Leibniz (CSSA - Alterne Seri Testi)",
+                                desc: "(-1)^n içeren serilerde: 1) a_n ≥ 0, 2) a_n monoton azalan, 3) lim a_n = 0 şartlarını eksiksiz yaz.",
+                                tip: "Bu 3 şart sağlanırsa seri doğrudan yakınsaktır ve |R_N| ≤ a_{N+1} hatasıyla yaklaşılır."
+                            },
+                            {
+                                idKey: "s4_ex1",
+                                title: "TD 4 • Soru 1 : Convergence Absolue vs Semi-convergence",
+                                desc: "∑ |u_n| ıraksıyor ama ∑ u_n yakınsıyorsa buna şartlı yakınsaklık (semi-convergente) denir.",
+                                tip: "Klasik örnek: Alterne harmonik seri ∑ (-1)^{n-1}/n ln(2)'ye şartlı yakınsar."
+                            }
+                        ]
+                    },
+                    {
+                        stage: "5. Aşama",
+                        tdName: "TD 5 — Suites de Fonctions (Fonksiyon Dizileri)",
+                        modKey: "seriler_mod5",
+                        goal: "Sadece 2 soru! Süreksizlik tezatıyla düzgün yakınsaklığı çürütme ve suite testi.",
+                        badge: "2 Soru (Kalan 4'ü atla)",
+                        questions: [
+                            {
+                                idKey: "s5_ex3",
+                                title: "TD 5 • Soru 3 : f_n(x) = xⁿ (Süreksizlik ile CVU Çürütme)",
+                                desc: "Tüm f_n'ler sürekli, ancak noktasal limit f(x) süreksiz ise düzgün yakınsaklık (CVU) KESİNLİKLE YOKTUR.",
+                                tip: "Théorème de Continuité sınav kağıdında tam olarak bu gerekçeyle referans verilir."
+                            },
+                            {
+                                idKey: "s5_ex5",
+                                title: "TD 5 • Soru 5 : Suites Tests pour la Non-Convergence Uniforme (x_n = 1 - 1/n)",
+                                desc: "Limit sürekli olsa bile tepe noktasını yakalayan bir x_n dizisiyle ||f_n - f||_∞ ↛ 0 olduğunu kanıtlama.",
+                                tip: "Tepe noktasını türev alarak f_n'(x) = 0 kökünden bulursun."
+                            }
+                        ]
+                    },
+                    {
+                        stage: "6. Aşama",
+                        tdName: "TD 6 — Suites et Séries de Fonctions (Fonksiyon Serileri)",
+                        modKey: "seriler_mod6",
+                        goal: "Sadece 2 soru! Weierstrass M-testi ile normal yakınsaklık ve terim terime işlemler.",
+                        badge: "2 Soru (Kalan 4'ü atla)",
+                        questions: [
+                            {
+                                idKey: "s6_ex5",
+                                title: "TD 6 • Soru 5 : Séries de Fonctions (Weierstrass M-Testi / Normal Yakınsaklık)",
+                                desc: "Fonksiyon serilerinde 1 numaralı hedef: |f_n(x)| ≤ M_n bulup ∑ M_n < ∞ göstermek. CVN ⇒ CVU ⇒ CVS!",
+                                tip: "Normal yakınsak her fonksiyon serisinin toplam fonksiyonu S(x) süreklidir."
+                            },
+                            {
+                                idKey: "s6_ex2",
+                                title: "TD 6 • Soru 2 : Convergence Uniforme & Continuité / Terim Terime İşlem",
+                                desc: "Limit ile toplam sembolünün veya türevin yer değiştirebilmesi için düzgün yakınsaklık şartı.",
+                                tip: "Türevler serisi ∑ f_n'(x) düzgün yakınsaksa (∑ f_n)' = ∑ f_n' yazılabilir."
+                            }
+                        ]
+                    }
+                ]
+            };
+        }
+
         function loadStudyRoadmapView() {
             currentViewMode = 'special';
             currentSpecialView = 'roadmap';
@@ -3819,138 +4255,10 @@ Donc $f$ est injectif.<br>
 
             const solvedList = getSolvedExercises();
             const c = COURSES_DB[activeCourseKey] || {};
-
-            const roadmapSteps = [
-                {
-                    stage: "1. Aşama",
-                    tdName: "TD 0 — Rappels sur les Suites (Diziler)",
-                    modKey: "seriler_mod1",
-                    goal: "Sadece 2 soru! Vizede dizi çıkarsa %90 sandviç veya sabit nokta özyinelemesi gelir. Diğer 11 soruyu doğrudan atla.",
-                    badge: "2 Soru (Kalan 11'i atla)",
-                    questions: [
-                        {
-                            idKey: "s1_ex7",
-                            title: "TD 0 • Soru 7 : Théorème des Deux Gendarmes (Sıkıştırma Teoremi)",
-                            desc: "Sandviç yöntemiyle limit bulma. Negatif veya trigonometrik terimleri iki taraftan bilinen dizilere hapsetme refleksi.",
-                            tip: "Rédaction kuralı: 'Par encadrement et d\\'après le théorème des gendarmes, la suite converge vers 0.'"
-                        },
-                        {
-                            idKey: "s1_ex13",
-                            title: "TD 0 • Soru 13 : Suite Récurrente & Théorème du Point Fixe (u_{n+1} = √(2+u_n))",
-                            desc: "Fransız ekolünün vazgeçilmez 3 adımı: 1) Sınırlılık (tümevarım), 2) Monotonluk (fark işareti), 3) Sabit nokta denklemi L = f(L).",
-                            tip: "Monotonluk için u_{n+1} - u_n farkında payı eşlenikle çarpmayı unutma!"
-                        }
-                    ]
-                },
-                {
-                    stage: "2. Aşama",
-                    tdName: "TD 1 — Premières Séries Numériques (Seriler & Kısmi Toplam)",
-                    modKey: "seriler_mod2",
-                    goal: "Sadece 2 soru! Seri toplamı hesaplama mantığını ve genel terim refleksini kavra, TD 3'e geç.",
-                    badge: "2 Soru (Kalan 7'yi atla)",
-                    questions: [
-                        {
-                            idKey: "s2_ex3",
-                            title: "TD 1 • Soru 3 : Condition Nécessaire de Convergence (Zorunlu Şart: u_n → 0)",
-                            desc: "0. REFLEKS: Sınavda herhangi bir seride lim u_n ≠ 0 ise doğrudan 'La série diverge grossièrement' yazıp tam puan alırsın.",
-                            tip: "Tuzak: lim u_n = 0 olması serinin yakınsak olduğunu KANITLAMAZ! Harmonik seriyi hatırla."
-                        },
-                        {
-                            idKey: "s2_ex6",
-                            title: "TD 1 • Soru 6 : Série Télescopique (Teleskopik Seri Toplamı)",
-                            desc: "Kısmi toplamlar dizisi S_N yazıp terimlerin birbirini götürmesiyle net toplamı sonlu bir limit olarak bulma.",
-                            tip: "Basit kesirlere ayır: 1/(n(n+1)) = 1/n - 1/(n+1) veya köklü ifadede eşlenikle çarp."
-                        }
-                    ]
-                },
-                {
-                    stage: "3. Aşama",
-                    tdName: "TD 3 — Séries à Termes Positifs (Pozitif Terimli Seriler)",
-                    modKey: "seriler_mod3",
-                    goal: "Sadece 2 soru! Asimptotik eşdeğerlik ve D'Alembert testlerini cebe koyduysan pozitif seriler tamamdır.",
-                    badge: "2 Soru (Kalan 5'i atla)",
-                    questions: [
-                        {
-                            idKey: "s3_ex2",
-                            title: "TD 3 • Soru 2 : Comparaison par Équivalents (sin(1/n) & Asimptotik Eşdeğerlik)",
-                            desc: "Vizede en çok puan getiren test: sin(1/n) ~ 1/n yazıp Riemann serisiyle kıyaslama yöntemi.",
-                            tip: "Eşdeğerlik ancak ve ancak genel terimler pozitifken seriler için geçerlidir!"
-                        },
-                        {
-                            idKey: "s3_ex5",
-                            title: "TD 3 • Soru 5 : Critère de d'Alembert (Faktöriyel n! ve Üstel Terimler)",
-                            desc: "Pay veya paydada n! ya da a^n varsa hiç düşünmeden D'Alembert lim (u_{n+1}/u_n) oran testini uygula.",
-                            tip: "Limit < 1 ise CV, > 1 ise DV, = 1 ise d'Alembert iflas eder!"
-                        }
-                    ]
-                },
-                {
-                    stage: "4. Aşama",
-                    tdName: "TD 4 — Séries Alternées & Critère de Cauchy (Alterne Seriler)",
-                    modKey: "seriler_mod4",
-                    goal: "Sadece 2 soru! Leibniz kriterinin 3 şartını ve mutlak/şartlı yakınsaklık ayrımını öğren.",
-                    badge: "2 Soru (Kalan 3'ü atla)",
-                    questions: [
-                        {
-                            idKey: "s4_ex2",
-                            title: "TD 4 • Soru 2 : Critère de Leibniz (CSSA - Alterne Seri Testi)",
-                            desc: "(-1)^n içeren serilerde: 1) a_n ≥ 0, 2) a_n monoton azalan, 3) lim a_n = 0 şartlarını eksiksiz yaz.",
-                            tip: "Bu 3 şart sağlanırsa seri doğrudan yakınsaktır ve |R_N| ≤ a_{N+1} hatasıyla yaklaşılır."
-                        },
-                        {
-                            idKey: "s4_ex1",
-                            title: "TD 4 • Soru 1 : Convergence Absolue vs Semi-convergence",
-                            desc: "∑ |u_n| ıraksıyor ama ∑ u_n yakınsıyorsa buna şartlı yakınsaklık (semi-convergente) denir.",
-                            tip: "Klasik örnek: Alterne harmonik seri ∑ (-1)^{n-1}/n ln(2)'ye şartlı yakınsar."
-                        }
-                    ]
-                },
-                {
-                    stage: "5. Aşama",
-                    tdName: "TD 5 — Suites de Fonctions (Fonksiyon Dizileri)",
-                    modKey: "seriler_mod5",
-                    goal: "Sadece 2 soru! Süreksizlik tezatıyla düzgün yakınsaklığı çürütme ve suite testi.",
-                    badge: "2 Soru (Kalan 4'ü atla)",
-                    questions: [
-                        {
-                            idKey: "s5_ex3",
-                            title: "TD 5 • Soru 3 : f_n(x) = xⁿ (Süreksizlik ile CVU Çürütme)",
-                            desc: "Tüm f_n'ler sürekli, ancak noktasal limit f(x) süreksiz ise düzgün yakınsaklık (CVU) KESİNLİKLE YOKTUR.",
-                            tip: "Théorème de Continuité sınav kağıdında tam olarak bu gerekçeyle referans verilir."
-                        },
-                        {
-                            idKey: "s5_ex5",
-                            title: "TD 5 • Soru 5 : Suites Tests pour la Non-Convergence Uniforme (x_n = 1 - 1/n)",
-                            desc: "Limit sürekli olsa bile tepe noktasını yakalayan bir x_n dizisiyle ||f_n - f||_∞ ↛ 0 olduğunu kanıtlama.",
-                            tip: "Tepe noktasını türev alarak f_n'(x) = 0 kökünden bulursun."
-                        }
-                    ]
-                },
-                {
-                    stage: "6. Aşama",
-                    tdName: "TD 6 — Suites et Séries de Fonctions (Fonksiyon Serileri)",
-                    modKey: "seriler_mod6",
-                    goal: "Sadece 2 soru! Weierstrass M-testi ile normal yakınsaklık ve terim terime işlemler.",
-                    badge: "2 Soru (Kalan 4'ü atla)",
-                    questions: [
-                        {
-                            idKey: "s6_ex5",
-                            title: "TD 6 • Soru 5 : Séries de Fonctions (Weierstrass M-Testi / Normal Yakınsaklık)",
-                            desc: "Fonksiyon serilerinde 1 numaralı hedef: |f_n(x)| ≤ M_n bulup ∑ M_n < ∞ göstermek. CVN ⇒ CVU ⇒ CVS!",
-                            tip: "Normal yakınsak her fonksiyon serisinin toplam fonksiyonu S(x) süreklidir."
-                        },
-                        {
-                            idKey: "s6_ex2",
-                            title: "TD 6 • Soru 2 : Convergence Uniforme & Continuité / Terim Terime İşlem",
-                            desc: "Limit ile toplam sembolünün veya türevin yer değiştirebilmesi için düzgün yakınsaklık şartı.",
-                            tip: "Türevler serisi ∑ f_n'(x) düzgün yakınsaksa (∑ f_n)' = ∑ f_n' yazılabilir."
-                        }
-                    ]
-                }
-            ];
+            const cfg = getRoadmapConfig(activeCourseKey);
 
             let cardsHTML = '';
-            roadmapSteps.forEach((stg) => {
+            cfg.steps.forEach((stg) => {
                 let qListHTML = '';
                 stg.questions.forEach((q) => {
                     const qId = q.idKey;
@@ -3977,13 +4285,13 @@ Donc $f$ est injectif.<br>
                 });
 
                 cardsHTML += `
-                    <div class="academic-card" style="margin-bottom: 24px; border-left: 4px solid var(--accent-emerald);">
+                    <div class="academic-card" style="margin-bottom: 24px; border-left: 4px solid ${cfg.accentColor};">
                         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
                             <div>
-                                <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--accent-emerald); letter-spacing: 0.05em;">${stg.stage}</span>
+                                <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: ${cfg.accentColor}; letter-spacing: 0.05em;">${stg.stage}</span>
                                 <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin: 2px 0 0;">${stg.tdName}</h3>
                             </div>
-                            <span class="nav-count-badge" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); font-weight: 600; padding: 4px 10px; border-radius: 6px;">${stg.badge}</span>
+                            <span class="nav-count-badge" style="background: rgba(139, 92, 246, 0.15); color: ${cfg.accentColor}; font-weight: 600; padding: 4px 10px; border-radius: 6px;">${stg.badge}</span>
                         </div>
                         <p style="font-size: 0.92rem; color: var(--text-secondary); margin: 6px 0 10px;">${stg.goal}</p>
                         ${qListHTML}
@@ -3994,19 +4302,18 @@ Donc $f$ est injectif.<br>
             main.innerHTML = `
                 <div class="content-header">
                     <div>
-                        <div class="breadcrumbs">${c.code || "MAT201"} > Sınav ve Çalışma Araçları > Vize Hızlı Çalışma Rotası</div>
-                        <h1 class="content-title">🚀 Vize Hızlı Çalışma Rotası (Speed-Run)</h1>
+                        <div class="breadcrumbs">${cfg.courseCode} > Sınav ve Çalışma Araçları > Vize Hızlı Çalışma Rotası</div>
+                        <h1 class="content-title">${cfg.title}</h1>
                     </div>
                 </div>
 
-                <div style="background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(37,99,235,0.08)); border: 1px solid var(--accent-emerald); border-radius: 12px; padding: 20px 24px; margin-bottom: 26px;">
+                <div style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(37,99,235,0.08)); border: 1px solid ${cfg.accentColor}; border-radius: 12px; padding: 20px 24px; margin-bottom: 26px;">
                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
                         <span style="font-size: 1.5rem;">⏱️</span>
-                        <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-main); margin: 0;">Sınavlara Az Vakti Olanlar İçin Hızlı Geçiş Stratejisi</h2>
+                        <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-main); margin: 0;">${cfg.introTitle}</h2>
                     </div>
                     <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6; margin: 0;">
-                        Başka sınavların da varken 60 soruyu tek tek çözmek imkansızdır ve buna gerek de yoktur. Aşağıdaki <strong>12 soru</strong>, MAT201 vizesinde sorulan soruların <strong>%90'ını</strong> temsil eden temel soru kalıplarıdır (arketip). 
-                        Her föyden sadece bu 2 soruya bak, yanındaki yeşil butona basarak çözüm adımlarını ve Fransızca rédaction cümlelerini incele, ardından hiç vakit kaybetmeden bir sonraki aşamaya geç!
+                        ${cfg.introDesc}
                     </p>
                 </div>
 
