@@ -72,7 +72,7 @@ async function ensureCourseLoaded(courseKey) {
     loadedCoursePromises[courseKey] = (async () => {
         try {
             if (window.location.protocol !== 'file:') {
-                const res = await fetch(`data/courses/${courseKey}.json?v=40`);
+                const res = await fetch(`data/courses/${courseKey}.json?v=41`);
                 if (res.ok) {
                     const data = await res.json();
                     window.COURSES_DB[courseKey] = data;
@@ -87,7 +87,7 @@ async function ensureCourseLoaded(courseKey) {
         }
         
         try {
-            await loadScriptAsync(`data/courses/${courseKey}.js?v=40`);
+            await loadScriptAsync(`data/courses/${courseKey}.js?v=41`);
             if (window.coursesData && window.coursesData[courseKey]) {
                 window.COURSES_DB[courseKey] = window.coursesData[courseKey];
             }
@@ -3081,6 +3081,27 @@ Donc $f$ est injectif.<br>
             } catch(e) {}
         }
 
+        async function forceUpdatePortal() {
+            try {
+                if ('serviceWorker' in navigator) {
+                    const regs = await navigator.serviceWorker.getRegistrations();
+                    for (const r of regs) {
+                        await r.unregister();
+                    }
+                }
+                if ('caches' in window) {
+                    const keys = await caches.keys();
+                    for (const k of keys) {
+                        await caches.delete(k);
+                    }
+                }
+            } catch(e) {
+                console.warn('Cache clear error:', e);
+            }
+            window.location.href = window.location.pathname + '?reload=' + Date.now();
+        }
+        window.forceUpdatePortal = forceUpdatePortal;
+
         function initTheme() {
             let savedTheme = 'light';
             try {
@@ -4581,15 +4602,8 @@ Donc $f$ est injectif.<br>
             }
         };
 
-        // Also close when jumpToExercise or switchExercise is called on mobile
-        const origJumpToExercise = jumpToExercise;
-        jumpToExercise = function(modKey, exParam) {
-            origJumpToExercise(modKey, exParam);
-            if (window.innerWidth <= 900) {
-                closeMobileSidebar();
-            }
-        };
-        window.jumpToExercise = jumpToExercise;
+        // Ensure closeMobileSidebar on mobile
+        window.closeMobileSidebar = closeMobileSidebar;
 
         // ================= MOBILE BOTTOM NAVIGATION HANDLERS =================
         function handleMobileTab(tabKey) {
@@ -4768,9 +4782,10 @@ Donc $f$ est injectif.<br>
         function renderSidebarNav() {
             const topicNav = document.querySelector('.topic-nav');
             if (!topicNav) return;
-            const c = COURSES_DB[activeCourseKey];
+            const c = COURSES_DB[activeCourseKey] || COURSES_MANIFEST[activeCourseKey] || { code: (activeCourseKey || 'PORTAL').toUpperCase() };
+            const courseCode = c.code || 'Portal';
 
-            let navModulesHTML = `<div class="nav-section-title">${c.code} Müfredatı (Tüm Modüller)</div>`;
+            let navModulesHTML = `<div class="nav-section-title">${courseCode} Müfredatı (Tüm Modüller)</div>`;
             Object.keys(modulesDB).forEach((modKey, idx) => {
                 const mod = modulesDB[modKey];
                 const isActive = modKey === currentModuleKey ? 'active' : '';
@@ -4809,7 +4824,7 @@ Donc $f$ est injectif.<br>
                 <div class="nav-item" id="nav-mock-exam" onclick="loadMockExamView()">
                     <div class="nav-item-left">
                         ${window.ICONS ? window.ICONS.target : ""}
-                        <span>${c.code} Vize Deneme Sınavı</span>
+                        <span>${courseCode} Vize Deneme Sınavı</span>
                     </div>
                     <span class="nav-count-badge" style="background: rgba(37, 99, 235, 0.2); color: var(--accent-blue);">90 Dk</span>
                 </div>

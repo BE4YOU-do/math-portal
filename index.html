@@ -43,6 +43,9 @@
             <span style="font-size: 0.72rem; color: var(--text-muted); opacity: 0.7;">▾</span>
         </div>
         <div class="mobile-top-actions">
+            <button class="mobile-action-btn" onclick="forceUpdatePortal()" title="Önbelleği Temizle &amp; Güncelle" style="font-size: 0.95rem;">
+                🔄
+            </button>
             <button class="mobile-action-btn" onclick="openSearchModal()" title="Hızlı Ara (Cmd+K)">
                 <svg class="ui-icon no-margin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </button>
@@ -242,6 +245,9 @@
             <button class="theme-toggle-btn" onclick="toggleTheme()">
                 <span id="theme-icon"><svg class="ui-icon no-margin" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span> <span id="theme-text">Koyu Mod</span>
             </button>
+            <button class="theme-toggle-btn" onclick="forceUpdatePortal()" title="Önbelleği sıfırla ve en son güncel sürümü zorla yükle" style="margin-top: 6px; font-size: 0.8rem; border-color: rgba(139, 92, 246, 0.35);">
+                🔄 <span style="margin-left: 4px;">Önbelleği Temizle</span>
+            </button>
             <div class="cloud-sync-status" id="cloud-sync-status" onclick="triggerManualSync()" title="Veriler buluta kaydedildi. Tıklayarak anında senkronize edebilirsiniz.">
                 <span class="sync-dot"></span>
                 <span class="sync-text" id="cloud-sync-text">Bulut: Eşitlendi</span>
@@ -323,17 +329,17 @@
     </div>
 
     <!-- Modular Data & Logic Scripts -->
-    <script src="js/icons.js?v=40"></script>
-    <script src="data/courses_manifest.js?v=40"></script>
-    <script src="data/concepts.js?v=40"></script>
-    <script src="data/courses/mat204_grup.js?v=40"></script>
-    <script src="data/courses/mat201_seriler.js?v=40"></script>
-    <script src="data/courses/fiz101_fizik.js?v=40"></script>
-    <script src="data/courses/mat206_olasilik.js?v=40"></script>
-    <script src="data/courses/esp101_ispanyolca.js?v=40"></script>
-    <script src="data/flashcards.js?v=40"></script>
-    <script src="js/spanish_interactive.js?v=40"></script>
-    <script src="js/app.js?v=40"></script>
+    <script src="js/icons.js?v=41"></script>
+    <script src="data/courses_manifest.js?v=41"></script>
+    <script src="data/concepts.js?v=41"></script>
+    <script src="data/courses/mat204_grup.js?v=41"></script>
+    <script src="data/courses/mat201_seriler.js?v=41"></script>
+    <script src="data/courses/fiz101_fizik.js?v=41"></script>
+    <script src="data/courses/mat206_olasilik.js?v=41"></script>
+    <script src="data/courses/esp101_ispanyolca.js?v=41"></script>
+    <script src="data/flashcards.js?v=41"></script>
+    <script src="js/spanish_interactive.js?v=41"></script>
+    <script src="js/app.js?v=41"></script>
 
     <!-- Service Worker Registration for PWA Offline Math & KaTeX -->
     <script>
@@ -346,7 +352,7 @@
                 }
             });
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js?v=40').catch(err => {
+                navigator.serviceWorker.register('./sw.js?v=41').catch(err => {
                     console.log('SW registration note:', err);
                 });
             });
