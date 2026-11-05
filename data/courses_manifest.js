@@ -141,17 +141,18 @@ window.COURSES_MANIFEST = {
       },
       {
         "id": "fizik_mod5",
-        "title": "Modül 5: Vize Master, Karar Ağaçları & Sentez Sınav Soruları",
-        "shortTitle": "Modül 5: Vize Master & Karar Ağaçları",
+        "title": "Modül 5: DM-3 Tam Çözümleri (Atış, Hava Direnci & Silindirde Kayma - TMC)",
+        "shortTitle": "Modül 5: DM-3 Tam Çözümleri",
         "exerciseCount": 2
       },
       {
         "id": "fizik_mod6",
-        "title": "Modül 6: DM-3 Tam Çözümleri (Atış, Hava Direnci & Silindirde Kayma - TMC)",
-        "shortTitle": "Modül 6: DM-3 Tam Çözümleri",
-        "exerciseCount": 2
+        "title": "Modül 6: Vizeye Hazırlık Master & Examen Blanc (4 Soru Sentez)",
+        "shortTitle": "Modül 6: Vize Master & Examen Blanc",
+        "exerciseCount": 4
       }
-    ]
+    ],
+    "totalExercises": 16
   },
   "mat206_olasilik": {
     "code": "MAT206",

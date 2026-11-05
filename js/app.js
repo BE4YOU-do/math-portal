@@ -3756,11 +3756,12 @@ Donc $f$ est injectif.<br>
                     { num: 5, points: 20, topic: 'Fonksiyon Dizileri & Düzgün Yakınsaklık', ex: (mods['seriler_mod6'] ? mods['seriler_mod6'].exercises[1] : (mods['seriler_mod5'] ? mods['seriler_mod5'].exercises[0] : null)), rubric: '+6 Puan: Noktasal limit hesabı, +8 Puan: Süreklilik aktarımı çelişkisi, +6 Puan: Supremum normu.' }
                 ];
             } else if (activeCourseKey === 'fiz101_fizik') {
+                const m6 = mods['fizik_mod6']?.exercises || [];
                 return [
-                    { num: 1, points: 25, topic: 'Vektörler & Skaler/Vektörel Çarpım', ex: mods['fizik_mod1'].exercises[0], rubric: '+8 Puan: Norm ve birim vektörler, +10 Puan: Skaler çarpım ve açı hesabı, +7 Puan: Vektörel çarpım.' },
-                    { num: 2, points: 25, topic: 'Dönen Sistemler & Poisson Bağıntısı', ex: mods['fizik_mod1'].exercises[1], rubric: '+8 Puan: Kartezyen projeksiyon, +10 Puan: Zamana göre türevler, +7 Puan: Poisson kuralı.' },
-                    { num: 3, points: 25, topic: 'Kartezyen Kinematik & Frenet Tabanı', ex: mods['fizik_mod2'].exercises[1] || mods['fizik_mod2'].exercises[0], rubric: '+8 Puan: Hız vektörü ve normu, +10 Puan: Teğetsel ivme, +7 Puan: Normal ivme ve eğrilik.' },
-                    { num: 4, points: 25, topic: 'Kutupsal Koordinatlarda Dairesel Hareket', ex: mods['fizik_mod2'].exercises[2] || mods['fizik_mod2'].exercises[0], rubric: '+8 Puan: Radyal ve teğetsel hız, +10 Puan: Merkezcil ivme, +7 Puan: Dinamik hareket denklemi.' }
+                    { num: 1, points: 25, topic: 'Poisson Bağıntısı & Dönen Taban (Bour)', ex: m6[0] || mods['fizik_mod1'].exercises[1], rubric: '+8 Puan: Birim vektör türevi ve diklik ispatı, +10 Puan: Poisson kuralı $\\vec{\\Omega} \\wedge \\vec{u}$, +7 Puan: Silindirik hız ve ivme.' },
+                    { num: 2, points: 25, topic: 'Parabolik Trajektuar, Frenet Tabanı & Eğrilik Yarıçapı', ex: m6[1] || mods['fizik_mod2'].exercises[1], rubric: '+8 Puan: Hız vektörü ve normu, +10 Puan: Teğetsel/normal ivme ve ivme açısı, +7 Puan: Tepe ve anlık eğrilik yarıçapı.' },
+                    { num: 3, points: 25, topic: 'Akışkan Sürtünmeli Atış, Limit Hız & Asimptot', ex: m6[2] || (mods['fizik_mod5'] ? mods['fizik_mod5'].exercises[0] : null), rubric: '+8 Puan: PFD ve diferansiyel denklemler, +10 Puan: Çözüm ve limit hız vektörü, +7 Puan: Asimptot ve $k\\to 0$ limiti.' },
+                    { num: 4, points: 25, topic: 'Silindirde Kayan Cisim, TMC & Dekolman Şartı', ex: m6[3] || (mods['fizik_mod5'] ? mods['fizik_mod5'].exercises[1] : null), rubric: '+8 Puan: Kuvvet momentleri ve açısal momentum, +10 Puan: TMC ile hareket denklemi ve ilk integral, +7 Puan: Reaksiyon ve $\\cos\\theta_d=2/3$ dekolman.' }
                 ];
             } else if (activeCourseKey === 'mat206_olasilik') {
                 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
