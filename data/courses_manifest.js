@@ -142,7 +142,13 @@ window.COURSES_MANIFEST = {
       {
         "id": "fizik_mod5",
         "title": "Modül 5: Vize Master, Karar Ağaçları & Sentez Sınav Soruları",
-        "shortTitle": "Vize Master & Karar Ağaçları",
+        "shortTitle": "Modül 5: Vize Master & Karar Ağaçları",
+        "exerciseCount": 2
+      },
+      {
+        "id": "fizik_mod6",
+        "title": "Modül 6: DM-3 Tam Çözümleri (Atış, Hava Direnci & Silindirde Kayma - TMC)",
+        "shortTitle": "Modül 6: DM-3 Tam Çözümleri",
         "exerciseCount": 2
       }
     ]
