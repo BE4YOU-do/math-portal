@@ -774,6 +774,41 @@ window.COURSES_DB['mat201_seriler'] = window.coursesData.mat201_seriler = {
               "content": "<p><strong>Théorème (Condition nécessaire) :</strong> Si une série converge, alors son terme général tend nécessairement vers 0.\nPuisque les séries $\\sum \\frac{n^p}{a^n}$ et $\\sum \\frac{a^n}{n!}$ convergent, nous concluons immédiatement :\n$$ \\lim_{n \\to +\\infty} \\frac{n^p}{a^n} = 0 \\quad \\text{et} \\quad \\lim_{n \\to +\\infty} \\frac{a^n}{n!} = 0 $$\n<p><strong>Interprétation en termes de vitesses de croissance :</strong>\nCes deux limites établissent rigoureusement la hiérarchie fondamentale des croissances comparées à l'infini :\n<ul>\n  <li>L'exponentielle $a^n$ ($a > 1$) croît strictement plus vite que toute puissance polynomiale $n^p$ : $n^p = o(a^n)$.</li>\n  <li>La factorielle $n!$ croît strictement plus vite que toute suite exponentielle géométrique $a^n$ : $a^n = o(n!)$.</li>\n</ul>\nEn résumé : $\\ln n \\ll n^p \\ll a^n \\ll n! \\ll n^n$. ■r"
             }
           ]
+        },
+        {
+          "id": "s3_quiz1_q1",
+          "name": "Quiz 1 (22 Octobre 2026) • Question 1",
+          "subtitle": "Parametreli Köklü Seri Yakınsaklığı (Meral Hoca Sınav Sorusu)",
+          "tag": "Quiz 1",
+          "concepts": [
+            "series_riemann_bertrand",
+            "series_equivalence_asymptotique"
+          ],
+          "enonce": "<strong>Quiz 1 • Question 1 (Galatasaray Üniversitesi 22 Octobre 2026) :</strong><br>Soit $\\alpha \\in \\mathbb{R}$. Étudier, suivant les valeurs de $\\alpha$, la nature de la série numérique :$$\\sum_{n \\ge 1} \\left(\\sqrt{n^2 + n^\\alpha} - n\\right)$$Justifier votre réponse.",
+          "hint": "Köklü ifadede farkı gidermek için eşlenik çarpımı ($a - b = \\frac{a^2-b^2}{a+b}$) uygulayın: $u_n = \\frac{n^{\\alpha-1}}{\\sqrt{1+n^{\\alpha-2}} + 1}$. Paydadaki $n^{\\alpha-2}$ teriminin davranışına göre $\\alpha < 2$, $\\alpha = 2$ ve $\\alpha > 2$ durumlarını ayrı ayrı inceleyin.",
+          "solTitle": "Ayrıntılı Resmi Sınav Çözümü (Meral Hoca Copie d'Examen)",
+          "steps": [
+            {
+              "title": "Étape 1 : Expression Conjuguée et Factorisation",
+              "content": "<p>Posons pour tout $n \\ge 1$ :<br>$$u_n = \\sqrt{n^2 + n^\\alpha} - n$$<br>En multipliant et en divisant par la quantité conjuguée $\\sqrt{n^2 + n^\\alpha} + n$ :<br>$$u_n = \\frac{(n^2 + n^\\alpha) - n^2}{\\sqrt{n^2 + n^\\alpha} + n} = \\frac{n^\\alpha}{n\\left(\\sqrt{1 + n^{\\alpha-2}} + 1\\right)} = \\frac{n^{\\alpha-1}}{\\sqrt{1 + n^{\\alpha-2}} + 1}$$<br>La nature de la suite $(\\sqrt{1+n^{\\alpha-2}})$ dépend du signe de l'exposant $\\alpha - 2$. Distinguons trois cas fondamentaux.</p>"
+            },
+            {
+              "title": "Étape 2 : Cas 1 (α < 2) • Équivalent et Séries de Riemann",
+              "content": "<p>Si $\\alpha < 2$, alors $\\alpha - 2 < 0$, d'où $n^{\\alpha-2} \\to 0$ lorsque $n \\to +\\infty$.<br>Le dénominateur tend donc vers $\\sqrt{1+0} + 1 = 2$. On en déduit l'équivalent asymptotique :<br>$$u_n \\sim \\frac{n^{\\alpha-1}}{2} = \\frac{1}{2 n^{1-\\alpha}}$$<br>Puisque $u_n > 0$, le <strong>critère d'équivalence</strong> pour les séries à termes positifs assure que $\\sum u_n$ est de même nature que la série de Riemann :<br>$$\\sum_{n \\ge 1} \\frac{1}{n^{1-\\alpha}}$$<br>D'après le théorème de Riemann, cette série converge si et seulement si son exposant est strictement supérieur à $1$ :<br>$$1 - \\alpha > 1 \\iff \\alpha < 0$$<br>Ainsi, pour $\\alpha < 0$, la série <strong>converge</strong>. Pour $0 \\le \\alpha < 2$, la série <strong>diverge</strong>.</p>"
+            },
+            {
+              "title": "Étape 3 : Cas 2 (α = 2) • Divergence Grossière",
+              "content": "<p>Pour $\\alpha = 2$ :<br>$$u_n = \\sqrt{n^2 + n^2} - n = \\sqrt{2n^2} - n = n(\\sqrt{2} - 1)$$<br>Comme $\\sqrt{2} - 1 > 0$, on a $\\lim_{n \\to +\\infty} u_n = +\\infty \\neq 0$.<br>Le terme général ne tend pas vers zéro : la série <strong>diverge grossièrement</strong>.</p>"
+            },
+            {
+              "title": "Étape 4 : Cas 3 (α > 2) • Divergence Grossière",
+              "content": "<p>Pour $\\alpha > 2$, on a $\\alpha - 2 > 0$, donc $n^{\\alpha-2} \\to +\\infty$. Par conséquent :<br>$$\\sqrt{1 + n^{\\alpha-2}} \\sim \\sqrt{n^{\\alpha-2}} = n^{(\\alpha-2)/2} = n^{\\alpha/2 - 1}$$<br>Ainsi :<br>$$u_n \\sim \\frac{n^{\\alpha-1}}{n^{\\alpha/2 - 1}} = n^{\\alpha - 1 - (\\alpha/2 - 1)} = n^{\\alpha/2}$$<br>Puisque $\\alpha/2 > 1 > 0$, on a $\\lim_{n \\to +\\infty} u_n = +\\infty \\neq 0$.<br>Le terme général ne tend pas vers zéro : la série <strong>diverge grossièrement</strong>.</p>"
+            },
+            {
+              "title": "Étape 5 : Synthèse & Méthodes Alternatives (Meral Hoca)",
+              "content": "<p><strong>Conclusion Générale :</strong><br>La série $\\sum_{n \\ge 1} \\left(\\sqrt{n^2 + n^\\alpha} - n\\right)$ <strong>converge si et seulement si $\\alpha < 0$</strong>.<br><br><div class=\"theory-box tip\"><div class=\"theory-box-title\">Meral Hoca'nın Resmi Çözüm Notundaki 2 Alternatif Yöntem</div><div class=\"theory-box-body\">• <strong>Méthode 2 (Comparaison directe) :</strong> Pour $\\alpha < 0$, comme $\\sqrt{1+n^{\\alpha-2}}+1 \\ge 2$, on a directement $0 < u_n \\le \\frac{1}{2n^{1-\\alpha}}$, d'où la convergence par comparaison à Riemann.<br>• <strong>Méthode 3 (Monotonie par rapport à $\\alpha$) :</strong> Pour tout $n \\ge 1$, la fonction $f_n(\\alpha) = \\sqrt{n^2+n^\\alpha}-n$ vérifie $f_n'(\\alpha) = \\frac{n^\\alpha \\ln n}{2\\sqrt{n^2+n^\\alpha}} \\ge 0$, donc $f_n$ est croissante en $\\alpha$. Pour $\\alpha \\ge 0$, $f_n(\\alpha) \\ge f_n(0) = \\sqrt{n^2+1}-n \\sim \\frac{1}{2n}$ (diverge) ; pour $\\alpha < 0$, $f_n(\\alpha) \\le \\frac{1}{2} n^{\\alpha-1}$ (converge).</div></div></p>"
+            }
+          ]
         }
       ],
       "breadcrumb": "MAT201 Seriler",
@@ -927,6 +962,41 @@ window.COURSES_DB['mat201_seriler'] = window.coursesData.mat201_seriler = {
             {
               "title": "Étape 3 : Partie (4) — Linéarité de la Somme et Piège des Séries Semi-Convergentes",
               "content": "<p>Puisque $\\sum u_n^+$ et $\\sum u_n^-$ sont deux séries convergentes dans $\\mathbb{R}$, par linéarité de l'opérateur somme :\n$$ \\sum_{n \\ge 0} u_n = \\sum_{n \\ge 0} (u_n^+ - u_n^-) = \\sum_{n \\ge 0} u_n^+ - \\sum_{n \\ge 0} u_n^- \\quad \\blacksquare $$\n<div class=\"theory-box tip\"><div class=\"theory-box-title\">Neden Şartlı Yakınsak (Semi-Convergente) Serilerde Bu Eşitlik Geçersizdir?</div><div class=\"theory-box-body\">\nEğer seri mutlak yakınsak değil de sadece şartlı yakınsak ise (örneğin $\\sum \\frac{(-1)^n}{n}$), hem pozitif parçaların toplamı hem de negatif parçaların toplamı $+\\infty$'a ıraksar :\n$$ \\sum_{n \\ge 1} u_n^+ = +\\infty \\quad \\text{et} \\quad \\sum_{n \\ge 1} u_n^- = +\\infty $$\nBu durumda $\\sum u_n^+ - \\sum u_n^- = +\\infty - \\infty$ tanımsızlığı (forme indéterminée) ortaya çıkar !\nİşte bu yüzden <em>Riemann Yeniden Düzenleme Teoremi (Théorème de réarrangement de Riemann)</em> geçerlidir: Şartlı yakınsak bir serinin terimlerinin sırasını değiştirerek toplamı İSTEDİĞİMİZ HERHANGİ BİR REEL SAYIYA eşitleyebiliriz!\n</div></div>r"
+            }
+          ]
+        },
+        {
+          "id": "s4_quiz1_q2",
+          "name": "Quiz 1 (22 Octobre 2026) • Question 2",
+          "subtitle": "Alterne Seri & Büyük Leibniz Tuzağı (Meral Hoca Sınav Sorusu)",
+          "tag": "Quiz 1",
+          "concepts": [
+            "critere_leibniz_series",
+            "series_alternes_absolue"
+          ],
+          "enonce": "<strong>Quiz 1 • Question 2 (Galatasaray Üniversitesi 22 Octobre 2026) :</strong><br>Étudier la convergence de la série numérique :$$\\sum_{n \\ge 2} \\frac{(-1)^n n}{n^2 + (-1)^n}$$Préciser si cette série converge absolument ou conditionnellement. Justifier votre réponse.",
+          "hint": "⚠️ <strong>DİKKAT (BÜYÜK SINAV TUZAĞI) :</strong> $a_n = \\frac{n}{n^2+(-1)^n}$ dizisi monoton azalan DEĞİLDİR ($a_{2k} < a_{2k+1}$). Leibniz kriterini doğrudan uygulayamazsınız! Doğru yöntem: $\\frac{(-1)^n n}{n^2+(-1)^n} = \\frac{(-1)^n}{n} - \\frac{1}{n(n^2+(-1)^n)}$ şeklinde asimptotik açılım (décomposition) yapmaktır.",
+          "solTitle": "Ayrıntılı Resmi Sınav Çözümü (Meral Hoca Copie d'Examen)",
+          "steps": [
+            {
+              "title": "Étape 1 : Pourquoi le Critère de Leibniz Échoue Directement (Le Piège !)",
+              "content": "<p>Posons pour $n \\ge 2$ :<br>$$a_n = \\frac{n}{n^2 + (-1)^n}$$<br>On a bien $a_n > 0$ et $\\lim_{n\\to+\\infty} a_n = 0$.<br>Cependant, <strong>vérifions si la suite $(a_n)$ est décroissante</strong>. Calculons pour tout $k \\ge 1$ :<br>$$a_{2k} = \\frac{2k}{(2k)^2 + 1} = \\frac{2k}{4k^2+1}, \\quad a_{2k+1} = \\frac{2k+1}{(2k+1)^2 - 1} = \\frac{2k+1}{4k(k+1)}$$<br>Calculons la différence $a_{2k} - a_{2k+1}$ :<br>$$a_{2k} - a_{2k+1} = \\frac{2k \\cdot 4k(k+1) - (2k+1)(4k^2+1)}{4k(k+1)(4k^2+1)} = \\frac{8k^3+8k^2 - (8k^3+4k^2+2k+1)}{4k(k+1)(4k^2+1)} = -\\frac{8k^2+6k+1}{4k(k+1)(4k^2+1)} < 0$$<br>On a donc $a_{2k} < a_{2k+1}$ : <strong>la suite $(a_n)$ n'est pas décroissante</strong> !<br><span style=\"color: #f43f5e; font-weight: 700;\">Le critère de Leibniz ne peut donc PAS être appliqué directement à cette série.</span></p>"
+            },
+            {
+              "title": "Étape 2 : Décomposition Algébrique Asymptotique (Méthode Officielle)",
+              "content": "<p>Effectuons une décomposition du terme général en faisant apparaître le terme harmonique alterné :<br>$$\\frac{(-1)^n n}{n^2 + (-1)^n} - \\frac{(-1)^n}{n} = \\frac{(-1)^n n^2 - (-1)^n(n^2 + (-1)^n)}{n(n^2 + (-1)^n)} = \\frac{-(-1)^{2n}}{n(n^2 + (-1)^n)} = -\\frac{1}{n(n^2 + (-1)^n)}$$<br>On obtient l'identité exacte fondamentale :<br>$$\\frac{(-1)^n n}{n^2 + (-1)^n} = \\frac{(-1)^n}{n} - \\frac{1}{n(n^2 + (-1)^n)}$$</p>"
+            },
+            {
+              "title": "Étape 3 : Convergence des Deux Séries Composantes",
+              "content": "<p>Étudions séparément la nature des deux séries :<br>1. La série $\\sum_{n \\ge 2} \\frac{(-1)^n}{n}$ converge d'après le critère spécial des séries alternées (CSSA / Leibniz), car la suite $\\frac{1}{n}$ est positive, strictement décroissante et tend vers $0$.<br>2. Pour la seconde série, le terme général $v_n = \\frac{1}{n(n^2+(-1)^n)}$ est strictement positif pour $n \\ge 2$, et vérifie :<br>$$v_n \\sim \\frac{1}{n^3}$$<br>La série de Riemann $\\sum \\frac{1}{n^3}$ converge car son exposant $3 > 1$. Par le critère d'équivalence des séries à termes positifs, la série $\\sum v_n$ <strong>converge absolument</strong>.<br><br>Comme somme de deux séries convergentes, la série proposée $\\sum_{n \\ge 2} \\frac{(-1)^n n}{n^2 + (-1)^n}$ <strong>converge</strong>.</p>"
+            },
+            {
+              "title": "Étape 4 : Étude de la Convergence Absolue",
+              "content": "<p>Étudions maintenant la série des valeurs absolues :<br>$$|u_n| = \\left|\\frac{(-1)^n n}{n^2 + (-1)^n}\\right| = \\frac{n}{n^2 + (-1)^n} \\sim \\frac{n}{n^2} = \\frac{1}{n}$$<br>Puisque $|u_n| > 0$ et $\\frac{1}{n} > 0$, par équivalence avec la série harmonique divergente $\\sum \\frac{1}{n}$, la série des valeurs absolues $\\sum |u_n|$ <strong>diverge</strong>.</p>"
+            },
+            {
+              "title": "Étape 5 : Conclusion Finale & Rédaction",
+              "content": "<p><strong>Conclusion :</strong><br>La série $\\sum_{n \\ge 2} \\frac{(-1)^n n}{n^2 + (-1)^n}$ converge mais ne converge pas absolument.<br>Elle est donc <strong>conditionnellement convergente (semi-convergente)</strong>.<br><br><div class=\"theory-box alert\"><div class=\"theory-box-title\">Sınav Kağıdına Yazılacak Altın Cümle (Copie d'Examen)</div><div class=\"theory-box-body\"><em>« La suite $(a_n)$ n'étant pas monotone ($a_{2k} < a_{2k+1}$), le critère de Leibniz ne s'applique pas directement. Par décomposition asymptotique, $u_n = \\frac{(-1)^n}{n} - \\frac{1}{n^3+o(n^3)}$. La première converge par Leibniz et la seconde converge absolument par Riemann ($\\alpha=3>1$). Enfin, $|u_n| \\sim 1/n$ montre que la convergence est purement conditionnelle. »</em></div></div></p>"
             }
           ]
         }
@@ -1363,7 +1433,230 @@ window.COURSES_DB['mat201_seriler'] = window.coursesData.mat201_seriler = {
     },
     "seriler_mod7": {
       "id": "seriler_mod7",
-      "title": "Modül 7: Quiz & Vize Master Özeti (Karar Ağaçları & 8 Arketip)",
+      "title": "Modül 7: TD 7 - Propriétés des Séries de Fonctions (Süreklilik, Türev & İntegral)",
+      "shortTitle": "TD-7: Seri Özellikleri & Türev",
+      "badge": "TD 7",
+      "description": "Galatasaray Üniversitesi MAT201 TD 7 çalışma föyündeki tüm 6 exercice ve sentez soruları: Convergence normale et continuité, dérivation terme à terme, intégration sur un segment, contre-exemples de Weierstrass.",
+      "breadcrumb": "MAT201 Seriler > TD 7",
+      "concepts": [
+        "critere_weierstrass",
+        "series_riemann_bertrand",
+        "convergence_uniforme_sup"
+      ],
+      "exercises": [
+        {
+          "id": "s7_ex1",
+          "name": "TD 7 • Ex 1 : Convergence Normale et Continuité",
+          "subtitle": "Kosinüs Fonksiyon Serisi ve Süreklilik (∑ cos(nx)/n²)",
+          "tag": "TD 7",
+          "concepts": [
+            "critere_weierstrass",
+            "series_riemann_bertrand",
+            "convergence_uniforme_sup"
+          ],
+          "enonce": "<strong>TD 7 • Exercice 1 (Convergence normale et continuité) :</strong><br>On considère la série de fonctions :$$S(x) = \\sum_{n=1}^{+\\infty} \\frac{\\cos(nx)}{n^2}, \\quad x \\in \\mathbb{R}$$(1) Montrer que cette série converge normalement sur $\\mathbb{R}$.<br>(2) En déduire que sa somme $S(x)$ est continue sur $\\mathbb{R}$.<br>(3) Calculer les dérivées des fonctions $f_n(x) = \\frac{\\cos(nx)}{n^2}$. Étudier la convergence de la série des dérivées au point $x = \\pi/2$.<br>(4) Peut-on appliquer directement le théorème de dérivation terme à terme sur $\\mathbb{R}$ ? Justifier.",
+          "hint": "(1) $|\\cos(nx)| \\le 1$ ile $M_n = 1/n^2$ majorasyonu kurun. (2) Her $f_n$ sürekli ve CVN (dolayısıyla CVU) olduğu için toplam $S(x)$ süreklidir. (3) $f_n'(x) = -\\sin(nx)/n$. $\\sin(n\\pi/2)$ periyodunu inceleyip Leibniz kriterine bağlayın. (4) Türev serisinin normu $\\|f_n'\\|_\\infty = 1/n$ olup $\\sum 1/n = +\\infty$ olduğundan normal yakınsaklık türevde doğrudan sağlanmaz.",
+          "solTitle": "Ayrıntılı Sınav Çözümü (Rédaction Complète)",
+          "steps": [
+            {
+              "title": "Étape 1 : (1) Convergence Normale sur ℝ",
+              "content": "<p>Pour tout $x \\in \\mathbb{R}$ et tout $n \\ge 1$ :<br>$$|f_n(x)| = \\left|\\frac{\\cos(nx)}{n^2}\\right| = \\frac{|\\cos(nx)|}{n^2} \\le \\frac{1}{n^2}$$<br>Comme cette majoration est indépendante de $x$, la norme infinie vérifie :<br>$$\\|f_n\\|_{\\infty, \\mathbb{R}} = \\sup_{x \\in \\mathbb{R}} |f_n(x)| \\le \\frac{1}{n^2}$$<br>La série numérique $\\sum_{n \\ge 1} \\frac{1}{n^2}$ est une série de Riemann convergente ($\\alpha = 2 > 1$).<br>Par le critère de Weierstrass, la série de fonctions $\\sum f_n$ <strong>converge normalement sur $\\mathbb{R}$</strong>.</p>"
+            },
+            {
+              "title": "Étape 2 : (2) Continuité de la Somme S sur ℝ",
+              "content": "<p>Pour tout $n \\ge 1$, la fonction $f_n : x \\mapsto \\frac{\\cos(nx)}{n^2}$ est continue sur $\\mathbb{R}$.<br>Puisque la série $\\sum f_n$ converge normalement sur $\\mathbb{R}$, elle y converge uniformément.<br>D'après le <strong>théorème de continuité de la somme</strong> d'une série de fonctions uniformément convergente, la fonction somme :<br>$$S : x \\mapsto \\sum_{n=1}^{+\\infty} \\frac{\\cos(nx)}{n^2}$$<br>est <strong>continue sur $\\mathbb{R}$</strong>.</p>"
+            },
+            {
+              "title": "Étape 3 : (3) Dérivées et Convergence en x = π/2",
+              "content": "<p>Pour tout $n \\ge 1$, $f_n$ est de classe $C^1$ sur $\\mathbb{R}$ et sa dérivée vaut :<br>$$f_n'(x) = -\\frac{n \\sin(nx)}{n^2} = -\\frac{\\sin(nx)}{n}$$<br>Évaluons en $x = \\frac{\\pi}{2}$ :<br>$$f_n'\\left(\\frac{\\pi}{2}\\right) = -\\frac{\\sin(n\\pi/2)}{n}$$<br>• Pour $n = 2k$ (pair) : $\\sin(k\\pi) = 0$, donc $f_{2k}'(\\pi/2) = 0$.<br>• Pour $n = 2k+1$ (impair) : $\\sin((2k+1)\\pi/2) = (-1)^k$, d'où :<br>$$f_{2k+1}'\\left(\\frac{\\pi}{2}\\right) = -\\frac{(-1)^k}{2k+1}$$<br>La série des dérivées en $x = \\pi/2$ se réduit à $-\\sum_{k=0}^{+\\infty} \\frac{(-1)^k}{2k+1}$, qui est une série alternée.<br>Comme la suite $\\frac{1}{2k+1}$ est positive, décroissante et tend vers 0, elle <strong>converge</strong> d'après le critère de Leibniz (sa somme vaut $-\\pi/4$).</p>"
+            },
+            {
+              "title": "Étape 4 : (4) Analyse de la Dérivation Terme à Terme sur ℝ",
+              "content": "<p>Sur $\\mathbb{R}$ tout entier, $\\|f_n'\\|_{\\infty, \\mathbb{R}} = \\sup_{x\\in\\mathbb{R}} \\left|\\frac{\\sin(nx)}{n}\\right| = \\frac{1}{n}$.<br>Comme $\\sum \\frac{1}{n} = +\\infty$, la série des dérivées **ne converge pas normalement sur $\\mathbb{R}$**.<br>On ne peut donc <strong>pas appliquer directement</strong> le théorème de dérivation terme à terme via la convergence normale sur $\\mathbb{R}$. Il faudrait étudier plus finement la convergence uniforme de $\\sum f_n'$ (qui est en réalité non uniforme au voisinage de $0$).</p>"
+            }
+          ]
+        },
+        {
+          "id": "s7_ex2",
+          "name": "TD 7 • Ex 2 : Dérivation Terme à Terme (Classe C¹)",
+          "subtitle": "Logaritma Fonksiyon Serisi & C¹ Regülerliği (∑ ln(1 + x²/n²))",
+          "tag": "TD 7",
+          "concepts": [
+            "critere_weierstrass",
+            "series_riemann_bertrand"
+          ],
+          "enonce": "<strong>TD 7 • Exercice 2 (Dérivation terme à terme) :</strong><br>Pour tout $n \\ge 1$, on définit $f_n(x) = \\ln\\left(1 + \\frac{x^2}{n^2}\\right)$ pour $x \\in \\mathbb{R}$. On considère :$$f(x) = \\sum_{n=1}^{+\\infty} f_n(x)$$(1) Montrer que la série $\\sum f_n$ converge normalement sur tout segment de $\\mathbb{R}$.<br>(2) En déduire que $f$ est bien définie et continue sur $\\mathbb{R}$.<br>(3) Calculer $f_n'(x)$.<br>(4) Montrer que la série $\\sum f_n'$ converge normalement sur tout segment de $\\mathbb{R}$.<br>(5) En déduire que $f$ est de classe $C^1$ sur $\\mathbb{R}$ et exprimer $f'(x)$.<br>(6) La série $\\sum f_n$ converge-t-elle normalement sur $\\mathbb{R}$ ?",
+          "hint": "Herhangi bir $[-A, A]$ kapalı aralığında $\\ln(1+u) \\le u$ eşitsizliğini kullanarak majorasyon kurun. Türev serisi için $|f_n'(x)| = \\frac{2|x|}{n^2+x^2} \\le \\frac{2A}{n^2}$ yazın. Segmentler üzerinde $C^1$ olmak tüm $\\mathbb{R}$ üzerinde $C^1$ olmaktır.",
+          "solTitle": "Ayrıntılı Sınav Çözümü (Rédaction Complète)",
+          "steps": [
+            {
+              "title": "Étape 1 : (1) et (2) Convergence Normale Locale & Continuité",
+              "content": "<p>Soit $A > 0$ et considérons le segment $[-A, A]$. Pour tout $x \\in [-A, A]$ et tout $n \\ge 1$, on a $0 \\le \\frac{x^2}{n^2} \\le \\frac{A^2}{n^2}$.<br>En utilisant l'inégalité classique $\\ln(1+u) \\le u$ pour $u \\ge 0$ :<br>$$0 \\le f_n(x) = \\ln\\left(1 + \\frac{x^2}{n^2}\\right) \\le \\frac{x^2}{n^2} \\le \\frac{A^2}{n^2}$$<br>D'où $\\|f_n\\|_{\\infty, [-A, A]} \\le \\frac{A^2}{n^2}$. Puisque $\\sum \\frac{1}{n^2}$ converge, $\\sum f_n$ <strong>converge normalement sur tout segment $[-A, A]$</strong>.<br>Puisque chaque $f_n$ est continue sur $\\mathbb{R}$, $f$ est <strong>bien définie et continue sur $\\mathbb{R}$</strong>.</p>"
+            },
+            {
+              "title": "Étape 2 : (3) et (4) Calcul et Majoration des Dérivées",
+              "content": "<p>Pour tout $n \\ge 1$, $f_n$ est dérivable sur $\\mathbb{R}$ et :<br>$$f_n'(x) = \\frac{\\frac{2x}{n^2}}{1 + \\frac{x^2}{n^2}} = \\frac{2x}{n^2 + x^2}$$<br>Sur un segment $[-A, A]$, pour tout $x \\in [-A, A]$ :<br>$$|f_n'(x)| = \\frac{2|x|}{n^2+x^2} \\le \\frac{2A}{n^2}$$<br>D'où $\\|f_n'\\|_{\\infty, [-A, A]} \\le \\frac{2A}{n^2}$.<br>Comme $\\sum \\frac{1}{n^2}$ converge, la série des dérivées $\\sum f_n'$ <strong>converge normalement sur tout segment de $\\mathbb{R}$</strong>.</p>"
+            },
+            {
+              "title": "Étape 3 : (5) Classe C¹ sur ℝ et Expression de f'(x)",
+              "content": "<p>D'après le <strong>théorème de dérivation terme à terme</strong> sur tout segment compact $[-A, A]$ :<br>1. $\\sum f_n(0) = 0$ converge.<br>2. Les fonctions $f_n$ sont de classe $C^1$ sur $[-A, A]$.<br>3. La série $\\sum f_n'$ converge uniformément (car normalement) sur $[-A, A]$.<br>Par conséquent, $f$ est de classe $C^1$ sur tout segment $[-A, A]$, donc <strong>$f$ est de classe $C^1$ sur $\\mathbb{R}$</strong>, et :<br>$$f'(x) = \\sum_{n=1}^{+\\infty} \\frac{2x}{n^2 + x^2}$$</p>"
+            },
+            {
+              "title": "Étape 4 : (6) Non-Convergence Normale sur ℝ Tout Entier",
+              "content": "<p>Sur $\\mathbb{R}$ non borné :<br>$$\\|f_n\\|_{\\infty, \\mathbb{R}} = \\sup_{x \\in \\mathbb{R}} \\ln\\left(1 + \\frac{x^2}{n^2}\\right) = \\lim_{x \\to +\\infty} \\ln\\left(1 + \\frac{x^2}{n^2}\\right) = +\\infty$$<br>Le terme général n'est même pas borné sur $\\mathbb{R}$ !<br>La série $\\sum f_n$ **ne converge donc pas normalement sur $\\mathbb{R}$** (elle converge seulement localement normalement sur les compacts).</p>"
+            }
+          ]
+        },
+        {
+          "id": "s7_ex3",
+          "name": "TD 7 • Ex 3 : Série Alternée de Fonctions & Classe C¹",
+          "subtitle": "Kalan Terim Majorasyonu ile CVU (∑ (-1)ⁿ / (n(1+nx)))",
+          "tag": "TD 7",
+          "concepts": [
+            "critere_leibniz_series",
+            "convergence_uniforme_sup"
+          ],
+          "enonce": "<strong>TD 7 • Exercice 3 :</strong><br>Pour tout $n \\ge 1$ et $x \\ge 0$, on pose $f_n(x) = \\frac{(-1)^n}{n(1+nx)}$ et $f(x) = \\sum_{n=1}^{+\\infty} f_n(x)$.<br>(1) Montrer que pour tout $x \\ge 0$, la suite $u_n(x) = \\frac{1}{n(1+nx)}$ est décroissante et tend vers 0.<br>(2) Montrer que $\\sup_{x \\ge 0} u_n(x) \\to 0$.<br>(3) En utilisant la majoration du reste d'une série alternée, montrer que $\\sum f_n$ converge uniformément sur $[0, +\\infty[$.<br>(4) En déduire que $f$ est continue sur $[0, +\\infty[$.<br>(5) Déterminer $\\lim_{x \\to +\\infty} f(x)$.<br>(6) Montrer que $\\sum f_n'$ converge normalement sur tout intervalle $[a, +\\infty[$ avec $a > 0$.<br>(7) En déduire que $f$ est de classe $C^1$ sur $]0, +\\infty[$ et exprimer $f'(x)$.",
+          "hint": "Alterne serilerde düzgün yakınsaklık için en güçlü silah kalan terim teoremidir: $|R_n(x)| \\le u_{n+1}(x)$. $u_{n+1}(x) \\le \\frac{1}{n+1}$ olduğu için üst sınır $x$'ten tamamen bağımsızdır ve sıfıra gider. Bu da $[0, +\\infty[$ üzerinde düzgün yakınsaklığı anında verir.",
+          "solTitle": "Ayrıntılı Sınav Çözümü (Rédaction Complète)",
+          "steps": [
+            {
+              "title": "Étape 1 : (1), (2) et (3) Majoration du Reste et CVU",
+              "content": "<p>Pour tout $x \\ge 0$ fixé, la suite $n \\mapsto n(1+nx) = n + n^2 x$ est strictement croissante et tend vers $+\\infty$, donc $u_n(x) = \\frac{1}{n(1+nx)}$ est positive, décroissante et tend vers $0$.<br>De plus, pour tout $x \\ge 0$, $u_n(x) \\le u_n(0) = \\frac{1}{n}$, donc $\\sup_{x \\ge 0} u_n(x) = \\frac{1}{n} \\to 0$.<br>D'après le critère de Leibniz, la série alternée converge pour tout $x \\ge 0$, et son reste d'ordre $n$ vérifie :<br>$$\\forall x \\ge 0, \\quad |R_n(x)| \\le u_{n+1}(x) \\le \\frac{1}{n+1}$$<br>Par passage au supremum sur $[0, +\\infty[$ :<br>$$\\|R_n\\|_{\\infty, [0, +\\infty[} = \\sup_{x \\ge 0} |R_n(x)| \\le \\frac{1}{n+1} \\xrightarrow[n \\to +\\infty]{} 0$$<br>La série $\\sum f_n$ <strong>converge uniformément sur $[0, +\\infty[$</strong>.</p>"
+            },
+            {
+              "title": "Étape 2 : (4) et (5) Continuité et Limite en +∞",
+              "content": "<p>Chaque $f_n$ est continue sur $[0, +\\infty[$ et la série y converge uniformément, donc $f$ est <strong>continue sur $[0, +\\infty[$</strong>.<br>Pour la limite en $+\\infty$ : pour tout $n \\ge 1$, $\\lim_{x \\to +\\infty} f_n(x) = 0$.<br>Comme la série converge uniformément sur $[0, +\\infty[$, le <strong>théorème de la double limite</strong> autorise l'interversion de la limite et de la somme :<br>$$\\lim_{x \\to +\\infty} f(x) = \\sum_{n=1}^{+\\infty} \\lim_{x \\to +\\infty} f_n(x) = \\sum_{n=1}^{+\\infty} 0 = 0$$</p>"
+            },
+            {
+              "title": "Étape 3 : (6) et (7) Dérivation et Classe C¹ sur ]0, +∞[",
+              "content": "<p>Pour tout $n \\ge 1$, $f_n$ est dérivable sur $]0, +\\infty[$ :<br>$$f_n'(x) = \\frac{(-1)^n \\cdot (-n)}{n^2(1+nx)^2} = \\frac{(-1)^{n+1}}{(1+nx)^2}$$<br>Soit $a > 0$. Pour tout $x \\ge a$ :<br>$$|f_n'(x)| = \\frac{1}{(1+nx)^2} \\le \\frac{1}{(1+na)^2} \\le \\frac{1}{a^2 n^2}$$<br>Comme $\\sum \\frac{1}{n^2}$ converge, la série $\\sum f_n'$ <strong>converge normalement sur $[a, +\\infty[$</strong> pour tout $a > 0$.<br>Par théorème de dérivation terme à terme, $f$ est de classe $C^1$ sur tout $[a, +\\infty[$ ($a>0$), donc <strong>$f$ est de classe $C^1$ sur $]0, +\\infty[$</strong>, avec :<br>$$f'(x) = \\sum_{n=1}^{+\\infty} \\frac{(-1)^{n+1}}{(1+nx)^2}$$</p>"
+            }
+          ]
+        },
+        {
+          "id": "s7_ex4",
+          "name": "TD 7 • Ex 4 : Intégration Terme à Terme sur un Segment",
+          "subtitle": "Kompakt Aralıkta İntegral ve Toplamın Yer Değiştirmesi",
+          "tag": "TD 7",
+          "concepts": [
+            "critere_weierstrass",
+            "series_riemann_bertrand"
+          ],
+          "enonce": "<strong>TD 7 • Exercice 4 (Intégration terme à terme sur un segment) :</strong><br>On considère la fonction définie sur $[-1, 0]$ par :$$f(x) = 1 + \\sum_{n=1}^{+\\infty} \\frac{e^{nx}}{n^3+1}$$(1) Montrer que la série converge normalement sur $[-1, 0]$.<br>(2) En déduire que $f$ est continue sur $[-1, 0]$.<br>(3) Justifier que l'on peut intégrer la série terme à terme sur $[-1, 0]$.<br>(4) Calculer $\\int_{-1}^0 e^{nx} dx$.<br>(5) En déduire une expression de $\\int_{-1}^0 f(x) dx$ sous forme d'une série numérique convergente.",
+          "hint": "Segment $[-1, 0]$ üzerinde $x \\le 0$ olduğundan $e^{nx} \\le e^0 = 1$ olur. Bu sayede $\\frac{1}{n^3}$ ile düzgün üst sınır elde edilir. Kompakt segmentte düzgün yakınsaklık terim terime integral almayı garanti eder.",
+          "solTitle": "Ayrıntılı Sınav Çözümü (Rédaction Complète)",
+          "steps": [
+            {
+              "title": "Étape 1 : (1) et (2) Convergence Normale et Continuité sur [-1, 0]",
+              "content": "<p>Pour tout $x \\in [-1, 0]$ et $n \\ge 1$, la fonction exponentielle étant croissante :<br>$$0 < e^{nx} \\le e^{0} = 1$$<br>D'où pour tout $x \\in [-1, 0]$ :<br>$$\\left|\\frac{e^{nx}}{n^3+1}\\right| \\le \\frac{1}{n^3+1} \\le \\frac{1}{n^3}$$<br>Comme $\\sum \\frac{1}{n^3}$ est une série de Riemann convergente ($\\alpha = 3 > 1$), la série $\\sum \\frac{e^{nx}}{n^3+1}$ <strong>converge normalement sur $[-1, 0]$</strong>.<br>Puisque chaque fonction est continue, $f$ est <strong>continue sur $[-1, 0]$</strong>.</p>"
+            },
+            {
+              "title": "Étape 2 : (3), (4) et (5) Intégration Terme à Terme",
+              "content": "<p>La série convergeant uniformément (car normalement) sur le segment borné $[-1, 0]$, le <strong>théorème d'intégration terme à terme</strong> s'applique :<br>$$\\int_{-1}^0 f(x) dx = \\int_{-1}^0 1 dx + \\sum_{n=1}^{+\\infty} \\frac{1}{n^3+1} \\int_{-1}^0 e^{nx} dx$$<br>Calculons l'intégrale élémentaire :<br>$$\\int_{-1}^0 e^{nx} dx = \\left[\\frac{e^{nx}}{n}\\right]_{-1}^0 = \\frac{1 - e^{-n}}{n}$$<br>Puisque $\\int_{-1}^0 1 dx = 1$, on en déduit l'expression finale :<br>$$\\int_{-1}^0 f(x) dx = 1 + \\sum_{n=1}^{+\\infty} \\frac{1 - e^{-n}}{n(n^3+1)}$$<br>Cette série numérique converge car son terme général vérifie $\\frac{1-e^{-n}}{n(n^3+1)} \\sim \\frac{1}{n^4}$ (Riemann $\\alpha=4>1$).</p>"
+            }
+          ]
+        },
+        {
+          "id": "s7_ex5",
+          "name": "TD 7 • Ex 5 : La CVU Ne Suffit Pas pour Dériver Terme à Terme",
+          "subtitle": "Klasik Karşıt Örnek : ∑ sin(nx)/n² Sürekli ama 0'da Türevsizdir",
+          "tag": "TD 7",
+          "concepts": [
+            "critere_weierstrass",
+            "theoreme_point_fixe"
+          ],
+          "enonce": "<strong>TD 7 • Exercice 5 (La convergence uniforme ne suffit pas pour dériver) :</strong><br>On considère la série de fonctions $S(x) = \\sum_{n=1}^{+\\infty} \\frac{\\sin(nx)}{n^2}$ pour $x \\in \\mathbb{R}$.<br>(1) Montrer que cette série converge normalement sur $\\mathbb{R}$ et que sa somme $S$ est continue.<br>(2) Calculer les dérivées $f_n'(x)$ et étudier la série $\\sum f_n'(x)$ en $x = 0$.<br>(3) Peut-on appliquer le théorème de dérivation terme à terme sur $\\mathbb{R}$ ?<br>(4) Montrer que $S$ n'est pas dérivable en $0$. Que montre cet exemple fondamental ?",
+          "hint": "(1) $|\\sin(nx)| \\le 1 \\implies M_n = 1/n^2$. (2) $f_n'(0) = 1/n$, $\\sum 1/n = +\\infty$ ıraksar! (4) Terim terime türev teoreminin şartı $\\sum f_n'$ serisinin düzgün yakınsamasıdır; bu şart sağlanmazsa toplam fonksiyonu türevlenebilir bile olmayabilir.",
+          "solTitle": "Ayrıntılı Sınav Çözümü (Rédaction Complète)",
+          "steps": [
+            {
+              "title": "Étape 1 : (1) et (2) Convergence Normale et Divergence des Dérivées en 0",
+              "content": "<p>Pour tout $x \\in \\mathbb{R}$, $|f_n(x)| = \\left|\\frac{\\sin(nx)}{n^2}\\right| \\le \\frac{1}{n^2}$. Comme $\\sum \\frac{1}{n^2} < \\infty$, la série converge normalement (et uniformément) sur $\\mathbb{R}$, et sa somme $S$ est continue.<br>Les dérivées valent $f_n'(x) = \\frac{\\cos(nx)}{n}$. En $x = 0$ :<br>$$\\sum_{n=1}^{+\\infty} f_n'(0) = \\sum_{n=1}^{+\\infty} \\frac{\\cos(0)}{n} = \\sum_{n=1}^{+\\infty} \\frac{1}{n} = +\\infty$$<br>La série des dérivées diverge grossièrement en $0$ vers $+\\infty$.</p>"
+            },
+            {
+              "title": "Étape 2 : (3) et (4) Non-Dérivabilité en 0 & Portée Théorique",
+              "content": "<p>Le théorème de dérivation terme à terme exige la convergence uniforme de la série des dérivées $\\sum f_n'$. Comme elle diverge en $0$, l'hypothèse n'est pas vérifiée.<br>L'exercice démontre par encadrement (analytique) que le taux d'accroissement $\\frac{S(x)-S(0)}{x} = \\frac{S(x)}{x} \\ge \\frac{2}{\\pi} \\sum_{n=1}^{\\lfloor \\pi/(2x) \\rfloor} \\frac{1}{n} - o(1) \\xrightarrow[x \\to 0^+]{} +\\infty$.<br>Par conséquent, <strong>$S$ n'est pas dérivable en $0$</strong>.<br><br><div class=\"theory-box alert\"><div class=\"theory-box-title\">Matematiksel Ders (Meral Hoca Sentez)</div><div class=\"theory-box-body\">Cet exemple prouve que <strong>la convergence uniforme d'une série de fonctions régulières ne garantit absolument pas la dérivabilité de sa somme</strong>. Pour dériver terme à terme, c'est impérativement la série des DÉRIVÉES $\\sum f_n'$ qui doit converger uniformément !</div></div></p>"
+            }
+          ]
+        },
+        {
+          "id": "s7_ex6",
+          "name": "TD 7 • Ex 6 : Convergence Normale et Intégrale Impropre",
+          "subtitle": "Genişletilmiş İntegral & Sınırda Normal Yakınsaklık Yetersizliği",
+          "tag": "TD 7",
+          "concepts": [
+            "critere_weierstrass"
+          ],
+          "enonce": "<strong>TD 7 • Exercice 6 (Convergence normale et intégrale impropre) :</strong><br>Pour $n \\ge 1$, on pose $f_n(x) = e^{-nx^2}$ avec $x > 0$ et $f(x) = \\sum_{n=1}^{+\\infty} f_n(x)$.<br>(1) Montrer que la série converge normalement sur $[a, +\\infty[$ pour tout $a > 0$.<br>(2) En déduire que $f$ est continue sur $]0, +\\infty[$.<br>(3) Montrer que pour tout $x > 0$, $f(x) = \\frac{1}{e^{x^2}-1}$.<br>(4) Étudier la convergence de l'intégrale impropre $\\int_0^{+\\infty} f(x) dx$.",
+          "hint": "(1) $[a, +\\infty[$ üzerinde $e^{-nx^2} \\le (e^{-a^2})^n$ geometrik seri ile majoran kurun. (3) Geometrik seri toplam formülü $\\sum_{n=1}^\\infty q^n = \\frac{q}{1-q} = \\frac{1}{q^{-1}-1}$. (4) $x \\to 0^+$ iken $e^{x^2}-1 \\sim x^2 \\implies f(x) \\sim 1/x^2$, integrali 0 civarında ıraksar!",
+          "solTitle": "Ayrıntılı Sınav Çözümü (Rédaction Complète)",
+          "steps": [
+            {
+              "title": "Étape 1 : (1) et (2) CVN sur [a, +∞[ et Continuité sur ]0, +∞[",
+              "content": "<p>Soit $a > 0$. Pour tout $x \\ge a$, on a $x^2 \\ge a^2$, d'où :<br>$$0 < f_n(x) = e^{-nx^2} \\le e^{-na^2} = (e^{-a^2})^n$$<br>Comme $a > 0$, la raison géométrique vérifie $q = e^{-a^2} \\in ]0, 1[$.<br>La série géométrique $\\sum q^n$ converge, donc $\\sum f_n$ <strong>converge normalement sur $[a, +\\infty[$</strong> pour tout $a > 0$.<br>Chaque $f_n$ étant continue, $f$ est <strong>continue sur tout $[a, +\\infty[$</strong>, donc continue sur $]0, +\\infty[$.</p>"
+            },
+            {
+              "title": "Étape 2 : (3) Somme Géométrique Explicite",
+              "content": "<p>Pour tout $x > 0$, posons $q = e^{-x^2} < 1$. Il s'agit d'une série géométrique débutant à $n=1$ :<br>$$f(x) = \\sum_{n=1}^{+\\infty} (e^{-x^2})^n = \\frac{e^{-x^2}}{1 - e^{-x^2}} = \\frac{1}{e^{x^2} - 1}$$</p>"
+            },
+            {
+              "title": "Étape 3 : (4) Divergence de l'Intégrale Impropre en 0",
+              "content": "<p>Étudions le comportement de $f(x)$ au voisinage de $0^+$ :<br>$$e^{x^2} - 1 \\sim x^2 \\implies f(x) \\sim \\frac{1}{x^2}$$<br>D'après les intégrales de Riemann, $\\int_0^1 \\frac{1}{x^2} dx$ diverge car l'exposant $2 \\ge 1$.<br>Par le critère d'équivalence pour les fonctions positives, <strong>l'intégrale impropre $\\int_0^{+\\infty} f(x) dx$ diverge en $0$</strong>.<br><br><strong>Morale :</strong> La convergence normale sur tout intervalle compact $[a, A] \\subset ]0, +\\infty[$ ne suffit absolument pas pour intervertir série et intégrale sur un intervalle non borné ou non fermé !</p>"
+            }
+          ]
+        },
+        {
+          "id": "s7_ex7",
+          "name": "TD 7 • Questions de Synthèse : Les 5 Théorèmes Clés",
+          "subtitle": "Sınav Redaksiyonu İçin 5 Altın Teorem ve Karşıt Örnekler",
+          "tag": "Synthèse",
+          "concepts": [
+            "critere_weierstrass",
+            "convergence_uniforme_sup"
+          ],
+          "enonce": "<strong>TD 7 • Questions de synthèse (Examen Oral & Vize) :</strong><br>(1) La convergence simple d'une série de fonctions continues garantit-elle la continuité de sa somme ? Justifier avec un contre-exemple.<br>(2) La convergence normale implique-t-elle la convergence uniforme ? La réciproque est-elle vraie ?<br>(3) Quelles hypothèses permettent de dériver une série de fonctions terme à terme ?<br>(4) Pourquoi la convergence uniforme permet-elle d'intégrer terme à terme sur un segment, mais ne suffit-elle pas pour dériver terme à terme ?<br>(5) Quelle différence fondamentale faut-il faire entre l'intégration sur un segment et l'intégration sur un intervalle non borné ?",
+          "hint": "Bu 5 soru, Meral Hoca'nın vize ve finallerde 'Justifier votre réponse' dediği tüm teorik gerekçelerin temelidir.",
+          "solTitle": "Ayrıntılı Sınav Çözümü (Rédaction Complète)",
+          "steps": [
+            {
+              "title": "Synthèse 1 : CV Simple et Continuité (Contre-exemple)",
+              "content": "<p><strong>Non.</strong> La convergence simple ne préserve pas la continuité.<br><em>Contre-exemple classique :</em> $\\sum_{n=1}^{+\\infty} \\frac{x}{(1+nx)(1+(n+1)x)}$ sur $[0, 1]$. Chaque terme est continu, mais la somme simple vaut $S(x) = \\frac{1}{1+x}$ pour $x > 0$ et $S(0) = 0$. $\\lim_{x\\to 0^+} S(x) = 1 \\neq S(0)$, donc $S$ est discontinue en $0$.</p>"
+            },
+            {
+              "title": "Synthèse 2 : CV Normale vs CV Uniforme",
+              "content": "<p><strong>Oui</strong>, la convergence normale implique toujours la convergence uniforme (car $\\|R_n\\|_\\infty \\le \\sum_{k=n+1}^\\infty \\|u_k\\|_\\infty \\to 0$).<br><strong>La réciproque est FAUSSE.</strong><br><em>Contre-exemple classique :</em> $u_n(x) = \\frac{(-1)^n}{n}$ sur $\\mathbb{R}$. La série converge uniformément d'après Leibniz (reste $\\le \\frac{1}{n+1}$), mais $\\|u_n\\|_\\infty = \\frac{1}{n}$ et $\\sum \\frac{1}{n} = +\\infty$ (ne converge pas normalement).</p>"
+            },
+            {
+              "title": "Synthèse 3 : Théorème de Dérivation Terme à Terme",
+              "content": "<p>Pour affirmer que $S = \\sum u_n$ est de classe $C^1$ et $S' = \\sum u_n'$, il faut 3 hypothèses :<br>1. Chaque $u_n$ est de classe $C^1$ sur l'intervalle $I$.<br>2. Il existe au moins un point $x_0 \\in I$ tel que la série $\\sum u_n(x_0)$ converge.<br>3. La série des dérivées $\\sum u_n'$ converge <strong>uniformément</strong> sur tout segment de $I$.</p>"
+            },
+            {
+              "title": "Synthèse 4 & 5 : Intégration sur Segment vs Intervalle Non Borné",
+              "content": "<p>• <strong>Sur un segment $[a, b]$</strong>, l'intégration est une opération linéaire continue par rapport à la norme uniforme (car $\\|\\int f\\| \\le (b-a)\\|f\\|_\\infty$). Donc la convergence uniforme suffit pour échanger $\\int$ et $\\sum$.<br>• <strong>La dérivation</strong> n'est pas continue pour la norme uniforme (une fonction peut être arbitrairement proche de 0 tout en oscillant à très grande vitesse avec une dérivée énorme, ex: $\\frac{\\sin(n^2 x)}{n}$). C'est pourquoi il faut la CVU des DÉRIVÉES.<br>• <strong>Sur un intervalle non borné $[a, +\\infty[$</strong>, la longueur du domaine est infinie : la convergence uniforme ne garantit plus la convergence des intégrales (problème d'intégrabilité à l'infini). Il faut le théorème de convergence dominée ou l'intégration des séries à termes positifs.</p>"
+            }
+          ]
+        }
+      ],
+      "theoryPages": [
+        {
+          "title": "1. Fonksiyon Serilerinde Süreklilik ve Çift Limit Teoremi",
+          "html": "\n<div class=\"theory-chapter-header\">\n  <span class=\"theory-kicker\">TD 7 • FONKSİYON SERİLERİNİN ÖZELLİKLERİ</span>\n  <h2 class=\"theory-title\">Toplam Fonksiyonunun Sürekliliği &amp; Çift Limit Teoremi</h2>\n</div>\n\n<p class=\"theory-prose\">\n  Bir fonksiyon serisi $\\sum u_n(x)$ verildiğinde her terim $u_n$ sürekli bir fonksiyon olsa bile, serinin toplamı olan $S(x)$ noktasal yakınsaklık altında süreksiz olabilir! Toplamın sürekli olmasını garanti eden altın kural <strong>Düzgün Yakınsaklıktır (Convergence Uniforme)</strong>.\n</p>\n\n<div class=\"theory-box thm\">\n  <div class=\"theory-box-title\">Théorème de Continuité de la Somme</div>\n  <div class=\"theory-box-body\">\n    Soit $\\sum u_n$ une série de fonctions définies sur un intervalle $I$. Si :\n    <ol>\n      <li>Pour tout $n \\ge 0$, la fonction $u_n$ est continue sur $I$.</li>\n      <li>La série $\\sum u_n$ <strong>converge uniformément</strong> (ou localement uniformément) sur $I$.</li>\n    </ol>\n    Alors la somme $S(x) = \\sum_{n=0}^{+\\infty} u_n(x)$ est <strong>continue sur $I$</strong>.\n  </div>\n</div>\n\n<div class=\"theory-box prop\">\n  <div class=\"theory-box-title\">Théorème de la Double Limite (Interversion Limite-Somme)</div>\n  <div class=\"theory-box-body\">\n    Si $\\sum u_n$ converge uniformément sur $I$ et si pour chaque $n$, $\\lim_{x \\to x_0} u_n(x) = \\ell_n$, alors :\n    $$ \\lim_{x \\to x_0} \\sum_{n=0}^{+\\infty} u_n(x) = \\sum_{n=0}^{+\\infty} \\lim_{x \\to x_0} u_n(x) = \\sum_{n=0}^{+\\infty} \\ell_n $$\n  </div>\n</div>\n"
+        },
+        {
+          "title": "2. Terim Terime Türev Alma Teoremi (Dérivation Terme à Terme)",
+          "html": "\n<div class=\"theory-chapter-header\">\n  <span class=\"theory-kicker\">TD 7 • REGÜLERLİK &amp; TÜREV</span>\n  <h2 class=\"theory-title\">Terim Terime Türev ve C¹ Sınıfı Fonksiyonlar</h2>\n</div>\n\n<p class=\"theory-prose\">\n  Sınavlarda yapılan en büyük hata, serinin kendisi düzgün yakınsadığı için doğrudan türevini almaktır. <strong>Türev alma işlemi düzgün yakınsaklığı korumaz!</strong>\n</p>\n\n<div class=\"theory-box alert\">\n  <div class=\"theory-box-title\">⚠️ Büyük Sınav Kuralı: Türev İçin Türev Serisi Düzgün Yakınsamalıdır!</div>\n  <div class=\"theory-box-body\">\n    Soit $I$ un intervalle de $\\mathbb{R}$. Pour pouvoir affirmer que $S(x) = \\sum u_n(x)$ est dérivable et que $S'(x) = \\sum u_n'(x)$, il faut vérifier les 3 conditions :\n    <ol>\n      <li>Chaque fonction $u_n$ est de classe $C^1$ sur $I$.</li>\n      <li>Il existe $x_0 \\in I$ tel que la série numérique $\\sum u_n(x_0)$ converge.</li>\n      <li>La série des dérivées $\\sum u_n'$ <strong>converge uniformément</strong> sur tout segment compact de $I$.</li>\n    </ol>\n  </div>\n</div>\n"
+        },
+        {
+          "title": "3. Terim Terime İntegral Alma (Intégration Terme à Terme)",
+          "html": "\n<div class=\"theory-chapter-header\">\n  <span class=\"theory-kicker\">TD 7 • İNTEGRAL</span>\n  <h2 class=\"theory-title\">Segment Üzerinde İntegral ve Serinin Yer Değiştirmesi</h2>\n</div>\n\n<div class=\"theory-box thm\">\n  <div class=\"theory-box-title\">Théorème d'Intégration sur un Segment Compact [a, b]</div>\n  <div class=\"theory-box-body\">\n    Si les $u_n$ sont continues sur $[a, b]$ et si la série $\\sum u_n$ <strong>converge uniformément</strong> sur $[a, b]$, alors :\n    $$ \\int_a^b \\left(\\sum_{n=0}^{+\\infty} u_n(x)\\right) dx = \\sum_{n=0}^{+\\infty} \\left(\\int_a^b u_n(x) dx\\right) $$\n    <p><em>Not :</em> Bu teorem $[a, +\\infty[$ gibi sınırlandırılmamış aralıklarda doğrudan uygulanamaz!</p>\n  </div>\n</div>\n"
+        }
+      ],
+      "theoryContent": "\n<div class=\"theory-chapter-header\">\n  <span class=\"theory-kicker\">TD 7 • FONKSİYON SERİLERİNİN ÖZELLİKLERİ</span>\n  <h2 class=\"theory-title\">Toplam Fonksiyonunun Sürekliliği &amp; Çift Limit Teoremi</h2>\n</div>\n\n<p class=\"theory-prose\">\n  Bir fonksiyon serisi $\\sum u_n(x)$ verildiğinde her terim $u_n$ sürekli bir fonksiyon olsa bile, serinin toplamı olan $S(x)$ noktasal yakınsaklık altında süreksiz olabilir! Toplamın sürekli olmasını garanti eden altın kural <strong>Düzgün Yakınsaklıktır (Convergence Uniforme)</strong>.\n</p>\n\n<div class=\"theory-box thm\">\n  <div class=\"theory-box-title\">Théorème de Continuité de la Somme</div>\n  <div class=\"theory-box-body\">\n    Soit $\\sum u_n$ une série de fonctions définies sur un intervalle $I$. Si :\n    <ol>\n      <li>Pour tout $n \\ge 0$, la fonction $u_n$ est continue sur $I$.</li>\n      <li>La série $\\sum u_n$ <strong>converge uniformément</strong> (ou localement uniformément) sur $I$.</li>\n    </ol>\n    Alors la somme $S(x) = \\sum_{n=0}^{+\\infty} u_n(x)$ est <strong>continue sur $I$</strong>.\n  </div>\n</div>\n\n<div class=\"theory-box prop\">\n  <div class=\"theory-box-title\">Théorème de la Double Limite (Interversion Limite-Somme)</div>\n  <div class=\"theory-box-body\">\n    Si $\\sum u_n$ converge uniformément sur $I$ et si pour chaque $n$, $\\lim_{x \\to x_0} u_n(x) = \\ell_n$, alors :\n    $$ \\lim_{x \\to x_0} \\sum_{n=0}^{+\\infty} u_n(x) = \\sum_{n=0}^{+\\infty} \\lim_{x \\to x_0} u_n(x) = \\sum_{n=0}^{+\\infty} \\ell_n $$\n  </div>\n</div>\n\n<div class=\"theory-chapter-header\">\n  <span class=\"theory-kicker\">TD 7 • REGÜLERLİK &amp; TÜREV</span>\n  <h2 class=\"theory-title\">Terim Terime Türev ve C¹ Sınıfı Fonksiyonlar</h2>\n</div>\n\n<p class=\"theory-prose\">\n  Sınavlarda yapılan en büyük hata, serinin kendisi düzgün yakınsadığı için doğrudan türevini almaktır. <strong>Türev alma işlemi düzgün yakınsaklığı korumaz!</strong>\n</p>\n\n<div class=\"theory-box alert\">\n  <div class=\"theory-box-title\">⚠️ Büyük Sınav Kuralı: Türev İçin Türev Serisi Düzgün Yakınsamalıdır!</div>\n  <div class=\"theory-box-body\">\n    Soit $I$ un intervalle de $\\mathbb{R}$. Pour pouvoir affirmer que $S(x) = \\sum u_n(x)$ est dérivable et que $S'(x) = \\sum u_n'(x)$, il faut vérifier les 3 conditions :\n    <ol>\n      <li>Chaque fonction $u_n$ est de classe $C^1$ sur $I$.</li>\n      <li>Il existe $x_0 \\in I$ tel que la série numérique $\\sum u_n(x_0)$ converge.</li>\n      <li>La série des dérivées $\\sum u_n'$ <strong>converge uniformément</strong> sur tout segment compact de $I$.</li>\n    </ol>\n  </div>\n</div>\n\n<div class=\"theory-chapter-header\">\n  <span class=\"theory-kicker\">TD 7 • İNTEGRAL</span>\n  <h2 class=\"theory-title\">Segment Üzerinde İntegral ve Serinin Yer Değiştirmesi</h2>\n</div>\n\n<div class=\"theory-box thm\">\n  <div class=\"theory-box-title\">Théorème d'Intégration sur un Segment Compact [a, b]</div>\n  <div class=\"theory-box-body\">\n    Si les $u_n$ sont continues sur $[a, b]$ et si la série $\\sum u_n$ <strong>converge uniformément</strong> sur $[a, b]$, alors :\n    $$ \\int_a^b \\left(\\sum_{n=0}^{+\\infty} u_n(x)\\right) dx = \\sum_{n=0}^{+\\infty} \\left(\\int_a^b u_n(x) dx\\right) $$\n    <p><em>Not :</em> Bu teorem $[a, +\\infty[$ gibi sınırlandırılmamış aralıklarda doğrudan uygulanamaz!</p>\n  </div>\n</div>\n"
+    },
+    "seriler_mod8": {
+      "id": "seriler_mod8",
+      "title": "Modül 8: Vize Master, Karar Ağaçları & Quiz Arşivi",
       "shortTitle": "Vize Master & Karar Ağaçları",
       "badge": "Vize Master",
       "description": "Galatasaray Üniversitesi MAT201 Seriler & Analiz vize sınavında çıkabilecek 8 temel soru arketipi, adım adım karar ağaçları ve garanti puan kazandıran sınav çözümleri.",
